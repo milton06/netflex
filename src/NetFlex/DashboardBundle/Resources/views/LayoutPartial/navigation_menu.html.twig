@@ -1,0 +1,8 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+<ul class="main-navigation-menu">
+    <li class="{{ ('dashboard' == currentRoute) ? 'active open' : '' }}">
+        <a href="index.html"><i class="clip-home-3"></i>
+            <span class="title"> Dashboard Home </span><span class="{{ ('dashboard' == currentRoute) ? 'selected' : '' }}"></span>
+        </a>
+    </li>
+</ul>

@@ -1,0 +1,16 @@
+{% if breadCrumbs is defined and breadCrumbs %}
+    <ol class="breadcrumb">
+    {% for thisBreadCrumb in breadCrumbs %}
+        <li {{ (loop.last) ? 'class="active"' : '' }}>
+            {% if loop.first %}
+                <i class="clip-home-3"></i>
+            {% endif %}
+            {% if loop.last %}
+                {{ thisBreadCrumb.title }}
+            {% else %}
+                <a href="{{ thisBreadCrumb.link }}">{{ thisBreadCrumb.title }}</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ol>
+{% endif %}

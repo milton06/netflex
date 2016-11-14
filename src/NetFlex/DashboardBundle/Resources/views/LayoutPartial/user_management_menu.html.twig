@@ -1,0 +1,24 @@
+<li class="dropdown current-user">
+    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+        {% image '@NetFlexDashboardBundle/Resources/public/images/avatar-1-small.jpg' %}
+        <img src="{{ asset_url }}" class="circle-img" alt="admin-profile-pic">
+        {% endimage %}
+        <span class="username">Peter Clark</span>
+        <i class="clip-chevron-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="javascript:void(0);">
+                <i class="clip-user-2"></i>
+                &nbsp;My Profile
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="javascript:void(0);">
+                <i class="clip-exit"></i>
+                &nbsp;Log Out
+            </a>
+        </li>
+    </ul>
+</li>

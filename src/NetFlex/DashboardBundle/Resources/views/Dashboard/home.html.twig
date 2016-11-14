@@ -1,0 +1,15 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    <h1>Dashboard <small>home </small></h1>
+{% endblock %}
+
+{% block pageContent %}
+    <div class="well well-lg">
+        <h1>Welcome To Dashboard! <small>Use the menus on the left navigation panel and in the header to manage administrative functionalities.</small></h1>
+    </div>
+{% endblock %}

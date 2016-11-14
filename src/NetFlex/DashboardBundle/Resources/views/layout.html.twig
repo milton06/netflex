@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!-- Template Name: Clip-One - Responsive Admin Template build with Twitter Bootstrap 3 Version: 1.0 Author: ClipTheme -->
+<!--[if IE 8]><html class="ie8 no-js" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9 no-js" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- start: HEAD -->
+<head>
+    <!-- start: TITLE -->
+    <title>
+        {# title block starts #}
+        {% block pageTitle %}
+            NetFlex Admin
+        {% endblock %}
+        {# title block ends #}
+    </title>
+    <!-- end: TITLE -->
+    <!-- start: META -->
+    {# meta tags block starts #}
+    {% block pageMetaTags %}
+        <meta charset="utf-8" />
+        <!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    {% endblock %}
+    {# meta tags block ends #}
+    <!-- end: META -->
+    <!-- start: CSS -->
+    {# page style block starts #}
+    {% block pageStyles %}
+        {% stylesheets 'bundles/netflexdashboard/plugins/bootstrap/css/bootstrap.min.css' filter='cssrewrite' %}
+            <link href="{{ asset_url }}" rel="stylesheet" media="screen">
+        {% endstylesheets %}
+        {% stylesheets
+            'bundles/netflexdashboard/plugins/font-awesome/css/font-awesome.min.css'
+            'bundles/netflexdashboard/fonts/style.css'
+            'bundles/netflexdashboard/css/main.css'
+            'bundles/netflexdashboard/css/main-responsive.css'
+            'bundles/netflexdashboard/plugins/perfect-scrollbar/src/perfect-scrollbar.css' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}">
+        {% endstylesheets %}
+        {% stylesheets 'bundles/netflexdashboard/css/theme_light.css' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" id="skin_color">
+        {% endstylesheets %}
+    {% endblock %}
+    {# page style block ends #}
+    <!-- end: CSS -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<!-- end: HEAD -->
+<!-- start: BODY -->
+<body>
+<!-- start: HEADER -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <!-- start: TOP NAVIGATION CONTAINER -->
+    <div class="container">
+        <div class="navbar-header">
+            <!-- start: RESPONSIVE MENU TOGGLER -->
+            <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+                <span class="clip-list-2"></span>
+            </button>
+            <!-- end: RESPONSIVE MENU TOGGLER -->
+            <!-- start: LOGO -->
+            <a class="navbar-brand" href="{{ url('dashboard') }}">
+                NET<i class="clip-clip"></i>FLEX
+            </a>
+            <!-- end: LOGO -->
+        </div>
+        <div class="navbar-tools">
+            <!-- start: TOP NAVIGATION MENU -->
+            <ul class="nav navbar-right">
+                <!-- start: USER DROPDOWN -->
+                {{ include('NetFlexDashboardBundle:LayoutPartial:user_management_menu.html.twig') }}
+                <!-- end: USER DROPDOWN -->
+            </ul>
+            <!-- end: TOP NAVIGATION MENU -->
+        </div>
+    </div>
+    <!-- end: TOP NAVIGATION CONTAINER -->
+</div>
+<!-- end: HEADER -->
+<!-- start: MAIN CONTAINER -->
+<div class="main-container">
+    <div class="navbar-content">
+        <!-- start: SIDEBAR -->
+        <div class="main-navigation navbar-collapse collapse">
+            <!-- start: MAIN MENU TOGGLER BUTTON -->
+            <div class="navigation-toggler">
+                <i class="clip-chevron-left"></i>
+                <i class="clip-chevron-right"></i>
+            </div>
+            <!-- end: MAIN MENU TOGGLER BUTTON -->
+            <!-- start: MAIN NAVIGATION MENU -->
+            {{ include('NetFlexDashboardBundle:LayoutPartial:navigation_menu.html.twig') }}
+            <!-- end: MAIN NAVIGATION MENU -->
+        </div>
+        <!-- end: SIDEBAR -->
+    </div>
+    <!-- start: PAGE -->
+    <div class="main-content">
+        <div class="container">
+            <!-- start: PAGE HEADER -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- start: PAGE TITLE & BREADCRUMB -->
+                    {{ include('NetFlexDashboardBundle:LayoutPartial:breadcrumb.html.twig') }}
+                    <div class="page-header">
+                        {# page header block starts #}
+                        {% block pageHeader %}{% endblock %}
+                        {# page header block ends #}
+                    </div>
+                    <!-- end: PAGE TITLE & BREADCRUMB -->
+                </div>
+            </div>
+            <!-- end: PAGE HEADER -->
+            <!-- start: PAGE CONTENT -->
+            <div class="row">
+                <div class="col-md-12">
+                    {# page content block starts #}
+                    {% block pageContent %}{% endblock %}
+                    {# page content block ends #}
+                </div>
+            </div>
+            <!-- end: PAGE CONTENT-->
+        </div>
+    </div>
+    <!-- end: PAGE -->
+</div>
+<!-- end: MAIN CONTAINER -->
+<!-- start: FOOTER -->
+{{ include('NetFlexDashboardBundle:LayoutPartial:footer.html.twig') }}
+<!-- end: FOOTER -->
+<!-- start: JAVASCRIPTS -->
+{# page scripts block starts #}
+{% block pageScripts %}
+    <!--[if lt IE 9]>
+    {% javascripts
+        '@NetFlexDashboardBundle/Resources/public/plugins/respond.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/excanvas.min.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <![endif]-->
+    {% javascripts
+        '@NetFlexDashboardBundle/Resources/public/js/jquery.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/bootstrap/js/bootstrap.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/perfect-scrollbar/src/perfect-scrollbar.js'
+        '@NetFlexDashboardBundle/Resources/public/js/main.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{# page scripts block ends #}
+{# page script initialization block starts #}
+{% block initPageScripts %}
+    <script>
+        jQuery(document).ready(function() {
+            Main.init();
+        });
+    </script>
+{% endblock %}
+{# page script initialization block ends #}
+<!-- end: JAVASCRIPTS -->
+</body>
+<!-- end: BODY -->
+</html>
