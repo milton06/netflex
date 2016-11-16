@@ -5,11 +5,15 @@
 {% endblock %}
 
 {% block pageHeader %}
-    <h1>Dashboard <small>home </small></h1>
+    {{ pageHeader|raw }}
 {% endblock %}
 
 {% block pageContent %}
-    <div class="well well-lg">
-        <h1>Welcome To Dashboard! <small>Use the menus on the left navigation panel and in the header to manage administrative functionalities.</small></h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-lg">
+                <h1>Welcome To Dashboard! <small>Use the navigation menus on the left panel and in the header to manage administrative functionalities.</small></h1>
+            </div>
+        </div>
     </div>
 {% endblock %}

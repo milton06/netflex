@@ -3,11 +3,23 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@NetFlexDashboardBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexMediaBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    # Netflex custom configuration parameters
+    company_logo: 'NET<i class="clip-clip"></i>FLEX'
+    company_name: 'Netflex Logistics Services'
+    developer_name: 'netGuru Ltd.'
+    dashboard_page_title_prefix: 'Netflex Admin'
+    generic_media_upload_directory_name: 'uploads'
+    generic_media_upload_directory_path: '%kernel.root_dir%/../web/uploads'
+    generic_accept_media_types: '/\.(jpe?g|png|mp4|webm|mp3|txt|doc|docx|pdf|xlsx|zip)$/i'
+    generic_image_media_types: '/\.(jpe?g|png)$/i'
+    generic_media_search_types: { 'jpeg': '.jpeg', 'jpg': '.jpg', 'png': '.png', 'mp4': '.mp4', 'webm': '.webm', 'mp3': '.mp3', 'txt': '.txt', 'doc': '.doc', 'docx': '.docx', 'pdf': '.pdf', 'xlsx': '.xlsx', 'zip': '.zip' }
+    pagination_parameters: { "dashboard": { "media_list": { "record_per_page": 5, "neighbor": 3 } } }
 
 framework:
     #esi:             ~
@@ -27,7 +39,7 @@ framework:
     trusted_proxies: ~
     session:
         # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id:  session.handler.native_file
+        handler_id:  ~
         save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
     fragments:       ~
     http_method_override: true
@@ -37,6 +49,12 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        companyLogo: "%company_logo%"
+        companyName: "%company_name%"
+        developerName: "%developer_name%"
+        dashboardPageTitlePrefix: "%dashboard_page_title_prefix%"
+        noRecordFoundText: 'No Record Found!'
 
 # Doctrine Configuration
 doctrine:
@@ -47,7 +65,10 @@ doctrine:
         dbname:   "%database_name%"
         user:     "%database_user%"
         password: "%database_password%"
-        charset:  UTF8
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"

@@ -1,0 +1,47 @@
+[15-Nov-2016 09:53:03 UTC] PHP Fatal error:  Class 'NetFlex\MediaBundle\Controller\Media' not found in /var/www/html/netflex/src/NetFlex/MediaBundle/Controller/MediaController.php on line 128
+[15-Nov-2016 09:53:03 UTC] PHP Stack trace:
+[15-Nov-2016 09:53:03 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[15-Nov-2016 09:53:03 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[15-Nov-2016 09:53:03 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[15-Nov-2016 09:53:03 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[15-Nov-2016 09:53:03 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[15-Nov-2016 09:53:03 UTC] PHP   6. NetFlex\MediaBundle\Controller\MediaController->uploadMultiMediaAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 07:02:42 UTC] PHP Fatal error:  Class 'SevenMonks\CMS\StaticPageBundle\Service\PaginationService' not found in /var/www/html/netflex/var/cache/dev/appDevDebugProjectContainer.php on line 2030
+[16-Nov-2016 07:02:42 UTC] PHP Stack trace:
+[16-Nov-2016 07:02:42 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[16-Nov-2016 07:02:42 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[16-Nov-2016 07:02:42 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[16-Nov-2016 07:02:42 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[16-Nov-2016 07:02:42 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 07:02:42 UTC] PHP   6. NetFlex\MediaBundle\Controller\MediaController->renderMediaListAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 07:02:42 UTC] PHP   7. Symfony\Bundle\FrameworkBundle\Controller\Controller->get() /var/www/html/netflex/src/NetFlex/MediaBundle/Controller/MediaController.php:34
+[16-Nov-2016 07:02:42 UTC] PHP   8. Symfony\Component\DependencyInjection\Container->get() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Controller/Controller.php:389
+[16-Nov-2016 07:02:42 UTC] PHP   9. appDevDebugProjectContainer->getPaginationServiceService() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Container.php:274
+[16-Nov-2016 07:03:21 UTC] PHP Fatal error:  Class 'SevenMonks\CMS\StaticPageBundle\Service\PaginationService' not found in /var/www/html/netflex/var/cache/dev/appDevDebugProjectContainer.php on line 2030
+[16-Nov-2016 07:03:21 UTC] PHP Stack trace:
+[16-Nov-2016 07:03:21 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[16-Nov-2016 07:03:21 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[16-Nov-2016 07:03:21 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[16-Nov-2016 07:03:21 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[16-Nov-2016 07:03:21 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 07:03:21 UTC] PHP   6. NetFlex\MediaBundle\Controller\MediaController->renderMediaListAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 07:03:21 UTC] PHP   7. Symfony\Bundle\FrameworkBundle\Controller\Controller->get() /var/www/html/netflex/src/NetFlex/MediaBundle/Controller/MediaController.php:34
+[16-Nov-2016 07:03:21 UTC] PHP   8. Symfony\Component\DependencyInjection\Container->get() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Controller/Controller.php:389
+[16-Nov-2016 07:03:21 UTC] PHP   9. appDevDebugProjectContainer->getPaginationServiceService() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Container.php:274
+[16-Nov-2016 07:04:01 UTC] PHP Fatal error:  Call to undefined method NetFlex\MediaBundle\Controller\MediaController::getSortColumn() in /var/www/html/netflex/src/NetFlex/MediaBundle/Controller/MediaController.php on line 49
+[16-Nov-2016 07:04:01 UTC] PHP Stack trace:
+[16-Nov-2016 07:04:01 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[16-Nov-2016 07:04:01 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[16-Nov-2016 07:04:01 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[16-Nov-2016 07:04:01 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[16-Nov-2016 07:04:01 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 07:04:01 UTC] PHP   6. NetFlex\MediaBundle\Controller\MediaController->renderMediaListAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 12:22:25 UTC] PHP Fatal error:  Call to a member function getMediaName() on a non-object in /var/www/html/netflex/src/NetFlex/MediaBundle/Controller/MediaController.php on line 362
+[16-Nov-2016 12:22:25 UTC] PHP Stack trace:
+[16-Nov-2016 12:22:25 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[16-Nov-2016 12:22:25 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[16-Nov-2016 12:22:25 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[16-Nov-2016 12:22:25 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[16-Nov-2016 12:22:25 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 12:22:25 UTC] PHP   6. NetFlex\MediaBundle\Controller\MediaController->deferredDeleteMultiMediaAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[16-Nov-2016 12:22:25 UTC] PHP   7. NetFlex\MediaBundle\Controller\MediaController->deleteMedia() /var/www/html/netflex/src/NetFlex/MediaBundle/Controller/MediaController.php:329

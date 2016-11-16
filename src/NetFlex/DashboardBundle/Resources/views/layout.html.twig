@@ -11,7 +11,7 @@
     <title>
         {# title block starts #}
         {% block pageTitle %}
-            NetFlex Admin
+            {{ dashboardPageTitlePrefix }}
         {% endblock %}
         {# title block ends #}
     </title>
@@ -64,7 +64,7 @@
             <!-- end: RESPONSIVE MENU TOGGLER -->
             <!-- start: LOGO -->
             <a class="navbar-brand" href="{{ url('dashboard') }}">
-                NET<i class="clip-clip"></i>FLEX
+                {{ companyLogo|raw }}
             </a>
             <!-- end: LOGO -->
         </div>
@@ -116,13 +116,9 @@
             </div>
             <!-- end: PAGE HEADER -->
             <!-- start: PAGE CONTENT -->
-            <div class="row">
-                <div class="col-md-12">
-                    {# page content block starts #}
-                    {% block pageContent %}{% endblock %}
-                    {# page content block ends #}
-                </div>
-            </div>
+            {# page content block starts #}
+            {% block pageContent %}{% endblock %}
+            {# page content block ends #}
             <!-- end: PAGE CONTENT-->
         </div>
     </div>

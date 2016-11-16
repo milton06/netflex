@@ -3,14 +3,16 @@
 namespace NetFlex\DashboardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DashboardController extends Controller
 {
     /**
+     * Render the dashboard home page.
+     *
      * @Route("/dashboard", name="dashboard")
      * @Method({"GET"})
      */
@@ -26,7 +28,7 @@ class DashboardController extends Controller
 	    return $this->render('NetFlexDashboardBundle:Dashboard:home.html.twig', [
         	'pageTitle' => 'Dashboard Home',
 		    'breadCrumbs' => $breadCrumbs,
-	        'pageHeader' => 'Dashboard Home',
+	        'pageHeader' => '<h1>Dashboard <small>home </small></h1>',
         ]);
     }
 }

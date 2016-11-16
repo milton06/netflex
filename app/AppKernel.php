@@ -18,6 +18,7 @@ class AppKernel extends Kernel
 	        new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new AppBundle\AppBundle(),
             new NetFlex\DashboardBundle\NetFlexDashboardBundle(),
+            new NetFlex\MediaBundle\NetFlexMediaBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

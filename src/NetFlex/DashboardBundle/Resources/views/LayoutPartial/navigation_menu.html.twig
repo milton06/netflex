@@ -1,8 +1,27 @@
 {% set currentRoute = app.request.attributes.get('_route') %}
 <ul class="main-navigation-menu">
     <li class="{{ ('dashboard' == currentRoute) ? 'active open' : '' }}">
-        <a href="index.html"><i class="clip-home-3"></i>
+        <a href="{{ url('dashboard') }}"><i class="clip-home-3"></i>
             <span class="title"> Dashboard Home </span><span class="{{ ('dashboard' == currentRoute) ? 'selected' : '' }}"></span>
         </a>
+    </li>
+    <li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
+        <a href="javascript:void(0);">
+            <i class="clip-folder"></i>
+            <span class="title"> Media </span>
+            <i class="icon-arrow"></i>
+        </a>
+        <ul class="sub-menu">
+            <li class="{{ ('media_list' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('media_list') }}">
+                    Media List
+                </a>
+            </li>
+            <li class="{{ ('multi_media_upload' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('multi_media_upload') }}">
+                    Upload Multiple Media
+                </a>
+            </li>
+        </ul>
     </li>
 </ul>

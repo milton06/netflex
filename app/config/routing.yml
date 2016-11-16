@@ -1,3 +1,8 @@
+net_flex_media:
+    resource: "@NetFlexMediaBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 net_flex_dashboard:
     resource: "@NetFlexDashboardBundle/Controller/"
     type:     annotation

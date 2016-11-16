@@ -1,0 +1,11 @@
+{% if pageLinks %}
+    <ul class="pagination pagination-teal">
+        <li class="{{ (1 == allRouteParameters.page) ? 'disabled' : '' }}"><a href="{{ pageLinks.first }}"><i class="fa fa-angle-double-left"></i></a></li>
+        <li class="{{ (1 == allRouteParameters.page) ? 'disabled' : '' }}"><a href="{{ pageLinks.previous }}"><i class="fa fa-angle-left"></i></a></li>
+        {% for key, thisLink in pageLinks.links %}
+            <li class="{{ (key == allRouteParameters.page) ? 'active' : '' }}"><a href="{{ (key == allRouteParameters.page) ? 'javascript:void(0);' : thisLink }}">{{ key }}</a></li>
+        {% endfor %}
+        <li class="{{ (totalPageCount == allRouteParameters.page) ? 'disabled' : '' }}"><a href="{{ pageLinks.next }}"><i class="fa fa-angle-right"></i></a></li>
+        <li class="{{ (totalPageCount == allRouteParameters.page) ? 'disabled' : '' }}"><a href="{{ pageLinks.last }}"><i class="fa fa-angle-double-right"></i></a></li>
+    </ul>
+{% endif %}

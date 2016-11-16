@@ -1,0 +1,205 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexmedia/plugins/iCheck/skins/all.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {% if app.session.flashbag.peek('warning') %}
+                        <div class="alert alert-warning server-message">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {% for warning in app.session.flashbag.get('warning') %}
+                                <strong>Warning!</strong> {{ warning }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('error') %}
+                        <div class="alert alert-danger server-message">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-times-circle"></i>
+                            {% for error in app.session.flashbag.get('error') %}
+                                <strong>Oh snap!</strong> {{ error }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('success') %}
+                        <div class="alert alert-success server-message">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-check-circle"></i>
+                            {% for success in app.session.flashbag.get('success') %}
+                                <strong>Well done!</strong> {{ success }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="center">
+                                        <div class="checkbox-table">
+                                            <label>
+                                                <input type="checkbox" id="bulk-record-selector" class="flat-grey">
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        {% if 'id' != allRouteParameters.sortColumn %}
+                                            <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media ID in ascending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == allRouteParameters.sortOrder %}
+                                                <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media ID in ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media ID in descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} ID
+                                    </th>
+                                    <th>
+                                        {% if 'name' != allRouteParameters.sortColumn %}
+                                            <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media name in ascending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+                                                <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == allRouteParameters.sortOrder %}
+                                                <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media name in ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media name in descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} Name
+                                    </th>
+                                    <th>
+                                        {% if 'type' != allRouteParameters.sortColumn %}
+                                            <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'type', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media type in ascending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+                                                <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == allRouteParameters.sortOrder %}
+                                                <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'type', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media type in ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('media_list', { 'page': allRouteParameters.page, 'sortColumn': 'type', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by media type in descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} Extension
+                                    </th>
+                                    <th class="center">
+                                        Operations
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if medias is empty %}
+                                    <tr>
+                                        <td colspan="5" class="center">{{ noRecordFoundText }}</td>
+                                    </tr>
+                                {% else %}
+                                    {% for thisMedia in medias %}
+                                        <tr>
+                                            <td class="center">
+                                                <div class="checkbox-table">
+                                                    <label>
+                                                        <input type="checkbox" value="{{ thisMedia.id }}" class="flat-grey single-record-selector">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{{ thisMedia.id }}</td>
+                                            <td>{{ thisMedia.mediaName }}</td>
+                                            <td>{{ thisMedia.mediaExtension }}</td>
+                                            <td class="center">
+                                                <a href="{{ url('deferred_delete_single_media', { 'mediaId': thisMedia.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': medias|length, 'totalPageCount': totalPageCount }) }}" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete Media"><i class="clip-remove"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="center">
+                                        <a href="{{ url('deferred_delete_multi_media', { 'mediaIds': '%mediaIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': medias|length, 'totalPageCount': totalPageCount }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected Medias"><i class="clip-remove"></i></a>
+                                    </td>
+                                    <td colspan="4" class="center">
+                                        {{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageScripts %}
+    {{ parent() }}
+    {% javascripts
+        '@NetFlexMediaBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+        '@NetFlexMediaBundle/Resources/public/js/media_list.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block initPageScripts %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            mediaList.init();
+        });
+    </script>
+{% endblock %}
