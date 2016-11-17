@@ -39,7 +39,7 @@
                             <i class="glyphicon glyphicon-ban-circle"></i>
                             <span>Cancel upload</span>
                         </a>
-                        <a href="{{ url('media_list') }}" class="btn btn-blue back-to-list">
+                        <a href="{{ (referrer) ? referrer : url('media_list') }}" class="btn btn-blue back-to-list">
                             <i class="glyphicon glyphicon-arrow-left"></i>
                             <span>Back To List</span>
                         </a>

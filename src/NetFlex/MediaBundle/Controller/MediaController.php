@@ -3,11 +3,11 @@
 namespace NetFlex\MediaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use NetFlex\MediaBundle\Entity\Media;
@@ -53,12 +53,17 @@ class MediaController extends Controller
 	    $mediaExtension = (true === $session->has('mediaExtension')) ? $session->get('mediaExtension') : '';
 	    
 	    $searchForm = $this->createFormBuilder()
-	            ->setAction($this->generateUrl('media_list', array_merge($routeParameters, $routeExtraParameters), UrlGeneratorInterface::ABSOLUTE_URL))
+	            ->setAction($this->generateUrl('media_list', [], UrlGeneratorInterface::ABSOLUTE_URL))
 		        ->setMethod('POST')
-		        ->add('mediaName', TextType::class)
+		        ->add('mediaName', TextType::class, [
+		        	'empty_data' => '',
+			        'data' => $mediaName,
+		        ])
 		        ->add('mediaExtension', ChoiceType::class, [
 			        'placeholder' => '-All-',
 			        'choices' => $this->getParameter('generic_media_search_types'),
+			        'empty_data' => '',
+			        'data' => $mediaExtension,
 		        ])
 		        ->getForm();
 	
@@ -66,7 +71,11 @@ class MediaController extends Controller
 	    
 	    if (true === $searchForm->isSubmitted()) {
 		    $searchData = $searchForm->getData();
-		    echo '<pre>';var_dump($searchData);echo '</pre>';exit;
+		    
+		    $session->set('mediaName', $searchData['mediaName']);
+		    $session->set('mediaExtension', $searchData['mediaExtension']);
+		    
+		    return $this->redirectToRoute('media_list', array_merge($routeParameters, $routeExtraParameters));
 	    }
 	
 	    $mediaCount = $mediaRepository->countMedias($sortColumn, $sortOrder, $mediaName, $mediaExtension);
@@ -98,7 +107,7 @@ class MediaController extends Controller
 		    'totalPageCount' => $totalPageCount,
 		    'medias' => $medias,
 		    'pageLinks' => $pageLinks,
-		    'referrer' => $this->generateUrl('media_list', $routeParameters, UrlGeneratorInterface::ABSOLUTE_URL),
+		    'referrer' => urlencode($this->generateUrl('media_list', array_merge($routeParameters, $routeExtraParameters), UrlGeneratorInterface::ABSOLUTE_URL)),
 		    'allRouteParameters' => array_merge($routeParameters, $routeExtraParameters),
 	    ]);
     }
@@ -160,7 +169,7 @@ class MediaController extends Controller
 			    'link' => $this->generateUrl('multi_media_upload', [], UrlGeneratorInterface::ABSOLUTE_URL)
 		    ],
 	    ];
-	    $referrer = $request->query->get('ref');
+	    $referrer = urldecode($request->query->get('ref'));
 	
 	    return $this->render('NetFlexMediaBundle:Media:multi_media_upload.html.twig', [
 		    'pageTitle' => 'Upload Multiple Media',
@@ -187,7 +196,7 @@ class MediaController extends Controller
     {
 	    $mediaUploadDefaultOptions = $this->getParameter('media_upload_default_options');
 	    $mediaUploadUserOptions = [
-		    'script_url' => $this->generateUrl('delete_recent_media', [], UrlGeneratorInterface::ABSOLUTE_URL),
+		    'script_url' => $this->generateUrl('delete_media', ['mode' => 'async'], UrlGeneratorInterface::ABSOLUTE_URL),
 		    'media_upload_url' => $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/' . $this->getParameter('generic_media_upload_directory_name') . '/',
 	    ];
 	
@@ -242,114 +251,81 @@ class MediaController extends Controller
 	/**
 	 * Deletes a media.
 	 *
-	 * @Route("/delete-recent-media", name="delete_recent_media")
+	 * @Route("/delete-media/{mode}", name="delete_media", requirements={"mode": "async|sync"})
 	 * @Method({"GET", "DELETE"})
 	 *
+	 * @param string  $mode    Asynchronous or synchronous operation
 	 * @param Request $request A request instance
 	 *
-	 * @return JsonResponse A json response instance
+	 * @return JsonResponse|RedirectResponse
 	 */
-	public function deleteRecentMediaAction(Request $request)
+    public function deleteMediaAction($mode, Request $request)
 	{
-		$em = $this->getDoctrine()->getManager();
-		$mediaRepository = $em->getRepository('NetFlexMediaBundle:Media');
+		$mediaId = $request->query->get('media_id');
 		
-		$mediaId = (int) $request->query->get('media_id');
-		
-		$thisMedia = $mediaRepository->findOneById($mediaId);
-		
-		$mediaName = $thisMedia->getMediaName() . '.' . $thisMedia->getMediaExtension();
-		
-		$mediaDeleteResponse = [$mediaName => false];
-		
-		$mediaUploadService = $this->get('multi_media_uploader');
-		
-		if (true === $mediaUploadService->deleteFile($mediaName)) {
-			$em->remove($thisMedia);
-			$em->flush();
+		switch ($mode) {
+			case 'async':
+				$mediaDeletionResult = $this->deleteMedia($mediaId);
+				
+				return $this->json([$mediaDeletionResult['mediaName'] => $mediaDeletionResult['status']]);
+				
+				break;
 			
-			$mediaDeleteResponse = [$mediaName => true];
+			case 'sync':
+				$allRouteParameters = $request->query->get('allRouteParameters');
+				$pageIndex = (int) $allRouteParameters['page'];
+				$selectedRecordCount = (int) $request->query->get('selectedRecordCount');
+				$totalRecordOnPage = (int) $request->query->get('totalRecordOnPage');
+				
+				if (false === is_numeric($mediaId)) {
+					$mediaIds = explode('-', $mediaId);
+					$undeletedMediaIds = [];
+					
+					foreach ($mediaIds as $thisMediaId) {
+						$mediaDeletionResult = $this->deleteMedia((int) $thisMediaId);
+						
+						if (false === $mediaDeletionResult['status']) {
+							$undeletedMediaIds[] = $thisMediaId;
+						}
+					}
+					
+					if (empty($undeletedMediaIds)) {
+						$this->addFlash('success', 'All medias were deleted successfully');
+					} elseif (count($undeletedMediaIds) < count($mediaIds)) {
+						$this->addFlash('warning', 'Medias with ID: ' . implode(', ', $undeletedMediaIds) . ' could not be deleted');
+					} else {
+						$this->addFlash('error', 'Medias could not be deleted');
+					}
+					
+					$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, ($selectedRecordCount - count($undeletedMediaIds)), $totalRecordOnPage);
+				} else {
+					$mediaDeletionResult = $this->deleteMedia((int) $mediaId);
+					
+					if (false === $mediaDeletionResult['status']) {
+						$this->addFlash('error', 'Media could not be deleted');
+					} else {
+						$this->addFlash('success', 'Media was deleted successfully');
+					}
+					
+					$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage);
+				}
+				
+				return $this->redirectToRoute('media_list', $allRouteParameters);
+				
+				break;
+			
+			default:
+				break;
 		}
-		
-		return $this->json($mediaDeleteResponse);
 	}
 	
 	/**
 	 * Deletes a single media.
 	 *
-	 * @Route("/deferred-delete-single-media/{mediaId}", name="deferred_delete_single_media", requirements={"mediaId": "\d+"})
+	 * @param int    $mediaId
+	 * @param string $mode
 	 *
-	 * @param int        $mediaId
-	 * @param Request    $request A request instance
-	 *
-	 * @return RedirectResponse
-	 */
-	public function deferredDeleteSingleMediaAction($mediaId, Request $request)
-	{
-		$mediaId = (int) $mediaId;
-		$allRouteParameters = $request->query->get('allRouteParameters');
-		$pageIndex = (int) $allRouteParameters['page'];
-		$selectedRecordCount = (int) $request->query->get('selectedRecordCount');
-		$totalRecordOnPage = (int) $request->query->get('totalRecordOnPage');
-		$totalPageCount = (int) $request->query->get('totalPageCount');
-		
-		if (true === $this->deleteMedia($mediaId)) {
-			$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage, $totalPageCount);
-			
-			$this->addFlash('success', 'Selected media was deleted successfully');
-		} else {
-			$this->addFlash('error', 'Selected media could not be deleted');
-		}
-		
-		return $this->redirectToRoute('media_list', $allRouteParameters);
-	}
-	
-	/**
-	 * Deletes multiple medias.
-	 *
-	 * @Route("/deferred-delete-multi-media/{mediaIds}", name="deferred_delete_multi_media", requirements={"mediaId": "[0-9\-]+"})
-	 *
-	 * @param string        $mediaIds
-	 * @param Request    $request A request instance
-	 *
-	 * @return RedirectResponse
-	 */
-	public function deferredDeleteMultiMediaAction($mediaIds, Request $request)
-	{
-		$mediaIds = explode('-', $mediaIds);
-		$allRouteParameters = $request->query->get('allRouteParameters');
-		$pageIndex = (int) $allRouteParameters['page'];
-		$selectedRecordCount = (int) $request->query->get('selectedRecordCount');
-		$totalRecordOnPage = (int) $request->query->get('totalRecordOnPage');
-		$totalPageCount = (int) $request->query->get('totalPageCount');
-		
-		$deletedMedias = [];
-		
-		foreach ($mediaIds as $thisMediaId) {
-			if (false === $this->deleteMedia($thisMediaId)) {
-				$deletedMedias[] = $thisMediaId;
-			}
-		}
-		
-		if (empty($deletedMedias)) {
-			$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage, $totalPageCount);
-			
-			$this->addFlash('success', 'Selected medias were deleted successfully');
-		} else {
-			$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, ($selectedRecordCount - count($deletedMedias)), $totalRecordOnPage, $totalPageCount);
-			
-			$this->addFlash('warning', 'Medias with IDs ' . implode(', ', $deletedMedias) . ' could not be deleted');
-		}
-		
-		return $this->redirectToRoute('media_list', $allRouteParameters);
-	}
-	
-	/**
-	 * Deletes a single media.
-	 *
-	 * @param int $mediaId
-	 *
-	 * @return bool
+	 * @return array
 	 */
 	protected function deleteMedia($mediaId)
 	{
@@ -365,10 +341,10 @@ class MediaController extends Controller
 			$em->remove($thisMedia);
 			$em->flush();
 			
-			return true;
+			return ['mediaName' => $mediaName, 'status' => true];
 		}
 		
-		return false;
+		return ['mediaName' => $mediaName, 'status' => false];;
 	}
 	
 	/**
@@ -377,16 +353,37 @@ class MediaController extends Controller
 	 * @param int $pageIndex
 	 * @param int $selectedRecordCount
 	 * @param int $totalRecordOnPage
-	 * @param int $totalPageCount
 	 *
 	 * @return int
 	 */
-	protected function adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage, $totalPageCount)
+	protected function adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage)
 	{
+		if (0 === $selectedRecordCount) {
+			return $pageIndex;
+		}
+		
 		if ($selectedRecordCount === $totalRecordOnPage) {
 			$pageIndex = (1 === $pageIndex) ? 1 : ($pageIndex - 1);
 		}
 		
 		return $pageIndex;
+	}
+	
+	/**
+	 * @Route("/exit-from-search-mode", name="exit_from_search_mode")
+	 *
+	 * @param  Request $request
+	 *
+	 * @return RedirectResponse
+	 */
+	public function exitFromSearchModeAction(Request $request)
+	{
+		$session = $request->getSession();
+		$referrer = $request->query->get('ref');
+		
+		$session->remove('mediaName');
+		$session->remove('mediaExtension');
+		
+		return $this->redirect($referrer);
 	}
 }

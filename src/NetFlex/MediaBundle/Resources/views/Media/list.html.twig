@@ -6,7 +6,8 @@
 
 {% block pageStyles %}
     {{ parent() }}
-    {% stylesheets 'bundles/netflexmedia/plugins/iCheck/skins/all.css' filter='cssrewrite' %}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+                    'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 {% endblock %}
@@ -16,6 +17,31 @@
 {% endblock %}
 
 {% block pageContent %}
+	<div class="row">
+		<div class="col-md-9">
+			<div class="row">
+				{{ form_start(searchForm, { 'attr': { 'class': 'form-horizontal', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+					<div class="col-md-3">
+						{{ form_widget(searchForm.mediaName, { 'id': 'media-name', 'attr': { 'class': 'form-control', 'required': false } }) }}
+					</div>
+					<div class="col-md-3">
+						{{ form_widget(searchForm.mediaExtension, { 'id': 'media-extension', 'attr': { 'class': 'form-control', 'required': false } }) }}
+					</div>
+					<div class="col-md-6">
+						<input type="submit" class="btn btn-sm btn-primary tooltips" value="Filter" data-placement="top" data-original-title="Filter medias">
+						{% if app.session.has('mediaName') and app.session.has('mediaExtension') %}
+							&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="{{ url('exit_from_search_mode', { 'ref': url('media_list') }) }}" class="btn btn-sm btn-primary tooltips" data-placement="top" data-original-title="Clear filters">Clear</a>
+						{% endif %}
+					</div>
+				{{ form_end(searchForm) }}
+			</div>
+		</div>
+		<div class="col-md-3">
+			<a href="{{ url('multi_media_upload', { 'ref': referrer }) }}" class="btn btn-sm btn-primary tooltips" data-placement="top" data-original-title="Upload multiple medias"><i class="fa fa-plus"></i> Upload Multiple Media</a>
+		</div>
+	</div>
+	<hr>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -162,7 +188,7 @@
                                             <td>{{ thisMedia.mediaName }}</td>
                                             <td>{{ thisMedia.mediaExtension }}</td>
                                             <td class="center">
-                                                <a href="{{ url('deferred_delete_single_media', { 'mediaId': thisMedia.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': medias|length, 'totalPageCount': totalPageCount }) }}" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete Media"><i class="clip-remove"></i></a>
+                                                <a href="{{ url('delete_media', { 'mode': 'sync', 'media_id': thisMedia.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': medias|length }) }}" class="btn btn-xs btn-bricky tooltips delete-buttons" data-placement="top" data-original-title="Delete Media"><i class="clip-remove"></i></a>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -171,7 +197,9 @@
                             <tfoot>
                                 <tr>
                                     <td class="center">
-                                        <a href="{{ url('deferred_delete_multi_media', { 'mediaIds': '%mediaIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': medias|length, 'totalPageCount': totalPageCount }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected Medias"><i class="clip-remove"></i></a>
+                                        {% if medias %}
+                                            <a href="{{ url('delete_media', { 'mode': 'sync', 'media_id': '%mediaIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': medias|length }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected Medias"><i class="clip-remove"></i></a>
+                                        {% endif %}
                                     </td>
                                     <td colspan="4" class="center">
                                         {{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
@@ -189,7 +217,8 @@
 {% block pageScripts %}
     {{ parent() }}
     {% javascripts
-        '@NetFlexMediaBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+	    '@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
         '@NetFlexMediaBundle/Resources/public/js/media_list.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
