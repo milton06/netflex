@@ -4,6 +4,12 @@ imports:
     - { resource: services.yml }
     - { resource: "@NetFlexDashboardBundle/Resources/config/services.yml" }
     - { resource: "@NetFlexMediaBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexDeliveryChargeBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexOrderBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexPaymentBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexShipmentTrackBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexUserBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexLocationBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration

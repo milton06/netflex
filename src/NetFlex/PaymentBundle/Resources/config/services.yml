@@ -1,0 +1,4 @@
+services:
+#    net_flex_payment.example:
+#        class: NetFlex\PaymentBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

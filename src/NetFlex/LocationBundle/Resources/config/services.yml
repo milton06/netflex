@@ -1,0 +1,4 @@
+services:
+#    net_flex_location.example:
+#        class: NetFlex\LocationBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -19,6 +19,12 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new NetFlex\DashboardBundle\NetFlexDashboardBundle(),
             new NetFlex\MediaBundle\NetFlexMediaBundle(),
+            new NetFlex\DeliveryChargeBundle\NetFlexDeliveryChargeBundle(),
+            new NetFlex\OrderBundle\NetFlexOrderBundle(),
+            new NetFlex\PaymentBundle\NetFlexPaymentBundle(),
+            new NetFlex\ShipmentTrackBundle\NetFlexShipmentTrackBundle(),
+            new NetFlex\UserBundle\NetFlexUserBundle(),
+            new NetFlex\LocationBundle\NetFlexLocationBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

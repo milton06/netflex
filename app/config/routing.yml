@@ -1,3 +1,33 @@
+net_flex_location:
+    resource: "@NetFlexLocationBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+net_flex_user:
+    resource: "@NetFlexUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+net_flex_shipment_track:
+    resource: "@NetFlexShipmentTrackBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+net_flex_payment:
+    resource: "@NetFlexPaymentBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+net_flex_order:
+    resource: "@NetFlexOrderBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+net_flex_delivery_charge:
+    resource: "@NetFlexDeliveryChargeBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 net_flex_media:
     resource: "@NetFlexMediaBundle/Controller/"
     type:     annotation

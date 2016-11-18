@@ -1,0 +1,4 @@
+services:
+#    net_flex_shipment_track.example:
+#        class: NetFlex\ShipmentTrackBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
