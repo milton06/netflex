@@ -13,7 +13,7 @@ class DashboardController extends Controller
     /**
      * Render the dashboard home page.
      *
-     * @Route("/dashboard", name="dashboard")
+     * @Route("/dashboard/home", name="dashboard")
      * @Method({"GET"})
      */
     public function renderDashboardHomeAction(Request $request)
