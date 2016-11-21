@@ -301,4 +301,9 @@ class State
     {
         return $this->lastModifiedBy;
     }
+	
+	public function __toString()
+	{
+		return $this->name;
+	}
 }

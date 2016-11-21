@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Address</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ address.id }}</td>
+            </tr>
+            <tr>
+                <th>Isprimary</th>
+                <td>{% if address.isPrimary %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Addressline1</th>
+                <td>{{ address.addressLine1 }}</td>
+            </tr>
+            <tr>
+                <th>Addressline2</th>
+                <td>{{ address.addressLine2 }}</td>
+            </tr>
+            <tr>
+                <th>Zipcode</th>
+                <td>{{ address.zipCode }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{% if address.status %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('_edit', { 'id': address.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

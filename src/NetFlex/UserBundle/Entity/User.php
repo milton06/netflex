@@ -613,4 +613,9 @@ class User implements AdvancedUserInterface, \Serializable
 			$this->status
 		) = unserialize($serialized);
 	}
+	
+	public function __toString()
+	{
+		return '';
+	}
 }

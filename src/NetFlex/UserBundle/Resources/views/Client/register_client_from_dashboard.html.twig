@@ -1,0 +1,164 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(registerClientForm, { 'attr': { 'role': 'form', 'class': 'form-horizontal', 'novalidate': 'novalidate' } }) }}
+            <div class="tabbable">
+                <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue">
+                    <li class="active">
+                        <a href="#general" data-toggle="tab">
+                            General
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#addresses" data-toggle="tab">
+                            Addresses
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#emails" data-toggle="tab">
+                            Emails
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contacts" data-toggle="tab">
+                            Contacts
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active" id="general">
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.username, 'Username', { 'label_attr': { 'for': 'username', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.username, { 'id': 'username', 'attr': { 'class': 'form-control', 'placeholder': 'Username' } }) }}
+                                {{ form_errors(registerClientForm.username) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.password, 'Password', { 'label_attr': { 'for': 'password', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.password, { 'id': 'password', 'attr': { 'class': 'form-control', 'placeholder': 'Password' } }) }}
+                                {{ form_errors(registerClientForm.password) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.firstName, 'First Name', { 'label_attr': { 'for': 'first-name', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.firstName, { 'id': 'first-name', 'attr': { 'class': 'form-control', 'placeholder': 'First Name' } }) }}
+                                {{ form_errors(registerClientForm.firstName) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.midName, 'Middle Name', { 'label_attr': { 'for': 'mid-name', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.midName, { 'id': 'mid-name', 'attr': { 'class': 'form-control', 'placeholder': 'Middle Name' } }) }}
+                                {{ form_errors(registerClientForm.midName) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.lastName, 'Last Name', { 'label_attr': { 'for': 'last-name', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.lastName, { 'id': 'last-name', 'attr': { 'class': 'form-control', 'placeholder': 'Last Name' } }) }}
+                                {{ form_errors(registerClientForm.lastName) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="addresses">
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.addressLine1, { 'attr': { 'class': 'form-control', 'placeholder': 'Address Line 1' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.addressLine1) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.addressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.addressLine2, { 'attr': { 'class': 'form-control', 'placeholder': 'Address Line 2' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.addressLine2) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.countryId, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.countryId) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.stateId, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.stateId) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.cityId, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.cityId) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.addressTypeId, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.addressTypeId) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.addresses.0.isPrimary, 'Primary', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.addresses.0.isPrimary, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.addresses.0.isPrimary) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="emails">
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.emails.0.email, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.emails.0.email, { 'attr': { 'class': 'form-control', 'placeholder': 'Email' } }) }}
+                                {{ form_errors(registerClientForm.emails.0.email) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.emails.0.isPrimary, 'Primary', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.emails.0.isPrimary, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.emails.0.isPrimary) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="contacts">
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.contacts.0.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.contacts.0.contactNumber, { 'attr': { 'class': 'form-control', 'placeholder': 'Contact Number' } }) }}
+                                {{ form_errors(registerClientForm.contacts.0.contactNumber) }}
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            {{ form_label(registerClientForm.contacts.0.isPrimary, 'Primary', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(registerClientForm.contacts.0.isPrimary, { 'attr': { 'class': 'form-control' } }) }}
+                                {{ form_errors(registerClientForm.contacts.0.isPrimary) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(registerClientForm) }}
+        </div>
+    </div>
+{% endblock %}

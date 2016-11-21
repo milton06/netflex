@@ -2,7 +2,7 @@ var mediaList = function() {
 	/**
 	 * Activates custom styled checkboxes.
 	 */
-	var activateCustomStylesCheckBox = function () {
+	var activateCustomStyledCheckBox = function () {
 		jQuery('input[type="checkbox"].flat-grey').iCheck({
 			checkboxClass: 'icheckbox_flat-grey',
 		});
@@ -10,7 +10,7 @@ var mediaList = function() {
 	
 	return {
 		init: function() {
-			activateCustomStylesCheckBox();
+			activateCustomStyledCheckBox();
 		}
 	};
 }();

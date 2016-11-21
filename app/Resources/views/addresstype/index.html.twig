@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Addresstypes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Createdon</th>
+                <th>Createdby</th>
+                <th>Lastmodifiedon</th>
+                <th>Lastmodifiedby</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for addressType in addressTypes %}
+            <tr>
+                <td><a href="{{ path('_show', { 'id': addressType.id }) }}">{{ addressType.id }}</a></td>
+                <td>{{ addressType.name }}</td>
+                <td>{% if addressType.status %}Yes{% else %}No{% endif %}</td>
+                <td>{% if addressType.createdOn %}{{ addressType.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ addressType.createdBy }}</td>
+                <td>{% if addressType.lastModifiedOn %}{{ addressType.lastModifiedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ addressType.lastModifiedBy }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('_show', { 'id': addressType.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('_edit', { 'id': addressType.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('_new') }}">Create a new addressType</a>
+        </li>
+    </ul>
+{% endblock %}

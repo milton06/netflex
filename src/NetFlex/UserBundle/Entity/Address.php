@@ -5,6 +5,9 @@ namespace NetFlex\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use NetFlex\UserBundle\Entity\User;
 use NetFlex\UserBundle\Entity\AddressType;
+use NetFlex\LocationBundle\Entity\Country;
+use NetFlex\LocationBundle\Entity\State;
+use NetFlex\LocationBundle\Entity\City;
 
 /**
  * Address

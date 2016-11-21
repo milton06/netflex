@@ -1,3 +1,7 @@
+net_flex_user_user:
+    resource: "@NetFlexUserBundle/Controller/UserController.php"
+    type:     annotation
+
 net_flex_location:
     resource: "@NetFlexLocationBundle/Controller/"
     type:     annotation

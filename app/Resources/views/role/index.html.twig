@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Roles list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Displayname</th>
+                <th>Isadmin</th>
+                <th>Status</th>
+                <th>Createdon</th>
+                <th>Createdby</th>
+                <th>Lastmodifiedon</th>
+                <th>Lastmodifiedby</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for role in roles %}
+            <tr>
+                <td><a href="{{ path('_show', { 'id': role.id }) }}">{{ role.id }}</a></td>
+                <td>{{ role.name }}</td>
+                <td>{{ role.displayName }}</td>
+                <td>{% if role.isAdmin %}Yes{% else %}No{% endif %}</td>
+                <td>{% if role.status %}Yes{% else %}No{% endif %}</td>
+                <td>{% if role.createdOn %}{{ role.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ role.createdBy }}</td>
+                <td>{% if role.lastModifiedOn %}{{ role.lastModifiedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ role.lastModifiedBy }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('_show', { 'id': role.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('_edit', { 'id': role.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('_new') }}">Create a new role</a>
+        </li>
+    </ul>
+{% endblock %}

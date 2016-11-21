@@ -1,0 +1,19 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-lg">
+                <h1>Client List</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}

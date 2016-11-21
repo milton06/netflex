@@ -411,4 +411,9 @@ class Role implements RoleInterface
     {
         return $this->lastModifiedBy;
     }
+    
+    public function __toString()
+    {
+	    return $this->displayName;
+    }
 }

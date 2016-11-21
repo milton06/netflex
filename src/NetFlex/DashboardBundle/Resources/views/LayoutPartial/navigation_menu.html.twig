@@ -5,21 +5,21 @@
             <span class="title"> Dashboard Home </span><span class="{{ ('dashboard' == currentRoute) ? 'selected' : '' }}"></span>
         </a>
     </li>
-    <li>
+    <li class="{{ (currentRoute in ['client_list', 'register_client_from_dashboard']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">
             <i class="clip-users"></i>
             <span class="title"> Client </span>
             <i class="icon-arrow"></i>
         </a>
         <ul class="sub-menu">
-            <li>
-                <a href="javascript:void(0);">
+            <li class="{{ ('client_list' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('client_list') }}">
                     Client List
                 </a>
             </li>
-            <li>
-                <a href="javascript:void(0);">
-                    Add New Client
+            <li class="{{ ('register_client_from_dashboard' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('register_client_from_dashboard') }}">
+                    Register New Client
                 </a>
             </li>
         </ul>

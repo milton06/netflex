@@ -344,4 +344,9 @@ class Country
     {
         return $this->lastModifiedBy;
     }
+    
+    public function __toString()
+    {
+	    return $this->name;
+    }
 }
