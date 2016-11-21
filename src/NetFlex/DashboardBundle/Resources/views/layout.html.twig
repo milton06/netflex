@@ -52,6 +52,7 @@
 <!-- end: HEAD -->
 <!-- start: BODY -->
 <body>
+{% set adminFullName = app.user.getFirstName() ~ ((app.user.getMidName()) ? ' ' ~ app.user.getMidName() : ' ') ~ app.user.getLastName() %}
 <!-- start: HEADER -->
 <div class="navbar navbar-inverse navbar-fixed-top">
     <!-- start: TOP NAVIGATION CONTAINER -->

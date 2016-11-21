@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- Template Name: Clip-One - Responsive Admin Template build with Twitter Bootstrap 3 Version: 1.0 Author: ClipTheme -->
+<!--[if IE 8]><html class="ie8 no-js" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9 no-js" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- start: HEAD -->
+<head>
+	<title>
+		{{ dashboardPageTitlePrefix }} :: {{ pageTitle }}
+	</title>
+	<!-- start: META -->
+	<meta charset="utf-8" />
+	<!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<!-- end: META -->
+	<!-- start: CSS -->
+	{% stylesheets 'bundles/netflexdashboard/plugins/bootstrap/css/bootstrap.min.css' filter='cssrewrite' %}
+		<link href="{{ asset_url }}" rel="stylesheet" media="screen">
+	{% endstylesheets %}
+	{% stylesheets
+		'bundles/netflexdashboard/plugins/font-awesome/css/font-awesome.min.css'
+		'bundles/netflexdashboard/fonts/style.css'
+		'bundles/netflexdashboard/css/main.css'
+		'bundles/netflexdashboard/css/main-responsive.css'
+		'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+		'bundles/netflexdashboard/plugins/perfect-scrollbar/src/perfect-scrollbar.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
+	{% stylesheets 'bundles/netflexdashboard/css/theme_light.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}" type="text/css" id="skin_color">
+	{% endstylesheets %}
+	<!-- end: CSS -->
+</head>
+<!-- end: HEAD -->
+<!-- start: BODY -->
+<body class="login example2">
+<div class="main-login col-sm-4 col-sm-offset-4">
+	<div class="logo">
+		{{ companyLogo|raw }}
+	</div>
+	<!-- start: LOGIN BOX -->
+	<div class="box-login">
+		<h3>Log in to your account</h3>
+		<p>
+			Please enter your username and password to log in.
+		</p>
+		<form name="dashbaord_login_form" action="{{ url('dashboard_login') }}" method="POST" class="form-login">
+			<div class="errorHandler alert alert-danger no-display">
+				<i class="fa fa-remove-sign"></i> Please check below for errors.
+			</div>
+			{% if error %}
+				<div class="errorHandler alert alert-danger no-display">
+					<i class="fa fa-remove-sign"></i> Please check below for errors.
+				</div>
+			{% endif %}
+			<fieldset>
+				<div class="form-group{{ (error and error._username is defined) ? ' has-error' : '' }}">
+					<span class="input-icon">
+						<input type="text" name="_username" value="{{ username }}" class="form-control" placeholder="Username">
+						{% if error and error._username is defined %}
+							<span for="_username" class="help-block">{{ error._username }}.</span>
+						{% endif %}
+						<i class="fa fa-user"></i>
+					</span>
+				</div>
+				<div class="form-group form-actions{{ (error and error._password is defined) ? ' has-error' : '' }}">
+					<span class="input-icon">
+						<input type="password" name="_password" class="form-control password" placeholder="Password">
+						{% if error and error._password is defined %}
+							<span for="_password" class="help-block">{{ error._password }}.</span>
+						{% endif %}
+						<i class="fa fa-lock"></i>
+					</span>
+				</div>
+				<div class="form-actions">
+					<label for="remember" class="checkbox-inline">
+						<input type="checkbox" class="flat-grey remember" id="remember" name="_remember_netflex_dashboard_login_creds">
+						Keep me logged in
+					</label>
+					<input type="hidden" name="_netflex_dashboard_login_csrf_token" value="{{ csrf_token('%nE^t207F1le*X') }}">
+					<button type="submit" class="btn btn-bricky pull-right">
+						Login <i class="fa fa-arrow-circle-right"></i>
+					</button>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+	<!-- end: LOGIN BOX -->
+	<!-- start: COPYRIGHT -->
+	<div class="copyright">
+		{{ 'now'|date('Y') }} &copy {{ companyName }}. Developed @ {{ developerName }}.
+	</div>
+	<!-- end: COPYRIGHT -->
+</div>
+<!-- start: JAVASCRIPTS -->
+<!--[if lt IE 9]>
+{% javascripts
+	'@NetFlexDashboardBundle/Resources/public/plugins/respond.min.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/excanvas.min.js' %}
+	<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<![endif]-->
+{% javascripts
+	'@NetFlexDashboardBundle/Resources/public/js/jquery.min.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/bootstrap/js/bootstrap.min.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/perfect-scrollbar/src/jquery.mousewheel.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/perfect-scrollbar/src/perfect-scrollbar.js'
+	'@NetFlexDashboardBundle/Resources/public/js/main.js'
+	'@NetFlexDashboardBundle/Resources/public/plugins/jquery-validation/dist/jquery.validate.min.js'
+	'@NetFlexUserBundle/Resources/public/js/login.js' %}
+	<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script>
+	jQuery(document).ready(function() {
+		//Main.init();
+		Login.init();
+	});
+</script>
+</body>
+<!-- end: BODY -->
+</html>

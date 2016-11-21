@@ -7,18 +7,47 @@ security:
         in_memory:
             memory: ~
 
+        persistent_user_provider:
+            entity:
+                class: NetFlexUserBundle:User
+                property: username
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        secured_dashboard:
+            pattern: ^/dashboard
+            provider: persistent_user_provider
             anonymous: ~
-            # activate different ways to authenticate
+            form_login:
+                login_path: dashboard_login
+                check_path: dashboard_login
+                failure_path: dashboard_login
+                default_target_path: dashboard
+                use_referer: true
+                csrf_token_generator: security.csrf.token_manager
+                csrf_parameter: _netflex_dashboard_login_csrf_token
+                csrf_token_id: '%nE^t207F1le*X'
+            remember_me:
+                secret: '%secret%'
+                name: _remember_netflex_dashboard_login_creds
+                lifetime: 604800
+                path: /dashboard
+            logout:
+                path: /dashboard/logout
+                target: /dashboard/login
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+    access_control:
+        - { path: ^/dashboard/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/dashboard, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN] }
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+        NetFlex\UserBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12

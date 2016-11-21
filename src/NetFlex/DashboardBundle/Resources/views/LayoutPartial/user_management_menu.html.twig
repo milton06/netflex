@@ -1,9 +1,6 @@
 <li class="dropdown current-user">
     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-        {% image '@NetFlexDashboardBundle/Resources/public/images/avatar-1-small.jpg' %}
-        <img src="{{ asset_url }}" class="circle-img" alt="admin-profile-pic">
-        {% endimage %}
-        <span class="username">Peter Clark</span>
+        <span class="username">{{ adminFullName }}</span>
         <i class="clip-chevron-down"></i>
     </a>
     <ul class="dropdown-menu">
@@ -15,7 +12,7 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="javascript:void(0);">
+            <a href="{{ url('net_flex_dashboard_logout') }}">
                 <i class="clip-exit"></i>
                 &nbsp;Log Out
             </a>

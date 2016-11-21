@@ -5,9 +5,28 @@
             <span class="title"> Dashboard Home </span><span class="{{ ('dashboard' == currentRoute) ? 'selected' : '' }}"></span>
         </a>
     </li>
+    <li>
+        <a href="javascript:void(0);">
+            <i class="clip-users"></i>
+            <span class="title"> Client </span>
+            <i class="icon-arrow"></i>
+        </a>
+        <ul class="sub-menu">
+            <li>
+                <a href="javascript:void(0);">
+                    Client List
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0);">
+                    Add New Client
+                </a>
+            </li>
+        </ul>
+    </li>
     <li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">
-            <i class="clip-folder"></i>
+            <i class="clip-camera"></i>
             <span class="title"> Media </span>
             <i class="icon-arrow"></i>
         </a>

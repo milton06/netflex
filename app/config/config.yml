@@ -16,7 +16,7 @@ imports:
 parameters:
     locale: en
     # Netflex custom configuration parameters
-    company_logo: 'NET<i class="clip-clip"></i>FLEX'
+    company_logo: 'NET<i class="clip-truck"></i>FLEX'
     company_name: 'Netflex Logistics Services'
     developer_name: 'netGuru Ltd.'
     dashboard_page_title_prefix: 'Netflex Admin'

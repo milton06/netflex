@@ -8,6 +8,9 @@ net_flex_user:
     type:     annotation
     prefix:   /
 
+net_flex_dashboard_logout:
+    path: /dashboard/logout
+
 net_flex_shipment_track:
     resource: "@NetFlexShipmentTrackBundle/Controller/"
     type:     annotation
