@@ -1,0 +1,35 @@
+{% form_theme registerClientForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="row form-group">
+			{{ form_label(thisContact.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisContact.contactNumber, { 'required': false, 'attr': { 'placeholder': 'Contact Number' } }) }}
+				{{ form_errors(thisContact.contactNumber) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-md-4">&nbsp;</div>
+			<div class="col-md-8">
+				<label class="checkbox-inline">
+					{{ form_widget(thisContact.isPrimary, { 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+					{{ form_errors(thisContact.isPrimary) }}
+				</label>
+			</div>
+		</div>
+		<div class="row" style="margin-bottom: 5px;">
+			<div class="col-md-4">&nbsp;</div>
+			<div class="col-md-8">
+				<a href="javascript:void(0);" class="remove-contact-button">Remove</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	jQuery('input[type="checkbox"].flat-grey').iCheck({
+		checkboxClass: 'icheckbox_flat-grey',
+	});
+</script>
+

@@ -1,0 +1,68 @@
+{% form_theme registerClientForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="row form-group">
+			{{ form_label(thisAddress.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.addressLine1, { 'attr': { 'placeholder': 'Address Line 1' } }) }}
+				{{ form_errors(thisAddress.addressLine1) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			{{ form_label(thisAddress.addressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.addressLine2) }}
+				{{ form_errors(thisAddress.addressLine2) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			{{ form_label(thisAddress.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.countryId, { 'attr': { 'class': 'country' } }) }}
+				{{ form_errors(thisAddress.countryId) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			{{ form_label(thisAddress.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.stateId, { 'attr': { 'class': 'state' } }) }}
+				{{ form_errors(thisAddress.stateId) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			{{ form_label(thisAddress.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.cityId, { 'attr': { 'class': 'city' } }) }}
+				{{ form_errors(thisAddress.cityId) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			{{ form_label(thisAddress.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.addressTypeId, { 'attr': { 'class': 'address-type-selector' } }) }}
+				{{ form_errors(thisAddress.addressTypeId) }}
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-md-4">&nbsp;</div>
+			<div class="col-md-8">
+				<label class="checkbox-inline">
+					{{ form_widget(thisAddress.isPrimary, { 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+					{{ form_errors(thisAddress.isPrimary) }}
+				</label>
+			</div>
+		</div>
+		<div class="row" style="margin-bottom: 5px;">
+			<div class="col-md-4">&nbsp;</div>
+			<div class="col-md-8">
+				<a href="javascript:void(0);" class="remove-address-button">Remove</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery('input[type="checkbox"].flat-grey').iCheck({
+		checkboxClass: 'icheckbox_flat-grey',
+	});
+</script>
