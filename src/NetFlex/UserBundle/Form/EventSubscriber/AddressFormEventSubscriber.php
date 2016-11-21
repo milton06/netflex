@@ -30,22 +30,6 @@ class AddressFormEventSubscriber implements EventSubscriberInterface
 	{
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();
-		
-		$form->add('addressTypeId', EntityType::class, [
-			'placeholder' => '-Select An Address Type-',
-			'class' => 'NetFlexUserBundle:AddressType',
-			'query_builder' => function(EntityRepository $er) {
-				if ('register_client_from_dashboard' === $this->request->get('_route')) {
-					return $er->createQueryBuilder('AT')
-						->where('AT.id = 1 OR AT.id = 2')
-						->andWhere('AT.status = 1')
-						->orderBy('AT.id', 'ASC');
-				} else {
-					return $er->createQueryBuilder('AT')
-						->orderBy('AT.id', 'ASC');
-				}
-			}
-		]);
 	}
 	
 	public function preSubmit(FormEvent $formEvent)

@@ -29,21 +29,18 @@ class UserType extends AbstractType
 	            'allow_add' => true,
 	            'allow_delete' => true,
 	            'delete_empty' => true,
-	            'prototype_name' => 'address_prototype',
             ])
             ->add('contacts', CollectionType::class, [
             	'entry_type' => ContactType::class,
 	            'allow_add' => true,
 	            'allow_delete' => true,
 	            'delete_empty' => true,
-	            'prototype_name' => 'contact_prototype',
             ])
             ->add('emails', CollectionType::class, [
             	'entry_type' => EmailType::class,
 	            'allow_add' => true,
 	            'allow_delete' => true,
 	            'delete_empty' => true,
-	            'prototype_name' => 'email_prototype',
             ]);
     }
     

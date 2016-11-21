@@ -1,7 +1,17 @@
 {% extends 'NetFlexDashboardBundle::layout.html.twig' %}
 
+{% form_theme registerClientForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+
 {% block pageTitle %}
     {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageStyles %}
+	{{ parent() }}
+	{% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+		'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
 {% endblock %}
 
 {% block pageHeader %}
@@ -11,26 +21,30 @@
 {% block pageContent %}
     <div class="row">
         <div class="col-md-12">
-            {{ form_start(registerClientForm, { 'attr': { 'role': 'form', 'class': 'form-horizontal', 'novalidate': 'novalidate' } }) }}
+            {{ form_start(registerClientForm, { 'attr': { 'class': 'form-register-client-from-dashboard', 'role': 'form', 'novalidate': 'novalidate' } }) }}
             <div class="tabbable">
-                <ul class="nav nav-tabs tab-padding tab-space-3 tab-blue">
+                <ul class="nav nav-tabs tab-padding tab-space-3">
                     <li class="active">
                         <a href="#general" data-toggle="tab">
+	                        <i class="fa fa-user"></i>
                             General
                         </a>
                     </li>
                     <li>
                         <a href="#addresses" data-toggle="tab">
+	                        <i class="fa fa-book"></i>
                             Addresses
                         </a>
                     </li>
                     <li>
                         <a href="#emails" data-toggle="tab">
+	                        <i class="fa fa-envelope"></i>
                             Emails
                         </a>
                     </li>
                     <li>
                         <a href="#contacts" data-toggle="tab">
+	                        <i class="fa fa-phone"></i>
                             Contacts
                         </a>
                     </li>
@@ -38,127 +52,213 @@
                 <div class="tab-content">
                     <div class="tab-pane in active" id="general">
                         <div class="row form-group">
-                            {{ form_label(registerClientForm.username, 'Username', { 'label_attr': { 'for': 'username', 'class': 'col-md-4' } }) }}
+                            {{ form_label(registerClientForm.username, 'Username', { 'label_attr': { 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
-                                {{ form_widget(registerClientForm.username, { 'id': 'username', 'attr': { 'class': 'form-control', 'placeholder': 'Username' } }) }}
+                                {{ form_widget(registerClientForm.username, { 'required': false, 'attr': { 'placeholder': 'Username' } }) }}
                                 {{ form_errors(registerClientForm.username) }}
                             </div>
                         </div>
                         <div class="row form-group">
-                            {{ form_label(registerClientForm.password, 'Password', { 'label_attr': { 'for': 'password', 'class': 'col-md-4' } }) }}
+                            {{ form_label(registerClientForm.password, 'Password', { 'label_attr': { 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
-                                {{ form_widget(registerClientForm.password, { 'id': 'password', 'attr': { 'class': 'form-control', 'placeholder': 'Password' } }) }}
+                                {{ form_widget(registerClientForm.password, { 'required': false, 'attr': { 'placeholder': 'Password' } }) }}
                                 {{ form_errors(registerClientForm.password) }}
                             </div>
                         </div>
                         <div class="row form-group">
-                            {{ form_label(registerClientForm.firstName, 'First Name', { 'label_attr': { 'for': 'first-name', 'class': 'col-md-4' } }) }}
+                            {{ form_label(registerClientForm.firstName, 'First Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
-                                {{ form_widget(registerClientForm.firstName, { 'id': 'first-name', 'attr': { 'class': 'form-control', 'placeholder': 'First Name' } }) }}
+                                {{ form_widget(registerClientForm.firstName, { 'required': false, 'attr': { 'placeholder': 'First Name' } }) }}
                                 {{ form_errors(registerClientForm.firstName) }}
                             </div>
                         </div>
                         <div class="row form-group">
-                            {{ form_label(registerClientForm.midName, 'Middle Name', { 'label_attr': { 'for': 'mid-name', 'class': 'col-md-4' } }) }}
+                            {{ form_label(registerClientForm.midName, 'Middle Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
-                                {{ form_widget(registerClientForm.midName, { 'id': 'mid-name', 'attr': { 'class': 'form-control', 'placeholder': 'Middle Name' } }) }}
+                                {{ form_widget(registerClientForm.midName, { 'required': false, 'attr': { 'placeholder': 'Middle Name' } }) }}
                                 {{ form_errors(registerClientForm.midName) }}
                             </div>
                         </div>
                         <div class="row form-group">
-                            {{ form_label(registerClientForm.lastName, 'Last Name', { 'label_attr': { 'for': 'last-name', 'class': 'col-md-4' } }) }}
+                            {{ form_label(registerClientForm.lastName, 'Last Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
-                                {{ form_widget(registerClientForm.lastName, { 'id': 'last-name', 'attr': { 'class': 'form-control', 'placeholder': 'Last Name' } }) }}
+                                {{ form_widget(registerClientForm.lastName, { 'required': false, 'attr': { 'placeholder': 'Last Name' } }) }}
                                 {{ form_errors(registerClientForm.lastName) }}
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane" id="addresses">
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.addressLine1, { 'attr': { 'class': 'form-control', 'placeholder': 'Address Line 1' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.addressLine1) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.addressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.addressLine2, { 'attr': { 'class': 'form-control', 'placeholder': 'Address Line 2' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.addressLine2) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.countryId, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.countryId) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.stateId, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.stateId) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.cityId, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.cityId) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.addressTypeId, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.addressTypeId) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.addresses.0.isPrimary, 'Primary', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.addresses.0.isPrimary, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.addresses.0.isPrimary) }}
-                            </div>
-                        </div>
+	                    <div class="row">
+		                    <div id="address-container" class="col-md-12" data-prototype="{{ include('NetFlexUserBundle:Client:address_prototype.html.twig', { 'thisAddress': registerClientForm.addresses.vars.prototype })|e }}">
+			                    {% for thisAddress in registerClientForm.addresses %}
+				                    <div class="row">
+					                    <div class="col-md-12">
+						                    <div class="row form-group">
+							                    {{ form_label(thisAddress.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisAddress.addressLine1, { 'attr': { 'placeholder': 'Address Line 1' } }) }}
+								                    {{ form_errors(thisAddress.addressLine1) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    {{ form_label(thisAddress.addressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisAddress.addressLine2) }}
+								                    {{ form_errors(thisAddress.addressLine2) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    {{ form_label(thisAddress.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisAddress.countryId, { 'attr': { 'class': 'country' } }) }}
+								                    {{ form_errors(thisAddress.countryId) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    {{ form_label(thisAddress.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisAddress.stateId, { 'attr': { 'class': 'state' } }) }}
+								                    {{ form_errors(thisAddress.stateId) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    {{ form_label(thisAddress.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisAddress.cityId, { 'attr': { 'class': 'city' } }) }}
+								                    {{ form_errors(thisAddress.cityId) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    {{ form_label(thisAddress.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisAddress.addressTypeId, { 'attr': { 'class': 'address-type-selector' } }) }}
+								                    {{ form_errors(thisAddress.addressTypeId) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    <div class="col-md-4">&nbsp;</div>
+							                    <div class="col-md-8">
+								                    <label class="checkbox-inline">
+									                    {{ form_widget(thisAddress.isPrimary, { 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+									                    {{ form_errors(thisAddress.isPrimary) }}
+								                    </label>
+							                    </div>
+						                    </div>
+					                    </div>
+				                    </div>
+			                    {% endfor %}
+		                    </div>
+	                    </div>
+	                    <div class="row">
+		                    <div class="col-md-4">&nbsp;</div>
+		                    <div class="col-md-8">
+			                    <button id="add-another-address-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Address</button>
+		                    </div>
+	                    </div>
                     </div>
                     <div class="tab-pane" id="emails">
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.emails.0.email, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.emails.0.email, { 'attr': { 'class': 'form-control', 'placeholder': 'Email' } }) }}
-                                {{ form_errors(registerClientForm.emails.0.email) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.emails.0.isPrimary, 'Primary', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.emails.0.isPrimary, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.emails.0.isPrimary) }}
-                            </div>
-                        </div>
+	                    <div class="row">
+		                    <div id="email-container" class="col-md-12" data-prototype="{{ include('NetFlexUserBundle:Client:email_prototype.html.twig', { 'thisEmail': registerClientForm.emails.vars.prototype })|e }}">
+			                    {% for thisEmail in registerClientForm.emails %}
+				                    <div class="row">
+					                    <div class="col-md-12">
+						                    <div class="row form-group">
+							                    {{ form_label(thisEmail.email, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisEmail.email, { 'required': false, 'attr': { 'placeholder': 'Email' } }) }}
+								                    {{ form_errors(thisEmail.email) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    <div class="col-md-4">&nbsp;</div>
+							                    <div class="col-md-8">
+								                    <label class="checkbox-inline">
+									                    {{ form_widget(thisEmail.isPrimary, { 'attr': { 'class': 'primary-email-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+									                    {{ form_errors(thisEmail.isPrimary) }}
+								                    </label>
+							                    </div>
+						                    </div>
+					                    </div>
+				                    </div>
+			                    {% endfor %}
+		                    </div>
+	                    </div>
+	                    <div class="row">
+		                    <div class="col-md-4">&nbsp;</div>
+		                    <div class="col-md-8">
+			                    <button id="add-another-email-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Email</button>
+		                    </div>
+	                    </div>
                     </div>
                     <div class="tab-pane" id="contacts">
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.contacts.0.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.contacts.0.contactNumber, { 'attr': { 'class': 'form-control', 'placeholder': 'Contact Number' } }) }}
-                                {{ form_errors(registerClientForm.contacts.0.contactNumber) }}
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            {{ form_label(registerClientForm.contacts.0.isPrimary, 'Primary', { 'label_attr': { 'class': 'col-md-4' } }) }}
-                            <div class="col-md-8">
-                                {{ form_widget(registerClientForm.contacts.0.isPrimary, { 'attr': { 'class': 'form-control' } }) }}
-                                {{ form_errors(registerClientForm.contacts.0.isPrimary) }}
-                            </div>
-                        </div>
+	                    <div class="row">
+		                    <div id="contact-container" class="col-md-12" data-prototype="{{ include('NetFlexUserBundle:Client:contact_prototype.html.twig', { 'thisContact': registerClientForm.contacts.vars.prototype })|e }}">
+			                    {% for thisContact in registerClientForm.contacts %}
+				                    <div class="row">
+					                    <div class="col-md-12">
+						                    <div class="row form-group">
+							                    {{ form_label(thisContact.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
+							                    <div class="col-md-8">
+								                    {{ form_widget(thisContact.contactNumber, { 'required': false, 'attr': { 'placeholder': 'Contact Number' } }) }}
+								                    {{ form_errors(thisContact.contactNumber) }}
+							                    </div>
+						                    </div>
+						                    <div class="row form-group">
+							                    <div class="col-md-4">&nbsp;</div>
+							                    <div class="col-md-8">
+								                    <label class="checkbox-inline">
+									                    {{ form_widget(thisContact.isPrimary, { 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+									                    {{ form_errors(thisContact.isPrimary) }}
+								                    </label>
+							                    </div>
+						                    </div>
+					                    </div>
+				                    </div>
+			                    {% endfor %}
+		                    </div>
+	                    </div>
+	                    <div class="row" style="margin-bottom: 10px;">
+		                    <div class="col-md-4">&nbsp;</div>
+		                    <div class="col-md-8">
+			                    <button id="add-another-contact-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Contact</button>
+		                    </div>
+	                    </div>
+	                    <div class="row">
+		                    <div class="col-md-4">&nbsp;</div>
+		                    <div class="col-md-8">
+			                    <input type="submit" value="Register" class="btn btn-primary">
+		                    </div>
+	                    </div>
                     </div>
                 </div>
             </div>
             {{ form_end(registerClientForm) }}
         </div>
     </div>
+{% endblock %}
+
+{% block pageScripts %}
+	{{ parent() }}
+	<script>
+		var addressCount = "{{ registerClientForm.addresses|length }}";
+		var emailCount = "{{ registerClientForm.emails|length }}";
+		var contactCount = "{{ registerClientForm.contacts|length }}";
+		var stateListFetchUrl = "{{ url('list_states_of_a_country') }}";
+		var cityListFetchUrl = "{{ url('list_cities_of_a_state') }}";
+	</script>
+	{% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+		'@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+		'@NetFlexDashboardBundle/Resources/public/plugins/jquery-validation/dist/jquery.validate.min.js'
+		'@NetFlexUserBundle/Resources/public/js/register_client_from_dashboard.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+
+{% block initPageScripts %}
+	{{ parent() }}
+	<script>
+		jQuery(document).ready(function() {
+			registerClientFromDashboard.init();
+		});
+	</script>
 {% endblock %}

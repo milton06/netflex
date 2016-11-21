@@ -3,6 +3,7 @@
 namespace NetFlex\UserBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -75,19 +76,11 @@ class UserController extends Controller
 	     * Repositories.
 	     */
 	    $roleRepo = $em->getRepository('NetFlexUserBundle:Role');
-	    $countryRepo = $em->getRepository('NetFlexLocationBundle:Country');
-	    $stateRepo = $em->getRepository('NetFlexLocationBundle:State');
-	    $cityRepo = $em->getRepository('NetFlexLocationBundle:City');
-	    $addressTypeRepo = $em->getRepository('NetFlexUserBundle:AddressType');
 	
 	    /**
 	     * Default values.
 	     */
 	    $clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
-	    $defaultCountry = $countryRepo->findOneBy(['id' => 1, 'status' => 1]);
-	    $defaultState = $stateRepo->findOneBy(['id' => 41, 'status' => 1]);
-	    $defaultCity = $cityRepo->findOneBy(['id' => 5583, 'status' => 1]);
-	    $defaultAddressType = $addressTypeRepo->findOneBy(['id' => 1, 'status' => 1]);
 	
 	    /**
 	     * User entity components.
@@ -101,10 +94,6 @@ class UserController extends Controller
 	     * Set default values.
 	     */
 	    $user->addRole($clientRole);
-	    $address->setCountryId($defaultCountry);
-	    $address->setStateId($defaultState);
-	    $address->setCityId($defaultCity);
-	    $address->setAddressTypeId($defaultAddressType);
 	    $user->addAddress($address);
 	    $user->addContact($contact);
 	    $user->addEmail($email);
@@ -139,4 +128,85 @@ class UserController extends Controller
 		    'registerClientForm' => $registerClientForm->createView(),
 	    ]);
     }
+	
+	/**
+	 * Gets all the states of a country.
+	 *
+	 * @Route("/dashboard/client/state-list", name="list_states_of_a_country")
+	 * @Method({"POST"})
+	 *
+	 * @param  Request $request
+	 *
+	 * @return JsonResponse     A JsonResponse instance
+	 */
+    public function listStatesOfACountryAction(Request $request)
+    {
+	    $stateList = [];
+	    $cityList = [];
+	
+	    $countryId = $request->request->get('countryId');
+	
+	    if (empty($countryId)) {
+		    return $this->json(['stateList' => $stateList, 'cityList' => $cityList]);
+	    }
+	
+	    $countryRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexLocationBundle:Country');
+	
+	    $states = $countryRepo->findOneById($countryId)->getStates();
+	    
+	    if (empty($states)) {
+		    return $this->json(['stateList' => $stateList, 'cityList' => $cityList]);
+	    }
+	    
+	    $cities = $states[0]->getCities();
+	
+	    foreach ($states as $thisState) {
+		    $stateList[$thisState->getId()] = $thisState->getName();
+	    }
+	    
+	    if (empty($cities)) {
+		    return $this->json(['stateList' => $stateList, 'cityList' => $cityList]);
+	    }
+	
+	    foreach ($cities as $thisCity) {
+		    $cityList[$thisCity->getId()] = $thisCity->getName();
+	    }
+	
+	    return $this->json(['stateList' => $stateList, 'cityList' => $cityList]);
+    }
+	
+	/**
+	 * Gets all the cities of a state.
+	 *
+	 * @Route("/dashboard/client/city-list", name="list_cities_of_a_state")
+	 * @Method({"POST"})
+	 *
+	 * @param  Request $request
+	 *
+	 * @return JsonResponse     A JsonResponse instance
+	 */
+	public function listCitiesOfAStateAction(Request $request)
+	{
+		$cityList = [];
+		
+		$stateId = $request->request->get('stateId');
+		
+		if (empty($stateId)) {
+			return $this->json(['cityList' => $cityList]);
+		}
+		
+		$stateRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexLocationBundle:State');
+		
+		$cities = $stateRepo->findOneById($stateId)->getCities();
+		
+		if (empty($cities)) {
+			return $this->json(['cityList' => $cityList]);
+		}
+		
+		foreach ($cities as $thisCity) {
+			$cityList[$thisCity->getId()] = $thisCity->getName();
+		}
+		
+		return $this->json(['cityList' => $cityList]);
+	}
 }
