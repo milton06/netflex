@@ -112,6 +112,8 @@ jQuery(document).ready(function() {
 		e.preventDefault();
 		
 		jQuery(this).parent().parent().parent().parent().remove();
+		
+		contactCount--;
 	});
 	
 	jQuery("#address-container").on("change", ".country", function(e) {
@@ -195,13 +197,11 @@ jQuery(document).ready(function() {
 	});
 	
 	jQuery("#address-container").on("change", ".address-type-selector", function(e) {
-		//alert("Hello");
 		var element = jQuery(this);
 		var thisId = jQuery(element).attr("id");
 		var thisValue = jQuery(element).val();
 		var thisClosestPrimarySetter = jQuery(element).parent().parent().next(".form-group").find(".primary-address-selector");
 		var thisClosestPrimarySetterId = jQuery(element).parent().parent().next(".form-group").find(".primary-address-selector").attr("id");
-		console.log(thisClosestPrimarySetterId);
 		var isThisMadePrimary = jQuery(thisClosestPrimarySetter).parent('[class*="icheckbox"]').hasClass("checked");
 		
 		jQuery("#address-container .address-type-selector").each(function() {
@@ -254,4 +254,8 @@ jQuery(document).ready(function() {
 			jQuery("#contact-container .primary-contact-selector").iCheck(update);
 		}
 	});
+	
+	if (0 < jQuery(".server-message").length) {
+		setTimeout('jQuery(".server-message").remove()', 5000);
+	}
 });

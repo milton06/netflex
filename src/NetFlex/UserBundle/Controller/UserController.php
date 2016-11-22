@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -29,15 +30,70 @@ class UserController extends Controller
 	/**
 	 * Renders the client list page.
 	 *
-	 * @Route("/dashboard/client/list", name="client_list")
-	 * @Method({"GET"})
+	 * @Route("/dashboard/client/list/{page}/{sortColumn}/{sortOrder}", name="client_list", defaults={"page": 1, "sortColumn": "id", "sortOrder": "desc"}, requirements={"page": "\d+", "sortColumn": "id|username", "sortOrder": "asc|desc"})
+	 * @Method({"GET", "POST"})
 	 *
 	 * @param  Request $request
 	 *
 	 * @return Response A response instance
 	 */
-	public function renderClientListAction(Request $request)
+	public function renderClientListAction($page, $sortColumn, $sortOrder, Request $request)
 	{
+		$clientRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexUserBundle:User');
+		$roleRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexUserBundle:Role');
+		
+		$session = $request->getSession();
+		$paginationService = $this->get('pagination_service');
+		
+		$routeParameters = [
+			'page' => $page,
+			'sortColumn' => $sortColumn,
+			'sortOrder' => $sortOrder,
+		];
+		$routeExtraParameters = $request->query->all();
+		
+		$clientPaginationParams = $paginationService->getPaginationParameterValue('dashboard.client_list');
+		
+		$limit = $clientPaginationParams['record_per_page'];
+		$neighbor = $clientPaginationParams['neighbor'];
+		$offset = $paginationService->getRecordOffset($page, $limit);
+		
+		$sortColumn = $this->getSortColumn($sortColumn);
+		$sortOrder = strtoupper($sortOrder);
+		
+		$clientName = (true === $session->has('clientName')) ? $session->get('clientName') : '';
+		
+		$searchForm = $this->createFormBuilder()
+			->setAction($this->generateUrl('client_list', [], UrlGeneratorInterface::ABSOLUTE_URL))
+			->setMethod('POST')
+			->add('clientName', TextType::class, [
+				'empty_data' => '',
+				'data' => $clientName,
+			])
+			->getForm();
+		
+		$searchForm->handleRequest($request);
+		
+		if (true === $searchForm->isSubmitted()) {
+			$searchData = $searchForm->getData();
+			
+			$session->set('clientName', $searchData['clientName']);
+			
+			return $this->redirectToRoute('client_list', array_merge($routeParameters, $routeExtraParameters));
+		}
+		
+		$clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
+		
+		$clients = $clientRepo->findUsers($sortColumn, $sortOrder, $clientName);
+		
+		$clientCount = count($clients);
+		
+		$totalPageCount = $paginationService->getTotalPageCount($limit, $clientCount);
+		
+		$clients = $clientRepo->findUsers($sortColumn, $sortOrder, $clientName, $offset, $limit);
+		
+		$pageLinks = $paginationService->getPageLinks($page, $limit, $neighbor, $clientCount, $totalPageCount, 'client_list', $routeParameters, $routeExtraParameters);
+		
 		$breadCrumbs = [
 			[
 				'title' => 'Dashboard Home',
@@ -54,7 +110,39 @@ class UserController extends Controller
 			'breadCrumbs' => $breadCrumbs,
 			'pageHeader' => '<h1>Client <small>list </small></h1>',
 			'listHeader' => 'Client List',
+			'searchForm' => $searchForm->createView(),
+			'clientCount' => $clientCount,
+			'totalPageCount' => $totalPageCount,
+			'clients' => $clients,
+			'pageLinks' => $pageLinks,
+			'referrer' => urlencode($this->generateUrl('client_list', array_merge($routeParameters, $routeExtraParameters), UrlGeneratorInterface::ABSOLUTE_URL)),
+			'allRouteParameters' => array_merge($routeParameters, $routeExtraParameters),
 		]);
+	}
+	
+	/**
+	 * Gets the current sort column
+	 *
+	 * @param  string $sortColumn
+	 *
+	 * @return string
+	 */
+	private function getSortColumn($sortColumn)
+	{
+		switch ($sortColumn) {
+			case 'username':
+				$sortColumn = 'U.username';
+				
+				break;
+			
+			case 'id':
+			default:
+				$sortColumn = 'U.id';
+				
+				break;
+		}
+		
+		return $sortColumn;
 	}
 	
 	/**
@@ -70,20 +158,8 @@ class UserController extends Controller
 	 */
 	public function registerClientFromDashboardAction(Request $request)
     {
-	    $em = $this->getDoctrine()->getManager();
-	
 	    /**
-	     * Repositories.
-	     */
-	    $roleRepo = $em->getRepository('NetFlexUserBundle:Role');
-	
-	    /**
-	     * Default values.
-	     */
-	    $clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
-	
-	    /**
-	     * User entity components.
+	     * User entity and related entities; empty.
 	     */
 	    $address = new Address();
 	    $contact = new Contact();
@@ -102,17 +178,30 @@ class UserController extends Controller
 	    $registerClientForm->handleRequest($request);
 	    
 	    if ($registerClientForm->isSubmitted() && $registerClientForm->isValid()) {
-		    $passwordEncoder = $this->get('security.password_encoder');
-		    $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
-		    $user->setPassword($encodedPassword);
+		    $em = $this->getDoctrine()->getManager();
+		    
+		    $roleRepo = $em->getRepository('NetFlexUserBundle:Role');
 		
+		    /**
+		     * Set role to client.
+		     */
+		    $clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
 		    $user->addRole($clientRole);
+		
+		    /**
+		     * Set default values.
+		     */
 		    $user->setStatus(1);
 		    $thisDateTime = new \DateTime();
 		    $user->setCreatedOn($thisDateTime);
 		    $user->setCreatedBy($this->getUser()->getId());
 		    $user->setLastModifiedOn($thisDateTime);
 		    $user->setLastModifiedBy($this->getUser()->getId());
+		
+		    /**
+		     * Set encoded password.
+		     */
+		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
 		    
 		    $addresses = $user->getAddresses();
 		    $emails = $user->getEmails();
@@ -120,21 +209,18 @@ class UserController extends Controller
 		    
 		    foreach ($addresses as $thisAddress) {
 			    $thisAddress->setStatus(1);
-			    $thisAddress->setUserId($user);
 			    
 			    $em->persist($thisAddress);
 		    }
 		    
 		    foreach ($emails as $thisEmail) {
 			    $thisEmail->setStatus(1);
-			    $thisEmail->setUserId($user);
 			    
 			    $em->persist($thisEmail);
 		    }
 		    
 		    foreach ($contacts as $thisContact) {
 			    $thisContact->setStatus(1);
-			    $thisContact->setUserId($user);
 			    
 			    $em->persist($thisContact);
 		    }
@@ -142,8 +228,10 @@ class UserController extends Controller
 		    $em->flush();
 		    
 		    $userId = $user->getId();
+		
+		    $this->addFlash('success', 'Client has been registered successfully');
 		    
-		    return $this->redirectToRoute('edit_client_profile_from_dashboard', ['id' => $userId]);
+		    return $this->redirectToRoute('edit_client_profile_from_dashboard', ['userId' => $userId]);
 	    }
 	
 	    $breadCrumbs = [
@@ -171,9 +259,9 @@ class UserController extends Controller
 	
 	/**
 	 * Renders a client profile edit page in the dashboard.
-	 * Also handles client profile updation in the dashboard.
+	 * Also handles client profile update in the dashboard.
 	 *
-	 * @Route("/dashboard/client/edit/{id}", name="edit_client_profile_from_dashboard")
+	 * @Route("/dashboard/client/edit/{userId}", name="edit_client_profile_from_dashboard", requirements={"userId": "\d+"})
 	 * @Method({"GET", "POST"})
 	 *
 	 * @param  User    $user
@@ -181,49 +269,32 @@ class UserController extends Controller
 	 *
 	 * @return Response         A response instance
 	 */
-	public function editClientProfileFromDashboard(User $user, Request $request)
+	public function editClientProfileFromDashboard($userId, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
 		
-		/**
-		 * Repositories.
-		 */
-		//$roleRepo = $em->getRepository('NetFlexUserBundle:Role');
+		$userRepo = $em->getRepository('NetFlexUserBundle:User');
 		
-		/**
-		 * Default values.
-		 */
-		//$clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
+		$user = $userRepo->findUserById($userId);
 		
-		/**
-		 * User entity components.
-		 */
-		//$address = new Address();
-		//$contact = new Contact();
-		//$email = new Email();
-		//$user = new User();
+		if (! $user) {
+			throw $this->createNotFoundException("No such user with ID: $userId exists");
+		}
 		
-		/**
-		 * Set default values.
-		 */
-		//$user->addAddress($address);
-		//$user->addContact($contact);
-		//$user->addEmail($email);
+		$editClientForm = $this->createForm(UserType::class, $user);
 		
-		$registerClientForm = $this->createForm(UserType::class, $user);
+		$editClientForm->handleRequest($request);
 		
-		$registerClientForm->handleRequest($request);
+		$inactiveAssociationsErrorText = '';
 		
-		if ($registerClientForm->isSubmitted() && $registerClientForm->isValid()) {
-			$passwordEncoder = $this->get('security.password_encoder');
-			$encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
-			$user->setPassword($encodedPassword);
+		if ($editClientForm->isSubmitted() && $editClientForm->isValid()) {
+			if ($user->getPassword()) {
+				$user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
+			} else {
+				$user->setPassword($userRepo->findUserEncryptedPassword($userId));
+			}
 			
-			//$user->addRole($clientRole);
-			//$user->setStatus(1);
 			$thisDateTime = new \DateTime();
-			//$user->setCreatedOn($thisDateTime);
-			//$user->setCreatedBy($this->getUser()->getId());
 			$user->setLastModifiedOn($thisDateTime);
 			$user->setLastModifiedBy($this->getUser()->getId());
 			
@@ -231,30 +302,80 @@ class UserController extends Controller
 			$emails = $user->getEmails();
 			$contacts = $user->getContacts();
 			
+			$activeAddressCount = $activeEmailCount = $activeContactCount = 0;
+			
 			foreach ($addresses as $thisAddress) {
-				$thisAddress->setStatus(1);
-				$thisAddress->setUserId($user);
+				if (! $thisAddress->getStatus()) {
+					if (! $thisAddress->getId()) {
+						$thisAddress->setStatus(1);
+						
+						$activeAddressCount++;
+					} else {
+						$thisAddress->setStatus(0);
+					}
+				} else {
+					$activeAddressCount++;
+				}
 				
 				$em->persist($thisAddress);
 			}
 			
 			foreach ($emails as $thisEmail) {
-				$thisEmail->setStatus(1);
-				$thisEmail->setUserId($user);
+				if (! $thisEmail->getStatus()) {
+					if (! $thisEmail->getId()) {
+						$thisEmail->setStatus(1);
+						
+						$activeEmailCount++;
+					} else {
+						$thisEmail->setStatus(0);
+					}
+				} else {
+					$activeEmailCount++;
+				}
 				
 				$em->persist($thisEmail);
 			}
 			
 			foreach ($contacts as $thisContact) {
-				$thisContact->setStatus(1);
-				$thisContact->setUserId($user);
+				if (! $thisContact->getStatus()) {
+					if (! $thisContact->getId()) {
+						$thisContact->setStatus(1);
+						
+						$activeContactCount++;
+					} else {
+						$thisContact->setStatus(0);
+					}
+				} else {
+					$activeContactCount++;
+				}
 				
 				$em->persist($thisContact);
 			}
 			
-			$em->flush();
+			$inactiveAssociationsError = [];
+			$inactiveAssociationsErrorText = '';
 			
-			return $this->redirectToRoute('edit_client_profile_from_dashboard', ['id' => $user->getId()]);
+			if (0 === $activeAddressCount) {
+				$inactiveAssociationsError[] = 'addresses';
+			}
+			
+			if (0 === $activeEmailCount) {
+				$inactiveAssociationsError[] = 'emails';
+			}
+			
+			if (0 === $activeContactCount) {
+				$inactiveAssociationsError[] = 'contacts';
+			}
+			
+			if ($inactiveAssociationsError) {
+				$inactiveAssociationsErrorText = 'You cannot make all the ' . implode(', ', $inactiveAssociationsError) . ' inactive';
+			} else {
+				$em->flush();
+				
+				$this->addFlash('success', 'Client profile has been updated successfully');
+				
+				return $this->redirectToRoute('edit_client_profile_from_dashboard', ['userId' => $userId]);
+			}
 		}
 		
 		$breadCrumbs = [
@@ -267,16 +388,17 @@ class UserController extends Controller
 				'link' => $this->generateUrl('client_list', [], UrlGeneratorInterface::ABSOLUTE_URL),
 			],
 			[
-				'title' => 'Register New Client',
-				'link' => $this->generateUrl('register_client_from_dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL)
+				'title' => 'Edit Client Profile',
+				'link' => $this->generateUrl('edit_client_profile_from_dashboard', ['userId' => $userId], UrlGeneratorInterface::ABSOLUTE_URL)
 			],
 		];
 		
 		return $this->render('NetFlexUserBundle:Client:edit_client_profile_from_dashboard.html.twig', [
-			'pageTitle' => 'Register New Client',
+			'pageTitle' => 'Edit Client Profile',
 			'breadCrumbs' => $breadCrumbs,
-			'pageHeader' => '<h1>Register <small>new client </small></h1>',
-			'registerClientForm' => $registerClientForm->createView(),
+			'pageHeader' => '<h1>Edit <small>client profile</small></h1>',
+			'registerClientForm' => $editClientForm->createView(),
+			'inactiveAssociationsErrorText' => $inactiveAssociationsErrorText,
 		]);
 	}
 	
@@ -359,5 +481,135 @@ class UserController extends Controller
 		}
 		
 		return $this->json(['cityList' => $cityList]);
+	}
+	
+	/**
+	 * Deletes a client.
+	 *
+	 * @Route("/dashboard/client/delete/{mode}", name="delete_client", requirements={"mode": "async|sync"})
+	 * @Method({"GET", "DELETE"})
+	 *
+	 * @param string  $mode    Asynchronous or synchronous operation
+	 * @param Request $request A request instance
+	 *
+	 * @return JsonResponse|RedirectResponse
+	 */
+	public function deleteClientAction($mode, Request $request)
+	{
+		$clientId = $request->query->get('client_id');
+		
+		switch ($mode) {
+			case 'async':
+				break;
+			
+			case 'sync':
+				$allRouteParameters = $request->query->get('allRouteParameters');
+				$pageIndex = (int) $allRouteParameters['page'];
+				$selectedRecordCount = (int) $request->query->get('selectedRecordCount');
+				$totalRecordOnPage = (int) $request->query->get('totalRecordOnPage');
+				
+				if (false === is_numeric($clientId)) {
+					$clientIds = explode('-', $clientId);
+					$undeletedClientIds = [];
+					
+					foreach ($clientIds as $thisClientId) {
+						$clientDeletionResult = $this->deleteClient((int) $thisClientId);
+						
+						if (false === $clientDeletionResult['status']) {
+							$undeletedClientIds[] = $thisClientId;
+						}
+					}
+					
+					if (empty($undeletedClientIds)) {
+						$this->addFlash('success', 'All clients were deleted successfully');
+					} elseif (count($undeletedClientIds) < count($clientIds)) {
+						$this->addFlash('warning', 'Clients with ID: ' . implode(', ', $undeletedClientIds) . ' could not be deleted');
+					} else {
+						$this->addFlash('error', 'Clients could not be deleted');
+					}
+					
+					$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, ($selectedRecordCount - count($undeletedClientIds)), $totalRecordOnPage);
+				} else {
+					$clientDeletionResult = $this->deleteClient((int) $clientId);
+					
+					if (false === $clientDeletionResult['status']) {
+						$this->addFlash('error', 'Client could not be deleted');
+					} else {
+						$this->addFlash('success', 'Client was deleted successfully');
+					}
+					
+					$allRouteParameters['page'] = $this->adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage);
+				}
+				
+				return $this->redirectToRoute('client_list', $allRouteParameters);
+				
+				break;
+			
+			default:
+				break;
+		}
+	}
+	
+	/**
+	 * Deletes a single client.
+	 *
+	 * @param int    $clientId
+	 * @param string $mode
+	 *
+	 * @return array
+	 */
+	protected function deleteClient($clientId)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$clientRepo = $em->getRepository('NetFlexUserBundle:User');
+		
+		$thisClient = $clientRepo->findOneById($clientId);
+		
+		$thisClient->setStatus(0);
+		$thisClient->setLastModifiedOn(new \DateTime());
+		$thisClient->setLastModifiedBy($this->getUser()->getId());
+		
+		$em->flush();
+		
+		return ['status' => true];
+	}
+	
+	/**
+	 * Adjusts redirection page index.
+	 *
+	 * @param int $pageIndex
+	 * @param int $selectedRecordCount
+	 * @param int $totalRecordOnPage
+	 *
+	 * @return int
+	 */
+	protected function adjustPageIndex($pageIndex, $selectedRecordCount, $totalRecordOnPage)
+	{
+		if (0 === $selectedRecordCount) {
+			return $pageIndex;
+		}
+		
+		if ($selectedRecordCount === $totalRecordOnPage) {
+			$pageIndex = (1 === $pageIndex) ? 1 : ($pageIndex - 1);
+		}
+		
+		return $pageIndex;
+	}
+	
+	/**
+	 * @Route("/dashboard/client/exit-from-search-mode", name="exit_from_client_search_mode")
+	 *
+	 * @param  Request $request
+	 *
+	 * @return RedirectResponse
+	 */
+	public function exitFromSearchModeAction(Request $request)
+	{
+		$session = $request->getSession();
+		$referrer = $request->query->get('ref');
+		
+		$session->remove('clientName');
+		
+		return $this->redirect($referrer);
 	}
 }

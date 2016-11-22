@@ -208,13 +208,11 @@ jQuery(document).ready(function() {
 	});
 	
 	jQuery("#address-container").on("change", ".address-type-selector", function(e) {
-		//alert("Hello");
 		var element = jQuery(this);
 		var thisId = jQuery(element).attr("id");
 		var thisValue = jQuery(element).val();
 		var thisClosestPrimarySetter = jQuery(element).parent().parent().next(".form-group").find(".primary-address-selector");
 		var thisClosestPrimarySetterId = jQuery(element).parent().parent().next(".form-group").find(".primary-address-selector").attr("id");
-		console.log(thisClosestPrimarySetterId);
 		var isThisMadePrimary = jQuery(thisClosestPrimarySetter).parent('[class*="icheckbox"]').hasClass("checked");
 		
 		jQuery("#address-container .address-type-selector").each(function() {

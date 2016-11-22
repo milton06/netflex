@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
-use NetFlex\UserBundle\Form\EventSubscriber\AddressFormEventSubscriber;
+use NetFlex\UserBundle\Form\EventSubscriber\AddressFormEditEventSubscriber;
 use NetFlex\UserBundle\Entity\Address;
 
 class AddressType extends AbstractType
@@ -48,7 +48,8 @@ class AddressType extends AbstractType
 				    'class' => 'NetFlexLocationBundle:State',
 				    'query_builder' => function(EntityRepository $er) {
 					    return $er->createQueryBuilder('states')
-						    ->where('states.status = 1')
+						    ->where('states.countryId = 1')
+						    ->andWhere('states.status = 1')
 						    ->orderBy('states.name', 'ASC');
 				    },
 				    'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
@@ -58,7 +59,8 @@ class AddressType extends AbstractType
 				    'class' => 'NetFlexLocationBundle:City',
 				    'query_builder' => function(EntityRepository $er) {
 					    return $er->createQueryBuilder('cities')
-						    ->where('cities.status = 1')
+						    ->where('cities.stateId = 41')
+						    ->andWhere('cities.status = 1')
 						    ->orderBy('cities.name', 'ASC');
 				    },
 				    'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1])
@@ -81,45 +83,11 @@ class AddressType extends AbstractType
 			    ->add('addressLine2', null, [
 				    'required' => false,
 			    ])
-			    ->add('countryId', EntityType::class, [
-				    'placeholder' => '-Select A Country-',
-				    'class' => 'NetFlexLocationBundle:Country',
-				    'query_builder' => function(EntityRepository $er) {
-					    return $er->createQueryBuilder('country')
-						    ->where('country.status = 1')
-						    ->orderBy('country.name', 'ASC');
-				    }
-			    ])
-			    ->add('stateId', EntityType::class, [
-				    'placeholder' => '-Select A State-',
-				    'class' => 'NetFlexLocationBundle:State',
-				    'query_builder' => function(EntityRepository $er) {
-					    return $er->createQueryBuilder('states')
-						    ->where('states.status = 1')
-						    ->orderBy('states.name', 'ASC');
-				    }
-			    ])
-			    ->add('cityId', EntityType::class, [
-				    'placeholder' => '-Select A City-',
-				    'class' => 'NetFlexLocationBundle:City',
-				    'query_builder' => function(EntityRepository $er) {
-					    return $er->createQueryBuilder('cities')
-						    ->where('cities.status = 1')
-						    ->orderBy('cities.name', 'ASC');
-				    }
-			    ])
-			    ->add('addressTypeId', EntityType::class, [
-				    'placeholder' => '-Select An Address Type-',
-				    'class' => 'NetFlexUserBundle:AddressType',
-				    'query_builder' => function(EntityRepository $er) {
-					    return $er->createQueryBuilder('addressType')
-						    ->where('addressType.id = 1 OR addressType.id = 2')
-						    ->andWhere('addressType.status = 1')
-						    ->orderBy('addressType.id', 'ASC');
-				    }
-			    ])
 			    ->add('zipCode')
-			    ->add('isPrimary');
+			    ->add('isPrimary')
+		        ->add('status');
+		
+		    $builder->addEventSubscriber(new AddressFormEditEventSubscriber($this->em));
 	    }
     }
     

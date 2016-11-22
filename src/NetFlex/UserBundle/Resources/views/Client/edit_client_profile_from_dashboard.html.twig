@@ -21,11 +21,26 @@
 {% block pageContent %}
     <div class="row">
 		<div class="col-md-12">
+			{% if inactiveAssociationsErrorText %}
+				<div class="alert alert-danger">
+					<button data-dismiss="alert" class="close">×</button>
+					<i class="fa fa-times-circle"></i>
+					<strong>Oh snap!</strong> {{ inactiveAssociationsErrorText }}.
+				</div>
+			{% endif %}
+			{% if app.session.flashbag.peek('success') %}
+				<div class="alert alert-success server-message">
+					<button data-dismiss="alert" class="close">×</button>
+					<i class="fa fa-check-circle"></i>
+					{% for success in app.session.flashbag.get('success') %}
+						<strong>Well done!</strong> {{ success }}.
+					{% endfor %}
+				</div>
+			{% endif %}
 			<div class="errorHandler alert alert-danger no-display">
-				<i class="fa fa-times-sign"></i> You have some form errors. Please check below.
-			</div>
-			<div class="successHandler alert alert-success no-display">
-				<i class="fa fa-ok"></i> Your form validation is successful!
+				<button data-dismiss="alert" class="close">×</button>
+				<i class="fa fa-times-circle"></i>
+				You have some form errors. Please check below.
 			</div>
 		</div>
 	</div>
@@ -36,9 +51,6 @@
                 <div class="col-md-12">
                     <div class="errorHandler alert alert-danger no-display">
                         <i class="fa fa-times-sign"></i> You have some form errors. Please check below.
-                    </div>
-                    <div class="successHandler alert alert-success no-display">
-                        <i class="fa fa-ok"></i> Your form validation is successful!
                     </div>
                 </div>
             </div>
@@ -81,7 +93,7 @@
                         <div class="row form-group{{ (0 < registerClientForm.password.vars.errors|length) ? ' has-error': '' }}">
                             {{ form_label(registerClientForm.password, 'Password', { 'label_attr': { 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
-                                {{ form_widget(registerClientForm.password, { 'attr': { 'placeholder': 'Password' } }) }}
+                                {{ form_widget(registerClientForm.password, { 'required': false, 'attr': { 'placeholder': 'Password' } }) }}
                                 {{ form_errors(registerClientForm.password) }}
                             </div>
                         </div>
@@ -164,10 +176,16 @@
 						                    </div>
 						                    <div class="row form-group">
 							                    <div class="col-md-4">&nbsp;</div>
-							                    <div class="col-md-8">
+							                    <div class="col-md-4">
 								                    <label class="checkbox-inline">
 									                    {{ form_widget(thisAddress.isPrimary, { 'required': false, 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
 									                    {{ form_errors(thisAddress.isPrimary) }}
+								                    </label>
+							                    </div>
+							                    <div class="col-md-4">
+								                    <label class="checkbox-inline">
+									                    {{ form_widget(thisAddress.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
+									                    {{ form_errors(thisAddress.status) }}
 								                    </label>
 							                    </div>
 						                    </div>
@@ -198,10 +216,16 @@
 						                    </div>
 						                    <div class="row form-group">
 							                    <div class="col-md-4">&nbsp;</div>
-							                    <div class="col-md-8">
+							                    <div class="col-md-4">
 								                    <label class="checkbox-inline">
 									                    {{ form_widget(thisEmail.isPrimary, { 'required': false, 'attr': { 'class': 'primary-email-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
 									                    {{ form_errors(thisEmail.isPrimary) }}
+								                    </label>
+							                    </div>
+							                    <div class="col-md-4">
+								                    <label class="checkbox-inline">
+									                    {{ form_widget(thisEmail.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
+									                    {{ form_errors(thisEmail.status) }}
 								                    </label>
 							                    </div>
 						                    </div>
@@ -232,10 +256,15 @@
 						                    </div>
 						                    <div class="row form-group">
 							                    <div class="col-md-4">&nbsp;</div>
-							                    <div class="col-md-8">
+							                    <div class="col-md-4">
 								                    <label class="checkbox-inline">
 									                    {{ form_widget(thisContact.isPrimary, { 'required': false, 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
 									                    {{ form_errors(thisContact.isPrimary) }}
+								                    </label>
+							                    </div>
+							                    <div class="col-md-4">
+								                    <label class="checkbox-inline">
+									                    {{ form_widget(thisContact.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
 								                    </label>
 							                    </div>
 						                    </div>
@@ -254,7 +283,7 @@
 		                    <div class="col-md-4">&nbsp;</div>
 		                    <div class="col-md-8">
 			                    <button type="submit" id="register-client-button" class="btn btn-primary">
-                                    Register <i class="fa fa-arrow-circle-right"></i>
+                                    Update <i class="fa fa-arrow-circle-right"></i>
                                 </button>
 		                    </div>
 	                    </div>

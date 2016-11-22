@@ -30,7 +30,7 @@ class City
 	private $countryId;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="State", inversedBy="states", cascade={"persist"})
+	 * @ORM\ManyToOne(targetEntity="State", inversedBy="cities", cascade={"persist"})
 	 * @ORM\JoinColumn(name="state_id", referencedColumnName="id")
 	 */
 	private $stateId;

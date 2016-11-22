@@ -54,10 +54,6 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="password", type="text")
-     *
-     * @Assert\NotBlank(
-     *     message="This field is required."
-     * )
      */
     private $password;
 

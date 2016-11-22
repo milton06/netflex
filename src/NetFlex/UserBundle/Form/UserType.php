@@ -19,8 +19,10 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('username')
-            ->add('password', PasswordType::class)
+	    $builder->add('username')
+            ->add('password', PasswordType::class, [
+            	'always_empty' => false,
+            ])
             ->add('firstName')
             ->add('midName')
             ->add('lastName')
@@ -29,18 +31,21 @@ class UserType extends AbstractType
 	            'allow_add' => true,
 	            'allow_delete' => true,
 	            'delete_empty' => true,
+	            'by_reference' => false,
             ])
             ->add('contacts', CollectionType::class, [
             	'entry_type' => ContactType::class,
 	            'allow_add' => true,
 	            'allow_delete' => true,
 	            'delete_empty' => true,
+	            'by_reference' => false,
             ])
             ->add('emails', CollectionType::class, [
             	'entry_type' => EmailType::class,
 	            'allow_add' => true,
 	            'allow_delete' => true,
 	            'delete_empty' => true,
+	            'by_reference' => false,
             ]);
     }
     

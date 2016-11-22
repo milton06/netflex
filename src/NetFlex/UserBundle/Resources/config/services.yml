@@ -7,3 +7,15 @@ services:
         arguments: ["@request_stack", "@doctrine.orm.default_entity_manager"]
         tags:
             - { name: form.type }
+
+    app.form.email:
+        class: NetFlex\UserBundle\Form\EmailType
+        arguments: ["@request_stack"]
+        tags:
+            - { name: form.type }
+
+    app.form.contact:
+        class: NetFlex\UserBundle\Form\ContactType
+        arguments: ["@request_stack"]
+        tags:
+            - { name: form.type }

@@ -4,16 +4,212 @@
     {{ parent() }} :: {{ pageTitle }}
 {% endblock %}
 
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+    'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
 {% block pageHeader %}
     {{ pageHeader|raw }}
 {% endblock %}
 
 {% block pageContent %}
     <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                {{ form_start(searchForm, { 'attr': { 'class': 'form-horizontal', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+                <div class="col-md-6">
+                    {{ form_widget(searchForm.clientName, { 'id': 'client-name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Username' } }) }}
+                </div>
+                <div class="col-md-6">
+                    <input type="submit" class="btn btn-sm btn-primary tooltips" value="Filter" data-placement="top" data-original-title="Filter clients">
+                    {% if app.session.has('clientName') %}
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{{ url('exit_from_client_search_mode', { 'ref': url('client_list') }) }}" class="btn btn-sm btn-primary tooltips" data-placement="top" data-original-title="Clear filters">Clear</a>
+                    {% endif %}
+                </div>
+                {{ form_end(searchForm) }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ url('register_client_from_dashboard', { 'ref': referrer }) }}" class="btn btn-sm btn-primary tooltips" data-placement="top" data-original-title="Register New Client"><i class="fa fa-plus"></i> Register New Client</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
         <div class="col-md-12">
-            <div class="well well-lg">
-                <h1>Client List</h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {% if app.session.flashbag.peek('warning') %}
+                        <div class="alert alert-warning server-message">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {% for warning in app.session.flashbag.get('warning') %}
+                                <strong>Warning!</strong> {{ warning }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('error') %}
+                        <div class="alert alert-danger server-message">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-times-circle"></i>
+                            {% for error in app.session.flashbag.get('error') %}
+                                <strong>Oh snap!</strong> {{ error }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('success') %}
+                        <div class="alert alert-success server-message">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-check-circle"></i>
+                            {% for success in app.session.flashbag.get('success') %}
+                                <strong>Well done!</strong> {{ success }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="center">
+                                    <div class="checkbox-table">
+                                        <label>
+                                            <input type="checkbox" id="bulk-record-selector" class="flat-grey">
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>
+                                    {% if 'id' != allRouteParameters.sortColumn %}
+                                        <a href="{{ url('client_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by client ID in ascending order">
+                                            {% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+                                            <img src="{{ asset_url }}" alt="unsorted-icon">
+                                            {% endimage %}
+                                        </a>
+                                    {% else %}
+                                        {% if 'desc' == allRouteParameters.sortOrder %}
+                                            <a href="{{ url('client_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by client ID in ascending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url('client_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by client ID in descending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %} ID
+                                </th>
+                                <th>
+                                    {% if 'username' != allRouteParameters.sortColumn %}
+                                        <a href="{{ url('client_list', { 'page': allRouteParameters.page, 'sortColumn': 'username', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by username in ascending order">
+                                            {% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+                                            <img src="{{ asset_url }}" alt="unsorted-icon">
+                                            {% endimage %}
+                                        </a>
+                                    {% else %}
+                                        {% if 'desc' == allRouteParameters.sortOrder %}
+                                            <a href="{{ url('client_list', { 'page': allRouteParameters.page, 'sortColumn': 'username', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by username in ascending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url('client_list', { 'page': allRouteParameters.page, 'sortColumn': 'username', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by username in descending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %} Username
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Registered On
+                                </th>
+                                <th class="center">
+                                    Operations
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if clients is empty %}
+                                <tr>
+                                    <td colspan="6" class="center">{{ noRecordFoundText }}</td>
+                                </tr>
+                            {% else %}
+                                {% for thisClient in clients %}
+                                    <tr>
+                                        <td class="center">
+                                            <div class="checkbox-table">
+                                                <label>
+                                                    <input type="checkbox" value="{{ thisClient.id }}" class="flat-grey single-record-selector">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>{{ thisClient.id }}</td>
+                                        <td>{{ thisClient.username }}</td>
+                                        <td>{{ thisClient.fullname }}</td>
+                                        <td>{{ thisClient.created_on|date('F jS, Y') }}</td>
+                                        <td class="center">
+                                            <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': thisClient.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': clients|length }) }}" class="btn btn-xs btn-bricky tooltips delete-buttons" data-placement="top" data-original-title="Delete Client"><i class="clip-remove"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="center">
+                                    {% if clients %}
+                                        <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': '%clientIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': clients|length }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected Clients"><i class="clip-remove"></i></a>
+                                    {% endif %}
+                                </td>
+                                <td colspan="4" class="center">
+                                    {{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block pageScripts %}
+    {{ parent() }}
+    {% javascripts
+    '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+    '@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+    '@NetFlexUserBundle/Resources/public/js/client_list.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block initPageScripts %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            clientList.init();
+        });
+    </script>
 {% endblock %}
