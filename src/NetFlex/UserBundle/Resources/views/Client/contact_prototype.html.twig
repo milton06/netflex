@@ -2,10 +2,10 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="row form-group">
+		<div class="row form-group{{ (0 < thisContact.contactNumber.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisContact.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
-				{{ form_widget(thisContact.contactNumber, { 'required': false, 'attr': { 'placeholder': 'Contact Number' } }) }}
+				{{ form_widget(thisContact.contactNumber, { 'attr': { 'placeholder': 'Contact Number' } }) }}
 				{{ form_errors(thisContact.contactNumber) }}
 			</div>
 		</div>
@@ -13,7 +13,7 @@
 			<div class="col-md-4">&nbsp;</div>
 			<div class="col-md-8">
 				<label class="checkbox-inline">
-					{{ form_widget(thisContact.isPrimary, { 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+					{{ form_widget(thisContact.isPrimary, { 'required': false, 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
 					{{ form_errors(thisContact.isPrimary) }}
 				</label>
 			</div>

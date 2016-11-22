@@ -2,9 +2,11 @@
 
 namespace NetFlex\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use NetFlex\UserBundle\Entity\Role;
 use NetFlex\UserBundle\Entity\Address;
 use NetFlex\UserBundle\Entity\Contact;
@@ -15,6 +17,10 @@ use NetFlex\UserBundle\Entity\Email;
  *
  * @ORM\Table(name="users")
  * @ORM\Entity(repositoryClass="NetFlex\UserBundle\Repository\UserRepository")
+ * @UniqueEntity(
+ *     "username",
+ *     message="This username is already taken."
+ * )
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -37,6 +43,10 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
      */
     private $username;
 
@@ -44,6 +54,10 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="password", type="text")
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
      */
     private $password;
 
@@ -51,13 +65,17 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
      */
     private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="mid_name", type="string", length=255)
+     * @ORM\Column(name="mid_name", type="string", length=255, nullable=true)
      */
     private $midName;
 
@@ -65,21 +83,31 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
      */
     private $lastName;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Address", mappedBy="userId")
+	 *
+	 * @Assert\Valid
 	 */
 	private $addresses;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Contact", mappedBy="userId")
+	 *
+	 * @Assert\Valid
 	 */
 	private $contacts;
 	
 	/**
 	 * @ORM\OneToMany(targetEntity="Email", mappedBy="userId")
+	 *
+	 * @Assert\Valid
 	 */
 	private $emails;
 
@@ -257,11 +285,11 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Set midName
      *
-     * @param string $midName
+     * @param string|null $midName
      *
      * @return User
      */
-    public function setMidName($midName)
+    public function setMidName($midName = null)
     {
         $this->midName = $midName;
 
@@ -311,9 +339,9 @@ class User implements AdvancedUserInterface, \Serializable
 	 */
 	public function addAddress(Address $address)
 	{
-		$address->setUserId($this);
-		
 		$this->addresses[] = $address;
+		
+		$address->setUserId($this);
 		
 		return $this;
 	}
@@ -349,9 +377,9 @@ class User implements AdvancedUserInterface, \Serializable
 	 */
 	public function addContact(Contact $contact)
 	{
-		$contact->setUserId($this);
-		
 		$this->contacts[] = $contact;
+		
+		$contact->setUserId($this);
 		
 		return $this;
 	}
@@ -387,9 +415,9 @@ class User implements AdvancedUserInterface, \Serializable
 	 */
 	public function addEmail(Email $email)
 	{
-		$email->setUserId($this);
-		
 		$this->emails[] = $email;
+		
+		$email->setUserId($this);
 		
 		return $this;
 	}

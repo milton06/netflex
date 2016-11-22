@@ -3,6 +3,7 @@
 namespace NetFlex\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use NetFlex\UserBundle\Entity\User;
 use NetFlex\UserBundle\Entity\AddressType;
 use NetFlex\LocationBundle\Entity\Country;
@@ -35,13 +36,17 @@ class Address
 	/**
 	 * @ORM\ManyToOne(targetEntity="AddressType")
 	 * @ORM\JoinColumn(name="address_type_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="This field is required."
+	 * )
 	 */
 	private $addressTypeId;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_primary", type="boolean")
+     * @ORM\Column(name="is_primary", type="boolean", nullable=true)
      */
     private $isPrimary;
 
@@ -49,31 +54,47 @@ class Address
      * @var string
      *
      * @ORM\Column(name="address_line_1", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
      */
     private $addressLine1;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="address_line_2", type="string", length=255)
+     * @ORM\Column(name="address_line_2", type="string", length=255, nullable=true)
      */
     private $addressLine2;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
 	 * @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="This field is required."
+	 * )
 	 */
 	private $countryId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\State")
 	 * @ORM\JoinColumn(name="state_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="This field is required."
+	 * )
 	 */
 	private $stateId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\City")
 	 * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="This field is required."
+	 * )
 	 */
 	private $cityId;
 
@@ -81,6 +102,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="zip_code", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
      */
     private $zipCode;
 
@@ -153,11 +178,11 @@ class Address
     /**
      * Set isPrimary
      *
-     * @param boolean $isPrimary
+     * @param boolean|null $isPrimary
      *
      * @return Address
      */
-    public function setIsPrimary($isPrimary)
+    public function setIsPrimary($isPrimary = null)
     {
         $this->isPrimary = $isPrimary;
 
@@ -201,11 +226,11 @@ class Address
     /**
      * Set addressLine2
      *
-     * @param string $addressLine2
+     * @param string|null $addressLine2
      *
      * @return Address
      */
-    public function setAddressLine2($addressLine2)
+    public function setAddressLine2($addressLine2 = null)
     {
         $this->addressLine2 = $addressLine2;
 

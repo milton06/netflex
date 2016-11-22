@@ -4,65 +4,56 @@ var registerClientFromDashboard = function () {
 			checkboxClass: 'icheckbox_flat-grey',
 		});
 	};
-	var runSetDefaultValidation = function () {
-		jQuery.validator.setDefaults({
+	var runRegisterClientFromDashboardValidator = function() {
+		var form = $('#form-register-client-from-dashboard');
+		var errorHandler = $('.errorHandler', form);
+		var successHandler = $('.successHandler', form);
+		
+		$('#form-register-client-from-dashboard').validate({
 			errorElement: "span",
 			errorClass: 'help-block',
 			errorPlacement: function (error, element) {
 				if (element.attr("type") == "radio" || element.attr("type") == "checkbox") {
-					error.insertAfter(jQuery(element).closest('.form-group').children('div').children().last());
-				} else if (element.attr("name") == "card_expiry_mm" || element.attr("name") == "card_expiry_yyyy") {
-					error.appendTo(jQuery(element).closest('.form-group').children('div'));
+					error.insertAfter($(element).closest('.form-group').children('div').children().last());
 				} else {
 					error.insertAfter(element);
 				}
 			},
-			ignore: ':hidden',
+			ignore: "",
+			rules: {
+				"netflex_userbundle_user[password]": {
+					maxlength: 255
+				},
+			},
+			messages: {
+				"netflex_userbundle_user[password]": {
+					maxlength: 'Password cannot be more than 255 characters'
+				}
+			},
+			invalidHandler: function (event, validator) {
+				successHandler.hide();
+				errorHandler.show();
+			},
 			highlight: function (element) {
-				jQuery(element).closest('.help-block').removeClass('valid');
-				jQuery(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
+				$(element).closest('.help-block').removeClass('valid');
+				$(element).closest('.form-group').removeClass('has-success').addClass('has-error').find('.symbol').removeClass('ok').addClass('required');
 			},
 			unhighlight: function (element) {
-				jQuery(element).closest('.form-group').removeClass('has-error');
+				$(element).closest('.form-group').removeClass('has-error');
 			},
 			success: function (label, element) {
 				label.addClass('help-block valid');
-				jQuery(element).closest('.form-group').removeClass('has-error');
-			},
-			highlight: function (element) {
-				jQuery(element).closest('.help-block').removeClass('valid');
-				jQuery(element).closest('.form-group').addClass('has-error');
-			},
-			unhighlight: function (element) {
-				jQuery(element).closest('.form-group').removeClass('has-error');
-			}
-		});
-	};
-	var runRegisterClientFromDashboardValidator = function () {
-		var form = jQuery('.form-register-client-from-dashboard');
-		var errorHandler = jQuery('.errorHandler', form);
-		form.validate({
-			rules: {
-				_username: {
-					required: true
-				},
-				_password: {
-					required: true
-				}
+				$(element).closest('.form-group').removeClass('has-error').addClass('has-success').find('.symbol').removeClass('required').addClass('ok');
 			},
 			submitHandler: function (form) {
 				errorHandler.hide();
 				form.submit();
-			},
-			invalidHandler: function (event, validator) {
-				errorHandler.show();
 			}
 		});
 	};
 	return {
 		init: function () {
 			activateCustomStyledCheckBox();
-			runSetDefaultValidation();
 			runRegisterClientFromDashboardValidator();
 		}
 	};
@@ -185,30 +176,39 @@ jQuery(document).ready(function() {
 	jQuery("#address-container").on("ifChecked", ".primary-address-selector", function(e) {
 		var element = jQuery(this);
 		var thisId = jQuery(element).attr("id");
-		var thisRelatedAddressType = jQuery(element).parent().parent().parent().prev(".form-group").find(".address-type-selector").val();
+		var thisRelatedAddressType = jQuery(element).parent().parent().parent().parent().prev(".form-group").find(".address-type-selector").val();
 		
 		jQuery(".primary-address-selector").each(function() {
 			var thatId = jQuery(this).attr("id");
 			
 			if ((thisId !== thatId) && (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked"))) {
-				var thatRelatedAddressType = jQuery(this).parent().parent().parent().prev(".form-group").find(".address-type-selector").val();
+				var thatRelatedAddressType = jQuery(this).parent().parent().parent().parent().prev(".form-group").find(".address-type-selector").val();
 				
 				if (thisRelatedAddressType == thatRelatedAddressType) {
 					swal("Not Allowed!", "You can set only one billing and one pickup address as preferred at a time!");
 					
-					jQuery("#" + thisId).iCheck("uncheck");
+					jQuery("#" + thisId).prop("checked", false);
+					jQuery(".primary-address-selector").iCheck(update);
 				}
 			}
 		});
 	});
 	
 	jQuery("#email-container").on("ifChecked", ".primary-email-selector", function(e) {
-		var primaryEmails = jQuery(".primary-email-selector").parent('[class*="icheckbox"]').hasClass("checked").length;
+		var primaryEmailCount = 1;
+		var thisId = jQuery(this).attr("id");
 		
-		if (1 < primaryEmails) {
+		jQuery(".primary-email-selector").each(function() {
+			if (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked")) {
+				primaryEmailCount++;
+			}
+		});
+		
+		if (1 < primaryEmailCount) {
 			swal("Not Allowed!", "You can set only one email as preferred at a time!");
 			
-			jQuery(this).iCheck("uncheck");
+			jQuery(this).prop("checked", false);
+			jQuery(".primary-email-selector").iCheck(update);
 		}
 	});
 	
@@ -225,7 +225,8 @@ jQuery(document).ready(function() {
 		if (1 < primaryContactCount) {
 			swal("Not Allowed!", "You can set only one contact number as preferred at a time!");
 			
-			jQuery("#" + thisId).parent('[class*="icheckbox"]').removeClass("checked");
+			jQuery(this).prop("checked", false);
+			jQuery(".primary-contact-selector").iCheck(update);
 		}
 	});
 });

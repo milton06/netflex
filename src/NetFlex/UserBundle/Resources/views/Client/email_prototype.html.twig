@@ -2,10 +2,10 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="row form-group">
+		<div class="row form-group{{ (0 < thisEmail.email.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisEmail.email, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
-				{{ form_widget(thisEmail.email, { 'required': false, 'attr': { 'placeholder': 'Email' } }) }}
+				{{ form_widget(thisEmail.email, { 'attr': { 'placeholder': 'Email' } }) }}
 				{{ form_errors(thisEmail.email) }}
 			</div>
 		</div>
@@ -13,7 +13,7 @@
 			<div class="col-md-4">&nbsp;</div>
 			<div class="col-md-8">
 				<label class="checkbox-inline">
-					{{ form_widget(thisEmail.isPrimary, { 'attr': { 'class': 'primary-email-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+					{{ form_widget(thisEmail.isPrimary, { 'required': false, 'attr': { 'class': 'primary-email-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
 					{{ form_errors(thisEmail.isPrimary) }}
 				</label>
 			</div>

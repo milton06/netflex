@@ -3,6 +3,7 @@
 namespace NetFlex\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use NetFlex\UserBundle\Entity\User;
 
 /**
@@ -32,13 +33,21 @@ class Contact
      * @var string
      *
      * @ORM\Column(name="contact_number", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
+     * @Assert\Type(
+     *     type="numeric",
+     *     message="Contact number must contain only digits."
+     * )
      */
     private $contactNumber;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_primary", type="boolean")
+     * @ORM\Column(name="is_primary", type="boolean", nullable=true)
      */
     private $isPrimary;
 
@@ -111,11 +120,11 @@ class Contact
     /**
      * Set isPrimary
      *
-     * @param boolean $isPrimary
+     * @param boolean|null $isPrimary
      *
      * @return Contact
      */
-    public function setIsPrimary($isPrimary)
+    public function setIsPrimary($isPrimary = null)
     {
         $this->isPrimary = $isPrimary;
 

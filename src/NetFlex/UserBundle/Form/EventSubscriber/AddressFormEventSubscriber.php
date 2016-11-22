@@ -22,7 +22,7 @@ class AddressFormEventSubscriber implements EventSubscriberInterface
 	{
 		return [
 			FormEvents::PRE_SET_DATA => 'preSetData',
-			FormEvents::PRE_SUBMIT => 'preSubmit',
+			FormEvents::POST_SUBMIT => 'postSubmit',
 		];
 	}
 	
@@ -32,7 +32,7 @@ class AddressFormEventSubscriber implements EventSubscriberInterface
 		$formData = $formEvent->getData();
 	}
 	
-	public function preSubmit(FormEvent $formEvent)
+	public function postSubmit(FormEvent $formEvent)
 	{
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();

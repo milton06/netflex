@@ -2,7 +2,7 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="row form-group">
+		<div class="row form-group{{ (0 < thisAddress.addressLine1.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisAddress.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
 				{{ form_widget(thisAddress.addressLine1, { 'attr': { 'placeholder': 'Address Line 1' } }) }}
@@ -10,27 +10,27 @@
 			</div>
 		</div>
 		<div class="row form-group">
-			{{ form_label(thisAddress.addressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			{{ form_label(thisAddress.addressLine2, 'Address Line 2', { 'required': false, 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
-				{{ form_widget(thisAddress.addressLine2) }}
+				{{ form_widget(thisAddress.addressLine2, { 'attr': { 'placeholder': 'Address Line 2' } }) }}
 				{{ form_errors(thisAddress.addressLine2) }}
 			</div>
 		</div>
-		<div class="row form-group">
+		<div class="row form-group{{ (0 < thisAddress.countryId.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisAddress.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
 				{{ form_widget(thisAddress.countryId, { 'attr': { 'class': 'country' } }) }}
 				{{ form_errors(thisAddress.countryId) }}
 			</div>
 		</div>
-		<div class="row form-group">
+		<div class="row form-group{{ (0 < thisAddress.stateId.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisAddress.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
 				{{ form_widget(thisAddress.stateId, { 'attr': { 'class': 'state' } }) }}
 				{{ form_errors(thisAddress.stateId) }}
 			</div>
 		</div>
-		<div class="row form-group">
+		<div class="row form-group{{ (0 < thisAddress.cityId.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisAddress.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
 				{{ form_widget(thisAddress.cityId, { 'attr': { 'class': 'city' } }) }}
@@ -38,6 +38,13 @@
 			</div>
 		</div>
 		<div class="row form-group">
+			{{ form_label(thisAddress.zipCode, 'Zip Code', { 'label_attr': { 'class': 'col-md-4' } }) }}
+			<div class="col-md-8">
+				{{ form_widget(thisAddress.zipCode, { 'attr': { 'placeholder': 'Zip Code' } }) }}
+				{{ form_errors(thisAddress.zipCode) }}
+			</div>
+		</div>
+		<div class="row form-group{{ (0 < thisAddress.addressTypeId.vars.errors|length) ? ' has-error': '' }}">
 			{{ form_label(thisAddress.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
 			<div class="col-md-8">
 				{{ form_widget(thisAddress.addressTypeId, { 'attr': { 'class': 'address-type-selector' } }) }}
@@ -48,7 +55,7 @@
 			<div class="col-md-4">&nbsp;</div>
 			<div class="col-md-8">
 				<label class="checkbox-inline">
-					{{ form_widget(thisAddress.isPrimary, { 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+					{{ form_widget(thisAddress.isPrimary, { 'required': false, 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
 					{{ form_errors(thisAddress.isPrimary) }}
 				</label>
 			</div>

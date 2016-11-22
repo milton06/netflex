@@ -3,6 +3,8 @@
 namespace NetFlex\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use NetFlex\UserBundle\Entity\User;
 
 /**
@@ -10,6 +12,10 @@ use NetFlex\UserBundle\Entity\User;
  *
  * @ORM\Table(name="emails")
  * @ORM\Entity(repositoryClass="NetFlex\UserBundle\Repository\EmailRepository")
+ * @UniqueEntity(
+ *     "email",
+ *     message="This email is already taken."
+ * )
  */
 class Email
 {
@@ -32,13 +38,20 @@ class Email
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="This field is required."
+     * )
+     * @Assert\Email(
+     *     message="Please enter a valid email."
+     * )
      */
     private $email;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_primary", type="boolean")
+     * @ORM\Column(name="is_primary", type="boolean", nullable=true)
      */
     private $isPrimary;
 
@@ -111,11 +124,11 @@ class Email
     /**
      * Set isPrimary
      *
-     * @param boolean $isPrimary
+     * @param boolean|null $isPrimary
      *
      * @return Email
      */
-    public function setIsPrimary($isPrimary)
+    public function setIsPrimary($isPrimary = null)
     {
         $this->isPrimary = $isPrimary;
 

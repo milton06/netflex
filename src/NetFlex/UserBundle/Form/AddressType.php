@@ -30,7 +30,9 @@ class AddressType extends AbstractType
     {
 	    if ('register_client_from_dashboard' === $this->request->get('_route')) {
 		    $builder->add('addressLine1')
-			    ->add('addressLine2')
+			    ->add('addressLine2', null, [
+			    	'required' => false,
+			    ])
 			    ->add('countryId', EntityType::class, [
 				    'placeholder' => '-Select A Country-',
 				    'class' => 'NetFlexLocationBundle:Country',
@@ -72,11 +74,52 @@ class AddressType extends AbstractType
 				    },
 				    'data' => $this->em->getReference('NetFlexUserBundle:AddressType', ['id' => 1, 'status' => 1]),
 			    ])
-			    ->add('isPrimary', null, [
-				    'empty_data' => 0,
-			    ]);
-	    } else {
-		    //
+			    ->add('zipCode')
+			    ->add('isPrimary');
+	    } elseif ('edit_client_profile_from_dashboard' === $this->request->get('_route')) {
+		    $builder->add('addressLine1')
+			    ->add('addressLine2', null, [
+				    'required' => false,
+			    ])
+			    ->add('countryId', EntityType::class, [
+				    'placeholder' => '-Select A Country-',
+				    'class' => 'NetFlexLocationBundle:Country',
+				    'query_builder' => function(EntityRepository $er) {
+					    return $er->createQueryBuilder('country')
+						    ->where('country.status = 1')
+						    ->orderBy('country.name', 'ASC');
+				    }
+			    ])
+			    ->add('stateId', EntityType::class, [
+				    'placeholder' => '-Select A State-',
+				    'class' => 'NetFlexLocationBundle:State',
+				    'query_builder' => function(EntityRepository $er) {
+					    return $er->createQueryBuilder('states')
+						    ->where('states.status = 1')
+						    ->orderBy('states.name', 'ASC');
+				    }
+			    ])
+			    ->add('cityId', EntityType::class, [
+				    'placeholder' => '-Select A City-',
+				    'class' => 'NetFlexLocationBundle:City',
+				    'query_builder' => function(EntityRepository $er) {
+					    return $er->createQueryBuilder('cities')
+						    ->where('cities.status = 1')
+						    ->orderBy('cities.name', 'ASC');
+				    }
+			    ])
+			    ->add('addressTypeId', EntityType::class, [
+				    'placeholder' => '-Select An Address Type-',
+				    'class' => 'NetFlexUserBundle:AddressType',
+				    'query_builder' => function(EntityRepository $er) {
+					    return $er->createQueryBuilder('addressType')
+						    ->where('addressType.id = 1 OR addressType.id = 2')
+						    ->andWhere('addressType.status = 1')
+						    ->orderBy('addressType.id', 'ASC');
+				    }
+			    ])
+			    ->add('zipCode')
+			    ->add('isPrimary');
 	    }
     }
     

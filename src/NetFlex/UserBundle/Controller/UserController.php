@@ -93,7 +93,6 @@ class UserController extends Controller
 	    /**
 	     * Set default values.
 	     */
-	    $user->addRole($clientRole);
 	    $user->addAddress($address);
 	    $user->addContact($contact);
 	    $user->addEmail($email);
@@ -103,7 +102,48 @@ class UserController extends Controller
 	    $registerClientForm->handleRequest($request);
 	    
 	    if ($registerClientForm->isSubmitted() && $registerClientForm->isValid()) {
-		    // TODO: handle client registration
+		    $passwordEncoder = $this->get('security.password_encoder');
+		    $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
+		    $user->setPassword($encodedPassword);
+		
+		    $user->addRole($clientRole);
+		    $user->setStatus(1);
+		    $thisDateTime = new \DateTime();
+		    $user->setCreatedOn($thisDateTime);
+		    $user->setCreatedBy($this->getUser()->getId());
+		    $user->setLastModifiedOn($thisDateTime);
+		    $user->setLastModifiedBy($this->getUser()->getId());
+		    
+		    $addresses = $user->getAddresses();
+		    $emails = $user->getEmails();
+		    $contacts = $user->getContacts();
+		    
+		    foreach ($addresses as $thisAddress) {
+			    $thisAddress->setStatus(1);
+			    $thisAddress->setUserId($user);
+			    
+			    $em->persist($thisAddress);
+		    }
+		    
+		    foreach ($emails as $thisEmail) {
+			    $thisEmail->setStatus(1);
+			    $thisEmail->setUserId($user);
+			    
+			    $em->persist($thisEmail);
+		    }
+		    
+		    foreach ($contacts as $thisContact) {
+			    $thisContact->setStatus(1);
+			    $thisContact->setUserId($user);
+			    
+			    $em->persist($thisContact);
+		    }
+		    
+		    $em->flush();
+		    
+		    $userId = $user->getId();
+		    
+		    return $this->redirectToRoute('edit_client_profile_from_dashboard', ['id' => $userId]);
 	    }
 	
 	    $breadCrumbs = [
@@ -128,6 +168,117 @@ class UserController extends Controller
 		    'registerClientForm' => $registerClientForm->createView(),
 	    ]);
     }
+	
+	/**
+	 * Renders a client profile edit page in the dashboard.
+	 * Also handles client profile updation in the dashboard.
+	 *
+	 * @Route("/dashboard/client/edit/{id}", name="edit_client_profile_from_dashboard")
+	 * @Method({"GET", "POST"})
+	 *
+	 * @param  User    $user
+	 * @param  Request $request A request instance
+	 *
+	 * @return Response         A response instance
+	 */
+	public function editClientProfileFromDashboard(User $user, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		/**
+		 * Repositories.
+		 */
+		//$roleRepo = $em->getRepository('NetFlexUserBundle:Role');
+		
+		/**
+		 * Default values.
+		 */
+		//$clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
+		
+		/**
+		 * User entity components.
+		 */
+		//$address = new Address();
+		//$contact = new Contact();
+		//$email = new Email();
+		//$user = new User();
+		
+		/**
+		 * Set default values.
+		 */
+		//$user->addAddress($address);
+		//$user->addContact($contact);
+		//$user->addEmail($email);
+		
+		$registerClientForm = $this->createForm(UserType::class, $user);
+		
+		$registerClientForm->handleRequest($request);
+		
+		if ($registerClientForm->isSubmitted() && $registerClientForm->isValid()) {
+			$passwordEncoder = $this->get('security.password_encoder');
+			$encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
+			$user->setPassword($encodedPassword);
+			
+			//$user->addRole($clientRole);
+			//$user->setStatus(1);
+			$thisDateTime = new \DateTime();
+			//$user->setCreatedOn($thisDateTime);
+			//$user->setCreatedBy($this->getUser()->getId());
+			$user->setLastModifiedOn($thisDateTime);
+			$user->setLastModifiedBy($this->getUser()->getId());
+			
+			$addresses = $user->getAddresses();
+			$emails = $user->getEmails();
+			$contacts = $user->getContacts();
+			
+			foreach ($addresses as $thisAddress) {
+				$thisAddress->setStatus(1);
+				$thisAddress->setUserId($user);
+				
+				$em->persist($thisAddress);
+			}
+			
+			foreach ($emails as $thisEmail) {
+				$thisEmail->setStatus(1);
+				$thisEmail->setUserId($user);
+				
+				$em->persist($thisEmail);
+			}
+			
+			foreach ($contacts as $thisContact) {
+				$thisContact->setStatus(1);
+				$thisContact->setUserId($user);
+				
+				$em->persist($thisContact);
+			}
+			
+			$em->flush();
+			
+			return $this->redirectToRoute('edit_client_profile_from_dashboard', ['id' => $user->getId()]);
+		}
+		
+		$breadCrumbs = [
+			[
+				'title' => 'Dashboard Home',
+				'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'Client List',
+				'link' => $this->generateUrl('client_list', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'Register New Client',
+				'link' => $this->generateUrl('register_client_from_dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL)
+			],
+		];
+		
+		return $this->render('NetFlexUserBundle:Client:edit_client_profile_from_dashboard.html.twig', [
+			'pageTitle' => 'Register New Client',
+			'breadCrumbs' => $breadCrumbs,
+			'pageHeader' => '<h1>Register <small>new client </small></h1>',
+			'registerClientForm' => $registerClientForm->createView(),
+		]);
+	}
 	
 	/**
 	 * Gets all the states of a country.
