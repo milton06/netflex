@@ -178,7 +178,7 @@ jQuery(document).ready(function() {
 		var thisId = jQuery(element).attr("id");
 		var thisRelatedAddressType = jQuery(element).parent().parent().parent().parent().prev(".form-group").find(".address-type-selector").val();
 		
-		jQuery(".primary-address-selector").each(function() {
+		jQuery("#address-container .primary-address-selector").each(function() {
 			var thatId = jQuery(this).attr("id");
 			
 			if ((thisId !== thatId) && (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked"))) {
@@ -188,8 +188,33 @@ jQuery(document).ready(function() {
 					swal("Not Allowed!", "You can set only one billing and one pickup address as preferred at a time!");
 					
 					jQuery("#" + thisId).prop("checked", false);
-					jQuery(".primary-address-selector").iCheck(update);
+					jQuery("#address-container .primary-address-selector").iCheck(update);
 				}
+			}
+		});
+	});
+	
+	jQuery("#address-container").on("change", ".address-type-selector", function(e) {
+		//alert("Hello");
+		var element = jQuery(this);
+		var thisId = jQuery(element).attr("id");
+		var thisValue = jQuery(element).val();
+		var thisClosestPrimarySetter = jQuery(element).parent().parent().next(".form-group").find(".primary-address-selector");
+		var thisClosestPrimarySetterId = jQuery(element).parent().parent().next(".form-group").find(".primary-address-selector").attr("id");
+		console.log(thisClosestPrimarySetterId);
+		var isThisMadePrimary = jQuery(thisClosestPrimarySetter).parent('[class*="icheckbox"]').hasClass("checked");
+		
+		jQuery("#address-container .address-type-selector").each(function() {
+			var thatId = jQuery(this).attr("id");
+			var thatValue = jQuery(this).val();
+			var thatClosestPrimarySetter = jQuery(this).parent().parent().next(".form-group").find(".primary-address-selector");
+			var isThatMadeMadePrimary = jQuery(thatClosestPrimarySetter).parent('[class*="icheckbox"]').hasClass("checked");
+			
+			if ((thisId !== thatId) && (thisValue === thatValue) && (isThisMadePrimary === isThatMadeMadePrimary)) {
+				swal("Not Allowed!", "You can set only one billing and one pickup address as preferred at a time!");
+				
+				jQuery("#" + thisClosestPrimarySetterId).prop("checked", false);
+				jQuery("#address-container .primary-address-selector").iCheck("update");
 			}
 		});
 	});
@@ -198,7 +223,7 @@ jQuery(document).ready(function() {
 		var primaryEmailCount = 1;
 		var thisId = jQuery(this).attr("id");
 		
-		jQuery(".primary-email-selector").each(function() {
+		jQuery("#email-container .primary-email-selector").each(function() {
 			if (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked")) {
 				primaryEmailCount++;
 			}
@@ -208,7 +233,7 @@ jQuery(document).ready(function() {
 			swal("Not Allowed!", "You can set only one email as preferred at a time!");
 			
 			jQuery(this).prop("checked", false);
-			jQuery(".primary-email-selector").iCheck(update);
+			jQuery("#email-container .primary-email-selector").iCheck(update);
 		}
 	});
 	
@@ -216,7 +241,7 @@ jQuery(document).ready(function() {
 		var primaryContactCount = 1;
 		var thisId = jQuery(this).attr("id");
 		
-		jQuery(".primary-contact-selector").each(function() {
+		jQuery("#contact-container .primary-contact-selector").each(function() {
 			if (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked")) {
 				primaryContactCount++;
 			}
@@ -226,7 +251,7 @@ jQuery(document).ready(function() {
 			swal("Not Allowed!", "You can set only one contact number as preferred at a time!");
 			
 			jQuery(this).prop("checked", false);
-			jQuery(".primary-contact-selector").iCheck(update);
+			jQuery("#contact-container .primary-contact-selector").iCheck(update);
 		}
 	});
 });
