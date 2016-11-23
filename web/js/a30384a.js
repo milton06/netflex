@@ -269,6 +269,18 @@ jQuery(document).ready(function() {
 		}
 	});
 	
+	jQuery(document).ready(function() {
+		if ($(".show-tab").length) {
+			$('.show-tab').bind('click', function (e) {
+				e.preventDefault();
+				var tabToShow = $(this).attr("href");
+				if ($(tabToShow).length) {
+					$('a[href="' + tabToShow + '"]').tab('show');
+				}
+			});
+		};
+	});
+	
 	if (0 < jQuery(".server-message").length) {
 		setTimeout('jQuery(".server-message").remove()', 5000);
 	}

@@ -85,8 +85,8 @@ class AddressType extends AbstractType
 			    ])
 			    ->add('zipCode')
 			    ->add('isPrimary')
-		        ->add('status');
-		
+			    ->add('status');
+		    
 		    $builder->addEventSubscriber(new AddressFormEditEventSubscriber($this->em));
 	    }
     }

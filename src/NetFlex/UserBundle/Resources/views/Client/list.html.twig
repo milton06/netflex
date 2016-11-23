@@ -22,7 +22,7 @@
             <div class="row">
                 {{ form_start(searchForm, { 'attr': { 'class': 'form-horizontal', 'role': 'form', 'novalidate': 'novalidate' } }) }}
                 <div class="col-md-6">
-                    {{ form_widget(searchForm.clientName, { 'id': 'client-name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Username' } }) }}
+                    {{ form_widget(searchForm.clientName, { 'id': 'client-name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Username Or Full Name' } }) }}
                 </div>
                 <div class="col-md-6">
                     <input type="submit" class="btn btn-sm btn-primary tooltips" value="Filter" data-placement="top" data-original-title="Filter clients">
@@ -170,6 +170,8 @@
                                         <td>{{ thisClient.created_on|date('F jS, Y') }}</td>
                                         <td class="center">
                                             <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': thisClient.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': clients|length }) }}" class="btn btn-xs btn-bricky tooltips delete-buttons" data-placement="top" data-original-title="Delete Client"><i class="clip-remove"></i></a>
+                                            <a href="{{ url('edit_client_profile_from_dashboard', { 'userId': thisClient.id, 'ref': referrer }) }}" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit Client"><i class="clip-pencil-2"></i></a>
+                                            <a href="{{ url('view_client_profile_in_dashboard', { 'userId': thisClient.id, 'ref': referrer }) }}" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="View Client"><i class="clip-eye-2"></i></a>
                                         </td>
                                     </tr>
                                 {% endfor %}

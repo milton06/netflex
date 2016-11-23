@@ -21,13 +21,6 @@
 {% block pageContent %}
     <div class="row">
 		<div class="col-md-12">
-			{% if inactiveAssociationsErrorText %}
-				<div class="alert alert-danger">
-					<button data-dismiss="alert" class="close">×</button>
-					<i class="fa fa-times-circle"></i>
-					<strong>Oh snap!</strong> {{ inactiveAssociationsErrorText }}.
-				</div>
-			{% endif %}
 			{% if app.session.flashbag.peek('success') %}
 				<div class="alert alert-success server-message">
 					<button data-dismiss="alert" class="close">×</button>
@@ -118,80 +111,89 @@
                                 {{ form_errors(registerClientForm.lastName) }}
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#addresses" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="addresses">
 	                    <div class="row">
 		                    <div id="address-container" class="col-md-12" data-prototype="{{ include('NetFlexUserBundle:Client:address_prototype.html.twig', { 'thisAddress': registerClientForm.addresses.vars.prototype })|e }}">
-			                    {% for thisAddress in registerClientForm.addresses %}
-				                    <div class="row">
-					                    <div class="col-md-12">
-						                    <div class="row form-group{{ (0 < thisAddress.addressLine1.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisAddress.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisAddress.addressLine1, { 'attr': { 'placeholder': 'Address Line 1' } }) }}
-								                    {{ form_errors(thisAddress.addressLine1) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group">
-							                    {{ form_label(thisAddress.addressLine2, 'Address Line 2', { 'required': false, 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisAddress.addressLine2, { 'attr': { 'placeholder': 'Address Line 2' } }) }}
-								                    {{ form_errors(thisAddress.addressLine2) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group{{ (0 < thisAddress.countryId.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisAddress.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisAddress.countryId, { 'attr': { 'class': 'country' } }) }}
-								                    {{ form_errors(thisAddress.countryId) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group{{ (0 < thisAddress.stateId.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisAddress.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisAddress.stateId, { 'attr': { 'class': 'state' } }) }}
-								                    {{ form_errors(thisAddress.stateId) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group{{ (0 < thisAddress.cityId.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisAddress.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisAddress.cityId, { 'attr': { 'class': 'city' } }) }}
-								                    {{ form_errors(thisAddress.cityId) }}
-							                    </div>
-						                    </div>
-											<div class="row form-group">
-												{{ form_label(thisAddress.zipCode, 'Zip Code', { 'label_attr': { 'class': 'col-md-4' } }) }}
-												<div class="col-md-8">
-													{{ form_widget(thisAddress.zipCode, { 'attr': { 'placeholder': 'Zip Code' } }) }}
-													{{ form_errors(thisAddress.zipCode) }}
+								{% if registerClientForm.addresses %}
+									{% for thisAddress in registerClientForm.addresses %}
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row form-group{{ (0 < thisAddress.addressLine1.vars.errors|length) ? ' has-error': '' }}">
+													{{ form_label(thisAddress.addressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.addressLine1, { 'attr': { 'placeholder': 'Address Line 1' } }) }}
+														{{ form_errors(thisAddress.addressLine1) }}
+													</div>
+												</div>
+												<div class="row form-group">
+													{{ form_label(thisAddress.addressLine2, 'Address Line 2', { 'required': false, 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.addressLine2, { 'attr': { 'placeholder': 'Address Line 2' } }) }}
+														{{ form_errors(thisAddress.addressLine2) }}
+													</div>
+												</div>
+												<div class="row form-group{{ (0 < thisAddress.countryId.vars.errors|length) ? ' has-error': '' }}">
+													{{ form_label(thisAddress.countryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.countryId, { 'attr': { 'class': 'country' } }) }}
+														{{ form_errors(thisAddress.countryId) }}
+													</div>
+												</div>
+												<div class="row form-group{{ (0 < thisAddress.stateId.vars.errors|length) ? ' has-error': '' }}">
+													{{ form_label(thisAddress.stateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.stateId, { 'attr': { 'class': 'state' } }) }}
+														{{ form_errors(thisAddress.stateId) }}
+													</div>
+												</div>
+												<div class="row form-group{{ (0 < thisAddress.cityId.vars.errors|length) ? ' has-error': '' }}">
+													{{ form_label(thisAddress.cityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.cityId, { 'attr': { 'class': 'city' } }) }}
+														{{ form_errors(thisAddress.cityId) }}
+													</div>
+												</div>
+												<div class="row form-group">
+													{{ form_label(thisAddress.zipCode, 'Zip Code', { 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.zipCode, { 'attr': { 'placeholder': 'Zip Code' } }) }}
+														{{ form_errors(thisAddress.zipCode) }}
+													</div>
+												</div>
+												<div class="row form-group{{ (0 < thisAddress.addressTypeId.vars.errors|length) ? ' has-error': '' }}">
+													{{ form_label(thisAddress.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
+													<div class="col-md-8">
+														{{ form_widget(thisAddress.addressTypeId, { 'attr': { 'class': 'address-type-selector' } }) }}
+														{{ form_errors(thisAddress.addressTypeId) }}
+													</div>
+												</div>
+												<div class="row form-group">
+													<div class="col-md-4">&nbsp;</div>
+													<div class="col-md-4">
+														<label class="checkbox-inline">
+															{{ form_widget(thisAddress.isPrimary, { 'required': false, 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+															{{ form_errors(thisAddress.isPrimary) }}
+														</label>
+													</div>
+													<div class="col-md-4">
+														<label class="checkbox-inline">
+															{{ form_widget(thisAddress.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
+															{{ form_errors(thisAddress.status) }}
+														</label>
+													</div>
 												</div>
 											</div>
-						                    <div class="row form-group{{ (0 < thisAddress.addressTypeId.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisAddress.addressTypeId, 'Address Type', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisAddress.addressTypeId, { 'attr': { 'class': 'address-type-selector' } }) }}
-								                    {{ form_errors(thisAddress.addressTypeId) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group">
-							                    <div class="col-md-4">&nbsp;</div>
-							                    <div class="col-md-4">
-								                    <label class="checkbox-inline">
-									                    {{ form_widget(thisAddress.isPrimary, { 'required': false, 'attr': { 'class': 'primary-address-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
-									                    {{ form_errors(thisAddress.isPrimary) }}
-								                    </label>
-							                    </div>
-							                    <div class="col-md-4">
-								                    <label class="checkbox-inline">
-									                    {{ form_widget(thisAddress.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
-									                    {{ form_errors(thisAddress.status) }}
-								                    </label>
-							                    </div>
-						                    </div>
-					                    </div>
-				                    </div>
-			                    {% endfor %}
+										</div>
+									{% endfor %}
+								{% endif %}
 		                    </div>
 	                    </div>
 	                    <div class="row">
@@ -200,38 +202,52 @@
 			                    <button id="add-another-address-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Address</button>
 		                    </div>
 	                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#general" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#emails" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="emails">
 	                    <div class="row">
 		                    <div id="email-container" class="col-md-12" data-prototype="{{ include('NetFlexUserBundle:Client:email_prototype.html.twig', { 'thisEmail': registerClientForm.emails.vars.prototype })|e }}">
-			                    {% for thisEmail in registerClientForm.emails %}
-				                    <div class="row">
-					                    <div class="col-md-12">
-						                    <div class="row form-group{{ (0 < thisEmail.email.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisEmail.email, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisEmail.email, { 'attr': { 'placeholder': 'Email' } }) }}
-								                    {{ form_errors(thisEmail.email) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group">
-							                    <div class="col-md-4">&nbsp;</div>
-							                    <div class="col-md-4">
-								                    <label class="checkbox-inline">
-									                    {{ form_widget(thisEmail.isPrimary, { 'required': false, 'attr': { 'class': 'primary-email-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
-									                    {{ form_errors(thisEmail.isPrimary) }}
-								                    </label>
-							                    </div>
-							                    <div class="col-md-4">
-								                    <label class="checkbox-inline">
-									                    {{ form_widget(thisEmail.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
-									                    {{ form_errors(thisEmail.status) }}
-								                    </label>
-							                    </div>
-						                    </div>
-					                    </div>
-				                    </div>
-			                    {% endfor %}
+			                    {% if registerClientForm.emails %}
+                                    {% for thisEmail in registerClientForm.emails %}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row form-group{{ (0 < thisEmail.email.vars.errors|length) ? ' has-error': '' }}">
+                                                    {{ form_label(thisEmail.email, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                                    <div class="col-md-8">
+                                                        {{ form_widget(thisEmail.email, { 'attr': { 'placeholder': 'Email' } }) }}
+                                                        {{ form_errors(thisEmail.email) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-4">&nbsp;</div>
+                                                    <div class="col-md-4">
+                                                        <label class="checkbox-inline">
+                                                            {{ form_widget(thisEmail.isPrimary, { 'required': false, 'attr': { 'class': 'primary-email-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+                                                            {{ form_errors(thisEmail.isPrimary) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="checkbox-inline">
+                                                            {{ form_widget(thisEmail.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
+                                                            {{ form_errors(thisEmail.status) }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+								{% endif %}
 		                    </div>
 	                    </div>
 	                    <div class="row">
@@ -240,37 +256,51 @@
 			                    <button id="add-another-email-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Email</button>
 		                    </div>
 	                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#addresses" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#contacts" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="contacts">
 	                    <div class="row">
 		                    <div id="contact-container" class="col-md-12" data-prototype="{{ include('NetFlexUserBundle:Client:contact_prototype.html.twig', { 'thisContact': registerClientForm.contacts.vars.prototype })|e }}">
-			                    {% for thisContact in registerClientForm.contacts %}
-				                    <div class="row">
-					                    <div class="col-md-12">
-						                    <div class="row form-group{{ (0 < thisContact.contactNumber.vars.errors|length) ? ' has-error': '' }}">
-							                    {{ form_label(thisContact.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
-							                    <div class="col-md-8">
-								                    {{ form_widget(thisContact.contactNumber, { 'attr': { 'placeholder': 'Contact Number' } }) }}
-								                    {{ form_errors(thisContact.contactNumber) }}
-							                    </div>
-						                    </div>
-						                    <div class="row form-group">
-							                    <div class="col-md-4">&nbsp;</div>
-							                    <div class="col-md-4">
-								                    <label class="checkbox-inline">
-									                    {{ form_widget(thisContact.isPrimary, { 'required': false, 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
-									                    {{ form_errors(thisContact.isPrimary) }}
-								                    </label>
-							                    </div>
-							                    <div class="col-md-4">
-								                    <label class="checkbox-inline">
-									                    {{ form_widget(thisContact.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
-								                    </label>
-							                    </div>
-						                    </div>
-					                    </div>
-				                    </div>
-			                    {% endfor %}
+                                {% if registerClientForm.contacts %}
+                                    {% for thisContact in registerClientForm.contacts %}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row form-group{{ (0 < thisContact.contactNumber.vars.errors|length) ? ' has-error': '' }}">
+                                                    {{ form_label(thisContact.contactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                                    <div class="col-md-8">
+                                                        {{ form_widget(thisContact.contactNumber, { 'attr': { 'placeholder': 'Contact Number' } }) }}
+                                                        {{ form_errors(thisContact.contactNumber) }}
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-4">&nbsp;</div>
+                                                    <div class="col-md-4">
+                                                        <label class="checkbox-inline">
+                                                            {{ form_widget(thisContact.isPrimary, { 'required': false, 'attr': { 'class': 'primary-contact-selector flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Set As Primary
+                                                            {{ form_errors(thisContact.isPrimary) }}
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label class="checkbox-inline">
+                                                            {{ form_widget(thisContact.status, { 'required': false, 'attr': { 'class': 'flat-grey', 'style': 'margin-top: 0px !important;' } }) }}&nbsp;&nbsp;Status
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
 		                    </div>
 	                    </div>
 	                    <div class="row" style="margin-bottom: 10px;">
@@ -280,10 +310,14 @@
 		                    </div>
 	                    </div>
 	                    <div class="row">
-		                    <div class="col-md-4">&nbsp;</div>
+		                    <div class="col-md-4">
+                                <a href="#emails" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
 		                    <div class="col-md-8">
 			                    <button type="submit" id="register-client-button" class="btn btn-primary">
-                                    Update <i class="fa fa-arrow-circle-right"></i>
+                                    Update <i class="clip-pencil-3"></i>
                                 </button>
 		                    </div>
 	                    </div>
@@ -293,6 +327,12 @@
             {{ form_end(registerClientForm) }}
         </div>
     </div>
+    <div class="row clearfix">
+        <div class="col-md-12 pull-left">
+            <a href="{{ (referrer) ? referrer : url('client_list') }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back To List</a>
+        </div>
+    </div>
+    <br/>
 {% endblock %}
 
 {% block pageScripts %}

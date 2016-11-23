@@ -1,0 +1,251 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+	<div class="row">
+        <div class="col-md-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs tab-padding tab-space-3">
+                    <li class="active">
+                        <a href="#general" data-toggle="tab">
+	                        <i class="fa fa-user"></i>
+                            General
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#addresses" data-toggle="tab">
+	                        <i class="fa fa-book"></i>
+                            Addresses
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#emails" data-toggle="tab">
+	                        <i class="fa fa-envelope"></i>
+                            Emails
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contacts" data-toggle="tab">
+	                        <i class="fa fa-phone"></i>
+                            Contacts
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane in active" id="general">
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<tr>
+									<th>Username: </th>
+									<td>
+										{{ user.getUsername() }}
+									</td>
+								</tr>
+								<tr>
+									<th>First Name: </th>
+									<td>
+										{{ user.getFirstName() }}
+									</td>
+								</tr>
+								<tr>
+									<th>Middle Name: </th>
+									<td>
+										{{ (user.getMidName()) ? user.getMidName() : 'Not Given' }}
+									</td>
+								</tr>
+								<tr>
+									<th>Last Name: </th>
+									<td>
+										{{ user.getLastName() }}
+									</td>
+								</tr>
+							</table>
+						</div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#addresses" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="addresses">
+						<div class="table-responsive">
+							{% if user.addresses %}
+								{% for address in user.addresses %}
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th colspan="2">
+													Address {{ loop.index }}
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>Address Line 1</th>
+												<td>{{ address.getAddressLine1() }}</td>
+											</tr>
+											<tr>
+												<th>Address Line 2</th>
+												<td>{{ (address.getAddressLine1()) ? address.getAddressLine1() : 'Not Given' }}</td>
+											</tr>
+											<tr>
+												<th>Country</th>
+												<td>{{ address.getCountryId().getName() }}</td>
+											</tr>
+											<tr>
+												<th>State</th>
+												<td>{{ address.getStateId().getName() }}</td>
+											</tr>
+											<tr>
+												<th>City</th>
+												<td>{{ address.getCityId().getName() }}</td>
+											</tr>
+											<tr>
+												<th>Zip Code</th>
+												<td>{{ address.getZipCode() }}</td>
+											</tr>
+											<tr>
+												<th>Address Type</th>
+												<td>{{ address.getAddressTypeId().getName() }}</td>
+											</tr>
+											<tr>
+												<th>Is Primary Address</th>
+												<td>{{ (address.isPrimary()) ? 'Yes' : 'No' }}</td>
+											</tr>
+										</tbody>
+									</table>
+									{% if loop.index != loop.length %}
+										<hr/>
+									{% endif %}
+								{% endfor %}
+							{% endif %}
+						</div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#general" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#emails" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="emails">
+                        <div class="table-responsive">
+                            {% if user.emails %}
+                                {% for email in user.emails %}
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">
+                                                Email {{ loop.index }}
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th>Email</th>
+                                            <td>{{ email.getEmail() }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Is Primary Email</th>
+                                            <td>{{ (email.isPrimary()) ? 'Yes' : 'No' }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    {% if loop.index != loop.length %}
+                                        <hr/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#addresses" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#contacts" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="contacts">
+						<div class="table-responsive">
+                            {% if user.contacts %}
+                                {% for contact in user.contacts %}
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">
+                                                Contact {{ loop.index }}
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th>Contact Number</th>
+                                            <td>{{ contact.getContactNumber() }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Is Primary Contact</th>
+                                            <td>{{ (contact.isPrimary()) ? 'Yes' : 'No' }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    {% if loop.index != loop.length %}
+                                        <hr/>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#emails" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 pull-left">
+            <a href="{{ (referrer) ? referrer : url('client_list') }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back To List</a>
+        </div>
+    </div>
+    <br/>
+{% endblock %}
+
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            if ($(".show-tab").length) {
+                $('.show-tab').bind('click', function (e) {
+                    e.preventDefault();
+                    var tabToShow = $(this).attr("href");
+                    if ($(tabToShow).length) {
+                        $('a[href="' + tabToShow + '"]').tab('show');
+                    }
+                });
+            };
+        });
+    </script>
+{% endblock %}

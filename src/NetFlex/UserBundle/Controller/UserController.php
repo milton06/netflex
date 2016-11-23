@@ -177,7 +177,7 @@ class UserController extends Controller
 	    
 	    $registerClientForm->handleRequest($request);
 	    
-	    if ($registerClientForm->isSubmitted() && $registerClientForm->isValid()) {
+	    if ($registerClientForm->isSubmitted()) {
 		    $em = $this->getDoctrine()->getManager();
 		    
 		    $roleRepo = $em->getRepository('NetFlexUserBundle:Role');
@@ -248,10 +248,13 @@ class UserController extends Controller
 			    'link' => $this->generateUrl('register_client_from_dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL)
 		    ],
 	    ];
+	
+	    $referrer = urldecode($request->query->get('ref'));
 	    
 	    return $this->render('NetFlexUserBundle:Client:register_client_from_dashboard.html.twig', [
 		    'pageTitle' => 'Register New Client',
 		    'breadCrumbs' => $breadCrumbs,
+		    'referrer' => $referrer,
 		    'pageHeader' => '<h1>Register <small>new client </small></h1>',
 		    'registerClientForm' => $registerClientForm->createView(),
 	    ]);
@@ -264,7 +267,7 @@ class UserController extends Controller
 	 * @Route("/dashboard/client/edit/{userId}", name="edit_client_profile_from_dashboard", requirements={"userId": "\d+"})
 	 * @Method({"GET", "POST"})
 	 *
-	 * @param  User    $user
+	 * @param  int    $userId
 	 * @param  Request $request A request instance
 	 *
 	 * @return Response         A response instance
@@ -275,25 +278,65 @@ class UserController extends Controller
 		
 		$userRepo = $em->getRepository('NetFlexUserBundle:User');
 		
-		$user = $userRepo->findUserById($userId);
+		/**
+		 * Find active user by ID.
+		 */
+		$user = $userRepo->findOneBy(['id' => $userId, 'status' => 1]);
 		
 		if (! $user) {
 			throw $this->createNotFoundException("No such user with ID: $userId exists");
+		}
+		
+		/**
+		 * Remove inactive addresses.
+		 */
+		$userAddresses = $user->getAddresses();
+		foreach ($userAddresses as $thisAddress) {
+			if (! $thisAddress->getStatus()) {
+				$user->removeAddress($thisAddress);
+			}
+		}
+		
+		/**
+		 * Remove inactive emails.
+		 */
+		$userEmails = $user->getEmails();
+		foreach ($userEmails as $thisEmail) {
+			if (! $thisEmail->getStatus()) {
+				$user->removeEmail($thisEmail);
+			}
+		}
+		
+		/**
+		 * Remove inactive contacts.
+		 */
+		$userContacts = $user->getContacts();
+		foreach ($userContacts as $thisContact) {
+			if (! $thisContact->getStatus()) {
+				$user->removeContact($thisContact);
+			}
 		}
 		
 		$editClientForm = $this->createForm(UserType::class, $user);
 		
 		$editClientForm->handleRequest($request);
 		
-		$inactiveAssociationsErrorText = '';
-		
 		if ($editClientForm->isSubmitted() && $editClientForm->isValid()) {
 			if ($user->getPassword()) {
+				/**
+				 * Password provided. Encode it.
+				 */
 				$user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
 			} else {
+				/**
+				 * Password was not provided. Populate entity field with old encoded password from the data table.
+				 */
 				$user->setPassword($userRepo->findUserEncryptedPassword($userId));
 			}
 			
+			/**
+			 * Set default data.
+			 */
 			$thisDateTime = new \DateTime();
 			$user->setLastModifiedOn($thisDateTime);
 			$user->setLastModifiedBy($this->getUser()->getId());
@@ -302,19 +345,19 @@ class UserController extends Controller
 			$emails = $user->getEmails();
 			$contacts = $user->getContacts();
 			
-			$activeAddressCount = $activeEmailCount = $activeContactCount = 0;
-			
 			foreach ($addresses as $thisAddress) {
 				if (! $thisAddress->getStatus()) {
 					if (! $thisAddress->getId()) {
+						/**
+						 * New address. Set status to active.
+						 */
 						$thisAddress->setStatus(1);
-						
-						$activeAddressCount++;
 					} else {
+						/**
+						 * Old address made inactive.
+						 */
 						$thisAddress->setStatus(0);
 					}
-				} else {
-					$activeAddressCount++;
 				}
 				
 				$em->persist($thisAddress);
@@ -323,14 +366,16 @@ class UserController extends Controller
 			foreach ($emails as $thisEmail) {
 				if (! $thisEmail->getStatus()) {
 					if (! $thisEmail->getId()) {
+						/**
+						 * New email. Set status to active.
+						 */
 						$thisEmail->setStatus(1);
-						
-						$activeEmailCount++;
 					} else {
+						/**
+						 * Old email made inactive.
+						 */
 						$thisEmail->setStatus(0);
 					}
-				} else {
-					$activeEmailCount++;
 				}
 				
 				$em->persist($thisEmail);
@@ -339,43 +384,26 @@ class UserController extends Controller
 			foreach ($contacts as $thisContact) {
 				if (! $thisContact->getStatus()) {
 					if (! $thisContact->getId()) {
+						/**
+						 * New contact. Set status to active.
+						 */
 						$thisContact->setStatus(1);
-						
-						$activeContactCount++;
 					} else {
+						/**
+						 * Old contact made inactive.
+						 */
 						$thisContact->setStatus(0);
 					}
-				} else {
-					$activeContactCount++;
 				}
 				
 				$em->persist($thisContact);
 			}
 			
-			$inactiveAssociationsError = [];
-			$inactiveAssociationsErrorText = '';
+			$em->flush();
 			
-			if (0 === $activeAddressCount) {
-				$inactiveAssociationsError[] = 'addresses';
-			}
+			$this->addFlash('success', 'Client profile has been updated successfully');
 			
-			if (0 === $activeEmailCount) {
-				$inactiveAssociationsError[] = 'emails';
-			}
-			
-			if (0 === $activeContactCount) {
-				$inactiveAssociationsError[] = 'contacts';
-			}
-			
-			if ($inactiveAssociationsError) {
-				$inactiveAssociationsErrorText = 'You cannot make all the ' . implode(', ', $inactiveAssociationsError) . ' inactive';
-			} else {
-				$em->flush();
-				
-				$this->addFlash('success', 'Client profile has been updated successfully');
-				
-				return $this->redirectToRoute('edit_client_profile_from_dashboard', ['userId' => $userId]);
-			}
+			return $this->redirectToRoute('edit_client_profile_from_dashboard', ['userId' => $userId]);
 		}
 		
 		$breadCrumbs = [
@@ -393,12 +421,96 @@ class UserController extends Controller
 			],
 		];
 		
+		$referrer = urldecode($request->query->get('ref'));
+		
 		return $this->render('NetFlexUserBundle:Client:edit_client_profile_from_dashboard.html.twig', [
 			'pageTitle' => 'Edit Client Profile',
 			'breadCrumbs' => $breadCrumbs,
+			'referrer' => $referrer,
 			'pageHeader' => '<h1>Edit <small>client profile</small></h1>',
 			'registerClientForm' => $editClientForm->createView(),
-			'inactiveAssociationsErrorText' => $inactiveAssociationsErrorText,
+		]);
+	}
+	
+	/**
+	 * Renders a client profile view page in the dashboard.
+	 *
+	 * @Route("/dashboard/client/view/{userId}", name="view_client_profile_in_dashboard", requirements={"userId": "\d+"})
+	 * @Method({"GET"})
+	 *
+	 * @param  int    $userId
+	 * @param  Request $request A request instance
+	 *
+	 * @return Response         A response instance
+	 */
+	public function viewClientProfileInDashboard($userId, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$userRepo = $em->getRepository('NetFlexUserBundle:User');
+		
+		/**
+		 * Find active user by ID.
+		 */
+		$user = $userRepo->findOneBy(['id' => $userId, 'status' => 1]);
+		
+		if (! $user) {
+			throw $this->createNotFoundException("No such user with ID: $userId exists");
+		}
+		
+		/**
+		 * Remove inactive addresses.
+		 */
+		$userAddresses = $user->getAddresses();
+		foreach ($userAddresses as $thisAddress) {
+			if (! $thisAddress->getStatus()) {
+				$user->removeAddress($thisAddress);
+			}
+		}
+		
+		/**
+		 * Remove inactive emails.
+		 */
+		$userEmails = $user->getEmails();
+		foreach ($userEmails as $thisEmail) {
+			if (! $thisEmail->getStatus()) {
+				$user->removeEmail($thisEmail);
+			}
+		}
+		
+		/**
+		 * Remove inactive contacts.
+		 */
+		$userContacts = $user->getContacts();
+		foreach ($userContacts as $thisContact) {
+			if (! $thisContact->getStatus()) {
+				$user->removeContact($thisContact);
+			}
+		}
+		
+		$breadCrumbs = [
+			[
+				'title' => 'Dashboard Home',
+				'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'Client List',
+				'link' => $this->generateUrl('client_list', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'View Client Profile',
+				'link' => $this->generateUrl('view_client_profile_in_dashboard', ['userId' => $userId], UrlGeneratorInterface::ABSOLUTE_URL)
+			],
+		];
+		
+		$referrer = urldecode($request->query->get('ref'));
+		
+		return $this->render('NetFlexUserBundle:Client:view_client_profile_in_dashboard.html.twig', [
+			'pageTitle' => 'View Client Profile',
+			'breadCrumbs' => $breadCrumbs,
+			'referrer' => $referrer,
+			'pageHeader' => '<h1>Edit <small>client profile</small></h1>',
+			'user' => $user,
 		]);
 	}
 	
@@ -554,7 +666,6 @@ class UserController extends Controller
 	 * Deletes a single client.
 	 *
 	 * @param int    $clientId
-	 * @param string $mode
 	 *
 	 * @return array
 	 */

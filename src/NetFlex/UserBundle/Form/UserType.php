@@ -32,6 +32,7 @@ class UserType extends AbstractType
 	            'allow_delete' => true,
 	            'delete_empty' => true,
 	            'by_reference' => false,
+	            'label' => false,
             ])
             ->add('contacts', CollectionType::class, [
             	'entry_type' => ContactType::class,
@@ -39,6 +40,7 @@ class UserType extends AbstractType
 	            'allow_delete' => true,
 	            'delete_empty' => true,
 	            'by_reference' => false,
+	            'label' => false,
             ])
             ->add('emails', CollectionType::class, [
             	'entry_type' => EmailType::class,
@@ -46,6 +48,7 @@ class UserType extends AbstractType
 	            'allow_delete' => true,
 	            'delete_empty' => true,
 	            'by_reference' => false,
+	            'label' => false,
             ]);
     }
     

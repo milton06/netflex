@@ -25,7 +25,7 @@ parameters:
     generic_accept_media_types: '/\.(jpe?g|png|mp4|webm|mp3|txt|doc|docx|pdf|xlsx|zip)$/i'
     generic_image_media_types: '/\.(jpe?g|png)$/i'
     generic_media_search_types: { '.jpeg': 'jpeg', '.jpg': 'jpg', '.png': 'png', '.mp4': 'mp4', '.webm': 'webm', '.mp3': 'mp3', '.txt': 'txt', '.doc': 'doc', '.docx': 'docx', '.pdf': 'pdf', '.xlsx': 'xlsx', '.zip': 'zip' }
-    pagination_parameters: { "dashboard": { "media_list": { "record_per_page": 5, "neighbor": 3 }, "client_list": { "record_per_page": 1, "neighbor": 3 } } }
+    pagination_parameters: { "dashboard": { "media_list": { "record_per_page": 5, "neighbor": 3 }, "client_list": { "record_per_page": 5, "neighbor": 3 } } }
 
 framework:
     #esi:             ~

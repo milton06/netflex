@@ -106,6 +106,13 @@
                                 {{ form_errors(registerClientForm.lastName) }}
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="#addresses" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="addresses">
 	                    <div class="row">
@@ -182,6 +189,18 @@
 			                    <button id="add-another-address-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Address</button>
 		                    </div>
 	                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#general" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#emails" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="emails">
 	                    <div class="row">
@@ -216,6 +235,18 @@
 			                    <button id="add-another-email-button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Another Email</button>
 		                    </div>
 	                    </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#addresses" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#contacts" class="btn btn-primary show-tab pull-right">
+                                    <i class="fa fa-arrow-right"></i> Next
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="contacts">
 	                    <div class="row">
@@ -251,10 +282,14 @@
 		                    </div>
 	                    </div>
 	                    <div class="row">
-		                    <div class="col-md-4">&nbsp;</div>
+                            <div class="col-md-4">
+                                <a href="#emails" class="btn btn-primary show-tab pull-left">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </div>
 		                    <div class="col-md-8">
 			                    <button type="submit" id="register-client-button" class="btn btn-primary">
-                                    Register <i class="fa fa-arrow-circle-right"></i>
+                                    Register <i class="clip-upload "></i>
                                 </button>
 		                    </div>
 	                    </div>
@@ -264,6 +299,12 @@
             {{ form_end(registerClientForm) }}
         </div>
     </div>
+	<div class="row clearfix">
+		<div class="col-md-12 pull-left">
+			<a href="{{ (referrer) ? referrer : url('client_list') }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back To List</a>
+		</div>
+	</div>
+	<br/>
 {% endblock %}
 
 {% block pageScripts %}
