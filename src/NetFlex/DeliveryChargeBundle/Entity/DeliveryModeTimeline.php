@@ -3,6 +3,11 @@
 namespace NetFlex\DeliveryChargeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use NetFlex\LocationBundle\Entity\Country;
+use NetFlex\LocationBundle\Entity\State;
+use NetFlex\LocationBundle\Entity\City;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryMode;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryTimeline;
 
 /**
  * DeliveryModeTimeline
@@ -22,19 +27,19 @@ class DeliveryModeTimeline
     private $id;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Country")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
 	 * @ORM\JoinColumn(name="source_country_id", referencedColumnName="id", nullable=true)
 	 */
 	private $sourceCountryId;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="State")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\State")
 	 * @ORM\JoinColumn(name="source_state_id", referencedColumnName="id", nullable=true)
 	 */
 	private $sourceStateId;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="City")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\City")
 	 * @ORM\JoinColumn(name="source_city_id", referencedColumnName="id", nullable=true)
 	 */
 	private $sourceCityId;
@@ -47,19 +52,19 @@ class DeliveryModeTimeline
 	private $sourceZipCode;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="Country")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
 	 * @ORM\JoinColumn(name="destination_country_id", referencedColumnName="id", nullable=true)
 	 */
 	private $destinationCountryId;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="State")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\State")
 	 * @ORM\JoinColumn(name="destination_state_id", referencedColumnName="id", nullable=true)
 	 */
 	private $destinationStateId;
 	
 	/**
-	 * @ORM\ManyToOne(targetEntity="City")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\City")
 	 * @ORM\JoinColumn(name="destination_city_id", referencedColumnName="id", nullable=true)
 	 */
 	private $destinationCityId;
@@ -128,6 +133,246 @@ class DeliveryModeTimeline
     {
         return $this->id;
     }
+	
+	/**
+	 * Set sourceCountryId
+	 *
+	 * @param Country $sourceCountryId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setSourceCountryId(Country $sourceCountryId = null)
+	{
+		$this->sourceCountryId = $sourceCountryId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get sourceCountryId
+	 *
+	 * @return Country
+	 */
+	public function getSourceCountryId()
+	{
+		return $this->sourceCountryId;
+	}
+	
+	/**
+	 * Set sourceStateId
+	 *
+	 * @param State $sourceStateId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setSourceStateId(State $sourceStateId = null)
+	{
+		$this->sourceStateId = $sourceStateId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get sourceStateId
+	 *
+	 * @return State
+	 */
+	public function getSourceStateId()
+	{
+		return $this->sourceStateId;
+	}
+	
+	/**
+	 * Set sourceCityId
+	 *
+	 * @param City $sourceCityId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setSourceCityId(City $sourceCityId = null)
+	{
+		$this->sourceCityId = $sourceCityId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get sourceCityId
+	 *
+	 * @return City
+	 */
+	public function getSourceCityId()
+	{
+		return $this->sourceCityId;
+	}
+	
+	/**
+	 * Set sourceZipCode
+	 *
+	 * @param string $sourceZipCode
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setSourceZipCode($sourceZipCode)
+	{
+		$this->sourceZipCode = $sourceZipCode;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get sourceZipCode
+	 *
+	 * @return string
+	 */
+	public function getSourceZipCode()
+	{
+		return $this->sourceZipCode;
+	}
+	
+	/**
+	 * Set destinationCountryId
+	 *
+	 * @param Country $destinationCountryId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setDestinationCountryId(Country $destinationCountryId = null)
+	{
+		$this->destinationCountryId = $destinationCountryId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get destinationCountryId
+	 *
+	 * @return Country
+	 */
+	public function getDestinationCountryId()
+	{
+		return $this->destinationCountryId;
+	}
+	
+	/**
+	 * Set destinationStateId
+	 *
+	 * @param State $destinationStateId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setDestinationStateId(State $destinationStateId = null)
+	{
+		$this->destinationStateId = $destinationStateId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get destinationStateId
+	 *
+	 * @return State
+	 */
+	public function getDestinationStateId()
+	{
+		return $this->destinationStateId;
+	}
+	
+	/**
+	 * Set destinationCityId
+	 *
+	 * @param City $destinationCityId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setDestinationCityId(City $destinationCityId = null)
+	{
+		$this->destinationCityId = $destinationCityId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get destinationCityId
+	 *
+	 * @return City
+	 */
+	public function getDestinationCityId()
+	{
+		return $this->destinationCityId;
+	}
+	
+	/**
+	 * Set destinationZipCode
+	 *
+	 * @param string $destinationZipCode
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setDestinationZipCode($destinationZipCode)
+	{
+		$this->destinationZipCode = $destinationZipCode;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get destinationZipCode
+	 *
+	 * @return string
+	 */
+	public function getDestinationZipCode()
+	{
+		return $this->destinationZipCode;
+	}
+	
+	/**
+	 * Set deliveryModeId
+	 *
+	 * @param DeliveryMode $deliveryModeId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setDeliveryModeId(DeliveryMode $deliveryModeId = null)
+	{
+		$this->deliveryModeId = $deliveryModeId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get deliveryModeId
+	 *
+	 * @return DeliveryMode
+	 */
+	public function getDeliveryModeId()
+	{
+		return $this->deliveryModeId;
+	}
+	
+	/**
+	 * Set deliveryTimelineId
+	 *
+	 * @param DeliveryTimeline $deliveryTimelineId
+	 *
+	 * @return DeliveryModeTimeline
+	 */
+	public function setDeliveryTimelineId(DeliveryTimeline $deliveryTimelineId = null)
+	{
+		$this->deliveryTimelineId = $deliveryTimelineId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get deliveryTimelineId
+	 *
+	 * @return DeliveryTimeline
+	 */
+	public function getDeliveryTimelineId()
+	{
+		return $this->deliveryTimelineId;
+	}
 
     /**
      * Set status
@@ -247,245 +492,5 @@ class DeliveryModeTimeline
     public function getLastModifiedBy()
     {
         return $this->lastModifiedBy;
-    }
-
-    /**
-     * Set sourceZipCode
-     *
-     * @param string $sourceZipCode
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setSourceZipCode($sourceZipCode)
-    {
-        $this->sourceZipCode = $sourceZipCode;
-
-        return $this;
-    }
-
-    /**
-     * Get sourceZipCode
-     *
-     * @return string
-     */
-    public function getSourceZipCode()
-    {
-        return $this->sourceZipCode;
-    }
-
-    /**
-     * Set destinationZipCode
-     *
-     * @param string $destinationZipCode
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setDestinationZipCode($destinationZipCode)
-    {
-        $this->destinationZipCode = $destinationZipCode;
-
-        return $this;
-    }
-
-    /**
-     * Get destinationZipCode
-     *
-     * @return string
-     */
-    public function getDestinationZipCode()
-    {
-        return $this->destinationZipCode;
-    }
-
-    /**
-     * Set sourceCountryId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\Country $sourceCountryId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setSourceCountryId(\NetFlex\DeliveryChargeBundle\Entity\Country $sourceCountryId = null)
-    {
-        $this->sourceCountryId = $sourceCountryId;
-
-        return $this;
-    }
-
-    /**
-     * Get sourceCountryId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\Country
-     */
-    public function getSourceCountryId()
-    {
-        return $this->sourceCountryId;
-    }
-
-    /**
-     * Set sourceStateId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\State $sourceStateId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setSourceStateId(\NetFlex\DeliveryChargeBundle\Entity\State $sourceStateId = null)
-    {
-        $this->sourceStateId = $sourceStateId;
-
-        return $this;
-    }
-
-    /**
-     * Get sourceStateId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\State
-     */
-    public function getSourceStateId()
-    {
-        return $this->sourceStateId;
-    }
-
-    /**
-     * Set sourceCityId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\City $sourceCityId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setSourceCityId(\NetFlex\DeliveryChargeBundle\Entity\City $sourceCityId = null)
-    {
-        $this->sourceCityId = $sourceCityId;
-
-        return $this;
-    }
-
-    /**
-     * Get sourceCityId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\City
-     */
-    public function getSourceCityId()
-    {
-        return $this->sourceCityId;
-    }
-
-    /**
-     * Set destinationCountryId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\Country $destinationCountryId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setDestinationCountryId(\NetFlex\DeliveryChargeBundle\Entity\Country $destinationCountryId = null)
-    {
-        $this->destinationCountryId = $destinationCountryId;
-
-        return $this;
-    }
-
-    /**
-     * Get destinationCountryId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\Country
-     */
-    public function getDestinationCountryId()
-    {
-        return $this->destinationCountryId;
-    }
-
-    /**
-     * Set destinationStateId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\State $destinationStateId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setDestinationStateId(\NetFlex\DeliveryChargeBundle\Entity\State $destinationStateId = null)
-    {
-        $this->destinationStateId = $destinationStateId;
-
-        return $this;
-    }
-
-    /**
-     * Get destinationStateId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\State
-     */
-    public function getDestinationStateId()
-    {
-        return $this->destinationStateId;
-    }
-
-    /**
-     * Set destinationCityId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\City $destinationCityId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setDestinationCityId(\NetFlex\DeliveryChargeBundle\Entity\City $destinationCityId = null)
-    {
-        $this->destinationCityId = $destinationCityId;
-
-        return $this;
-    }
-
-    /**
-     * Get destinationCityId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\City
-     */
-    public function getDestinationCityId()
-    {
-        return $this->destinationCityId;
-    }
-
-    /**
-     * Set deliveryModeId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\DeliveryMode $deliveryModeId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setDeliveryModeId(\NetFlex\DeliveryChargeBundle\Entity\DeliveryMode $deliveryModeId = null)
-    {
-        $this->deliveryModeId = $deliveryModeId;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryModeId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\DeliveryMode
-     */
-    public function getDeliveryModeId()
-    {
-        return $this->deliveryModeId;
-    }
-
-    /**
-     * Set deliveryTimelineId
-     *
-     * @param \NetFlex\DeliveryChargeBundle\Entity\DeliveryTimeline $deliveryTimelineId
-     *
-     * @return DeliveryModeTimeline
-     */
-    public function setDeliveryTimelineId(\NetFlex\DeliveryChargeBundle\Entity\DeliveryTimeline $deliveryTimelineId = null)
-    {
-        $this->deliveryTimelineId = $deliveryTimelineId;
-
-        return $this;
-    }
-
-    /**
-     * Get deliveryTimelineId
-     *
-     * @return \NetFlex\DeliveryChargeBundle\Entity\DeliveryTimeline
-     */
-    public function getDeliveryTimelineId()
-    {
-        return $this->deliveryTimelineId;
     }
 }

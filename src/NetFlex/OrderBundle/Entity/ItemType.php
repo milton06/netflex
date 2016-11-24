@@ -1,17 +1,17 @@
 <?php
 
-namespace NetFlex\DeliveryChargeBundle\Entity;
+namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use NetFlex\LocationBundle\Entity\Country;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Currency
+ * ItemType
  *
- * @ORM\Table(name="currencies")
- * @ORM\Entity(repositoryClass="NetFlex\DeliveryChargeBundle\Repository\CurrencyRepository")
+ * @ORM\Table(name="order_item_types")
+ * @ORM\Entity(repositoryClass="NetFlex\OrderBundle\Repository\ItemTypeRepository")
  */
-class Currency
+class ItemType
 {
     /**
      * @var int
@@ -23,24 +23,22 @@ class Currency
     private $id;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
-	 * @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+	 * @ORM\ManyToOne(targetEntity="ItemType", inversedBy="children")
+	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
 	 */
-	private $countryId;
+	private $parentId;
+	
+	/**
+	 * @ORM\OneToMany(targetEntity="ItemType", mappedBy="parentId")
+	 */
+	private $children;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="currency_name", type="string", length=255)
+     * @ORM\Column(name="item_type_name", type="string", length=255)
      */
-    private $currencyName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="currency_symbol", type="string", length=255, nullable=true)
-     */
-    private $currencySymbol;
+    private $itemTypeName;
 
     /**
      * @var bool
@@ -76,6 +74,14 @@ class Currency
      * @ORM\Column(name="last_modified_by", type="integer")
      */
     private $lastModifiedBy;
+	
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->children = new ArrayCollection();
+	}
 
 
     /**
@@ -89,75 +95,89 @@ class Currency
     }
 	
 	/**
-	 * Set countryId
+	 * Set parentId
 	 *
-	 * @param Country $countryId
+	 * @param ItemType $parentId
 	 *
-	 * @return Currency
+	 * @return ItemType
 	 */
-	public function setCountryId(Country $countryId = null)
+	public function setParentId(ItemType $parentId = null)
 	{
-		$this->countryId = $countryId;
+		$this->parentId = $parentId;
 		
 		return $this;
 	}
 	
 	/**
-	 * Get countryId
+	 * Get parentId
 	 *
-	 * @return Country
+	 * @return ItemType
 	 */
-	public function getCountryId()
+	public function getParentId()
 	{
-		return $this->countryId;
+		return $this->parentId;
+	}
+	
+	/**
+	 * Add child
+	 *
+	 * @param ItemType $child
+	 *
+	 * @return ItemType
+	 */
+	public function addChild(ItemType $child)
+	{
+		$child->setParentId($this);
+		
+		$this->children[] = $child;
+		
+		return $this;
+	}
+	
+	/**
+	 * Remove child
+	 *
+	 * @param ItemType $child
+	 */
+	public function removeChild(ItemType $child)
+	{
+		$child->setParentId(null);
+		
+		$this->children->removeElement($child);
+	}
+	
+	/**
+	 * Get children
+	 *
+	 * @return ArrayCollection
+	 */
+	public function getChildren()
+	{
+		return $this->children;
 	}
 
     /**
-     * Set currencyName
+     * Set itemTypeName
      *
-     * @param string $currencyName
+     * @param string $itemTypeName
      *
-     * @return Currency
+     * @return ItemType
      */
-    public function setCurrencyName($currencyName)
+    public function setItemTypeName($itemTypeName)
     {
-        $this->currencyName = $currencyName;
+        $this->itemTypeName = $itemTypeName;
 
         return $this;
     }
 
     /**
-     * Get currencyName
+     * Get itemTypeName
      *
      * @return string
      */
-    public function getCurrencyName()
+    public function getItemTypeName()
     {
-        return $this->currencyName;
-    }
-
-    /**
-     * Set currencySymbol
-     *
-     * @param string $currencySymbol
-     *
-     * @return Currency
-     */
-    public function setCurrencySymbol($currencySymbol)
-    {
-        $this->currencySymbol = $currencySymbol;
-
-        return $this;
-    }
-
-    /**
-     * Get currencySymbol
-     *
-     * @return string
-     */
-    public function getCurrencySymbol()
-    {
-        return $this->currencySymbol;
+        return $this->itemTypeName;
     }
 
     /**
@@ -165,7 +185,7 @@ class Currency
      *
      * @param boolean $status
      *
-     * @return Currency
+     * @return ItemType
      */
     public function setStatus($status)
     {
@@ -189,7 +209,7 @@ class Currency
      *
      * @param \DateTime $createdOn
      *
-     * @return Currency
+     * @return ItemType
      */
     public function setCreatedOn($createdOn)
     {
@@ -213,7 +233,7 @@ class Currency
      *
      * @param integer $createdBy
      *
-     * @return Currency
+     * @return ItemType
      */
     public function setCreatedBy($createdBy)
     {
@@ -237,7 +257,7 @@ class Currency
      *
      * @param \DateTime $lastModifiedOn
      *
-     * @return Currency
+     * @return ItemType
      */
     public function setLastModifiedOn($lastModifiedOn)
     {
@@ -261,7 +281,7 @@ class Currency
      *
      * @param integer $lastModifiedBy
      *
-     * @return Currency
+     * @return ItemType
      */
     public function setLastModifiedBy($lastModifiedBy)
     {

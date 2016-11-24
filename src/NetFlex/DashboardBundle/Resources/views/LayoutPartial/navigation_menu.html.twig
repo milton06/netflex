@@ -5,7 +5,7 @@
             <span class="title"> Dashboard Home </span><span class="{{ ('dashboard' == currentRoute) ? 'selected' : '' }}"></span>
         </a>
     </li>
-    <li class="{{ (currentRoute in ['client_list', 'register_client_from_dashboard']) ? 'active open' : '' }}">
+    <li class="{{ (currentRoute in ['client_list', 'register_client_from_dashboard', 'edit_client_profile_from_dashboard', 'view_client_profile_in_dashboard']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">
             <i class="clip-users"></i>
             <span class="title"> Client </span>
@@ -23,6 +23,20 @@
                 </a>
             </li>
         </ul>
+    </li>
+    <li class="{{ (currentRoute in ['book_a_shipment_from_dashboard']) ? 'active open' : '' }}">
+        <a href="javascript:void(0);">
+            <i class="clip-users"></i>
+            <span class="title"> Booking </span>
+            <i class="icon-arrow"></i>
+        </a>
+        {#<ul class="sub-menu">
+            <li class="{{ ('book_a_shipment' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('book_a_shipment') }}">
+                    Book A Shipment
+                </a>
+            </li>
+        </ul>#}
     </li>
     <li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">

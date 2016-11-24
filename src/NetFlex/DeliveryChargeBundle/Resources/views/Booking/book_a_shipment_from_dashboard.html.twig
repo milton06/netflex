@@ -1,0 +1,37 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+    'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-lg">
+                <p>Book A Shipment</p>
+                {{ dump(clientPreferredAddresses) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageScripts %}
+    {{ parent() }}
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+    '@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+    '@NetFlexDashboardBundle/Resources/public/plugins/jquery-validation/dist/jquery.validate.min.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

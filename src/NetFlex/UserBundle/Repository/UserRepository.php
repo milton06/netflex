@@ -47,4 +47,23 @@ class UserRepository extends EntityRepository
 		
 		return $stmt->fetchAll();
 	}
+	
+	public function findUserExistence($userId)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		$qb->select('partial U.{id}')
+		->from('NetFlexUserBundle:User', 'U')
+		->where($qb->expr()->andX(
+			$qb->expr()->eq('U.id', ':userId'),
+			$qb->expr()->eq('U.status', 1)
+		))
+		->setParameters(['userId' => $userId])
+		->setFirstResult(0)
+		->setMaxResults(1);
+		
+		$user = $qb->getQuery()->getResult();
+		
+		return $user;
+	}
 }
