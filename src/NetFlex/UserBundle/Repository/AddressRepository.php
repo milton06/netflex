@@ -3,6 +3,7 @@
 namespace NetFlex\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * AddressRepository
@@ -12,25 +13,52 @@ use Doctrine\ORM\EntityRepository;
  */
 class AddressRepository extends EntityRepository
 {
-	public function findClientPreferredAddresses($clientId)
+	/**
+	 * @param $clientId
+	 *
+	 * @return array
+	 */
+	public function findClientPreferredPickupAndBillingAddresses($clientId)
 	{
-		$qb = $this->getEntityManager()->createQueryBuilder();
+		$rsm = new ResultSetMapping();
 		
-		$qb->select('partial AT.{id, name}, partial A.{id, addressLine1, addressLine2, zipCode, isPrimary}, partial Co.{id, name}, partial S.{id, name}, partial Ci.{id, name}')
-		->from('NetFlexUserBundle:Address', 'A')
-		->leftJoin('A.addressTypeId', 'AT')
-		->leftJoin('A.countryId', 'Co')
-		->leftJoin('A.stateId', 'S')
-		->leftJoin('A.cityId', 'Ci')
-		->where($qb->expr()->andX(
-			$qb->expr()->eq('A.userId', $clientId),
-			$qb->expr()->eq('A.status', 1)
-		))
-		->orderBy('A.isPrimary', 'DESC')
-		->addOrderBy('AT.id', 'ASC');
+		$rsm->addEntityResult('NetFlexUserBundle:Address', 'a');
+		$rsm->addFieldResult('a', 'address_id', 'id');
+		$rsm->addFieldResult('a', 'address_line_1', 'addressLine1');
+		$rsm->addFieldResult('a', 'address_line_2', 'addressLine2');
+		$rsm->addFieldResult('a', 'zip_code', 'zipCode');
+		$rsm->addFieldResult('a', 'is_primary', 'isPrimary');
 		
-		$addresses = $qb->getQuery()->getResult();
+		$rsm->addJoinedEntityResult('NetFlexUserBundle:user', 'u', 'a', 'userId');
+		$rsm->addFieldResult('u', 'id', 'id');
+		$rsm->addFieldResult('u', 'user_first_name', 'firstName');
+		$rsm->addFieldResult('u', 'user_mid_name', 'midName');
+		$rsm->addFieldResult('u', 'user_last_name', 'lastName');
+			
+		$rsm->addJoinedEntityResult('NetFlexUserBundle:AddressType', 'at', 'a', 'addressTypeId');
+		$rsm->addFieldResult('at', 'address_type_id', 'id');
+		$rsm->addFieldResult('at', 'address_type_name', 'name');
 		
-		return $addresses;
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:Country', 'co', 'a', 'countryId');
+		$rsm->addFieldResult('co', 'country_id', 'id');
+		$rsm->addFieldResult('co', 'country_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:State', 's', 'a', 'stateId');
+		$rsm->addFieldResult('s', 'state_id', 'id');
+		$rsm->addFieldResult('s', 'state_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:City', 'ci', 'a', 'cityId');
+		$rsm->addFieldResult('ci', 'city_id', 'id');
+		$rsm->addFieldResult('ci', 'city_name', 'name');
+		
+		$sql = "
+			(select a.id address_id, a.address_line_1, a.address_line_2, a.zip_code, a.is_primary, u.id, u.first_name user_first_name, u.mid_name user_mid_name, u.last_name user_last_name, at.id address_type_id, at.name address_type_name, co.id country_id, co.name country_name, s.id state_id, s.name state_name, ci.id city_id, ci.name city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = ? and a.address_type_id = 1 and a.status = 1 order by a.is_primary desc limit 0,1)
+			union
+			(select a.id address_id, a.address_line_1, a.address_line_2, a.zip_code, a.is_primary, u.id, u.first_name user_first_name, u.mid_name user_mid_name, u.last_name user_last_name, at.id address_type_id, at.name address_type_name, co.id country_id, co.name country_name, s.id state_id, s.name state_name, ci.id city_id, ci.name city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = ? and a.address_type_id = 2 and a.status = 1 order by a.is_primary desc limit 0,1)
+		";
+		
+		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $clientId, 2 => $clientId]);
+		
+		return $query->getResult();
 	}
 }

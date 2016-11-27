@@ -26,6 +26,8 @@ parameters:
     generic_image_media_types: '/\.(jpe?g|png)$/i'
     generic_media_search_types: { '.jpeg': 'jpeg', '.jpg': 'jpg', '.png': 'png', '.mp4': 'mp4', '.webm': 'webm', '.mp3': 'mp3', '.txt': 'txt', '.doc': 'doc', '.docx': 'docx', '.pdf': 'pdf', '.xlsx': 'xlsx', '.zip': 'zip' }
     pagination_parameters: { "dashboard": { "media_list": { "record_per_page": 5, "neighbor": 3 }, "client_list": { "record_per_page": 5, "neighbor": 3 } } }
+    order_risk_applicable_above: 5000
+    order_risk_types: { 'Own Risk': 'own', 'Carrier Risk': 'carrier' }
 
 framework:
     #esi:             ~
@@ -61,6 +63,7 @@ twig:
         developerName: "%developer_name%"
         dashboardPageTitlePrefix: "%dashboard_page_title_prefix%"
         noRecordFoundText: 'No Record Found!'
+        orderRiskApplicableAbove: '%order_risk_applicable_above%'
 
 # Doctrine Configuration
 doctrine:

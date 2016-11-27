@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use NetFlex\UserBundle\Entity\User;
 use NetFlex\OrderBundle\Entity\Item;
 use NetFlex\OrderBundle\Entity\Price;
 use NetFlex\OrderBundle\Entity\Address;
@@ -25,17 +26,23 @@ class OrderTransaction
     private $id;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Item", mappedBy="orderId")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\UserBundle\Entity\User")
+	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+	 */
+	private $userId;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="Item", mappedBy="orderId", cascade={"persist"})
 	 */
 	private $orderItem;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Price", mappedBy="orderId")
+	 * @ORM\OneToOne(targetEntity="Price", mappedBy="orderId", cascade={"persist"})
 	 */
 	private $orderPrice;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="Address", mappedBy="orderId")
+	 * @ORM\OneToOne(targetEntity="Address", mappedBy="orderId", cascade={"persist"})
 	 */
 	private $orderAddress;
 
@@ -119,6 +126,30 @@ class OrderTransaction
     {
         return $this->id;
     }
+	
+	/**
+	 * Set userId
+	 *
+	 * @param User $userId
+	 *
+	 * @return OrderTransaction
+	 */
+	public function setUserId(User $userId = null)
+	{
+		$this->userId = $userId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get userId
+	 *
+	 * @return User
+	 */
+	public function getUserId()
+	{
+		return $this->userId;
+	}
 	
 	/**
 	 * Set orderItem

@@ -217,4 +217,9 @@ class DeliveryMode
     {
         return $this->lastModifiedBy;
     }
+    
+    public function __toString()
+    {
+	    return $this->modeName;
+    }
 }

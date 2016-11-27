@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ordertransaction</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ orderTransaction.id }}</td>
+            </tr>
+            <tr>
+                <th>Awbnumber</th>
+                <td>{{ orderTransaction.awbNumber }}</td>
+            </tr>
+            <tr>
+                <th>Invoicenumber</th>
+                <td>{{ orderTransaction.invoiceNumber }}</td>
+            </tr>
+            <tr>
+                <th>Orderstatus</th>
+                <td>{{ orderTransaction.orderStatus }}</td>
+            </tr>
+            <tr>
+                <th>Paymentstatus</th>
+                <td>{{ orderTransaction.paymentStatus }}</td>
+            </tr>
+            <tr>
+                <th>Remark</th>
+                <td>{{ orderTransaction.remark }}</td>
+            </tr>
+            <tr>
+                <th>Createdon</th>
+                <td>{% if orderTransaction.createdOn %}{{ orderTransaction.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Createdby</th>
+                <td>{{ orderTransaction.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>Lastmodifiedon</th>
+                <td>{% if orderTransaction.lastModifiedOn %}{{ orderTransaction.lastModifiedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lastmodifiedby</th>
+                <td>{{ orderTransaction.lastModifiedBy }}</td>
+            </tr>
+            <tr>
+                <th>Modificationreason</th>
+                <td>{{ orderTransaction.modificationReason }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ordertransaction_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ordertransaction_edit', { 'id': orderTransaction.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

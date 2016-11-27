@@ -2,3 +2,26 @@ services:
 #    net_flex_order.example:
 #        class: NetFlex\OrderBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    app.form.type.order_item_for_client_from_dashboard:
+        class: NetFlex\OrderBundle\Form\OrderItemForClientFromDashboardType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }
+
+    app.form.type.order_price_for_client_from_dashboard:
+        class: NetFlex\OrderBundle\Form\OrderPriceForClientFromDashboardType
+        arguments: ['@doctrine.orm.default_entity_manager', '%order_risk_types%']
+        tags:
+            - { name: form.type }
+
+    app.form.type.order_address_for_client_from_dashboard:
+        class: NetFlex\OrderBundle\Form\OrderAddressForClientFromDashboardType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }
+
+    app.form.type.order_transaction_for_client_from_dashboard:
+        class: NetFlex\OrderBundle\Form\OrderForClientFromDashboardType
+        arguments: ['@request_stack', '@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }

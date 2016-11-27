@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ordertransactions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Awbnumber</th>
+                <th>Invoicenumber</th>
+                <th>Orderstatus</th>
+                <th>Paymentstatus</th>
+                <th>Remark</th>
+                <th>Createdon</th>
+                <th>Createdby</th>
+                <th>Lastmodifiedon</th>
+                <th>Lastmodifiedby</th>
+                <th>Modificationreason</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for orderTransaction in orderTransactions %}
+            <tr>
+                <td><a href="{{ path('ordertransaction_show', { 'id': orderTransaction.id }) }}">{{ orderTransaction.id }}</a></td>
+                <td>{{ orderTransaction.awbNumber }}</td>
+                <td>{{ orderTransaction.invoiceNumber }}</td>
+                <td>{{ orderTransaction.orderStatus }}</td>
+                <td>{{ orderTransaction.paymentStatus }}</td>
+                <td>{{ orderTransaction.remark }}</td>
+                <td>{% if orderTransaction.createdOn %}{{ orderTransaction.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ orderTransaction.createdBy }}</td>
+                <td>{% if orderTransaction.lastModifiedOn %}{{ orderTransaction.lastModifiedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ orderTransaction.lastModifiedBy }}</td>
+                <td>{{ orderTransaction.modificationReason }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ordertransaction_show', { 'id': orderTransaction.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ordertransaction_edit', { 'id': orderTransaction.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ordertransaction_new') }}">Create a new orderTransaction</a>
+        </li>
+    </ul>
+{% endblock %}

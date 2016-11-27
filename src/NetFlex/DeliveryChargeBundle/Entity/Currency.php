@@ -279,4 +279,9 @@ class Currency
     {
         return $this->lastModifiedBy;
     }
+    
+    public function __toString()
+    {
+	    return $this->currencySymbol;
+    }
 }

@@ -248,4 +248,9 @@ class WeightUnit
     {
         return $this->lastModifiedBy;
     }
+    
+    public function __toString()
+    {
+	    return $this->symbol;
+    }
 }

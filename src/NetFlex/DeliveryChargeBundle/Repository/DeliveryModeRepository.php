@@ -10,4 +10,18 @@ namespace NetFlex\DeliveryChargeBundle\Repository;
  */
 class DeliveryModeRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findDeliveryModeName($deliveryModeId)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		return $qb->select("partial DM.{id, modeName}")
+			->from('NetFlexDeliveryChargeBundle:DeliveryMode', 'DM')
+			->where($qb->expr()->andX(
+				$qb->expr()->eq('DM.id', ':deliveryModeId'),
+				$qb->expr()->eq('DM.status', 1)
+			))
+			->setParameter('deliveryModeId', $deliveryModeId)
+			->getQuery()
+			->getOneOrNullResult();
+	}
 }

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Itemtype</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ itemType.id }}</td>
+            </tr>
+            <tr>
+                <th>Itemtypename</th>
+                <td>{{ itemType.itemTypeName }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{% if itemType.status %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Createdon</th>
+                <td>{% if itemType.createdOn %}{{ itemType.createdOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Createdby</th>
+                <td>{{ itemType.createdBy }}</td>
+            </tr>
+            <tr>
+                <th>Lastmodifiedon</th>
+                <td>{% if itemType.lastModifiedOn %}{{ itemType.lastModifiedOn|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lastmodifiedby</th>
+                <td>{{ itemType.lastModifiedBy }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('itemtype_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('itemtype_edit', { 'id': itemType.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

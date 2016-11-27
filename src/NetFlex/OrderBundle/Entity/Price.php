@@ -4,6 +4,7 @@ namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use NetFlex\OrderBundle\Entity\OrderTransaction;
+use NetFlex\DeliveryChargeBundle\Entity\Currency;
 
 /**
  * Price
@@ -104,6 +105,12 @@ class Price
      * @ORM\Column(name="order_return_charge", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $orderReturnCharge;
+	
+	/**
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\Currency")
+	 * @ORM\JoinColumn(name="order_price_unit_id", referencedColumnName="id")
+	 */
+	private $orderPriceUnitId;
 
 
     /**
@@ -403,4 +410,28 @@ class Price
     {
         return $this->orderReturnCharge;
     }
+	
+	/**
+	 * Set orderPriceUnitId
+	 *
+	 * @param Currency $orderPriceUnitId
+	 *
+	 * @return Item
+	 */
+	public function setOrderPriceUnitId(Currency $orderPriceUnitId = null)
+	{
+		$this->orderPriceUnitId = $orderPriceUnitId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get orderPriceUnitId
+	 *
+	 * @return WeightUnit
+	 */
+	public function getOrderPriceUnitId()
+	{
+		return $this->orderPriceUnitId;
+	}
 }

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Price</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ price.id }}</td>
+            </tr>
+            <tr>
+                <th>Orderbasecharge</th>
+                <td>{{ price.orderBaseCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderextraweightleviedcharge</th>
+                <td>{{ price.orderExtraWeightLeviedCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderrevisedbasecharge</th>
+                <td>{{ price.orderRevisedBaseCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderrevisedextraweightleviedcharge</th>
+                <td>{{ price.orderRevisedExtraWeightLeviedCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderinvoiceprice</th>
+                <td>{{ price.orderInvoicePrice }}</td>
+            </tr>
+            <tr>
+                <th>Ordercodpaymentaddedcharge</th>
+                <td>{{ price.orderCodPaymentAddedCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderfuelsurchargeaddedcharge</th>
+                <td>{{ price.orderFuelSurchargeAddedCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderservicetaxaddedcharge</th>
+                <td>{{ price.orderServiceTaxAddedCharge }}</td>
+            </tr>
+            <tr>
+                <th>Ordercarrierriskaddedcharge</th>
+                <td>{{ price.orderCarrierRiskAddedCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderoctroicharge</th>
+                <td>{{ price.orderOctroiCharge }}</td>
+            </tr>
+            <tr>
+                <th>Orderreturncharge</th>
+                <td>{{ price.orderReturnCharge }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('price_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('price_edit', { 'id': price.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

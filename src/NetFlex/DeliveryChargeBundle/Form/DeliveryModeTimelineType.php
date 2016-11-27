@@ -1,6 +1,6 @@
 <?php
 
-namespace NetFlex\UserBundle\Form;
+namespace NetFlex\DeliveryChargeBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +14,7 @@ class DeliveryModeTimelineType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-	    $builder->add('deliveryModeId');
+	    //
     }
     
     /**

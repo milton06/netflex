@@ -517,7 +517,7 @@ class UserController extends Controller
 	/**
 	 * Gets all the states of a country.
 	 *
-	 * @Route("/dashboard/client/state-list", name="list_states_of_a_country")
+	 * @Route("/dashboard/location/state-list", name="list_states_of_a_country")
 	 * @Method({"POST"})
 	 *
 	 * @param  Request $request
@@ -563,7 +563,7 @@ class UserController extends Controller
 	/**
 	 * Gets all the cities of a state.
 	 *
-	 * @Route("/dashboard/client/city-list", name="list_cities_of_a_state")
+	 * @Route("/dashboard/location/city-list", name="list_cities_of_a_state")
 	 * @Method({"POST"})
 	 *
 	 * @param  Request $request

@@ -52,7 +52,7 @@ class UserRepository extends EntityRepository
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder();
 		
-		$qb->select('partial U.{id}')
+		$qb->select('partial U.{id, firstName, midName, lastName}')
 		->from('NetFlexUserBundle:User', 'U')
 		->where($qb->expr()->andX(
 			$qb->expr()->eq('U.id', ':userId'),
@@ -64,6 +64,6 @@ class UserRepository extends EntityRepository
 		
 		$user = $qb->getQuery()->getResult();
 		
-		return $user;
+		return $user[0];
 	}
 }

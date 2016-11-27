@@ -10,34 +10,122 @@
                 <td>{{ address.id }}</td>
             </tr>
             <tr>
-                <th>Isprimary</th>
-                <td>{% if address.isPrimary %}Yes{% else %}No{% endif %}</td>
+                <th>Pickupfirstname</th>
+                <td>{{ address.pickupFirstName }}</td>
             </tr>
             <tr>
-                <th>Addressline1</th>
-                <td>{{ address.addressLine1 }}</td>
+                <th>Pickupmidname</th>
+                <td>{{ address.pickupMidName }}</td>
             </tr>
             <tr>
-                <th>Addressline2</th>
-                <td>{{ address.addressLine2 }}</td>
+                <th>Pickuplastname</th>
+                <td>{{ address.pickupLastName }}</td>
             </tr>
             <tr>
-                <th>Zipcode</th>
-                <td>{{ address.zipCode }}</td>
+                <th>Pickupaddressline1</th>
+                <td>{{ address.pickupAddressLine1 }}</td>
             </tr>
             <tr>
-                <th>Status</th>
-                <td>{% if address.status %}Yes{% else %}No{% endif %}</td>
+                <th>Pickupaddressline2</th>
+                <td>{{ address.pickupAddressLine2 }}</td>
+            </tr>
+            <tr>
+                <th>Pickupzipcode</th>
+                <td>{{ address.pickupZipCode }}</td>
+            </tr>
+            <tr>
+                <th>Pickuplandmark</th>
+                <td>{{ address.pickupLandMark }}</td>
+            </tr>
+            <tr>
+                <th>Pickupemail</th>
+                <td>{{ address.pickupEmail }}</td>
+            </tr>
+            <tr>
+                <th>Pickupcontactnumber</th>
+                <td>{{ address.pickupContactNumber }}</td>
+            </tr>
+            <tr>
+                <th>Billingfirstname</th>
+                <td>{{ address.billingFirstName }}</td>
+            </tr>
+            <tr>
+                <th>Billingmidname</th>
+                <td>{{ address.billingMidName }}</td>
+            </tr>
+            <tr>
+                <th>Billinglastname</th>
+                <td>{{ address.billingLastName }}</td>
+            </tr>
+            <tr>
+                <th>Billingaddressline1</th>
+                <td>{{ address.billingAddressLine1 }}</td>
+            </tr>
+            <tr>
+                <th>Billingaddressline2</th>
+                <td>{{ address.billingAddressLine2 }}</td>
+            </tr>
+            <tr>
+                <th>Billingzipcode</th>
+                <td>{{ address.billingZipCode }}</td>
+            </tr>
+            <tr>
+                <th>Billinglandmark</th>
+                <td>{{ address.billingLandMark }}</td>
+            </tr>
+            <tr>
+                <th>Billingemail</th>
+                <td>{{ address.billingEmail }}</td>
+            </tr>
+            <tr>
+                <th>Billingcontactnumber</th>
+                <td>{{ address.billingContactNumber }}</td>
+            </tr>
+            <tr>
+                <th>Shippingfirstname</th>
+                <td>{{ address.shippingFirstName }}</td>
+            </tr>
+            <tr>
+                <th>Shippingmidname</th>
+                <td>{{ address.shippingMidName }}</td>
+            </tr>
+            <tr>
+                <th>Shippinglastname</th>
+                <td>{{ address.shippingLastName }}</td>
+            </tr>
+            <tr>
+                <th>Shippingaddressline1</th>
+                <td>{{ address.shippingAddressLine1 }}</td>
+            </tr>
+            <tr>
+                <th>Shippingaddressline2</th>
+                <td>{{ address.shippingAddressLine2 }}</td>
+            </tr>
+            <tr>
+                <th>Shippingzipcode</th>
+                <td>{{ address.shippingZipCode }}</td>
+            </tr>
+            <tr>
+                <th>Shippinglandmark</th>
+                <td>{{ address.shippingLandMark }}</td>
+            </tr>
+            <tr>
+                <th>Shippingemail</th>
+                <td>{{ address.shippingEmail }}</td>
+            </tr>
+            <tr>
+                <th>Shippingcontactnumber</th>
+                <td>{{ address.shippingContactNumber }}</td>
             </tr>
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('_index') }}">Back to the list</a>
+            <a href="{{ path('address_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('_edit', { 'id': address.id }) }}">Edit</a>
+            <a href="{{ path('address_edit', { 'id': address.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
