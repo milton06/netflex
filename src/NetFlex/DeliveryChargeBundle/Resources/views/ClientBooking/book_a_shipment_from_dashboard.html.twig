@@ -231,9 +231,10 @@
 						        {{ form_widget(orderForm.orderItem.itemCalculatedBaseWeight, { 'id': 'item-calculated-base-weight' }) }}
 						        {{ form_widget(orderForm.orderItem.itemCalculatedWeightUnit, { 'id': 'item-calculated-weight-unit' }) }}
 						        {{ form_widget(orderForm.orderItem.itemAccountableExtraWeight, { 'id': 'item-accountable-extra-weight' }) }}
-						        {{ form_widget(orderForm.orderItem.itemVolumetricBaseWeight, { 'id': 'item-volumetric-base-weight' }) }}
-						        {{ form_widget(orderForm.orderItem.itemVolumetricAccountableExtraWeight, { 'id': 'item-volumetric-accountable-extra-weight' }) }}
+						        {#{{ form_widget(orderForm.orderItem.itemVolumetricBaseWeight, { 'id': 'item-volumetric-base-weight' }) }}
+						        {{ form_widget(orderForm.orderItem.itemVolumetricAccountableExtraWeight, { 'id': 'item-volumetric-accountable-extra-weight' }) }}#}
 						        {{ form_widget(orderForm.userId) }}
+						        {{ form_widget(orderForm.deliveryChargeId, { 'id': 'delivery-charge-id' }) }}
 					        </div>
 				            <hr/>
 					        <div class="row">
@@ -293,8 +294,8 @@
 				            </div>
 					        {{ form_widget(orderForm.orderPrice.orderBaseCharge, { 'id': 'order-base-charge' }) }}
 					        {{ form_widget(orderForm.orderPrice.orderExtraWeightLeviedCharge, { 'id': 'order-extra-weight-levied-charge' }) }}
-					        {{ form_widget(orderForm.orderPrice.orderRevisedBaseCharge, { 'id': 'order-revised-base-charge' }) }}
-					        {{ form_widget(orderForm.orderPrice.orderRevisedExtraWeightLeviedCharge, { 'id': 'order-revised-extra-weight-levied-charge' }) }}
+					        {#{{ form_widget(orderForm.orderPrice.orderRevisedBaseCharge, { 'id': 'order-revised-base-charge' }) }}
+					        {{ form_widget(orderForm.orderPrice.orderRevisedExtraWeightLeviedCharge, { 'id': 'order-revised-extra-weight-levied-charge' }) }}#}
 					        {{ form_widget(orderForm.orderPrice.orderCodPaymentAddedCharge, { 'id': 'order-cod-payment-added-charge' }) }}
 					        {{ form_widget(orderForm.orderPrice.orderFuelSurchargeAddedCharge, { 'id': 'order-fuel-surcharge-added-charge' }) }}
 					        {{ form_widget(orderForm.orderPrice.orderServiceTaxAddedCharge, { 'id': 'order-service-tax-added-charge' }) }}
@@ -555,7 +556,7 @@
 							        <p>
 								        <strong>The shipment has been booked successfully.</strong>
 								        <br/>
-								        You can now <a href="javascript:void(0)">Edit</a> or go back to <a href="{{ (referrer) ? referrer : url('client_list') }}">Client List</a>
+								        You can now <a id="edit_link" href="{{ url('edit_order', { 'orderId': '%orderId%' }) }}">Edit</a> or go back to <a href="{{ (referrer) ? referrer : url('client_list') }}">Client List</a>
 							        </p>
 						        </div>
 					        </div>
@@ -575,6 +576,7 @@
 		var getSecondaryItemTypeUrl = "{{ url('get_secondary_item_type_from_dashboard') }}";
 		var checkDeliverabilityUrl = "{{ url('check_deliverability_from_dashboard') }}";
 		var bookShipmentUrl = "{{ url('place_shipment_order_for_client_from_dashboard') }}";
+		var orderRiskApplicableAbove = "{{ orderRiskApplicableAbove }}";
 	</script>
     {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
         '@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'

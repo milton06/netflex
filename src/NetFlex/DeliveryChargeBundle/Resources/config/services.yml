@@ -4,6 +4,6 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
     app.form.type.check_deliverability:
         class: NetFlex\DeliveryChargeBundle\Form\CheckDeliverabilityType
-        arguments: ['@doctrine.orm.default_entity_manager']
+        arguments: ['@doctrine.orm.default_entity_manager', '@request_stack']
         tags:
             - { name: form.type }

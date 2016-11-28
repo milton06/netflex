@@ -25,9 +25,13 @@ parameters:
     generic_accept_media_types: '/\.(jpe?g|png|mp4|webm|mp3|txt|doc|docx|pdf|xlsx|zip)$/i'
     generic_image_media_types: '/\.(jpe?g|png)$/i'
     generic_media_search_types: { '.jpeg': 'jpeg', '.jpg': 'jpg', '.png': 'png', '.mp4': 'mp4', '.webm': 'webm', '.mp3': 'mp3', '.txt': 'txt', '.doc': 'doc', '.docx': 'docx', '.pdf': 'pdf', '.xlsx': 'xlsx', '.zip': 'zip' }
-    pagination_parameters: { "dashboard": { "media_list": { "record_per_page": 5, "neighbor": 3 }, "client_list": { "record_per_page": 5, "neighbor": 3 } } }
+    pagination_parameters: { "dashboard": { "media_list": { "record_per_page": 5, "neighbor": 3 }, "client_list": { "record_per_page": 5, "neighbor": 3 }, "order_list": { "record_per_page": 5, "neighbor": 3 } } }
     order_risk_applicable_above: 5000
     order_risk_types: { 'Own Risk': 'own', 'Carrier Risk': 'carrier' }
+    order_statuses: { 'Waiting admin approval': '1', 'Waiting client approval': '2', 'Disapproved by client': '3', 'Shipped': '4', 'Delivered': '5' }
+    inversed_order_statuses: { '1': 'Waiting admin approval', '2': 'Waiting client approval', '3': 'Disapproved by client', '4': 'Shipped', '5': 'Delivered' }
+    payment_statuses: { 'Pending': '0', 'Paid': '1' }
+    inversed_payment_statuses: { '0': 'Pending', '1': 'Paid' }
 
 framework:
     #esi:             ~
@@ -64,6 +68,8 @@ twig:
         dashboardPageTitlePrefix: "%dashboard_page_title_prefix%"
         noRecordFoundText: 'No Record Found!'
         orderRiskApplicableAbove: '%order_risk_applicable_above%'
+        orderStatuses: '%inversed_order_statuses%'
+        paymentStatuses: '%inversed_payment_statuses%'
 
 # Doctrine Configuration
 doctrine:

@@ -4,13 +4,13 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
     app.form.type.order_item_for_client_from_dashboard:
         class: NetFlex\OrderBundle\Form\OrderItemForClientFromDashboardType
-        arguments: ['@doctrine.orm.default_entity_manager']
+        arguments: ['@doctrine.orm.default_entity_manager', '@request_stack']
         tags:
             - { name: form.type }
 
     app.form.type.order_price_for_client_from_dashboard:
         class: NetFlex\OrderBundle\Form\OrderPriceForClientFromDashboardType
-        arguments: ['@doctrine.orm.default_entity_manager', '%order_risk_types%']
+        arguments: ['@doctrine.orm.default_entity_manager', '%order_risk_types%', '@request_stack']
         tags:
             - { name: form.type }
 

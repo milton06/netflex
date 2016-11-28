@@ -121,7 +121,7 @@ class BookingController extends Controller
 	
 	    $referrer = urldecode($request->query->get('ref'));
 	
-	    return $this->render('NetFlexDeliveryChargeBundle:Booking:book_a_shipment_from_dashboard.html.twig', [
+	    return $this->render('NetFlexDeliveryChargeBundle:ClientBooking:book_a_shipment_from_dashboard.html.twig', [
 		    'pageTitle' => 'Book A Shipment',
 		    'breadCrumbs' => $breadCrumbs,
 		    'referrer' => $referrer,
@@ -154,6 +154,11 @@ class BookingController extends Controller
 	     * Populate order entity with submitted data.
 	     */
 	    $orderForm->handleRequest($request);
+	
+	    /**
+	     * Get unmapped extra data
+	     */
+	    $extraData = $orderForm->getExtraData();
 	
 	    /**
 	     * Get the entity manager.
@@ -201,16 +206,23 @@ class BookingController extends Controller
 	    /**
 	     * Set additional fields.
 	     */
-	    $order->setAwbNumber('nfcs-' . time());
-	    $order->setOrderStatus(1);
-	    $order->setPaymentStatus(0);
-	    
 	    $currentDateTime = new \DateTime();
 	    
-	    $order->setCreatedOn($currentDateTime);
-	    $order->setCreatedBy($this->getUser()->getId());
-	    $order->setLastModifiedOn($currentDateTime);
-	    $order->setLastModifiedBy($this->getUser()->getId());
+	    if (($extraData) && (isset($extraData['mode'])) && ('edit' === $extraData['mode'])) {
+		    /**
+		     * Edit mode.
+		     */
+		    $order->setLastModifiedOn($currentDateTime);
+		    $order->setLastModifiedBy($this->getUser()->getId());
+	    } else {
+		    $order->setAwbNumber('nfcs-' . time());
+		    $order->setOrderStatus(1);
+		    $order->setPaymentStatus(0);
+		    $order->setCreatedOn($currentDateTime);
+		    $order->setCreatedBy($this->getUser()->getId());
+		    $order->setLastModifiedOn($currentDateTime);
+		    $order->setLastModifiedBy($this->getUser()->getId());
+	    }
 	
 	    /**
 	     * Set the order entity to the associated entities.
@@ -393,6 +405,7 @@ class BookingController extends Controller
 	    }
 	    
 	    $deliveryParams = [
+	    	'deliveryChargeId' => $actualDeliveryCharge->getId(),
 		    'itemCalculatedBaseWeight' => $itemBaseWeight,
 		    'itemCalculatedWeightUnit' => $itemWeightUnit,
 		    'itemAccountableExtraWeight' => $itemAccountableExtraWeight,

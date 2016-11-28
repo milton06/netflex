@@ -7,6 +7,7 @@ use NetFlex\UserBundle\Entity\User;
 use NetFlex\OrderBundle\Entity\Item;
 use NetFlex\OrderBundle\Entity\Price;
 use NetFlex\OrderBundle\Entity\Address;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge;
 
 /**
  * OrderTransaction
@@ -45,6 +46,12 @@ class OrderTransaction
 	 * @ORM\OneToOne(targetEntity="Address", mappedBy="orderId", cascade={"persist"})
 	 */
 	private $orderAddress;
+	
+	/**
+	 * @ORM\OneToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge")
+	 * @ORM\JoinColumn(name="delivery_charge_id", referencedColumnName="id")
+	 */
+	private $deliveryChargeId;
 
     /**
      * @var string
@@ -221,6 +228,30 @@ class OrderTransaction
 	public function getOrderAddress()
 	{
 		return $this->orderAddress;
+	}
+	
+	/**
+	 * Set deliveryChargeId
+	 *
+	 * @param DeliveryCharge $deliveryChargeId
+	 *
+	 * @return OrderTransaction
+	 */
+	public function setDeliveryChargeId(DeliveryCharge $deliveryChargeId = null)
+	{
+		$this->deliveryChargeId = $deliveryChargeId;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get deliveryChargeId
+	 *
+	 * @return DeliveryCharge
+	 */
+	public function getDeliveryChargeId()
+	{
+		return $this->deliveryChargeId;
 	}
 
     /**

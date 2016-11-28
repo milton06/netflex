@@ -1,0 +1,375 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+	{{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageStyles %}
+	{{ parent() }}
+	{% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+		'bundles/netflexdashboard/plugins/bootstrap-datepicker/css/datepicker.css'
+		'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
+{% endblock %}
+
+{% block pageHeader %}
+	{{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+	<div class="row">
+		<div class="col-md-12">
+			{{ form_start(searchForm, { 'attr': { 'class': 'form-horizontal', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+			<div class="row">
+				<div class="col-md-3">
+					{{ form_widget(searchForm.awbNumber, { 'id': 'order-awb-number', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'AWB' } }) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_widget(searchForm.invoiceNumber, { 'id': 'order-invoice-number', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Invoice' } }) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_widget(searchForm.orderStatus, { 'id': 'order-status', 'required': false, 'attr': { 'class': 'form-control' } }) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_widget(searchForm.paymentStatus, { 'id': 'order-payment-status', 'required': false, 'attr': { 'class': 'form-control' } }) }}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					{{ form_widget(searchForm.name, { 'id': 'user-full-name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Full Name' } }) }}
+				</div>
+				<div class="col-md-3">
+					<div class="input-group">
+						{{ form_widget(searchForm.fromDate, { 'id': 'order-from-date', 'required': false, 'attr': { 'class': 'form-control date-picker', 'data-date-format': 'dd-mm-yyyy', 'data-date-viewmode': 'years' } }) }}
+						<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="input-group">
+						{{ form_widget(searchForm.toDate, { 'id': 'order-to-date', 'required': false, 'attr': { 'class': 'form-control date-picker', 'data-date-format': 'dd-mm-yyyy', 'data-date-viewmode': 'years' } }) }}
+						<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<input type="submit" class="btn btn-sm btn-primary tooltips" value="Filter" data-placement="top" data-original-title="Filter orders">
+					{% if app.session.has('awbNumber') %}
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="{{ url('exit_from_order_search_mode', { 'ref': referrer }) }}" class="btn btn-sm btn-primary tooltips" data-placement="top" data-original-title="Clear filters">Clear</a>
+					{% endif %}
+				</div>
+			</div>
+			{{ form_end(searchForm) }}
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					{{ listHeader }}
+					<div class="panel-tools">
+						<a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+						</a>
+						<a class="btn btn-xs btn-link panel-expand" href="#">
+							<i class="fa fa-resize-full"></i>
+						</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					{% if app.session.flashbag.peek('warning') %}
+						<div class="alert alert-warning server-message">
+							<button data-dismiss="alert" class="close">×</button>
+							<i class="fa fa-exclamation-triangle"></i>
+							{% for warning in app.session.flashbag.get('warning') %}
+								<strong>Warning!</strong> {{ warning }}.
+							{% endfor %}
+						</div>
+					{% endif %}
+					{% if app.session.flashbag.peek('error') %}
+						<div class="alert alert-danger server-message">
+							<button data-dismiss="alert" class="close">×</button>
+							<i class="fa fa-times-circle"></i>
+							{% for error in app.session.flashbag.get('error') %}
+								<strong>Oh snap!</strong> {{ error }}.
+							{% endfor %}
+						</div>
+					{% endif %}
+					{% if app.session.flashbag.peek('success') %}
+						<div class="alert alert-success server-message">
+							<button data-dismiss="alert" class="close">×</button>
+							<i class="fa fa-check-circle"></i>
+							{% for success in app.session.flashbag.get('success') %}
+								<strong>Well done!</strong> {{ success }}.
+							{% endfor %}
+						</div>
+					{% endif %}
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<thead>
+							<tr>
+								<th class="center">
+									<div class="checkbox-table">
+										<label>
+											<input type="checkbox" id="bulk-record-selector" class="flat-grey">
+										</label>
+									</div>
+								</th>
+								<th>
+									{% if 'id' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order ID in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'desc' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order ID in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order ID in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} ID
+								</th>
+								<th>
+									{% if 'awb' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'awb', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by AWB in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'desc' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'awb', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by AWB in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'awb', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by AWB in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} AWB
+								</th>
+								<th>
+									{% if 'invoice' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'invoice', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by invoice number in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'desc' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'invoice', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by invoice number in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'invoice', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by invoice number in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} Invoice Number
+								</th>
+								<th>
+									{% if 'name' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by name in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'desc' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by name in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by invoice number in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} Name
+								</th>
+								<th>
+									{% if 'orderstatus' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderstatus', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order status in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'orderstatus' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderstatus', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order status in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderstatus', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order status in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} Order Status
+								</th>
+								<th>
+									{% if 'paymentstatus' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'paymentstatus', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by payment status in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'paymentstatus' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'paymentstatus', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by payment status in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'paymentstatus', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by payment status in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} Payment Status
+								</th>
+								<th>
+									{% if 'orderdate' != allRouteParameters.sortColumn %}
+										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderdate', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order date in ascending order">
+											{% image '@NetFlexDashboardBundle/Resources/public/images/sort_both.png' %}
+											<img src="{{ asset_url }}" alt="unsorted-icon">
+											{% endimage %}
+										</a>
+									{% else %}
+										{% if 'orderdate' == allRouteParameters.sortOrder %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderdate', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order date in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderdate', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order date in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+												<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %}
+									{% endif %} Placed On
+								</th>
+								<th class="center">
+									Operations
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% if orders is empty %}
+								<tr>
+									<td colspan="9" class="center">{{ noRecordFoundText }}</td>
+								</tr>
+							{% else %}
+								{% for thisOrder in orders %}
+									<tr>
+										<td class="center">
+											<div class="checkbox-table">
+												<label>
+													<input type="checkbox" value="{{ thisOrder.id }}" class="flat-grey single-record-selector">
+												</label>
+											</div>
+										</td>
+										<td>{{ thisOrder.id }}</td>
+										<td>{{ thisOrder.awbNumber }}</td>
+										<td>{{ (thisOrder.invoiceNumber) ? thisOrder.invoiceNumber : 'N/A' }}</td>
+										<td>{{ thisOrder.getUserId.firstName ~ ((thisOrder.getUserId.midName) ? ' ' ~ thisOrder.getUserId.midName : '') ~ ' ' ~ thisOrder.getUserId.lastName }}</td>
+										<td>{{ orderStatuses[thisOrder.orderStatus] }}</td>
+										<td>{{ paymentStatuses[thisOrder.paymentStatus] }}</td>
+										<td>{{ thisOrder.createdOn|date('F jS, Y') }}</td>
+										<td class="center">
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary">
+													<i class="fa fa-wrench"></i>
+													Operations
+												</button>
+												<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li>
+														<a href="{{ url('delete_order', { 'order_id': thisOrder.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': orders|length }) }}" class="delete-buttons" ><i class="fa fa-trash-o"></i> Delete</a>
+													</li>
+													<li>
+														<a href="{{ url('edit_client_profile_from_dashboard', { 'userId': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+													</li>
+													<li>
+														<a href="{{ url('view_client_profile_in_dashboard', { 'userId': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-eye"></i> View</a>
+													</li>
+												</ul>
+											</div>
+										</td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+							</tbody>
+							<tfoot>
+							<tr>
+								<td class="center">
+									{% if orders %}
+										<a href="{{ url('delete_order', { 'order_id': '%orderIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': orders|length }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected orders"><i class="clip-remove"></i></a>
+									{% endif %}
+								</td>
+								<td colspan="8" class="center">
+									{{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
+								</td>
+							</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block pageScripts %}
+	{{ parent() }}
+	{% javascripts
+		'@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+		'@NetFlexDashboardBundle/Resources/public/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'
+		'@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+		'@NetFlexOrderBundle/Resources/public/js/client_order_list.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+
+{% block initPageScripts %}
+	{{ parent() }}
+	<script>
+		jQuery(document).ready(function() {
+			clientOrderList.init();
+		});
+	</script>
+{% endblock %}
+

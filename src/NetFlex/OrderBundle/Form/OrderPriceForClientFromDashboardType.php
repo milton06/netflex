@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Form;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,11 +16,13 @@ class OrderPriceForClientFromDashboardType extends PriceType
 {
 	private $em;
 	private $orderRiskTypes;
+	private $request;
 	
-	public function __construct(EntityManager $em, $orderRiskTypes)
+	public function __construct(EntityManager $em, $orderRiskTypes, RequestStack $requestStack)
 	{
 		$this->em = $em;
 		$this->orderRiskTypes = $orderRiskTypes;
+		$this->request = $requestStack->getCurrentRequest();
 	}
 	
 	/**
@@ -30,8 +33,8 @@ class OrderPriceForClientFromDashboardType extends PriceType
         $builder->add('orderInvoicePrice')
         ->add('orderBaseCharge', HiddenType::class)
         ->add('orderExtraWeightLeviedCharge', HiddenType::class)
-        ->add('orderRevisedBaseCharge', HiddenType::class)
-        ->add('orderRevisedExtraWeightLeviedCharge', HiddenType::class)
+        /*->add('orderRevisedBaseCharge', HiddenType::class)
+        ->add('orderRevisedExtraWeightLeviedCharge', HiddenType::class)*/
         ->add('orderCodPaymentAddedCharge', HiddenType::class)
         ->add('orderFuelSurchargeAddedCharge', HiddenType::class)
         ->add('orderServiceTaxAddedCharge', HiddenType::class)
@@ -39,7 +42,7 @@ class OrderPriceForClientFromDashboardType extends PriceType
         ->add('orderOctroiCharge', HiddenType::class)
         ->add('orderReturnCharge', HiddenType::class);
 	
-	    $builder->addEventSubscriber(new OrderPriceForClientFromDashboardFormEventSubscriber($this->em, $this->orderRiskTypes));
+	    $builder->addEventSubscriber(new OrderPriceForClientFromDashboardFormEventSubscriber($this->em, $this->orderRiskTypes, $this->request));
     }
     
     /**

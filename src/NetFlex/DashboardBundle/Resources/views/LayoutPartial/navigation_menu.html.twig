@@ -5,7 +5,7 @@
             <span class="title"> Dashboard Home </span><span class="{{ ('dashboard' == currentRoute) ? 'selected' : '' }}"></span>
         </a>
     </li>
-    <li class="{{ (currentRoute in ['client_list', 'register_client_from_dashboard', 'edit_client_profile_from_dashboard', 'view_client_profile_in_dashboard', 'book_a_client_shipment_from_dashboard']) ? 'active open' : '' }}">
+    <li class="{{ (currentRoute in ['client_list', 'register_client_from_dashboard', 'edit_client_profile_from_dashboard', 'view_client_profile_in_dashboard', 'book_a_client_shipment_from_dashboard', 'client_order_list']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">
             <i class="clip-users"></i>
             <span class="title"> Client </span>
@@ -23,6 +23,12 @@
                 </a>
             </li>
         </ul>
+    </li>
+    <li class="{{ (currentRoute in ['order_list']) ? 'active open' : '' }}">
+        <a href="{{ url('order_list') }}">
+            <i class="fa fa-list-ol"></i>
+            <span class="title"> Orders </span>
+        </a>
     </li>
     <li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">

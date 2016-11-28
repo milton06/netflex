@@ -191,6 +191,9 @@
                                                     <li>
                                                         <a href="{{ url('book_a_client_shipment_from_dashboard', { 'clientId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-truck"></i> Book A Shipment</a>
                                                     </li>
+                                                    <li>
+                                                        <a href="{{ url('client_order_list', { 'clientId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-list"></i> Orders</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </td>
@@ -205,7 +208,7 @@
                                         <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': '%clientIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': clients|length }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected Clients"><i class="clip-remove"></i></a>
                                     {% endif %}
                                 </td>
-                                <td colspan="4" class="center">
+                                <td colspan="5" class="center">
                                     {{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
                                 </td>
                             </tr>

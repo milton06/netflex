@@ -927,4 +927,9 @@ class DeliveryCharge
     {
         return $this->lastModifiedBy;
     }
+    
+    public function __toString()
+    {
+	    return '';
+    }
 }

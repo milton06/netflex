@@ -59,7 +59,7 @@ jQuery(document).ready(function() {
 		
 		jQuery("#shipment-addresses input, #shipment-addresses select").each(function() {
 			var thisElementId = jQuery(this).attr("id");
-			var exclude = ["pickup-mid-name", "pickup-address-line-2", "pickup-land-mark", "pickup-email", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email"];
+			var exclude = ["pickup-mid-name", "pickup-address-line-2", "pickup-land-mark", "pickup-email", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email", "order_for_client_from_dashboard_deliveryChargeId"];
 			
 			if ((-1 === exclude.indexOf(thisElementId)) && (! jQuery(this).val())) {
 				++errorCount;
@@ -164,9 +164,9 @@ jQuery(document).ready(function() {
 	
 	jQuery("#item-invoice-value").on("input", function() {
 		var itemInvoiceValue = jQuery(this).val();
-		var orderRiskApplicableAbove = "{{ orderRiskApplicableAbove }}";
+		var orderRiskApplicableAbove = orderRiskApplicableAbove;
 		
-		if (parseFloat(orderRiskApplicableAbove) <= parseFloat(itemInvoiceValue)) {
+		if (parseFloat(5000) <= parseFloat(itemInvoiceValue)) {
 			jQuery("#risk-type-container").show();
 		} else {
 			jQuery(".risk-types").iCheck("uncheck");
@@ -321,6 +321,8 @@ jQuery(document).ready(function() {
 						jQuery(".delivery-mode-error").show();
 					} else {
 						var deliveryParams = response.delivery_params;
+						
+						jQuery("#delivery-charge-id").val(deliveryParams.deliveryChargeId);
 						jQuery("#item-calculated-base-weight").val(deliveryParams.itemCalculatedBaseWeight);
 						jQuery("#item-calculated-weight-unit").val(deliveryParams.itemCalculatedWeightUnit);
 						jQuery("#item-accountable-extra-weight").val(deliveryParams.itemAccountableExtraWeight);
@@ -371,6 +373,11 @@ jQuery(document).ready(function() {
 					
 					jQuery("#tab-booking-options").addClass('disabled');
 					jQuery("#tab-booking-options > a").removeAttr("data-toggle");
+					
+					var editLink = jQuery("#tab-booking-confirmation").find("#edit_link").attr("href");
+					editLink = editLink.replace('%orderId%25', orderId);
+					
+					jQuery("#tab-booking-confirmation").find("#edit_link").attr("href", editLink);
 					
 					jQuery("#tab-booking-confirmation > a").tab("show");
 				},

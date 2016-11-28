@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Form;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,10 +15,12 @@ use NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardForm
 class OrderItemForClientFromDashboardType extends ItemType
 {
     private $em;
+	private $request;
 	
-	public function __construct(EntityManager $em)
+	public function __construct(EntityManager $em, RequestStack $requestStack)
 	{
 		$this->em = $em;
+		$this->request = $requestStack->getCurrentRequest();
 	}
 	
 	/**
@@ -27,11 +30,11 @@ class OrderItemForClientFromDashboardType extends ItemType
     {
 	    $builder->add('itemBaseWeight')
 	    ->add('itemDescription', HiddenType::class)
-	    ->add('itemAccountableExtraWeight', HiddenType::class)
-	    ->add('itemVolumetricBaseWeight', HiddenType::class)
-	    ->add('itemVolumetricAccountableExtraWeight', HiddenType::class);
-	    
-	    $builder->addEventSubscriber(new OrderItemForClientFromDashboardFormEventSubscriber($this->em));
+	    ->add('itemAccountableExtraWeight', HiddenType::class);
+	    /*->add('itemVolumetricBaseWeight', HiddenType::class)
+	    ->add('itemVolumetricAccountableExtraWeight', HiddenType::class);*/
+	
+	    $builder->addEventSubscriber(new OrderItemForClientFromDashboardFormEventSubscriber($this->em, $this->request));
     }
     
     /**
