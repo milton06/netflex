@@ -48,7 +48,7 @@ class OrderTransaction
 	private $orderAddress;
 	
 	/**
-	 * @ORM\OneToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge")
+	 * @ORM\ManyToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge")
 	 * @ORM\JoinColumn(name="delivery_charge_id", referencedColumnName="id")
 	 */
 	private $deliveryChargeId;

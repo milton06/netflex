@@ -231,8 +231,6 @@
 						        {{ form_widget(orderForm.orderItem.itemCalculatedBaseWeight, { 'id': 'item-calculated-base-weight' }) }}
 						        {{ form_widget(orderForm.orderItem.itemCalculatedWeightUnit, { 'id': 'item-calculated-weight-unit' }) }}
 						        {{ form_widget(orderForm.orderItem.itemAccountableExtraWeight, { 'id': 'item-accountable-extra-weight' }) }}
-						        {#{{ form_widget(orderForm.orderItem.itemVolumetricBaseWeight, { 'id': 'item-volumetric-base-weight' }) }}
-						        {{ form_widget(orderForm.orderItem.itemVolumetricAccountableExtraWeight, { 'id': 'item-volumetric-accountable-extra-weight' }) }}#}
 						        {{ form_widget(orderForm.userId) }}
 						        {{ form_widget(orderForm.deliveryChargeId, { 'id': 'delivery-charge-id' }) }}
 					        </div>
@@ -556,7 +554,7 @@
 							        <p>
 								        <strong>The shipment has been booked successfully.</strong>
 								        <br/>
-								        You can now <a id="edit_link" href="{{ url('edit_order', { 'orderId': '%orderId%' }) }}">Edit</a> or go back to <a href="{{ (referrer) ? referrer : url('client_list') }}">Client List</a>
+								        You can now <a id="edit_link" href="{{ url('edit_order', { 'id': '%id%' }) }}">Edit</a> or go back to <a href="{{ (referrer) ? referrer : url('client_list') }}">Client List</a>
 							        </p>
 						        </div>
 					        </div>

@@ -316,3 +316,100 @@
 [24-Nov-2016 12:33:12 UTC] PHP   9. Doctrine\ORM\Repository\DefaultRepositoryFactory->createRepository() /var/www/html/netflex/vendor/doctrine/orm/lib/Doctrine/ORM/Repository/DefaultRepositoryFactory.php:50
 [24-Nov-2016 12:33:12 UTC] PHP  10. spl_autoload_call() /var/www/html/netflex/vendor/doctrine/orm/lib/Doctrine/ORM/Repository/DefaultRepositoryFactory.php:68
 [24-Nov-2016 12:33:12 UTC] PHP  11. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/doctrine/orm/lib/Doctrine/ORM/Repository/DefaultRepositoryFactory.php:68
+[28-Nov-2016 06:40:31 UTC] PHP Fatal error:  Call to undefined method NetFlex\OrderBundle\Entity\Item::getOrderItem() in /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php on line 40
+[28-Nov-2016 06:40:31 UTC] PHP Stack trace:
+[28-Nov-2016 06:40:31 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[28-Nov-2016 06:40:31 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[28-Nov-2016 06:40:31 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[28-Nov-2016 06:40:31 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[28-Nov-2016 06:40:31 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 06:40:31 UTC] PHP   6. NetFlex\OrderBundle\Controller\OrderController->renderBookingForClientPageInDashboardAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 06:40:31 UTC] PHP   7. Symfony\Bundle\FrameworkBundle\Controller\Controller->createForm() /var/www/html/netflex/src/NetFlex/OrderBundle/Controller/OrderController.php:324
+[28-Nov-2016 06:40:31 UTC] PHP   8. Symfony\Component\Form\FormFactory->create() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Controller/Controller.php:309
+[28-Nov-2016 06:40:31 UTC] PHP   9. Symfony\Component\Form\FormBuilder->getForm() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/FormFactory.php:39
+[28-Nov-2016 06:40:31 UTC] PHP  10. Symfony\Component\Form\Form->initialize() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/FormBuilder.php:226
+[28-Nov-2016 06:40:31 UTC] PHP  11. Symfony\Component\Form\Form->setData() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:477
+[28-Nov-2016 06:40:31 UTC] PHP  12. Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper->mapDataToForms() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:385
+[28-Nov-2016 06:40:31 UTC] PHP  13. Symfony\Component\Form\Form->setData() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/Core/DataMapper/PropertyPathMapper.php:57
+[28-Nov-2016 06:40:31 UTC] PHP  14. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:341
+[28-Nov-2016 06:40:31 UTC] PHP  15. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 06:40:31 UTC] PHP  16. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 06:40:31 UTC] PHP  17. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 06:40:31 UTC] PHP  18. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSetData() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:03:28 UTC] PHP Fatal error:  Call to a member function getItemWeightUnitId() on a non-object in /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php on line 93
+[28-Nov-2016 07:03:28 UTC] PHP Stack trace:
+[28-Nov-2016 07:03:28 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[28-Nov-2016 07:03:28 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[28-Nov-2016 07:03:28 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[28-Nov-2016 07:03:28 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[28-Nov-2016 07:03:28 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 07:03:28 UTC] PHP   6. NetFlex\DeliveryChargeBundle\Controller\BookingController->placeShipmentOrderForClientFromDashboard() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 07:03:28 UTC] PHP   7. Symfony\Component\Form\Form->handleRequest() /var/www/html/netflex/src/NetFlex/DeliveryChargeBundle/Controller/BookingController.php:156
+[28-Nov-2016 07:03:28 UTC] PHP   8. Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler->handleRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:488
+[28-Nov-2016 07:03:28 UTC] PHP   9. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/HttpFoundation/HttpFoundationRequestHandler.php:113
+[28-Nov-2016 07:03:28 UTC] PHP  10. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:562
+[28-Nov-2016 07:03:28 UTC] PHP  11. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:541
+[28-Nov-2016 07:03:28 UTC] PHP  12. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 07:03:28 UTC] PHP  13. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 07:03:28 UTC] PHP  14. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:03:28 UTC] PHP  15. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSubmit() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:03:28 UTC] PHP  16. Symfony\Component\Form\Form->setData() /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php:138
+[28-Nov-2016 07:03:28 UTC] PHP  17. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:341
+[28-Nov-2016 07:03:28 UTC] PHP  18. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 07:03:28 UTC] PHP  19. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 07:03:28 UTC] PHP  20. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:03:28 UTC] PHP  21. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSetData() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:23:31 UTC] PHP Fatal error:  Call to a member function getItemWeightUnitId() on a non-object in /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php on line 93
+[28-Nov-2016 07:23:31 UTC] PHP Stack trace:
+[28-Nov-2016 07:23:31 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[28-Nov-2016 07:23:31 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[28-Nov-2016 07:23:31 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[28-Nov-2016 07:23:31 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[28-Nov-2016 07:23:31 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 07:23:31 UTC] PHP   6. NetFlex\DeliveryChargeBundle\Controller\BookingController->placeShipmentOrderForClientFromDashboard() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 07:23:31 UTC] PHP   7. Symfony\Component\Form\Form->handleRequest() /var/www/html/netflex/src/NetFlex/DeliveryChargeBundle/Controller/BookingController.php:156
+[28-Nov-2016 07:23:31 UTC] PHP   8. Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler->handleRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:488
+[28-Nov-2016 07:23:31 UTC] PHP   9. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/HttpFoundation/HttpFoundationRequestHandler.php:113
+[28-Nov-2016 07:23:31 UTC] PHP  10. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:562
+[28-Nov-2016 07:23:31 UTC] PHP  11. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:541
+[28-Nov-2016 07:23:31 UTC] PHP  12. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 07:23:31 UTC] PHP  13. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 07:23:31 UTC] PHP  14. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:23:31 UTC] PHP  15. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSubmit() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:23:31 UTC] PHP  16. Symfony\Component\Form\Form->setData() /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php:139
+[28-Nov-2016 07:23:31 UTC] PHP  17. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:341
+[28-Nov-2016 07:23:31 UTC] PHP  18. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 07:23:31 UTC] PHP  19. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 07:23:31 UTC] PHP  20. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:23:31 UTC] PHP  21. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSetData() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:25:10 UTC] PHP Fatal error:  Call to a member function getItemWeightUnitId() on a non-object in /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php on line 93
+[28-Nov-2016 07:25:10 UTC] PHP Stack trace:
+[28-Nov-2016 07:25:10 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[28-Nov-2016 07:25:10 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[28-Nov-2016 07:25:10 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[28-Nov-2016 07:25:10 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[28-Nov-2016 07:25:10 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 07:25:10 UTC] PHP   6. NetFlex\DeliveryChargeBundle\Controller\BookingController->placeShipmentOrderForClientFromDashboard() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 07:25:10 UTC] PHP   7. Symfony\Component\Form\Form->handleRequest() /var/www/html/netflex/src/NetFlex/DeliveryChargeBundle/Controller/BookingController.php:156
+[28-Nov-2016 07:25:10 UTC] PHP   8. Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler->handleRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:488
+[28-Nov-2016 07:25:10 UTC] PHP   9. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/HttpFoundation/HttpFoundationRequestHandler.php:113
+[28-Nov-2016 07:25:10 UTC] PHP  10. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:562
+[28-Nov-2016 07:25:10 UTC] PHP  11. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:541
+[28-Nov-2016 07:25:10 UTC] PHP  12. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 07:25:10 UTC] PHP  13. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 07:25:10 UTC] PHP  14. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:25:10 UTC] PHP  15. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSubmit() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:25:10 UTC] PHP  16. Symfony\Component\Form\Form->setData() /var/www/html/netflex/src/NetFlex/OrderBundle/Form/EventSubscriber/OrderItemForClientFromDashboardFormEventSubscriber.php:139
+[28-Nov-2016 07:25:10 UTC] PHP  17. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:341
+[28-Nov-2016 07:25:10 UTC] PHP  18. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[28-Nov-2016 07:25:10 UTC] PHP  19. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[28-Nov-2016 07:25:10 UTC] PHP  20. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 07:25:10 UTC] PHP  21. NetFlex\OrderBundle\Form\EventSubscriber\OrderItemForClientFromDashboardFormEventSubscriber->preSetData() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[28-Nov-2016 10:14:02 UTC] PHP Fatal error:  Call to a member function getDeliveryModeTimelineId() on a non-object in /var/www/html/netflex/src/NetFlex/OrderBundle/Controller/OrderController.php on line 309
+[28-Nov-2016 10:14:02 UTC] PHP Stack trace:
+[28-Nov-2016 10:14:02 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[28-Nov-2016 10:14:02 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[28-Nov-2016 10:14:02 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[28-Nov-2016 10:14:02 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[28-Nov-2016 10:14:02 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[28-Nov-2016 10:14:02 UTC] PHP   6. NetFlex\OrderBundle\Controller\OrderController->renderEditOrderPageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153

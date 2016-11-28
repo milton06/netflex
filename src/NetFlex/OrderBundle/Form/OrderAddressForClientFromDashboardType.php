@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Form;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,10 +14,12 @@ use NetFlex\OrderBundle\Form\EventSubscriber\OrderAddressForClientFromDashboardF
 class OrderAddressForClientFromDashboardType extends AddressType
 {
 	private $em;
+	private $request;
 	
-	public function __construct(EntityManager $em)
+	public function __construct(EntityManager $em, RequestStack $requestStack)
 	{
 		$this->em = $em;
+		$this->request = $requestStack->getCurrentRequest();
 	}
 	
 	/**
@@ -61,7 +64,7 @@ class OrderAddressForClientFromDashboardType extends AddressType
 		    ->add('shippingEmail')
 		    ->add('shippingContactNumber');
 	    
-	    $builder->addEventSubscriber(new OrderAddressForClientFromDashboardFormEventSubscriber($this->em));
+	    $builder->addEventSubscriber(new OrderAddressForClientFromDashboardFormEventSubscriber($this->em, $this->request));
     }
     
     /**

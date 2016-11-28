@@ -36,7 +36,10 @@ class OrderItemForClientFromDashboardFormEventSubscriber implements EventSubscri
 		$formData = $formEvent->getData();
 		
 		if ('edit_order' === $this->request->get('_route')) {
-			$form->add('itemWeightUnitId', EntityType::class, [
+			$form->add('itemBaseWeight', null, [
+				'data' => ($formData->getOrderId()->getOrderItem()->getItemBaseWeight() + $formData->getOrderId()->getOrderItem()->getItemAccountableExtraWeight()),
+			])
+			->add('itemWeightUnitId', EntityType::class, [
 				'class' => 'NetFlexDeliveryChargeBundle:WeightUnit',
 				'placeholder' => '-Select A Weight Unit-',
 				'query_builder' => function(EntityRepository $er) use($formData) {

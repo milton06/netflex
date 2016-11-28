@@ -16,7 +16,7 @@ services:
 
     app.form.type.order_address_for_client_from_dashboard:
         class: NetFlex\OrderBundle\Form\OrderAddressForClientFromDashboardType
-        arguments: ['@doctrine.orm.default_entity_manager']
+        arguments: ['@doctrine.orm.default_entity_manager', '@request_stack']
         tags:
             - { name: form.type }
 

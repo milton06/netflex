@@ -60,7 +60,7 @@ class OrderPriceForClientFromDashboardFormEventSubscriber implements EventSubscr
 			->add('riskType', ChoiceType::class, [
 				'placeholder' => false,
 				'choices' => $this->orderRiskTypes,
-				'data' => ($formData->getOrderCarrierRiskAddedCharge()) ? 'carrier' : 'own',
+				'data' => ('0.00' == $formData->getOrderCarrierRiskAddedCharge()) ? 'own' : 'carrier',
 				'expanded' => true,
 				'multiple' => false,
 				'mapped' => false,

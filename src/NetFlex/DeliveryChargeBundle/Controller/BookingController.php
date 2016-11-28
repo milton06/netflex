@@ -156,11 +156,6 @@ class BookingController extends Controller
 	    $orderForm->handleRequest($request);
 	
 	    /**
-	     * Get unmapped extra data
-	     */
-	    $extraData = $orderForm->getExtraData();
-	
-	    /**
 	     * Get the entity manager.
 	     */
 	    $em = $this->getDoctrine()->getManager();
@@ -207,22 +202,19 @@ class BookingController extends Controller
 	     * Set additional fields.
 	     */
 	    $currentDateTime = new \DateTime();
-	    
-	    if (($extraData) && (isset($extraData['mode'])) && ('edit' === $extraData['mode'])) {
-		    /**
-		     * Edit mode.
-		     */
-		    $order->setLastModifiedOn($currentDateTime);
-		    $order->setLastModifiedBy($this->getUser()->getId());
-	    } else {
-		    $order->setAwbNumber('nfcs-' . time());
-		    $order->setOrderStatus(1);
-		    $order->setPaymentStatus(0);
-		    $order->setCreatedOn($currentDateTime);
-		    $order->setCreatedBy($this->getUser()->getId());
-		    $order->setLastModifiedOn($currentDateTime);
-		    $order->setLastModifiedBy($this->getUser()->getId());
-	    }
+	
+	    $order->getOrderItem()->setItemUserBaseWeight($order->getOrderItem()->getItemBaseWeight() - $order->getOrderItem()->getItemAccountableExtraWeight());
+	    $order->getOrderItem()->setItemBaseWeight($order->getOrderItem()->getItemBaseWeight() - $order->getOrderItem()->getItemAccountableExtraWeight());
+	    $order->getOrderItem()->setItemUserAccountableExtraWeight($order->getOrderItem()->getItemAccountableExtraWeight());
+	    $order->getOrderPrice()->setOrderUserBaseCharge($order->getOrderPrice()->getOrderBaseCharge());
+	    $order->getOrderPrice()->setOrderUserExtraWeightLeviedCharge($order->getOrderPrice()->getOrderExtraWeightLeviedCharge());
+	    $order->setAwbNumber('nfcs-' . time());
+	    $order->setOrderStatus(1);
+	    $order->setPaymentStatus(0);
+	    $order->setCreatedOn($currentDateTime);
+	    $order->setCreatedBy($this->getUser()->getId());
+	    $order->setLastModifiedOn($currentDateTime);
+	    $order->setLastModifiedBy($this->getUser()->getId());
 	
 	    /**
 	     * Set the order entity to the associated entities.
@@ -305,8 +297,8 @@ class BookingController extends Controller
 		     * The requested delivery mode is not available for the source-destination location combination. Though another mode is available.
 		     */
 		    $deliveryModeRepo = $em->getRepository('NetFlexDeliveryChargeBundle:DeliveryMode');
-		
-		    return $this->json(['delivery_mode_error' => 'We don\'t deliver via ' . $deliveryModeRepo->findDeliveryModeName($deliveryModeId)->getModeName() . ' at this location. But you can select ' . $deliveryCharge[0]->getDeliveryModeTimelineId()->getDeliveryModeId()->getModeName()] . '.');
+			
+		    return $this->json(['delivery_mode_error' => 'We don\'t deliver via ' . $deliveryModeRepo->findDeliveryModeName($deliveryModeId)->getModeName() . ' at this location. But you can select ' . $deliveryCharge[0]->getDeliveryModeTimelineId()->getDeliveryModeId()->getModeName() . '.']);
 	    }
 	    
 	    if (1 === count($deliveryCharge)) {

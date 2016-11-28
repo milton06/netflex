@@ -46,16 +46,16 @@ class Price
     /**
      * @var string
      *
-     * @ORM\Column(name="order_revised_base_charge", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="order_user_base_charge", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $orderRevisedBaseCharge;
+    private $orderUserBaseCharge;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="order_revised_extra_weight_levied_charge", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="order_user_extra_weight_levied_charge", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $orderRevisedExtraWeightLeviedCharge;
+    private $orderUserExtraWeightLeviedCharge;
 
     /**
      * @var string
@@ -196,51 +196,51 @@ class Price
     }
 
     /**
-     * Set orderRevisedBaseCharge
+     * Set orderUserBaseCharge
      *
-     * @param string $orderRevisedBaseCharge
+     * @param string $orderUserBaseCharge
      *
      * @return Price
      */
-    public function setOrderRevisedBaseCharge($orderRevisedBaseCharge)
+    public function setOrderUserBaseCharge($orderUserBaseCharge)
     {
-        $this->orderRevisedBaseCharge = $orderRevisedBaseCharge;
+        $this->orderUserBaseCharge = $orderUserBaseCharge;
 
         return $this;
     }
 
     /**
-     * Get orderRevisedBaseCharge
+     * Get orderUserBaseCharge
      *
      * @return string
      */
-    public function getOrderRevisedBaseCharge()
+    public function getOrderUserBaseCharge()
     {
-        return $this->orderRevisedBaseCharge;
+        return $this->orderUserBaseCharge;
     }
 
     /**
-     * Set orderRevisedExtraWeightLeviedCharge
+     * Set orderUserExtraWeightLeviedCharge
      *
-     * @param string $orderRevisedExtraWeightLeviedCharge
+     * @param string $orderUserExtraWeightLeviedCharge
      *
      * @return Price
      */
-    public function setOrderRevisedExtraWeightLeviedCharge($orderRevisedExtraWeightLeviedCharge)
+    public function setOrderUserExtraWeightLeviedCharge($orderUserExtraWeightLeviedCharge)
     {
-        $this->orderRevisedExtraWeightLeviedCharge = $orderRevisedExtraWeightLeviedCharge;
+        $this->orderUserExtraWeightLeviedCharge = $orderUserExtraWeightLeviedCharge;
 
         return $this;
     }
 
     /**
-     * Get orderRevisedExtraWeightLeviedCharge
+     * Get orderUserExtraWeightLeviedCharge
      *
      * @return string
      */
-    public function getOrderRevisedExtraWeightLeviedCharge()
+    public function getOrderUserExtraWeightLeviedCharge()
     {
-        return $this->orderRevisedExtraWeightLeviedCharge;
+        return $this->orderUserExtraWeightLeviedCharge;
     }
 
     /**

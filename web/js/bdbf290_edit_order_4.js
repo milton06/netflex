@@ -353,7 +353,7 @@ jQuery(document).ready(function() {
 		
 		if (validateCheckDeliverabilityForm() && validateOrderForm()) {
 			jQuery.ajax({
-				url: bookShipmentUrl,
+				url: updateOrderUrl,
 				type: "post",
 				dataType: "json",
 				data: jQuery("#book-a-shipment-form").serialize(),

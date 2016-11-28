@@ -36,13 +36,7 @@ class OrderForClientFromDashboardType extends OrderTransactionType
         ->add('deliveryChargeId', HiddenType::class);
 	    
 	    if ('edit_order' === $this->request->get('_route')) {
-		    $builder->add('userId', HiddenType::class, [
-		    	'data' => $builder->getData()->getUserId()->getId(),
-		    ]);
-		    $builder->add('mode', HiddenType::class, [
-			    'data' => 'edit',
-			    'mapped' => false,
-		    ]);
+		    //
 	    } else {
 		    $builder->add('userId', HiddenType::class, [
 			    'data' => $this->request->get('clientId'),

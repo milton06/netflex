@@ -291,26 +291,17 @@ class OrderController extends Controller
 	/**
 	 * Renders the edit order page.
 	 *
-	 * @Route("/dashboard/order/edit/{orderId}", name="edit_order")
-	 * @Method({"GET"})
+	 * @Route("/dashboard/order/edit/{id}", name="edit_order")
+	 * @Method({"GET", "POST"})
 	 *
-	 * @param int     $orderId
-	 * @param Request $request A request instance
+	 * @param OrderTransaction     $order   An OrderTransaction instance
+	 * @param Request              $request A request instance
 	 *
 	 * @return Response
 	 */
-	public function renderBookingForClientPageInDashboardAction($orderId, Request $request)
+	public function renderEditOrderPageAction(OrderTransaction $order, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
-		/**
-		 * Repositories.
-		 */
-		$orderRepo = $em->getRepository('NetFlexOrderBundle:OrderTransaction');
-		
-		if (! ($order = $orderRepo->findOneById($orderId))) {
-			throw $this->createNotFoundException("No order with ID: $orderId exists");
-		}
 		
 		/**
 		 * Create the check deliverability form.
@@ -323,6 +314,65 @@ class OrderController extends Controller
 		 */
 		$orderForm = $this->createForm(OrderForClientFromDashboardType::class, $order);
 		
+		$orderForm->handleRequest($request);
+		
+		if ($orderForm->isSubmitted()) {
+			if ((! $order->getOrderAddress()->getPickupAddressLine1()) || (! $order->getOrderAddress()->getBillingAddressLine1())) {
+				/**
+				 * We need to fetch pickup and billing addresses from user address repo.
+				 */
+				$clientAddressRepo = $em->getRepository('NetFlexUserBundle:Address');
+				$clientPreferredPickupAndBillingAddresses = $clientAddressRepo->findClientPreferredPickupAndBillingAddresses($order->getUserId()->getId());
+			}
+			
+			if (! $order->getOrderAddress()->getPickupAddressLine1()) {
+				/**
+				 * Populate pickup address fields.
+				 */
+				$order->getOrderAddress()->setPickupFirstName($order->getUserId()->getFirstName());
+				$order->getOrderAddress()->setPickupMidName($order->getUserId()->getMidName());
+				$order->getOrderAddress()->setPickupLastName($order->getUserId()->getLastName());
+				$order->getOrderAddress()->setPickupAddressLine1($clientPreferredPickupAndBillingAddresses[1]->getAddressLine1());
+				$order->getOrderAddress()->setPickupAddressLine2($clientPreferredPickupAndBillingAddresses[1]->getAddressLine2());
+				$order->getOrderAddress()->setPickupCountryId($clientPreferredPickupAndBillingAddresses[1]->getCountryId());
+				$order->getOrderAddress()->setPickupStateId($clientPreferredPickupAndBillingAddresses[1]->getStateId());
+				$order->getOrderAddress()->setPickupCityId($clientPreferredPickupAndBillingAddresses[1]->getCityId());
+				$order->getOrderAddress()->setPickupZipCode($clientPreferredPickupAndBillingAddresses[1]->getZipCode());
+			}
+			
+			if (! $order->getOrderAddress()->getBillingAddressLine1()) {
+				/**
+				 * Populate billing address fields.
+				 */
+				$order->getOrderAddress()->setBillingFirstName($order->getUserId()->getFirstName());
+				$order->getOrderAddress()->setBillingMidName($order->getUserId()->getMidName());
+				$order->getOrderAddress()->setBillingLastName($order->getUserId()->getLastName());
+				$order->getOrderAddress()->setBillingAddressLine1($clientPreferredPickupAndBillingAddresses[0]->getAddressLine1());
+				$order->getOrderAddress()->setBillingAddressLine2($clientPreferredPickupAndBillingAddresses[0]->getAddressLine2());
+				$order->getOrderAddress()->setBillingCountryId($clientPreferredPickupAndBillingAddresses[0]->getCountryId());
+				$order->getOrderAddress()->setBillingStateId($clientPreferredPickupAndBillingAddresses[0]->getStateId());
+				$order->getOrderAddress()->setBillingCityId($clientPreferredPickupAndBillingAddresses[0]->getCityId());
+				$order->getOrderAddress()->setBillingZipCode($clientPreferredPickupAndBillingAddresses[0]->getZipCode());
+			}
+			
+			$associatedCustomerRoles = $order->getUserId()->getRoles();
+			if (in_array('ROLE_CLIENT', $associatedCustomerRoles)) {
+				$order->setOrderStatus(2);
+			}
+			
+			$order->getOrderItem()->setItemBaseWeight($order->getOrderItem()->getItemBaseWeight() - $order->getOrderItem()->getItemAccountableExtraWeight());
+			$order->getLastModifiedBy(new \DateTime());
+			$order->setLastModifiedBy($this->getUser()->getId());
+			
+			$em->persist($order);
+			
+			$em->flush();
+			
+			$orderId = $order->getId();
+			
+			return $this->json(['status' => 'success', 'orderId' => $orderId]);
+		}
+		
 		$breadCrumbs = [
 			[
 				'title' => 'Dashboard Home',
@@ -334,7 +384,7 @@ class OrderController extends Controller
 			],
 			[
 				'title' => 'Edit Order',
-				'link' => $this->generateUrl('edit_order', ['orderId' => $orderId], UrlGeneratorInterface::ABSOLUTE_URL)
+				'link' => $this->generateUrl('edit_order', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_URL)
 			],
 		];
 		

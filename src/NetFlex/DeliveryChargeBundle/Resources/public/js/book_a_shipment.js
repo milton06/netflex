@@ -374,8 +374,9 @@ jQuery(document).ready(function() {
 					jQuery("#tab-booking-options").addClass('disabled');
 					jQuery("#tab-booking-options > a").removeAttr("data-toggle");
 					
-					var editLink = jQuery("#tab-booking-confirmation").find("#edit_link").attr("href");
-					editLink = editLink.replace('%orderId%25', orderId);
+					var editLink = jQuery("#booking-confirmation").find("#edit_link").attr("href");
+					editLink = editLink.replace('%25id%25', orderId);
+					jQuery("#booking-confirmation").find("#edit_link").attr("href", editLink);
 					
 					jQuery("#tab-booking-confirmation").find("#edit_link").attr("href", editLink);
 					

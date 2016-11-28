@@ -66,16 +66,16 @@ class Item
     /**
      * @var string
      *
-     * @ORM\Column(name="item_volumetric_base_weight", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="item_user_base_weight", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $itemVolumetricBaseWeight;
+    private $itemUserBaseWeight;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="item_volumetric_accountable_extra_weight", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="item_user_accountable_extra_weight", type="decimal", precision=10, scale=2, nullable=true)
      */
-    private $itemVolumetricAccountableExtraWeight;
+    private $itemUserAccountableExtraWeight;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\WeightUnit")
@@ -239,51 +239,51 @@ class Item
     }
 
     /**
-     * Set itemVolumetricBaseWeight
+     * Set itemUserBaseWeight
      *
-     * @param string $itemVolumetricBaseWeight
+     * @param string $itemUserBaseWeight
      *
      * @return Item
      */
-    public function setItemVolumetricBaseWeight($itemVolumetricBaseWeight)
+    public function setItemUserBaseWeight($itemUserBaseWeight)
     {
-        $this->itemVolumetricBaseWeight = $itemVolumetricBaseWeight;
+        $this->itemUserBaseWeight = $itemUserBaseWeight;
 
         return $this;
     }
 
     /**
-     * Get itemVolumetricBaseWeight
+     * Get itemUserBaseWeight
      *
      * @return string
      */
-    public function getItemVolumetricBaseWeight()
+    public function getItemUserBaseWeight()
     {
-        return $this->itemVolumetricBaseWeight;
+        return $this->itemUserBaseWeight;
     }
 
     /**
-     * Set itemVolumetricAccountableExtraWeight
+     * Set itemUserAccountableExtraWeight
      *
-     * @param string $itemVolumetricAccountableExtraWeight
+     * @param string $itemUserAccountableExtraWeight
      *
      * @return Item
      */
-    public function setItemVolumetricAccountableExtraWeight($itemVolumetricAccountableExtraWeight)
+    public function setItemUserAccountableExtraWeight($itemUserAccountableExtraWeight)
     {
-        $this->itemVolumetricAccountableExtraWeight = $itemVolumetricAccountableExtraWeight;
+        $this->itemUserAccountableExtraWeight = $itemUserAccountableExtraWeight;
 
         return $this;
     }
 
     /**
-     * Get itemVolumetricAccountableExtraWeight
+     * Get itemUserAccountableExtraWeight
      *
      * @return string
      */
-    public function getItemVolumetricAccountableExtraWeight()
+    public function getItemUserAccountableExtraWeight()
     {
-        return $this->itemVolumetricAccountableExtraWeight;
+        return $this->itemUserAccountableExtraWeight;
     }
 
     /**
