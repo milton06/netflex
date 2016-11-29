@@ -95,6 +95,18 @@
 					            <div class="col-md-4"></div>
 				            </div>
 				            <hr/>
+                            {% if orderForm.clientOtherPickupAddresses is null %}
+                            {% else %}
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <strong>Choose From Other Pickup Addresses:</strong>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{ form_widget(orderForm.clientOtherPickupAddresses, { 'id': 'choose-another-pickup-address', 'attr': { 'class': 'form-control', 'required': false } }) }}
+                                    </div>
+                                </div>
+                                <hr/>
+                            {% endif %}
 				            <div class="row">
 					            <div class="col-md-12">
 						            <strong>Pick-up At</strong>
@@ -292,8 +304,6 @@
 				            </div>
 					        {{ form_widget(orderForm.orderPrice.orderBaseCharge, { 'id': 'order-base-charge' }) }}
 					        {{ form_widget(orderForm.orderPrice.orderExtraWeightLeviedCharge, { 'id': 'order-extra-weight-levied-charge' }) }}
-					        {#{{ form_widget(orderForm.orderPrice.orderRevisedBaseCharge, { 'id': 'order-revised-base-charge' }) }}
-					        {{ form_widget(orderForm.orderPrice.orderRevisedExtraWeightLeviedCharge, { 'id': 'order-revised-extra-weight-levied-charge' }) }}#}
 					        {{ form_widget(orderForm.orderPrice.orderCodPaymentAddedCharge, { 'id': 'order-cod-payment-added-charge' }) }}
 					        {{ form_widget(orderForm.orderPrice.orderFuelSurchargeAddedCharge, { 'id': 'order-fuel-surcharge-added-charge' }) }}
 					        {{ form_widget(orderForm.orderPrice.orderServiceTaxAddedCharge, { 'id': 'order-service-tax-added-charge' }) }}
@@ -302,91 +312,105 @@
 					        {{ form_widget(orderForm.orderPrice.orderReturnCharge, { 'id': 'order-return-charge' }) }}
 			        </div>
 			        <div class="tab-pane" id="shipment-addresses">
-				        <div class="row">
-					        <div class="col-md-12">
-						        <strong>Pick-up Address Details</strong>
-					        </div>
-				        </div>
-				        <hr/>
-			            <div class="row form-group">
-				            {{ form_label(orderForm.orderAddress.pickupFirstName, 'First Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
-				            <div class="col-md-8">
-					            {{ form_widget(orderForm.orderAddress.pickupFirstName, { 'id': 'pickup-first-name' }) }}
-				            </div>
-			            </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupMidName, 'Middle Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupMidName, { 'id': 'pickup-mid-name' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupLastName, 'Last Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupLastName, { 'id': 'pickup-last-name' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupAddressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupAddressLine1, { 'id': 'pickup-address-line-1' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupAddressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupAddressLine2, { 'id': 'pickup-address-line-2' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupZipCode, 'Zip Code', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupZipCode, { 'id': 'pickup-zip-code' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupLandMark, 'Land-mark', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupLandMark, { 'id': 'pickup-land-mark' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupEmail, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupEmail, { 'id': 'pickup-email' }) }}
-					        </div>
-				        </div>
-				        <div class="row form-group">
-					        {{ form_label(orderForm.orderAddress.pickupContactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
-					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.pickupContactNumber, { 'id': 'pickup-contact-number' }) }}
-					        </div>
-				        </div>
-				        <hr/>
+                        <div style="display: none;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>Pick-up Address Details</strong>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupFirstName, 'First Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupFirstName, { 'id': 'pickup-first-name' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupMidName, 'Middle Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupMidName, { 'id': 'pickup-mid-name' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupLastName, 'Last Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupLastName, { 'id': 'pickup-last-name' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupAddressLine1, 'Address Line 1', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupAddressLine1, { 'id': 'pickup-address-line-1' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupAddressLine2, 'Address Line 2', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupAddressLine2, { 'id': 'pickup-address-line-2' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country', 'class': 'country-selectors' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state', 'class': 'state-selectors' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city', 'class': 'city-selectors' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupZipCode, 'Zip Code', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupZipCode, { 'id': 'pickup-zip-code' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupLandMark, 'Land-mark', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupLandMark, { 'id': 'pickup-land-mark' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupEmail, 'Email', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupEmail, { 'id': 'pickup-email' }) }}
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                {{ form_label(orderForm.orderAddress.pickupContactNumber, 'Contact Number', { 'label_attr': { 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.orderAddress.pickupContactNumber, { 'id': 'pickup-contact-number' }) }}
+                                </div>
+                            </div>
+                            <hr/>
+                        </div>
 				        <div class="row">
 					        <div class="col-md-12">
 						        <strong>Billing Address Details</strong>
 					        </div>
 				        </div>
 				        <hr/>
+                        {% if orderForm.clientOtherBillingAddresses is null %}
+                        {% else %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <strong>Choose From Other Billing Addresses:</strong>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ form_widget(orderForm.clientOtherBillingAddresses, { 'id': 'choose-another-billing-address', 'attr': { 'class': 'form-control', 'required': false } }) }}
+                                </div>
+                            </div>
+                            <hr/>
+                        {% endif %}
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingFirstName, 'First Name', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
@@ -420,19 +444,19 @@
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.billingCountryId, { 'id': 'billing-country' }) }}
+						        {{ form_widget(orderForm.orderAddress.billingCountryId, { 'id': 'billing-country', 'class': 'country-selectors' }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.billingStateId, { 'id': 'billing-state' }) }}
+						        {{ form_widget(orderForm.orderAddress.billingStateId, { 'id': 'billing-state', 'class': 'state-selectors' }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.billingCityId, { 'id': 'billing-city' }) }}
+						        {{ form_widget(orderForm.orderAddress.billingCityId, { 'id': 'billing-city', 'class': 'city-selectors' }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
@@ -499,19 +523,19 @@
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country' }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'class': 'country-selectors' }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state' }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'class': 'state-selectors' }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city' }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'class': 'city-selectors' }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
@@ -541,7 +565,7 @@
 				        <div class="row">
 					        <div class="col-md-6"></div>
 					        <div class="col-md-6">
-						        <button id="book-a-shipment-button" class="btn btn-primary">Book Shipment <i class="fa fa-truck"></i></button>
+						        <button id="book-a-shipment-button" class="btn btn-primary"><i class="fa fa-truck"></i> Book Shipment</button>
 					        </div>
 				        </div>
 				        {{ form_end(orderForm) }}
@@ -574,6 +598,7 @@
 		var getSecondaryItemTypeUrl = "{{ url('get_secondary_item_type_from_dashboard') }}";
 		var checkDeliverabilityUrl = "{{ url('check_deliverability_from_dashboard') }}";
 		var bookShipmentUrl = "{{ url('place_shipment_order_for_client_from_dashboard') }}";
+        var setPreferredAddressUrl = "{{ url('set_preferred_address_for_client_from_dashboard') }}";
 		var orderRiskApplicableAbove = "{{ orderRiskApplicableAbove }}";
 	</script>
     {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
@@ -582,4 +607,9 @@
         '@NetFlexDeliveryChargeBundle/Resources/public/js/book_a_shipment.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    <script>
+        jQuery(document).ready(function() {
+
+        });
+    </script>
 {% endblock %}

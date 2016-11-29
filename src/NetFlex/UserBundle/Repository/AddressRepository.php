@@ -22,6 +22,8 @@ class AddressRepository extends EntityRepository
 	{
 		$rsm = new ResultSetMapping();
 		
+		$rsm->addScalarResult('billing_address_count', 'billingAddressCount');
+		
 		$rsm->addEntityResult('NetFlexUserBundle:Address', 'a');
 		$rsm->addFieldResult('a', 'address_id', 'id');
 		$rsm->addFieldResult('a', 'address_line_1', 'addressLine1');
@@ -30,7 +32,7 @@ class AddressRepository extends EntityRepository
 		$rsm->addFieldResult('a', 'is_primary', 'isPrimary');
 		
 		$rsm->addJoinedEntityResult('NetFlexUserBundle:user', 'u', 'a', 'userId');
-		$rsm->addFieldResult('u', 'id', 'id');
+		$rsm->addFieldResult('u', 'user_id', 'id');
 		$rsm->addFieldResult('u', 'user_first_name', 'firstName');
 		$rsm->addFieldResult('u', 'user_mid_name', 'midName');
 		$rsm->addFieldResult('u', 'user_last_name', 'lastName');
@@ -52,9 +54,20 @@ class AddressRepository extends EntityRepository
 		$rsm->addFieldResult('ci', 'city_name', 'name');
 		
 		$sql = "
-			(select a.id address_id, a.address_line_1, a.address_line_2, a.zip_code, a.is_primary, u.id, u.first_name user_first_name, u.mid_name user_mid_name, u.last_name user_last_name, at.id address_type_id, at.name address_type_name, co.id country_id, co.name country_name, s.id state_id, s.name state_name, ci.id city_id, ci.name city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = ? and a.address_type_id = 1 and a.status = 1 order by a.is_primary desc limit 0,1)
-			union
-			(select a.id address_id, a.address_line_1, a.address_line_2, a.zip_code, a.is_primary, u.id, u.first_name user_first_name, u.mid_name user_mid_name, u.last_name user_last_name, at.id address_type_id, at.name address_type_name, co.id country_id, co.name country_name, s.id state_id, s.name state_name, ci.id city_id, ci.name city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = ? and a.address_type_id = 2 and a.status = 1 order by a.is_primary desc limit 0,1)
+			select
+			*
+			from
+			(
+				select count(a.id) billing_address_count, null address_id, null address_line_1, null address_line_2, 
+				null zip_code, null is_primary, null user_id, null user_first_name, null user_mid_name, null 
+				user_last_name, null address_type_id, null address_type_name, null country_id, null country_name, 
+				null state_id, null state_name, null city_id, null city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = 9 and a.address_type_id = 1 and a.status = 1				
+				union
+				select null billing_address_count, a.id address_id, a.address_line_1, a.address_line_2, a.zip_code, a.is_primary, u.id user_id, u.first_name user_first_name, u.mid_name user_mid_name, u.last_name user_last_name, at.id address_type_id, at.name address_type_name, co.id country_id, co.name country_name, s.id state_id, s.name state_name, ci.id city_id, ci.name city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = 9 and a.address_type_id = 1 and a.status = 1
+				union
+				select null billing_address_count, a.id address_id, a.address_line_1, a.address_line_2, a.zip_code, a.is_primary, u.id user_id, u.first_name user_first_name, u.mid_name user_mid_name, u.last_name user_last_name, at.id address_type_id, at.name address_type_name, co.id country_id, co.name country_name, s.id state_id, s.name state_name, ci.id city_id, ci.name city_name from addresses a left join users u on a.user_id = u.id left join address_types at on a.address_type_id = at.id left join countries co on a.country_id = co.id left join states s on a.state_id = s.id left join cities ci on a.city_id = ci.id where a.user_id = 9 and a.address_type_id = 2 and a.status = 1
+			) A
+			order by A.billing_address_count desc, A.address_type_id asc, A.is_primary desc
 		";
 		
 		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $clientId, 2 => $clientId]);

@@ -25,13 +25,14 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 	{
 		return [
 			FormEvents::PRE_SET_DATA => 'preSetData',
+			FormEvents::PRE_SUBMIT => 'preSubmit',
 		];
 	}
 	
-	public function preSetData(FormEvent $event)
+	public function preSetData(FormEvent $formEvent)
 	{
-		$form = $event->getForm();
-		$formData = $event->getData();
+		$form = $formEvent->getForm();
+		$formData = $formEvent->getData();
 		
 		if ('edit_order' === $this->request->get('_route')) {
 			$form->add('sourceCountryId', EntityType::class, [
@@ -112,85 +113,40 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 				'data' => $formData->getDestinationZipCode(),
 			]);
 		} else {
-			if (($formData) && ($formData->getSourceCountryId())) {
-				$form->add('sourceCountryId', null, [
-					'attr' => [
-						'disabled' => true,
-					],
-				]);
-			} else {
-				$form->add('sourceCountryId', EntityType::class, [
-					'class' => 'NetFlexLocationBundle:Country',
-					'placeholder' => '-Select A Country-',
-					'query_builder' => function(EntityRepository $er) {
-						return $er->createQueryBuilder('co')
-							->where('co.status = 1')
-							->orderBy('co.name', 'ASC');
-					},
-					'data' => $this->em->getReference('NetFlexLocationBundle:Country', [
-						'id' => 1,
-						'status' => 1,
-					])
-				]);
-			}
-			
-			if (($formData) && ($formData->getSourceStateId())) {
-				$form->add('sourceStateId', null, [
-					'attr' => [
-						'disabled' => true,
-					],
-				]);
-			} else {
-				$form->add('sourceStateId', EntityType::class, [
-					'class' => 'NetFlexLocationBundle:State',
-					'placeholder' => '-Select A State-',
-					'query_builder' => function(EntityRepository $er) {
-						return $er->createQueryBuilder('s')
-							->where('s.countryId = 1')
-							->andWhere('s.status = 1')
-							->orderBy('s.name', 'ASC');
-					},
-					'data' => $this->em->getReference('NetFlexLocationBundle:State', [
-						'id' => 41,
-						'status' => 1,
-					])
-				]);
-			}
-			
-			if (($formData) && ($formData->getSourceCityId())) {
-				$form->add('sourceCityId', null, [
-					'attr' => [
-						'disabled' => true,
-					],
-				]);
-			} else {
-				$form->add('sourceCityId', EntityType::class, [
-					'class' => 'NetFlexLocationBundle:City',
-					'placeholder' => '-Select A City-',
-					'query_builder' => function(EntityRepository $er) {
-						return $er->createQueryBuilder('ci')
-							->where('ci.stateId = 41')
-							->andWhere('ci.status = 1')
-							->orderBy('ci.name', 'ASC');
-					},
-					'data' => $this->em->getReference('NetFlexLocationBundle:City', [
-						'id' => 5583,
-						'status' => 1,
-					])
-				]);
-			}
-			
-			if (($formData) && ($formData->getSourceZipCode())) {
-				$form->add('sourceZipCode', null, [
-					'attr' => [
-						'disabled' => true,
-					],
-				]);
-			} else {
-				$form->add('sourceZipCode');
-			}
-			
-			$form->add('destinationCountryId', EntityType::class, [
+			$form->add('sourceCountryId', EntityType::class, [
+				'class' => 'NetFlexLocationBundle:Country',
+				'placeholder' => '-Select A Country-',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('co')
+						->where('co.status = 1')
+						->orderBy('co.name', 'ASC');
+				},
+				'data' => (($formData) && ($formData->getSourceCountryId())) ? $formData->getSourceCountryId() : $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1])
+			])
+			->add('sourceStateId', EntityType::class, [
+				'class' => 'NetFlexLocationBundle:State',
+				'placeholder' => '-Select A State-',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('s')
+						->where('s.countryId = 1')
+						->andWhere('s.status = 1')
+						->orderBy('s.name', 'ASC');
+				},
+				'data' => (($formData) && ($formData->getSourceStateId())) ? $formData->getSourceStateId() : $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1])
+			])
+			->add('sourceCityId', EntityType::class, [
+				'class' => 'NetFlexLocationBundle:City',
+				'placeholder' => '-Select A City-',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('ci')
+						->where('ci.stateId = 41')
+						->andWhere('ci.status = 1')
+						->orderBy('ci.name', 'ASC');
+				},
+				'data' => (($formData) && ($formData->getSourceCityId())) ? $formData->getSourceCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1])
+			])
+			->add('sourceZipCode')
+			->add('destinationCountryId', EntityType::class, [
 				'class' => 'NetFlexLocationBundle:Country',
 				'placeholder' => '-Select A Country-',
 				'query_builder' => function(EntityRepository $er) {
@@ -202,9 +158,8 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 					'id' => 1,
 					'status' => 1,
 				]),
-			]);
-			
-			$form->add('destinationStateId', EntityType::class, [
+			])
+			->add('destinationStateId', EntityType::class, [
 				'class' => 'NetFlexLocationBundle:State',
 				'placeholder' => '-Select A State-',
 				'query_builder' => function(EntityRepository $er) {
@@ -217,9 +172,8 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 					'id' => 41,
 					'status' => 1,
 				])
-			]);
-			
-			$form->add('destinationCityId', EntityType::class, [
+			])
+			->add('destinationCityId', EntityType::class, [
 				'class' => 'NetFlexLocationBundle:City',
 				'placeholder' => '-Select A City-',
 				'query_builder' => function(EntityRepository $er) {
@@ -232,9 +186,54 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 					'id' => 5583,
 					'status' => 1,
 				])
+			])
+			->add('destinationZipCode');
+		}
+	}
+	
+	public function preSubmit(FormEvent $formEvent)
+	{
+		$form = $formEvent->getForm();
+		$formData = $formEvent->getData();
+		
+		if ('edit_order' === $this->request->get('_route')) {
+			//
+		} else {
+			$form->add('sourceCountryId', EntityType::class, [
+				'class' => 'NetFlexLocationBundle:Country',
+				'placeholder' => '-Select A Country-',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('co')
+						->where('co.status = 1')
+						->orderBy('co.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => $formData['sourceCountryId']])
+			])
+			->add('sourceStateId', EntityType::class, [
+				'class' => 'NetFlexLocationBundle:State',
+				'placeholder' => '-Select A State-',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('s')
+						->where('s.countryId = 1')
+						->andWhere('s.status = 1')
+						->orderBy('s.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => $formData['sourceStateId']])
+			])
+			->add('sourceCityId', EntityType::class, [
+				'class' => 'NetFlexLocationBundle:City',
+				'placeholder' => '-Select A City-',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('ci')
+						->where('ci.stateId = 41')
+						->andWhere('ci.status = 1')
+						->orderBy('ci.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => $formData['sourceCityId']])
+			])
+			->add('sourceZipCode', null, [
+				'data' => $formData['sourceZipCode']
 			]);
-			
-			$form->add('destinationZipCode');
 		}
 	}
 }

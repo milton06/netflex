@@ -511,7 +511,7 @@ class OrderController extends Controller
 	 *
 	 * @return string
 	 */
-	private function getSortColumn($sortColumn)
+	protected function getSortColumn($sortColumn)
 	{
 		switch ($sortColumn) {
 			case 'awb':

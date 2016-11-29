@@ -64,7 +64,7 @@ class OrderAddressForClientFromDashboardType extends AddressType
 		    ->add('shippingEmail')
 		    ->add('shippingContactNumber');
 	    
-	    $builder->addEventSubscriber(new OrderAddressForClientFromDashboardFormEventSubscriber($this->em, $this->request));
+	    $builder->addEventSubscriber(new OrderAddressForClientFromDashboardFormEventSubscriber($this->em, $this->request, $options['clientOtherPickupAddresses'], $options['clientOtherBillingAddresses']));
     }
     
     /**
@@ -74,6 +74,8 @@ class OrderAddressForClientFromDashboardType extends AddressType
     {
         $resolver->setDefaults(array(
             'data_class' => Address::class,
+	        'clientOtherPickupAddresses' => [],
+	        'clientOtherBillingAddresses' => [],
         ));
     }
 }

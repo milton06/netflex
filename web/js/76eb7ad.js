@@ -15,6 +15,7 @@ d&&32==c)return b[l]==x&&b[j]||(b[j]?w(a,j):p(a,j)),!1;if("keyup"==d&&b[l]==x)!b
 jQuery(document).ready(function() {
 	var validateCheckDeliverabilityForm = function() {
 		var errorCount = 0;
+		jQuery(".errorHandler").hide();
 		jQuery("#booking-options .help-block").remove();
 		jQuery("#booking-options .form-group").removeClass("has-error");
 		
@@ -68,6 +69,7 @@ jQuery(document).ready(function() {
 	
 	var validateOrderForm = function() {
 		var errorCount = 0;
+		jQuery(".errorHandler").hide();
 		jQuery("#shipment-addresses .help-block").remove();
 		jQuery("#shipment-addresses .form-group").removeClass("has-error");
 		
@@ -110,6 +112,118 @@ jQuery(document).ready(function() {
 	
 	jQuery('.nav li').not('.active').addClass('disabled');
 	jQuery('.nav li').not('.active').find('a').removeAttr("data-toggle");
+	
+	jQuery("#choose-another-pickup-address").on("change", function() {
+		var addressId = jQuery(this).val();
+		if (addressId) {
+			jQuery(".server-fault").hide();
+			jQuery.ajax({
+				url: setPreferredAddressUrl,
+				type: "post",
+				dataType: "json",
+				data: {
+					'addressId': addressId
+				},
+				beforeSend: function() {
+					//
+				},
+				success: function(response) {
+					if (true === response.status) {
+						var countryList = '<option value="">-Select A Country</option>';
+						var stateList = '<option value="">-Select A State-</option>';
+						var cityList = '<option value="">-Select A City-</option>';
+						jQuery.each(response.address.countryList, function(key, value) {
+							var selectedClass = (key == response.address.countryId) ? 'selected="selected"' : ''
+							countryList += '<option value="' + key + '"' + selectedClass + '>' + value + '</option>';
+						});
+						jQuery.each(response.address.stateList, function(key, value) {
+							var selectedClass = (key == response.address.stateId) ? 'selected="selected"' : ''
+							stateList += '<option value="' + key + '"' + selectedClass + '>' + value + '</option>';
+						});
+						jQuery.each(response.address.cityList, function(key, value) {
+							var selectedClass = (key == response.address.cityId) ? 'selected="selected"' : ''
+							cityList += '<option value="' + key + '"' + selectedClass + '>' + value + '</option>';
+						});
+						jQuery(".cd-country-selectors:first").empty().html(countryList);
+						jQuery(".cd-state-selectors:first").empty().html(stateList);
+						jQuery(".cd-city-selectors:first").empty().html(cityList);
+						jQuery("#cd-source-zip-code").val(response.address.zipCode);
+						jQuery("#pickup-first-name").val(response.address.firstName);
+						jQuery("#pickup-mid-name").val(response.address.midName);
+						jQuery("#pickup-last-name").val(response.address.lastName);
+						jQuery("#pickup-address-line-1").val(response.address.addressLine1);
+						jQuery("#pickup-address-line-2").val(response.address.addressLine2);
+						jQuery("#pickup-country").empty().html(countryList);
+						jQuery("#pickup-state").empty().html(stateList);
+						jQuery("#pickup-city").empty().html(cityList);
+						jQuery("#pickup-zip-code").val(response.address.zipCode);
+						jQuery("#pickup-email").val(response.address.email);
+						jQuery("#pickup-contact-number").val(response.address.contactNumber);
+					}
+				},
+				error: function() {
+					jQuery(".server-fault").show();
+				},
+				complete: function() {
+					//
+				}
+			});
+		}
+	});
+	
+	jQuery("#choose-another-billing-address").on("change", function() {
+		var addressId = jQuery(this).val();
+		if (addressId) {
+			jQuery(".server-fault").hide();
+			jQuery.ajax({
+				url: setPreferredAddressUrl,
+				type: "post",
+				dataType: "json",
+				data: {
+					'addressId': addressId
+				},
+				beforeSend: function() {
+					//
+				},
+				success: function(response) {
+					if (true === response.status) {
+						var countryList = '<option value="">-Select A Country</option>';
+						var stateList = '<option value="">-Select A State-</option>';
+						var cityList = '<option value="">-Select A City-</option>';
+						jQuery.each(response.address.countryList, function(key, value) {
+							var selectedClass = (key == response.address.countryId) ? 'selected="selected"' : ''
+							countryList += '<option value="' + key + '"' + selectedClass + '>' + value + '</option>';
+						});
+						jQuery.each(response.address.stateList, function(key, value) {
+							var selectedClass = (key == response.address.stateId) ? 'selected="selected"' : ''
+							stateList += '<option value="' + key + '"' + selectedClass + '>' + value + '</option>';
+						});
+						jQuery.each(response.address.cityList, function(key, value) {
+							var selectedClass = (key == response.address.cityId) ? 'selected="selected"' : ''
+							cityList += '<option value="' + key + '"' + selectedClass + '>' + value + '</option>';
+						});
+						jQuery("#billing-first-name").val(response.address.firstName);
+						jQuery("#billing-mid-name").val(response.address.midName);
+						jQuery("#billing-last-name").val(response.address.lastName);
+						jQuery("#billing-address-line-1").val(response.address.addressLine1);
+						jQuery("#billing-address-line-2").val(response.address.addressLine2);
+						jQuery("#billing-country").empty().html(countryList);
+						jQuery("#billing-state").empty().html(stateList);
+						jQuery("#billing-city").empty().html(cityList);
+						jQuery("#billing-zip-code").val(response.address.zipCode);
+						jQuery("#billing-email").val(response.address.email);
+						jQuery("#billing-contact-number").val(response.address.contactNumber);
+					}
+				},
+				error: function() {
+					jQuery(".server-fault").show();
+				},
+				complete: function() {
+					//
+				}
+			});
+		}
+	});
 	
 	jQuery('input[type="checkbox"].flat-grey, input[type="radio"].flat-grey').iCheck({
 		checkboxClass: 'icheckbox_flat-grey',
@@ -182,6 +296,7 @@ jQuery(document).ready(function() {
 		
 		if (parseFloat(5000) <= parseFloat(itemInvoiceValue)) {
 			jQuery("#risk-type-container").show();
+			jQuery(".risk-types:first").iCheck("check");
 		} else {
 			jQuery(".risk-types").iCheck("uncheck");
 			jQuery("#risk-type-container").hide();

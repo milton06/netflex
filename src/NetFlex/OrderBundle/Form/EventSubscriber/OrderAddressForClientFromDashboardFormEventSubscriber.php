@@ -14,17 +14,22 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 {
 	private $em;
 	private $request;
+	private $clientOtherPickupAddresses;
+	private $clientOtherBillingAddresses;
 	
-	public function __construct(EntityManager $em, Request $request)
+	public function __construct(EntityManager $em, Request $request, $clientOtherPickupAddresses, $clientOtherBillingAddresses)
 	{
 		$this->em = $em;
 		$this->request = $request;
+		$this->clientOtherPickupAddresses = $clientOtherPickupAddresses;
+		$this->clientOtherBillingAddresses = $clientOtherBillingAddresses;
 	}
 	
 	public static function getSubscribedEvents()
 	{
 		return [
 			FormEvents::PRE_SET_DATA => 'preSetData',
+			FormEvents::PRE_SUBMIT => 'preSubmit',
 		];
 	}
 	
@@ -224,33 +229,18 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 		} else {
 			$form->add('pickupFirstName', null, [
 				'data' => (($formData) && ($formData->getPickupFirstName())) ? $formData->getPickupFirstName() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getPickupFirstName())) ? true : false,
-				],
 			])
 			->add('pickupMidName', null, [
 				'data' => (($formData) && ($formData->getPickupMidName())) ? $formData->getPickupMidName() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getPickupMidName())) ? true : false,
-				],
 			])
 			->add('pickupLastName', null, [
 				'data' => (($formData) && ($formData->getPickupLastName())) ? $formData->getPickupLastName() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getPickupLastName())) ? true : false,
-				],
 			])
 			->add('pickupAddressLine1', null, [
 				'data' => (($formData) && ($formData->getPickupAddressLine1())) ? $formData->getPickupAddressLine1() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getPickupAddressLine1())) ? true : false,
-				],
 			])
 			->add('pickupAddressLine2', null, [
 				'data' => (($formData) && ($formData->getPickupAddressLine2())) ? $formData->getPickupAddressLine2() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getPickupAddressLine2())) ? true : false,
-				],
 			])
 			->add('pickupCountryId', EntityType::class, [
 				'placeholder' => '-Select A Country-',
@@ -261,10 +251,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						->orderBy('country.name', 'ASC');
 				},
 				'data' => (($formData) && ($formData->getPickUpCountryId())) ? $formData->getPickUpCountryId() : $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1]),
-				'attr' => [
-					'class' => 'country-selectors',
-					'disabled' => (($formData) && ($formData->getPickUpCountryId())) ? true : false,
-				],
 			])
 			->add('pickupStateId', EntityType::class, [
 				'placeholder' => '-Select A State-',
@@ -283,10 +269,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 					}
 				},
 				'data' => (($formData) && ($formData->getPickUpStateId())) ? $formData->getPickUpStateId() : $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
-				'attr' => [
-					'class' => 'state-selectors',
-					'disabled' => (($formData) && ($formData->getPickUpStateId())) ? true : false,
-				],
 			])
 			->add('pickupCityId', EntityType::class, [
 				'placeholder' => '-Select A City-',
@@ -304,47 +286,30 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 							->orderBy('cities.name', 'ASC');
 					}
 				},
-				'data' => (($formData) && ($formData->getPickUpCityId())) ? $formData->getPickUpCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1]),
-				'attr' => [
-					'class' => 'city-selectors',
-					'disabled' => (($formData) && ($formData->getPickUpCityId())) ? true : false,
-				],
 			])
 			->add('pickupZipCode', null, [
 				'data' => (($formData) && ($formData->getPickupZipCode())) ? $formData->getPickupZipCode() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getPickupZipCode())) ? true : false,
-				],
+			])
+			->add('pickupEmail', null, [
+				'data' => (($formData) && ($formData->getPickupEmail())) ? $formData->getPickupEmail() : '',
+			])
+			->add('pickupContactNumber', null, [
+				'data' => (($formData) && ($formData->getPickupContactNumber())) ? $formData->getPickupContactNumber() : '',
 			])
 			->add('billingFirstName', null, [
 				'data' => (($formData) && ($formData->getBillingFirstName())) ? $formData->getBillingFirstName() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getBillingFirstName())) ? true : false,
-				],
 			])
 			->add('billingMidName', null, [
 				'data' => (($formData) && ($formData->getBillingMidName())) ? $formData->getBillingMidName() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getBillingMidName())) ? true : false,
-				],
 			])
 			->add('billingLastName', null, [
 				'data' => (($formData) && ($formData->getBillingLastName())) ? $formData->getBillingLastName() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getBillingLastName())) ? true : false,
-				],
 			])
 			->add('billingAddressLine1', null, [
 				'data' => (($formData) && ($formData->getBillingAddressLine1())) ? $formData->getBillingAddressLine1() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getBillingAddressLine1())) ? true : false,
-				],
 			])
 			->add('billingAddressLine2', null, [
 				'data' => (($formData) && ($formData->getBillingAddressLine2())) ? $formData->getBillingAddressLine2() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getBillingAddressLine2())) ? true : false,
-				],
 			])
 			->add('billingCountryId', EntityType::class, [
 				'placeholder' => '-Select A Country-',
@@ -355,10 +320,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						->orderBy('country.name', 'ASC');
 				},
 				'data' => (($formData) && ($formData->getBillingCountryId())) ? $formData->getBillingCountryId() : $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1]),
-				'attr' => [
-					'class' => 'country-selectors',
-					'disabled' => (($formData) && ($formData->getBillingCountryId())) ? true : false,
-				],
 			])
 			->add('billingStateId', EntityType::class, [
 				'placeholder' => '-Select A State-',
@@ -377,10 +338,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 					}
 				},
 				'data' => (($formData) && ($formData->getBillingStateId())) ? $formData->getBillingStateId() : $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
-				'attr' => [
-					'class' => 'state-selectors',
-					'disabled' => (($formData) && ($formData->getBillingStateId())) ? true : false,
-				],
 			])
 			->add('billingCityId', EntityType::class, [
 				'placeholder' => '-Select A City-',
@@ -399,16 +356,15 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 					}
 				},
 				'data' => (($formData) && ($formData->getBillingCityId())) ? $formData->getBillingCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1]),
-				'attr' => [
-					'class' => 'city-selectors',
-					'disabled' => (($formData) && ($formData->getBillingCityId())) ? true : false,
-				],
 			])
 			->add('billingZipCode', null, [
 				'data' => (($formData) && ($formData->getBillingZipCode())) ? $formData->getBillingZipCode() : '',
-				'attr' => [
-					'disabled' => (($formData) && ($formData->getBillingZipCode())) ? true : false,
-				],
+			])
+			->add('billingEmail', null, [
+				'data' => (($formData) && ($formData->getBillingEmail())) ? $formData->getBillingEmail() : '',
+			])
+			->add('billingContactNumber', null, [
+				'data' => (($formData) && ($formData->getBillingContactNumber())) ? $formData->getBillingContactNumber() : '',
 			])
 			->add('shippingCountryId', EntityType::class, [
 				'placeholder' => '-Select A Country-',
@@ -419,9 +375,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						->orderBy('country.name', 'ASC');
 				},
 				'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1]),
-				'attr' => [
-					'class' => 'country-selectors',
-				],
 			])
 			->add('shippingStateId', EntityType::class, [
 				'placeholder' => '-Select A State-',
@@ -433,9 +386,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						->orderBy('states.name', 'ASC');
 				},
 				'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
-				'attr' => [
-					'class' => 'state-selectors',
-				],
 			])
 			->add('shippingCityId', EntityType::class, [
 				'placeholder' => '-Select A City-',
@@ -447,9 +397,129 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						->orderBy('cities.name', 'ASC');
 				},
 				'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1]),
-				'attr' => [
-					'class' => 'city-selectors',
-				],
+			]);
+		}
+	}
+	
+	public function preSubmit(FormEvent $formEvent)
+	{
+		$form = $formEvent->getForm();
+		$formData = $formEvent->getData();
+		
+		if ('edit_order' === $this->request->get('_route')) {
+			//
+		} else {
+			$form->add('pickupFirstName', null, [
+				'data' => $formData['pickupFirstName'],
+			])
+			->add('pickupMidName', null, [
+				'data' => $formData['pickupMidName'],
+			])
+			->add('pickupLastName', null, [
+				'data' => $formData['pickupLastName'],
+			])
+			->add('pickupAddressLine1', null, [
+				'data' => $formData['pickupAddressLine1'],
+			])
+			->add('pickupAddressLine2', null, [
+				'data' => $formData['pickupAddressLine2'],
+			])
+			->add('pickupCountryId', EntityType::class, [
+				'placeholder' => '-Select A Country-',
+				'class' => 'NetFlexLocationBundle:Country',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('country')
+						->where('country.status = 1')
+						->orderBy('country.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => $formData['pickupCountryId'], 'status' => 1]),
+			])
+			->add('pickupStateId', EntityType::class, [
+				'placeholder' => '-Select A State-',
+				'class' => 'NetFlexLocationBundle:State',
+				'query_builder' => function(EntityRepository $er) use($formData) {
+					return $er->createQueryBuilder('states')
+						->where('states.status = 1')
+						->andWhere('states.countryId = ' . $formData['pickupCountryId'])
+						->orderBy('states.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => $formData['pickupStateId'], 'status' => 1]),
+			])
+			->add('pickupCityId', EntityType::class, [
+				'placeholder' => '-Select A City-',
+				'class' => 'NetFlexLocationBundle:City',
+				'query_builder' => function(EntityRepository $er) use($formData) {
+					return $er->createQueryBuilder('cities')
+						->where('cities.status = 1')
+						->andWhere('cities.stateId = ' . $formData['pickupStateId'])
+						->orderBy('cities.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => $formData['pickupCityId'], 'status' => 1]),
+			])
+			->add('pickupZipCode', null, [
+				'data' => $formData['pickupZipCode'],
+			])
+			->add('pickupEmail', null, [
+				'data' => $formData['pickupEmail'],
+			])
+			->add('pickupContactNumber', null, [
+				'data' => $formData['pickupContactNumber'],
+			])
+			->add('billingFirstName', null, [
+				'data' => $formData['billingFirstName'],
+			])
+			->add('billingMidName', null, [
+				'data' => $formData['billingMidName'],
+			])
+			->add('billingLastName', null, [
+				'data' => $formData['billingLastName'],
+			])
+			->add('billingAddressLine1', null, [
+				'data' => $formData['billingAddressLine1'],
+			])
+			->add('billingAddressLine2', null, [
+				'data' => $formData['billingAddressLine2'],
+			])
+			->add('billingCountryId', EntityType::class, [
+				'placeholder' => '-Select A Country-',
+				'class' => 'NetFlexLocationBundle:Country',
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('country')
+						->where('country.status = 1')
+						->orderBy('country.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => $formData['billingCountryId'], 'status' => 1]),
+			])
+			->add('billingStateId', EntityType::class, [
+				'placeholder' => '-Select A State-',
+				'class' => 'NetFlexLocationBundle:State',
+				'query_builder' => function(EntityRepository $er) use($formData) {
+					return $er->createQueryBuilder('states')
+						->where('states.status = 1')
+						->andWhere('states.countryId = ' . $formData['billingCountryId'])
+						->orderBy('states.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => $formData['billingStateId'], 'status' => 1]),
+			])
+			->add('billingCityId', EntityType::class, [
+				'placeholder' => '-Select A City-',
+				'class' => 'NetFlexLocationBundle:City',
+				'query_builder' => function(EntityRepository $er) use($formData) {
+					return $er->createQueryBuilder('cities')
+						->where('cities.status = 1')
+						->andWhere('cities.stateId = ' . $formData['billingStateId'])
+						->orderBy('cities.name', 'ASC');
+				},
+				'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => $formData['billingCityId'], 'status' => 1]),
+			])
+			->add('billingZipCode', null, [
+				'data' => (($formData) && ($formData['billingZipCode'])) ? $formData['billingZipCode'] : '',
+			])
+			->add('billingEmail', null, [
+				'data' => $formData['billingEmail'],
+			])
+			->add('billingContactNumber', null, [
+				'data' => $formData['billingContactNumber'],
 			]);
 		}
 	}

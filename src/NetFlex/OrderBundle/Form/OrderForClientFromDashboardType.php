@@ -32,7 +32,10 @@ class OrderForClientFromDashboardType extends OrderTransactionType
     {
         $builder->add('orderItem', OrderItemForClientFromDashboardType::class)
         ->add('orderPrice', OrderPriceForClientFromDashboardType::class)
-        ->add('orderAddress', OrderAddressForClientFromDashboardType::class)
+        ->add('orderAddress', OrderAddressForClientFromDashboardType::class, [
+        	'clientOtherPickupAddresses' => $options['clientOtherPickupAddresses'],
+	        'clientOtherBillingAddresses' => $options['clientOtherBillingAddresses'],
+        ])
         ->add('deliveryChargeId', HiddenType::class);
 	    
 	    if ('edit_order' === $this->request->get('_route')) {
@@ -45,7 +48,7 @@ class OrderForClientFromDashboardType extends OrderTransactionType
 		    $builder->get('userId')->addModelTransformer(new IdToUserTransformer($this->request->get('clientId'), $this->em));
 	    }
 	    
-	    $builder->addEventSubscriber(new OrderForClientFromDashboardFormEventSubscriber($this->em, $this->request));
+	    $builder->addEventSubscriber(new OrderForClientFromDashboardFormEventSubscriber($this->em, $this->request, $options['clientOtherPickupAddresses'], $options['clientOtherBillingAddresses']));
     }
     
     /**
@@ -55,6 +58,8 @@ class OrderForClientFromDashboardType extends OrderTransactionType
     {
         $resolver->setDefaults(array(
             'data_class' => OrderTransaction::class,
+	        'clientOtherPickupAddresses' => [],
+	        'clientOtherBillingAddresses' => [],
         ));
     }
 }
