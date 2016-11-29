@@ -33,8 +33,6 @@ class OrderPriceForClientFromDashboardType extends PriceType
         $builder->add('orderInvoicePrice')
         ->add('orderBaseCharge', HiddenType::class)
         ->add('orderExtraWeightLeviedCharge', HiddenType::class)
-        /*->add('orderRevisedBaseCharge', HiddenType::class)
-        ->add('orderRevisedExtraWeightLeviedCharge', HiddenType::class)*/
         ->add('orderCodPaymentAddedCharge', HiddenType::class)
         ->add('orderFuelSurchargeAddedCharge', HiddenType::class)
         ->add('orderServiceTaxAddedCharge', HiddenType::class)

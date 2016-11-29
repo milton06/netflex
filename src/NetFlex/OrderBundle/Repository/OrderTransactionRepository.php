@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * OrderTransactionRepository
@@ -142,6 +143,169 @@ class OrderTransactionRepository extends EntityRepository
 		$qb->setMaxResults($limit);
 		
 		$result = $qb->getQuery()->getResult();
+		
+		return $result;
+	}
+	
+	public function findOrderDetailsForView($orderId)
+	{
+		$rsm = new ResultSetMapping();
+		
+		$rsm->addEntityResult('NetFlexOrderBundle:OrderTransaction', 'O');
+		$rsm->addFieldResult('O', 'order_id', 'id');
+		$rsm->addFieldResult('O', 'order_awb_number', 'awbNumber');
+		$rsm->addFieldResult('O', 'order_placed_on', 'createdOn');
+		
+		$rsm->addJoinedEntityResult('NetFlexOrderBundle:Item', 'OI', 'O', 'orderItem');
+		$rsm->addFieldResult('OI', 'order_item_id', 'id');
+		$rsm->addFieldResult('OI', 'item_base_weight', 'itemBaseWeight');
+		$rsm->addFieldResult('OI', 'item_accountable_extra_weight', 'itemAccountableExtraWeight');
+		$rsm->addFieldResult('OI', 'item_user_base_weight', 'itemUserBaseWeight');
+		$rsm->addFieldResult('OI', 'item_user_accountable_extra_weight', 'itemUserAccountableExtraWeight');
+		
+		$rsm->addJoinedEntityResult('NetFlexOrderBundle:ItemType', 'OIT1', 'OI', 'itemPrimaryTypeId');
+		$rsm->addFieldResult('OIT1', 'item_type_id', 'id');
+		$rsm->addFieldResult('OIT1', 'item_type_name', 'itemTypeName');
+		
+		$rsm->addJoinedEntityResult('NetFlexOrderBundle:ItemType', 'OIT2', 'OI', 'itemSecondaryTypeId');
+		$rsm->addFieldResult('OIT2', 'item_subtype_id', 'id');
+		$rsm->addFieldResult('OIT2', 'item_subtype_name', 'itemTypeName');
+		
+		$rsm->addJoinedEntityResult('NetFlexOrderBundle:Price', 'OP', 'O', 'orderPrice');
+		$rsm->addFieldResult('OP', 'order_price_id', 'id');
+		$rsm->addFieldResult('OP', 'order_base_charge', 'orderBaseCharge');
+		$rsm->addFieldResult('OP', 'order_extra_weight_levied_charge', 'orderExtraWeightLeviedCharge');
+		$rsm->addFieldResult('OP', 'order_user_base_charge', 'orderUserBaseCharge');
+		$rsm->addFieldResult('OP', 'order_user_extra_weight_levied_charge', 'orderUserExtraWeightLeviedCharge');
+		$rsm->addFieldResult('OP', 'order_cod_payment_added_charge', 'orderCodPaymentAddedCharge');
+		$rsm->addFieldResult('OP', 'order_carrier_risk_added_charge', 'orderCarrierRiskAddedCharge');
+		
+		$rsm->addJoinedEntityResult('NetFlexDeliveryChargeBundle:DeliveryCharge', 'DC', 'O', 'deliveryChargeId');
+		$rsm->addFieldResult('DC', 'delivery_charge_id', 'id');
+		
+		$rsm->addJoinedEntityResult('NetFlexDeliveryChargeBundle:DeliveryModeTimeline', 'DMT', 'DC', 'deliveryModeTimelineId');
+		$rsm->addFieldResult('DMT', 'delivery_mode_timeline_id', 'id');
+		
+		$rsm->addJoinedEntityResult('NetFlexDeliveryChargeBundle:DeliveryMode', 'DM', 'DMT', 'deliveryModeId');
+		$rsm->addFieldResult('DM', 'delivery_mode_id', 'id');
+		$rsm->addFieldResult('DM', 'delivery_mode_name', 'modeName');
+		
+		$rsm->addJoinedEntityResult('NetFlexOrderBundle:Address', 'OA', 'O', 'orderAddress');
+		$rsm->addFieldResult('OA', 'order_id', 'id');
+		$rsm->addFieldResult('OA', 'billing_first_name', 'billingFirstName');
+		$rsm->addFieldResult('OA', 'billing_mid_name', 'billingMidName');
+		$rsm->addFieldResult('OA', 'billing_last_name', 'billingLastName');
+		$rsm->addFieldResult('OA', 'billing_address_line_1', 'billingAddressLine1');
+		$rsm->addFieldResult('OA', 'billing_address_line_2', 'billingAddressLine2');
+		$rsm->addFieldResult('OA', 'billing_zip_code', 'billingZipCode');
+		$rsm->addFieldResult('OA', 'billing_contact_number', 'billingContactNumber');
+		$rsm->addFieldResult('OA', 'shipping_first_name', 'shippingFirstName');
+		$rsm->addFieldResult('OA', 'shipping_mid_name', 'shippingMidName');
+		$rsm->addFieldResult('OA', 'shipping_last_name', 'shippingLastName');
+		$rsm->addFieldResult('OA', 'shipping_address_line_1', 'shippingAddressLine1');
+		$rsm->addFieldResult('OA', 'shipping_address_line_2', 'shippingAddressLine2');
+		$rsm->addFieldResult('OA', 'shipping_zip_code', 'shippingZipCode');
+		$rsm->addFieldResult('OA', 'shipping_contact_number', 'shippingContactNumber');
+		
+		/*$rsm->addJoinedEntityResult('NetFlexLocationBundle:Country', 'C1', 'OA', 'billingCountryId');
+		$rsm->addFieldResult('C1', 'billing_country_id', 'id');
+		$rsm->addFieldResult('C1', 'billing_country_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:Country', 'C2', 'OA', 'shippingCountryId');
+		$rsm->addFieldResult('C2', 'shipping_country_id', 'id');
+		$rsm->addFieldResult('C2', 'shipping_country_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:State', 'S1', 'OA', 'billingStateId');
+		$rsm->addFieldResult('S1', 'billing_state_id', 'id');
+		$rsm->addFieldResult('S1', 'billing_state_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:State', 'S2', 'OA', 'shippingStateId');
+		$rsm->addFieldResult('S2', 'shipping_state_id', 'id');
+		$rsm->addFieldResult('S2', 'shipping_state_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:City', 'CT1', 'OA', 'billingCityId');
+		$rsm->addFieldResult('CT1', 'billing_city_id', 'id');
+		$rsm->addFieldResult('CT1', 'billing_city_name', 'name');
+		
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:City', 'CT2', 'OA', 'shippingCityId');
+		$rsm->addFieldResult('CT2', 'shipping_city_id', 'id');
+		$rsm->addFieldResult('CT2', 'shipping_city_name', 'name');*/
+		
+		$sql = "
+		SELECT 
+		    O.id order_id,
+		    O.awb_number order_awb_number,
+		    O.created_on order_placed_on,
+		    OI.id order_item_id,
+		    OI.item_base_weight item_base_weight,
+		    OI.item_accountable_extra_weight item_accountable_extra_weight,
+		    OI.item_user_base_weight item_user_base_weight,
+		    OI.item_user_accountable_extra_weight item_user_accountable_extra_weight,
+		    OIT1.id item_type_id,
+		    OIT1.item_type_name item_type_name,
+		    OIT2.id item_subtype_id,
+		    OIT2.item_type_name item_subtype_name,
+		    OP.id order_price_id,
+		    OP.order_base_charge order_base_charge,
+		    OP.order_extra_weight_levied_charge order_extra_weight_levied_charge,
+		    OP.order_user_base_charge order_user_base_charge,
+		    OP.order_user_extra_weight_levied_charge order_user_extra_weight_levied_charge,
+		    OP.order_cod_payment_added_charge order_cod_payment_added_charge,
+		    OP.order_carrier_risk_added_charge order_carrier_risk_added_charge,
+		    DC.id delivery_charge_id,
+		    DMT.id delivery_mode_timeline_id,
+		    DM.id delivery_mode_id,
+		    DM.mode_name delivery_mode_name,
+		    OA.id order_id,
+		    OA.billing_first_name billing_first_name,
+		    OA.billing_mid_name billing_mid_name,
+		    OA.billing_last_name billing_last_name,
+		    OA.billing_address_line_1 billing_address_line_1,
+		    OA.billing_address_line_2 billing_address_line_2,
+		    OA.billing_zip_code billing_zip_code,
+		    OA.billing_contact_number billing_contact_number,
+		    OA.shipping_first_name shipping_first_name,
+		    OA.shipping_mid_name shipping_mid_name,
+		    OA.shipping_last_name shipping_last_name,
+		    OA.shipping_address_line_1 shipping_address_line_1,
+		    OA.shipping_address_line_2 shipping_address_line_2,
+		    OA.shipping_zip_code shipping_zip_code,
+		    OA.shipping_contact_number shipping_contact_number
+		FROM
+		    order_transactions O
+		        LEFT JOIN
+		    order_items OI ON O.id = OI.order_id
+		        LEFT JOIN
+		    order_item_types OIT1 ON OI.item_primary_type_id = OIT1.id
+		        LEFT JOIN
+		    order_item_types OIT2 ON OI.item_secondary_type_id = OIT2.id
+		        LEFT JOIN
+		    order_prices OP ON O.id = OP.order_id
+		        LEFT JOIN
+		    delivery_charges DC ON O.delivery_charge_id = DC.id
+		        LEFT JOIN
+		    delivery_mode_timelines DMT ON DC.delivery_mode_timeline_id = DMT.id
+		        LEFT JOIN
+		    delivery_modes DM ON DMT.delivery_mode_id = DM.id
+		        LEFT JOIN
+		    order_addresses OA ON O.id = OA.order_id
+		        LEFT JOIN
+		    countries C1 ON OA.billing_country_id = C1.id
+		        LEFT JOIN
+		    countries C2 ON OA.shipping_country_id = C2.id
+		        LEFT JOIN
+		    states S1 ON OA.billing_state_id = S1.id
+		        LEFT JOIN
+		    states S2 ON OA.shipping_state_id = S2.id
+		        LEFT JOIN
+		    cities CT1 ON OA.billing_city_id = CT1.id
+		        LEFT JOIN
+		    cities CT2 ON OA.shipping_city_id = CT2.id
+		WHERE
+		    O.id = ?
+		";
+		
+		$result = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $orderId])->getResult();
 		
 		return $result;
 	}

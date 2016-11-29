@@ -52,10 +52,10 @@ class OrderItemForClientFromDashboardFormEventSubscriber implements EventSubscri
 				'class' => 'NetFlexOrderBundle:ItemType',
 				'placeholder' => '-Select A Primary Type-',
 				'query_builder' => function(EntityRepository $er) {
-					return $er->createQueryBuilder('ET')
-						->where('ET.parentId is null')
-						->andWhere('ET.status = 1')
-						->orderBy('ET.itemTypeName', 'ASC');
+					return $er->createQueryBuilder('IT')
+						->where('IT.parentId is null')
+						->andWhere('IT.status = 1')
+						->orderBy('IT.itemTypeName', 'ASC');
 				},
 			])
 			->add('itemSecondaryTypeId', EntityType::class, [
@@ -63,16 +63,15 @@ class OrderItemForClientFromDashboardFormEventSubscriber implements EventSubscri
 				'placeholder' => '-Select A Secondary Type-',
 				'query_builder' => function(EntityRepository $er) use($formData) {
 					if (($formData) && ($formData->getItemPrimaryTypeId())) {
-						return $er->createQueryBuilder('ET')
-							->where('ET.parentId = ' . $formData->getItemPrimaryTypeId()->getId())
-							->andWhere('ET.status = 1')
-							->orderBy('ET.itemTypeName', 'ASC');
+						return $er->createQueryBuilder('IT')
+							->where('IT.parentId = ' . $formData->getItemPrimaryTypeId()->getId())
+							->andWhere('IT.status = 1')
+							->orderBy('IT.itemTypeName', 'ASC');
 					} else {
 						return $er->createQueryBuilder('ET')
-							->where('ET.parentId = 1')
-							->andWhere('ET.status = 1');
+							->where('IT.parentId = 1')
+							->andWhere('IT.status = 1');
 					}
-					
 				},
 			])
 			->add('itemCalculatedBaseWeight', HiddenType::class, [
@@ -96,10 +95,10 @@ class OrderItemForClientFromDashboardFormEventSubscriber implements EventSubscri
 				'class' => 'NetFlexOrderBundle:ItemType',
 				'placeholder' => '-Select A Primary Type-',
 				'query_builder' => function(EntityRepository $er) {
-					return $er->createQueryBuilder('ET')
-						->where('ET.parentId is null')
-						->andWhere('ET.status = 1')
-						->orderBy('ET.itemTypeName', 'ASC');
+					return $er->createQueryBuilder('IT')
+						->where('IT.parentId is null')
+						->andWhere('IT.status = 1')
+						->orderBy('IT.itemTypeName', 'ASC');
 				},
 				'data' => (($formData) && ($formData->getItemPrimaryTypeId())) ?: $this->em->getReference('NetFlexOrderBundle:ItemType', ['id' => 1, 'status' => 1])
 			])
@@ -108,14 +107,14 @@ class OrderItemForClientFromDashboardFormEventSubscriber implements EventSubscri
 				'placeholder' => '-Select A Secondary Type-',
 				'query_builder' => function(EntityRepository $er) use($formData) {
 					if (($formData) && ($formData->getItemPrimaryTypeId())) {
-						return $er->createQueryBuilder('ET')
-							->where('ET.parentId = ' . $formData->getItemPrimaryTypeId()->getId())
-							->andWhere('ET.status = 1')
-							->orderBy('ET.itemTypeName', 'ASC');
+						return $er->createQueryBuilder('IT')
+							->where('IT.parentId = ' . $formData->getItemPrimaryTypeId()->getId())
+							->andWhere('IT.status = 1')
+							->orderBy('IT.itemTypeName', 'ASC');
 					} else {
-						return $er->createQueryBuilder('ET')
-							->where('ET.parentId = 1')
-							->andWhere('ET.status = 1');
+						return $er->createQueryBuilder('IT')
+							->where('IT.parentId = 1')
+							->andWhere('IT.status = 1');
 					}
 					
 				},

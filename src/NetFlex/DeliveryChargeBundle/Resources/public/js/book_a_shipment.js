@@ -61,7 +61,7 @@ jQuery(document).ready(function() {
 		
 		jQuery("#shipment-addresses input, #shipment-addresses select").each(function() {
 			var thisElementId = jQuery(this).attr("id");
-			var exclude = ["pickup-mid-name", "pickup-address-line-2", "pickup-land-mark", "pickup-email", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email", "order_for_client_from_dashboard_deliveryChargeId"];
+			var exclude = ["pickup-first-name", "pickup-mid-name", "pickup-last-name", "pickup-address-line-1", "pickup-address-line-2", "pickup-country", "pickup-state", "pickup-city", "pickup-zip-code", "pickup-land-mark", "pickup-email", "pickup-contact-number", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email", "order_for_client_from_dashboard_deliveryChargeId"];
 			
 			if ((-1 === exclude.indexOf(thisElementId)) && (! jQuery(this).val())) {
 				++errorCount;
@@ -311,6 +311,17 @@ jQuery(document).ready(function() {
 		});
 	});
 	
+	jQuery("#prev-button").on("click", function(e) {
+		e.preventDefault();
+		
+		jQuery("#tab-shipment-addresses").addClass('disabled');
+		jQuery("#tab-shipment-addresses > a").removeAttr("data-toggle");
+		
+		jQuery("#tab-booking-options").removeClass('disabled');
+		jQuery("#tab-booking-options > a").attr("data-toggle", "tab");
+		jQuery("#tab-booking-options > a").tab("show");
+	});
+	
 	jQuery(".country-selectors").on("change", function(e) {
 		var element = jQuery(this);
 		var countryId = jQuery(this).val();
@@ -448,6 +459,9 @@ jQuery(document).ready(function() {
 						jQuery("#order-service-tax-added-charge").val(deliveryParams.orderServiceTaxAddedCharge);
 						jQuery("#order-carrier-risk-added-charge").val(deliveryParams.orderCarrierRiskAddedCharge);
 						
+						jQuery("#tab-booking-options").addClass('disabled');
+						jQuery("#tab-booking-options > a").removeAttr("data-toggle");
+						
 						jQuery("#tab-shipment-addresses").removeClass('disabled');
 						jQuery("#tab-shipment-addresses > a").attr("data-toggle","tab");
 						jQuery("#tab-shipment-addresses > a").tab("show");
@@ -478,24 +492,33 @@ jQuery(document).ready(function() {
 					jQuery("#book-a-shipment-button").prop("disabled", true);
 				},
 				success: function(response) {
-					var orderId = response.orderId;
-					
-					jQuery("#tab-booking-confirmation").removeClass('disabled');
-					jQuery("#tab-booking-confirmation > a").attr("data-toggle","tab");
-					
-					jQuery("#tab-shipment-addresses").addClass('disabled');
-					jQuery("#tab-shipment-addresses > a").removeAttr("data-toggle");
-					
-					jQuery("#tab-booking-options").addClass('disabled');
-					jQuery("#tab-booking-options > a").removeAttr("data-toggle");
-					
-					var editLink = jQuery("#booking-confirmation").find("#edit_link").attr("href");
-					editLink = editLink.replace('%25id%25', orderId);
-					jQuery("#booking-confirmation").find("#edit_link").attr("href", editLink);
-					
-					jQuery("#tab-booking-confirmation").find("#edit_link").attr("href", editLink);
-					
-					jQuery("#tab-booking-confirmation > a").tab("show");
+					if ('validationErrors' === response.status) {
+						jQuery.each(response.errorMessages, function(key, value) {
+							key = key.replace("-id", "");
+							jQuery("#" + key).parent().append("<span class='help-block'>" + value + "</span>");
+							jQuery("#" + key).closest(".form-group").addClass("has-error");
+						});
+					} else if ('success' === response.status) {
+						var orderId = response.orderId;
+						
+						jQuery("#tab-booking-confirmation").removeClass('disabled');
+						jQuery("#tab-booking-confirmation > a").attr("data-toggle","tab");
+						
+						jQuery("#tab-shipment-addresses").addClass('disabled');
+						jQuery("#tab-shipment-addresses > a").removeAttr("data-toggle");
+						
+						jQuery("#tab-booking-options").addClass('disabled');
+						jQuery("#tab-booking-options > a").removeAttr("data-toggle");
+						
+						var editLink = jQuery("#booking-confirmation").find("#edit_link").attr("href");
+						editLink = editLink.replace('%259999%25', orderId);
+						jQuery("#booking-confirmation").find("#edit_link").attr("href", editLink);
+						jQuery("#booking-confirmation").find("#edit_link").attr("href", editLink);
+						
+						jQuery("#booking-confirmation").find("#new-awb-number").html(response.awbNumber);
+						
+						jQuery("#tab-booking-confirmation > a").tab("show");
+					}
 				},
 				error: function() {
 					jQuery(".server-fault").show();

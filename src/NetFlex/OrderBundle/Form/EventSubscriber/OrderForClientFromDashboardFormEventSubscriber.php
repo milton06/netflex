@@ -46,12 +46,14 @@ class OrderForClientFromDashboardFormEventSubscriber implements EventSubscriberI
 			'choices' => $this->clientOtherPickupAddresses,
 			'data' => $clientPreferredPickupAddress,
 			'mapped' => false,
+			'error_bubbling' => false,
 		]);
 		$form->add('clientOtherBillingAddresses', ChoiceType::class, [
 			'placeholder' => '-Select A Billing Address-',
 			'choices' => $this->clientOtherBillingAddresses,
 			'data' => $clientPreferredBillingAddress,
 			'mapped' => false,
+			'error_bubbling' => false,
 		]);
 	}
 	
@@ -60,11 +62,10 @@ class OrderForClientFromDashboardFormEventSubscriber implements EventSubscriberI
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();
 		
-		$deliveryCharge = $this->em->getRepository('NetFlexDeliveryChargeBundle:DeliveryCharge')->findOneById($formData['deliveryChargeId']);
-		
-		$form->remove('deliveryChargeId');
+		$form->remove('clientOtherPickupAddresses');
+		$form->remove('clientOtherBillingAddresses');
 		$form->add('deliveryChargeId', null, [
-			'data' => $deliveryCharge,
+			'data' => $this->em->getRepository('NetFlexDeliveryChargeBundle:DeliveryCharge')->findOneById($formData['deliveryChargeId']),
 		]);
 	}
 }

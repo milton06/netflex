@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use NetFlex\LocationBundle\Entity\Country;
 use NetFlex\LocationBundle\Entity\State;
 use NetFlex\LocationBundle\Entity\City;
@@ -35,6 +36,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="pickup_first_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $pickupFirstName;
 
@@ -56,6 +61,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="pickup_address_line_1", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $pickupAddressLine1;
 
@@ -69,18 +78,30 @@ class Address
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
 	 * @ORM\JoinColumn(name="pickup_country_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $pickupCountryId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\State")
 	 * @ORM\JoinColumn(name="pickup_state_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $pickupStateId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\City")
 	 * @ORM\JoinColumn(name="pickup_city_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $pickupCityId;
 
@@ -88,6 +109,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="pickup_zip_code", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $pickupZipCode;
 
@@ -102,6 +127,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="pickup_email", type="string", length=255, nullable=true)
+     *
+     * @Assert\Email(
+     *     message="Please enter a valid email"
+     * )
      */
     private $pickupEmail;
 
@@ -109,6 +138,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="pickup_contact_number", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $pickupContactNumber;
 
@@ -116,6 +149,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="billing_first_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $billingFirstName;
 
@@ -130,6 +167,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="billing_last_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $billingLastName;
 
@@ -137,6 +178,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="billing_address_line_1", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $billingAddressLine1;
 
@@ -150,18 +195,30 @@ class Address
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
 	 * @ORM\JoinColumn(name="billing_country_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $billingCountryId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\State")
 	 * @ORM\JoinColumn(name="billing_state_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $billingStateId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\City")
 	 * @ORM\JoinColumn(name="billing_city_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $billingCityId;
 
@@ -169,6 +226,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="billing_zip_code", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $billingZipCode;
 
@@ -183,6 +244,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="billing_email", type="string", length=255)
+     *
+     * @Assert\Email(
+     *     message="Please enter a valid email"
+     * )
      */
     private $billingEmail;
 
@@ -190,6 +255,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="billing_contact_number", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $billingContactNumber;
 
@@ -197,6 +266,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="shipping_first_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $shippingFirstName;
 
@@ -211,6 +284,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="shipping_last_name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $shippingLastName;
 
@@ -218,6 +295,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="shipping_address_line_1", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $shippingAddressLine1;
 
@@ -231,18 +312,30 @@ class Address
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\Country")
 	 * @ORM\JoinColumn(name="shipping_country_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $shippingCountryId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\State")
 	 * @ORM\JoinColumn(name="shipping_state_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $shippingStateId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\LocationBundle\Entity\City")
 	 * @ORM\JoinColumn(name="shipping_city_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $shippingCityId;
 
@@ -250,6 +343,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="shipping_zip_code", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $shippingZipCode;
 
@@ -264,6 +361,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="shipping_email", type="string", length=255, nullable=true)
+     *
+     * @Assert\Email(
+     *     message="Please enter a valid email"
+     * )
      */
     private $shippingEmail;
 
@@ -271,6 +372,10 @@ class Address
      * @var string
      *
      * @ORM\Column(name="shipping_contact_number", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $shippingContactNumber;
 

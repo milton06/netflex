@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use NetFlex\OrderBundle\Entity\OrderTransaction;
 use NetFlex\DeliveryChargeBundle\Entity\Currency;
 
@@ -33,6 +34,10 @@ class Price
      * @var string
      *
      * @ORM\Column(name="order_base_charge", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $orderBaseCharge;
 
@@ -61,6 +66,10 @@ class Price
      * @var string
      *
      * @ORM\Column(name="order_invoice_price", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $orderInvoicePrice;
 
@@ -109,6 +118,10 @@ class Price
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\Currency")
 	 * @ORM\JoinColumn(name="order_price_unit_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $orderPriceUnitId;
 

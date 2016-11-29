@@ -58,6 +58,7 @@ class OrderForClientFromDashboardType extends OrderTransactionType
     {
         $resolver->setDefaults(array(
             'data_class' => OrderTransaction::class,
+	        'allow_extra_fields' => true,
 	        'clientOtherPickupAddresses' => [],
 	        'clientOtherBillingAddresses' => [],
         ));

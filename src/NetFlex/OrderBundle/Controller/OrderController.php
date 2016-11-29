@@ -303,56 +303,73 @@ class OrderController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		
+		$associatedCustomerRoles = $order->getUserId()->getRoles();
+		if (in_array('ROLE_CLIENT', $associatedCustomerRoles)) {
+			/**
+			 * Repositories.
+			 */
+			$clientAddressRepo = $em->getRepository('NetFlexUserBundle:Address');
+			
+			/**
+			 * Get client's pickup and billing addresses.
+			 */
+			$clientPickupAndBillingAddresses = $clientAddressRepo->findClientPreferredPickupAndBillingAddresses($order->getUserId()->getId());
+			if ($clientPickupAndBillingAddresses) {
+				$clientBillingAddressCount = $clientPickupAndBillingAddresses[0]['billingAddressCount'];
+				unset($clientPickupAndBillingAddresses[0]);
+				list($clientBillingAddresses, $clientPickupAddresses) = array_chunk($clientPickupAndBillingAddresses, $clientBillingAddressCount);
+			}
+		}
+		
 		/**
 		 * Create the check deliverability form.
 		 */
 		$deliveryModeTimeline = $order->getDeliveryChargeId()->getDeliveryModeTimelineId();
 		$checkDeliverabilityForm = $this->createForm(CheckDeliverabilityType::class, $deliveryModeTimeline);
 		
+		$clientOtherPickupAddresses = $clientOtherBillingAddresses = [];
+		if (isset($clientPickupAddresses) && ! empty($clientPickupAddresses)) {
+			/**
+			 * Generate client's other pickup addresses list.
+			 */
+			for ($i = 0; $i < count($clientPickupAddresses); $i++) {
+				$clientOtherPickupAddresses[$clientPickupAddresses[$i][0]->getAddressLine1() . '; ' . $clientPickupAddresses[$i][0]->getCountryId()->getName() . '; ' . $clientPickupAddresses[$i][0]->getStateId()->getName() . '; ' . $clientPickupAddresses[$i][0]->getCityId()->getName() . '; ' . $clientPickupAddresses[$i][0]->getZipCode()] = $clientPickupAddresses[$i][0]->getId();
+			}
+		}
+		if (isset($clientBillingAddresses) && ! empty($clientBillingAddresses)) {
+			/**
+			 * Generate client's other billing addresses list.
+			 */
+			for ($i = 0; $i < count($clientBillingAddresses); $i++) {
+				$clientOtherBillingAddresses[$clientBillingAddresses[$i][0]->getAddressLine1() . '; ' . $clientBillingAddresses[$i][0]->getCountryId()->getName() . '; ' . $clientBillingAddresses[$i][0]->getStateId()->getName() . '; ' . $clientBillingAddresses[$i][0]->getCityId()->getName() . '; ' . $clientBillingAddresses[$i][0]->getZipCode()] = $clientBillingAddresses[$i][0]->getId();
+			}
+		}
+		
 		/**
 		 * Create the order form.
 		 */
-		$orderForm = $this->createForm(OrderForClientFromDashboardType::class, $order);
+		$orderForm = $this->createForm(OrderForClientFromDashboardType::class, $order, [
+			'clientOtherPickupAddresses' => $clientOtherPickupAddresses,
+			'clientOtherBillingAddresses' => $clientOtherBillingAddresses,
+		]);
 		
 		$orderForm->handleRequest($request);
 		
 		if ($orderForm->isSubmitted()) {
-			if ((! $order->getOrderAddress()->getPickupAddressLine1()) || (! $order->getOrderAddress()->getBillingAddressLine1())) {
-				/**
-				 * We need to fetch pickup and billing addresses from user address repo.
-				 */
-				$clientAddressRepo = $em->getRepository('NetFlexUserBundle:Address');
-				$clientPreferredPickupAndBillingAddresses = $clientAddressRepo->findClientPreferredPickupAndBillingAddresses($order->getUserId()->getId());
-			}
-			
-			if (! $order->getOrderAddress()->getPickupAddressLine1()) {
-				/**
-				 * Populate pickup address fields.
-				 */
-				$order->getOrderAddress()->setPickupFirstName($order->getUserId()->getFirstName());
-				$order->getOrderAddress()->setPickupMidName($order->getUserId()->getMidName());
-				$order->getOrderAddress()->setPickupLastName($order->getUserId()->getLastName());
-				$order->getOrderAddress()->setPickupAddressLine1($clientPreferredPickupAndBillingAddresses[1]->getAddressLine1());
-				$order->getOrderAddress()->setPickupAddressLine2($clientPreferredPickupAndBillingAddresses[1]->getAddressLine2());
-				$order->getOrderAddress()->setPickupCountryId($clientPreferredPickupAndBillingAddresses[1]->getCountryId());
-				$order->getOrderAddress()->setPickupStateId($clientPreferredPickupAndBillingAddresses[1]->getStateId());
-				$order->getOrderAddress()->setPickupCityId($clientPreferredPickupAndBillingAddresses[1]->getCityId());
-				$order->getOrderAddress()->setPickupZipCode($clientPreferredPickupAndBillingAddresses[1]->getZipCode());
-			}
-			
-			if (! $order->getOrderAddress()->getBillingAddressLine1()) {
-				/**
-				 * Populate billing address fields.
-				 */
-				$order->getOrderAddress()->setBillingFirstName($order->getUserId()->getFirstName());
-				$order->getOrderAddress()->setBillingMidName($order->getUserId()->getMidName());
-				$order->getOrderAddress()->setBillingLastName($order->getUserId()->getLastName());
-				$order->getOrderAddress()->setBillingAddressLine1($clientPreferredPickupAndBillingAddresses[0]->getAddressLine1());
-				$order->getOrderAddress()->setBillingAddressLine2($clientPreferredPickupAndBillingAddresses[0]->getAddressLine2());
-				$order->getOrderAddress()->setBillingCountryId($clientPreferredPickupAndBillingAddresses[0]->getCountryId());
-				$order->getOrderAddress()->setBillingStateId($clientPreferredPickupAndBillingAddresses[0]->getStateId());
-				$order->getOrderAddress()->setBillingCityId($clientPreferredPickupAndBillingAddresses[0]->getCityId());
-				$order->getOrderAddress()->setBillingZipCode($clientPreferredPickupAndBillingAddresses[0]->getZipCode());
+			/**
+			 * Validate.
+			 */
+			$errors = $this->get('validator')->validate($orderForm);
+			if (0 < count($errors)) {
+				$errorMessages = [];
+				foreach($errors as $error) {
+					$field = substr($error->getPropertyPath(), (strrpos($error->getPropertyPath(), '.') + 1));
+					$field = preg_replace_callback('/[A-Z0-9]/', function($matches) {
+						return '-' . strtolower($matches[0]);
+					}, $field);
+					$errorMessages[$field] = $error->getMessage();
+				}
+				return $this->json(['status' => 'validationErrors', 'errorMessages' => $errorMessages]);
 			}
 			
 			$associatedCustomerRoles = $order->getUserId()->getRoles();
@@ -369,8 +386,9 @@ class OrderController extends Controller
 			$em->flush();
 			
 			$orderId = $order->getId();
+			$awbNumber = $order->getAwbNumber();
 			
-			return $this->json(['status' => 'success', 'orderId' => $orderId]);
+			return $this->json(['status' => 'success', 'orderId' => $orderId, 'awbNumber' => $awbNumber]);
 		}
 		
 		$breadCrumbs = [
@@ -395,9 +413,29 @@ class OrderController extends Controller
 			'breadCrumbs' => $breadCrumbs,
 			'referrer' => $referrer,
 			'pageHeader' => '<h1>Edit <small>order</small></h1>',
+			'order' => $order,
+			'userId' => $order->getUserId()->getId(),
 			'checkDeliverabilityForm' => $checkDeliverabilityForm->createView(),
 			'orderForm' => $orderForm->createView(),
 		]);
+	}
+	
+	/**
+	 * Renders the view order page.
+	 *
+	 * @Route("/dashboard/order/view/{id}", name="view_order")
+	 * @Method({"GET"})
+	 *
+	 * @param OrderTransaction     $order   An OrderTransaction instance
+	 * @param Request              $request A request instance
+	 *
+	 * @return Response
+	 */
+	public function renderViewOrderPageAction(OrderTransaction $order, Request $request)
+	{
+		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOrderDetailsForView($order->getId());
+		
+		var_dump($orderDetails);exit;
 	}
 	
 	/**

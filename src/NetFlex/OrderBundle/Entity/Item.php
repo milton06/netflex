@@ -3,6 +3,7 @@
 namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use NetFlex\OrderBundle\Entity\ItemType;
 use NetFlex\DeliveryChargeBundle\Entity\WeightUnit;
 use NetFlex\OrderBundle\Entity\OrderTransaction;
@@ -33,12 +34,20 @@ class Item
 	/**
 	 * @ORM\ManyToOne(targetEntity="ItemType")
 	 * @ORM\JoinColumn(name="item_primary_type_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $itemPrimaryTypeId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="ItemType")
 	 * @ORM\JoinColumn(name="item_secondary_type_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $itemSecondaryTypeId;
 
@@ -53,6 +62,10 @@ class Item
      * @var string
      *
      * @ORM\Column(name="item_base_weight", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\NotBlank(
+     *     message="Required field"
+     * )
      */
     private $itemBaseWeight;
 
@@ -80,6 +93,10 @@ class Item
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\WeightUnit")
 	 * @ORM\JoinColumn(name="item_weight_unit_id", referencedColumnName="id")
+	 *
+	 * @Assert\NotBlank(
+	 *     message="Required field"
+	 * )
 	 */
 	private $itemWeightUnitId;
 

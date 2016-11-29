@@ -31,8 +31,6 @@ class OrderItemForClientFromDashboardType extends ItemType
 	    $builder->add('itemBaseWeight')
 	    ->add('itemDescription', HiddenType::class)
 	    ->add('itemAccountableExtraWeight', HiddenType::class);
-	    /*->add('itemVolumetricBaseWeight', HiddenType::class)
-	    ->add('itemVolumetricAccountableExtraWeight', HiddenType::class);*/
 	
 	    $builder->addEventSubscriber(new OrderItemForClientFromDashboardFormEventSubscriber($this->em, $this->request));
     }

@@ -3,6 +3,8 @@
 namespace NetFlex\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use NetFlex\UserBundle\Entity\User;
 use NetFlex\OrderBundle\Entity\Item;
 use NetFlex\OrderBundle\Entity\Price;
@@ -14,6 +16,10 @@ use NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge;
  *
  * @ORM\Table(name="order_transactions")
  * @ORM\Entity(repositoryClass="NetFlex\OrderBundle\Repository\OrderTransactionRepository")
+ * @UniqueEntity(
+ *     {"id", "awbNumber", "invoiceNumber"},
+ *     message="Duplicate entry found"
+ * )
  */
 class OrderTransaction
 {
@@ -34,22 +40,30 @@ class OrderTransaction
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Item", mappedBy="orderId", cascade={"persist"})
+	 *
+	 * @Assert\Valid
 	 */
 	private $orderItem;
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Price", mappedBy="orderId", cascade={"persist"})
+	 *
+	 * @Assert\Valid
 	 */
 	private $orderPrice;
 	
 	/**
 	 * @ORM\OneToOne(targetEntity="Address", mappedBy="orderId", cascade={"persist"})
+	 *
+	 * @Assert\Valid
 	 */
 	private $orderAddress;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="\NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge")
 	 * @ORM\JoinColumn(name="delivery_charge_id", referencedColumnName="id")
+	 *
+	 * @Assert\Valid
 	 */
 	private $deliveryChargeId;
 

@@ -68,7 +68,7 @@
 						        <div class="errorHandler alert alert-danger no-deliverability-error no-display">
 							        <button data-dismiss="alert" class="close">×</button>
 							        <i class="fa fa-times-circle"></i>
-							        We don't deliver at this location.
+							        <strong>Sorry!</strong> Shipment is not possible between these locations presently.
 						        </div>
 					        </div>
 				        </div>
@@ -352,19 +352,19 @@
                             <div class="row form-group">
                                 {{ form_label(orderForm.orderAddress.pickupCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
                                 <div class="col-md-8">
-                                    {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country', 'class': 'country-selectors' }) }}
+                                    {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country', 'attr': { 'class': 'country-selectors' } }) }}
                                 </div>
                             </div>
                             <div class="row form-group">
                                 {{ form_label(orderForm.orderAddress.pickupStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
                                 <div class="col-md-8">
-                                    {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state', 'class': 'state-selectors' }) }}
+                                    {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state', 'attr': { 'class': 'state-selectors' } }) }}
                                 </div>
                             </div>
                             <div class="row form-group">
                                 {{ form_label(orderForm.orderAddress.pickupCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
                                 <div class="col-md-8">
-                                    {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city', 'class': 'city-selectors' }) }}
+                                    {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city', 'attr': { 'class': 'city-selectors' } }) }}
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -444,19 +444,19 @@
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.billingCountryId, { 'id': 'billing-country', 'class': 'country-selectors' }) }}
+						        {{ form_widget(orderForm.orderAddress.billingCountryId, { 'id': 'billing-country', 'attr': { 'class': 'country-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.billingStateId, { 'id': 'billing-state', 'class': 'state-selectors' }) }}
+						        {{ form_widget(orderForm.orderAddress.billingStateId, { 'id': 'billing-state', 'attr': { 'class': 'state-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.billingCityId, { 'id': 'billing-city', 'class': 'city-selectors' }) }}
+						        {{ form_widget(orderForm.orderAddress.billingCityId, { 'id': 'billing-city', 'attr': { 'class': 'city-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
@@ -523,19 +523,19 @@
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'class': 'country-selectors' }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'attr': { 'class': 'country-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'class': 'state-selectors' }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'attr': { 'class': 'state-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'class': 'city-selectors' }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'attr': { 'class': 'city-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
@@ -563,9 +563,11 @@
 					        </div>
 				        </div>
 				        <div class="row">
-					        <div class="col-md-6"></div>
 					        <div class="col-md-6">
-						        <button id="book-a-shipment-button" class="btn btn-primary"><i class="fa fa-truck"></i> Book Shipment</button>
+						        <button id="prev-button" class="btn btn-primary pull-left"><i class="fa fa-arrow-circle-left"></i> Previous</button>
+					        </div>
+					        <div class="col-md-6">
+						        <button id="book-a-shipment-button" class="btn btn-primary pull-right"><i class="fa fa-truck"></i> Book Shipment</button>
 					        </div>
 				        </div>
 				        {{ form_end(orderForm) }}
@@ -574,12 +576,19 @@
 				        <div class="row">
 					        <div class="col-md-12">
 						        <div class="well well-lg">
-							        <h2>That's Great</h2>
-							        <p>
-								        <strong>The shipment has been booked successfully.</strong>
-								        <br/>
-								        You can now <a id="edit_link" href="{{ url('edit_order', { 'id': '%id%' }) }}">Edit</a> or go back to <a href="{{ (referrer) ? referrer : url('client_list') }}">Client List</a>
-							        </p>
+							        <h2 class="center">That's Great! The shipment has been booked successfully.</h2>
+							        <p class="center"><strong>The AWB number is : <span id="new-awb-number"></span></strong></p>
+							        <div class="row">
+								        <div class="col-md-4">
+									        <a href="{{ url('edit_order', { 'id': '%9999%' }) }}" id="edit_link" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit This Order</a>
+								        </div>
+								        <div class="col-md-4">
+									        <a href="{{ url('book_a_client_shipment_from_dashboard', { 'clientId': clientId }) }}" class="btn btn-primary"><i class="fa fa-plus"></i> Book New Shipment</a>
+								        </div>
+								        <div class="col-md-4">
+									        <a href="{{ (referrer) ? referrer : url('client_list') }}" class="btn btn-primary"><i class="fa fa-arrow-circle-left"></i> Client List</a>
+								        </div>
+							        </div>
 						        </div>
 					        </div>
 				        </div>
@@ -607,9 +616,4 @@
         '@NetFlexDeliveryChargeBundle/Resources/public/js/book_a_shipment.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script>
-        jQuery(document).ready(function() {
-
-        });
-    </script>
 {% endblock %}

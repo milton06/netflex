@@ -50,7 +50,7 @@ class BookingController extends Controller
 	    if ($clientPickupAndBillingAddresses) {
 		    $clientBillingAddressCount = $clientPickupAndBillingAddresses[0]['billingAddressCount'];
 		    unset($clientPickupAndBillingAddresses[0]);
-		    list($clientBillingAddresses, $clientPickupAddresses) = array_chunk($clientPickupAndBillingAddresses, 3);
+		    list($clientBillingAddresses, $clientPickupAddresses) = array_chunk($clientPickupAndBillingAddresses, $clientBillingAddressCount);
 	    }
 	    
 	    /**
@@ -144,13 +144,14 @@ class BookingController extends Controller
 		    'breadCrumbs' => $breadCrumbs,
 		    'referrer' => $referrer,
 		    'pageHeader' => '<h1>Book <small>a shipment</small></h1>',
+		    'clientId' => $clientId,
 		    'checkDeliverabilityForm' => $checkDeliverabilityForm->createView(),
 		    'orderForm' => $orderForm->createView(),
 	    ]);
     }
 	
 	/**
-	 * Book a shipment for a client from dashboard.
+	 * Set client's preferred address.
 	 *
 	 * @Route("/dashboard/client/set-preferred-address", name="set_preferred_address_for_client_from_dashboard")
 	 * @Method({"POST"})
@@ -159,7 +160,7 @@ class BookingController extends Controller
 	 *
 	 * @return JsonResponse
 	 */
-    public function setPreferredPickupAddress(Request $request)
+    public function setPreferredAddress(Request $request)
     {
 	    $addressId = $request->request->get('addressId');
 	    if (! $addressId) { // No address selected.
@@ -227,6 +228,22 @@ class BookingController extends Controller
 	     * Populate order entity with submitted data.
 	     */
 	    $orderForm->handleRequest($request);
+	
+	    /**
+	     * Validate.
+	     */
+	    $errors = $this->get('validator')->validate($orderForm);
+	    if (0 < count($errors)) {
+		    $errorMessages = [];
+		    foreach($errors as $error) {
+			    $field = substr($error->getPropertyPath(), (strrpos($error->getPropertyPath(), '.') + 1));
+			    $field = preg_replace_callback('/[A-Z0-9]/', function($matches) {
+				    return '-' . strtolower($matches[0]);
+			    }, $field);
+			    $errorMessages[$field] = $error->getMessage();
+		    }
+		    return $this->json(['status' => 'validationErrors', 'errorMessages' => $errorMessages]);
+	    }
 	    
 	    /**
 	     * Set additional fields.
@@ -257,8 +274,9 @@ class BookingController extends Controller
 	    $em->flush();
 	    
 	    $orderId = $order->getId();
+	    $awbNumber = $order->getAwbNumber();
 	    
-	    return $this->json(['status' => 'success', 'orderId' => $orderId]);
+	    return $this->json(['status' => 'success', 'orderId' => $orderId, 'awbNumber' => $awbNumber]);
     }
 	
 	/**
@@ -318,7 +336,7 @@ class BookingController extends Controller
 		    /**
 		     * No delivery charge available for the source-destination location combination. i.e. we don't deliver there.
 		     */
-		    return $this->json(['no_deliverability_error' => 'We don\'t deliver at this location']);
+		    return $this->json(['no_deliverability_error' => 'Shipment is not possible between these locations presently']);
 	    }
 	    
 	    if ((1 === count($deliveryCharge)) && ($deliveryModeId != $deliveryCharge[0]->getDeliveryModeTimelineId()->getDeliveryModeId()->getId())) {
