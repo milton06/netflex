@@ -1,0 +1,377 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css'
+        'bundles/netflexdashboard/plugins/bootstrap-modal/css/bootstrap-modal.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+    <style>
+        @media screen {
+            #printSection {
+                display: none;
+            }
+        }
+        @media print {
+            body * {
+                visibility:hidden;
+            }
+            #printSection, #printSection * {
+                visibility:visible;
+            }
+            #printSection {
+                position:absolute;
+                left:0;
+                top:0;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-2">
+            <a href="#full-width" data-toggle="modal" class="demo btn btn-primary pull-right"><i class="fa fa-print"></i> Print Invoice</a>
+        </div>
+        <div class="col-md-2">
+            <a href="{{ referrer }}" class="btn btn-primary pull-right"><i class="fa fa-arrow-circle-o-left"></i> Back To List</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>AWB Number</th>
+                            <td>
+                                {{ orderDetails.awbNumber }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Order Date</th>
+                            <td>
+                                {{ orderDetails.createdOn|date('jS F, Y g:i A') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Goods Type</th>
+                            <td>
+                                {{ orderDetails.orderItem.itemPrimaryTypeId.itemTypeName() }} > {{ orderDetails.orderItem.itemSecondaryTypeId.itemTypeName() }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Parcel Weight</th>
+                            <td>
+                                {{ (orderDetails.orderItem.itemBaseWeight + orderDetails.orderItem.itemAccountableExtraWeight) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Risk Type</th>
+                            <td>
+                                {{ ('0.00' == orderDetails.orderPrice.orderCarrierRiskAddedCharge) ? 'Own' : 'Carrier' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Shipment Type</th>
+                            <td>
+                                 {{ orderDetails.deliveryChargeId.deliveryModeTimelineId.deliveryModeId.modeName }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Payment Option</th>
+                            <td>
+                                {{ ('0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge) ? 'Non-COD' : 'COD' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Shipment Amount</th>
+                            <td>
+                                {{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ (orderDetails.orderPrice.orderBaseCharge + orderDetails.orderPrice.orderExtraWeightLeviedCharge + orderDetails.orderPrice.orderCodPaymentAddedCharge + orderDetails.orderPrice.orderCarrierRiskAddedCharge + orderDetails.orderPrice.orderFuelSurchargeAddedCharge + orderDetails.orderPrice.orderServiceTaxAddedCharge) }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>{{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : '') ~ ' ' ~ orderDetails.orderAddress.billingLastName }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? '; ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
+                            </tr>
+                            <tr>
+                                <td>Ph: {{ orderDetails.orderAddress.billingZipCode }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>To</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>{{ orderDetails.orderAddress.shippingFirstName ~ ((orderDetails.orderAddress.shippingMidName) ? ' ' ~ orderDetails.orderAddress.shippingMidName : '') ~ ' ' ~ orderDetails.orderAddress.shippingLastName }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ orderDetails.orderAddress.shippingAddressLine1 ~ ((orderDetails.orderAddress.shippingAddressLine2) ? '; ' ~ orderDetails.orderAddress.shippingAddressLine2 : '') }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ orderDetails.orderAddress.shippingCityId.name ~ ', ' ~ orderDetails.orderAddress.shippingStateId.name ~ ' - ' ~ orderDetails.orderAddress.shippingZipCode }}</td>
+                            </tr>
+                            <tr>
+                                <td>Ph: {{ orderDetails.orderAddress.shippingZipCode }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="full-width" class="modal container fade" tabindex="-1" style="display: none;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                &times;
+            </button>
+            <h4 class="modal-title">Print Invoice</h4>
+        </div>
+        <div id="printThis" class="modal-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="table-responsive">
+                        <table class="table table-responsive table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>AWB Number</th>
+                                    <td>
+                                        {{ orderDetails.awbNumber }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Order Date</th>
+                                    <td>
+                                        {{ orderDetails.createdOn|date('jS F, Y g:i A') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Goods Type</th>
+                                    <td>
+                                        {{ orderDetails.orderItem.itemPrimaryTypeId.itemTypeName() }} > {{ orderDetails.orderItem.itemSecondaryTypeId.itemTypeName() }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table class="table table-responsive table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">Parcel Weight</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Base Weight</th>
+                                                    <td class="right">{{ orderDetails.orderItem.itemBaseWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Chargable Extra Weight</th>
+                                                    <td class="right">{{ orderDetails.orderItem.itemAccountableExtraWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Total</th>
+                                                    <td>{{ (orderDetails.orderItem.itemBaseWeight + orderDetails.orderItem.itemAccountableExtraWeight)|number_format(2) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Risk Type</th>
+                                    <td>
+                                        {{ ('0.00' == orderDetails.orderPrice.orderCarrierRiskAddedCharge) ? 'Own' : 'Carrier' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Shipment Type</th>
+                                    <td>
+                                        {{ orderDetails.deliveryChargeId.deliveryModeTimelineId.deliveryModeId.modeName }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Option</th>
+                                    <td>
+                                        {{ ('0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge) ? 'Non-COD' : 'COD' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table class="table table-responsive table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2">Shipment Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Base Price</th>
+                                                    <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderBaseCharge }}</td>
+                                                </tr>
+                                                {% if orderDetails.orderPrice.orderExtraWeightLeviedCharge %}
+                                                    <tr>
+                                                        <th>Extra Weight Charge</th>
+                                                        <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderExtraWeightLeviedCharge }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if '0.00' != orderDetails.orderPrice.orderFuelSurchargeAddedCharge %}
+                                                    <tr>
+                                                        <th>Added Fuel Surcharge</th>
+                                                        <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderFuelSurchargeAddedCharge }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if '0.00' != orderDetails.orderPrice.orderServiceTaxAddedCharge %}
+                                                    <tr>
+                                                        <th>Added Service Tax</th>
+                                                        <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderServiceTaxAddedCharge }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if '0.00' != orderDetails.orderPrice.orderCodPaymentAddedCharge %}
+                                                    <tr>
+                                                        <th>COD Amount</th>
+                                                        <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if '0.00' != orderDetails.orderPrice.orderCarrierRiskAddedCharge %}
+                                                    <tr>
+                                                        <th>Carrier Risk Charge</th>
+                                                        <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCarrierRiskAddedCharge }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                <tr>
+                                                    <th>Total</th>
+                                                    <td class="right">{{ (orderDetails.orderPrice.orderBaseCharge + orderDetails.orderPrice.orderExtraWeightLeviedCharge + orderDetails.orderPrice.orderCodPaymentAddedCharge + orderDetails.orderPrice.orderCarrierRiskAddedCharge + orderDetails.orderPrice.orderFuelSurchargeAddedCharge + orderDetails.orderPrice.orderServiceTaxAddedCharge) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6 table-responsive">
+                            <table class="table table-responsive table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>From</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th>{{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : '') ~ ' ' ~ orderDetails.orderAddress.billingLastName }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? '; ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ph: {{ orderDetails.orderAddress.billingZipCode }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-6 table-responsive">
+                            <table class="table table-responsive table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>To</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>{{ orderDetails.orderAddress.shippingFirstName ~ ((orderDetails.orderAddress.shippingMidName) ? ' ' ~ orderDetails.orderAddress.shippingMidName : '') ~ ' ' ~ orderDetails.orderAddress.shippingLastName }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ orderDetails.orderAddress.shippingAddressLine1 ~ ((orderDetails.orderAddress.shippingAddressLine2) ? '; ' ~ orderDetails.orderAddress.shippingAddressLine2 : '') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ orderDetails.orderAddress.shippingCityId.name ~ ', ' ~ orderDetails.orderAddress.shippingStateId.name ~ ' - ' ~ orderDetails.orderAddress.shippingZipCode }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ph: {{ orderDetails.orderAddress.shippingZipCode }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" id="print-button" class="btn btn-primary">
+                <i class="fa fa-print"></i> Print
+            </button>
+            <button type="button" data-dismiss="modal" class="btn btn-primary">
+                <i class="fa fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageScripts %}
+    {{ parent() }}
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/bootstrap-modal/js/bootstrap-modal.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/bootstrap-modal/js/bootstrap-modalmanager.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        function printElement(elem) {
+            var domClone = elem.cloneNode(true);
+
+            var $printSection = document.getElementById("printSection");
+
+            if (!$printSection) {
+                var $printSection = document.createElement("div");
+                $printSection.id = "printSection";
+                document.body.appendChild($printSection);
+            }
+
+            $printSection.innerHTML = "";
+            $printSection.appendChild(domClone);
+            window.print();
+        }
+        
+        jQuery("#print-button").click(function(e) {
+            printElement(document.getElementById("printThis"));
+        });
+    </script>
+{% endblock %}

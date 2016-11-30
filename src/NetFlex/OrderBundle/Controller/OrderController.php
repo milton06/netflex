@@ -435,7 +435,33 @@ class OrderController extends Controller
 	{
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOrderDetailsForView($order->getId());
 		
-		var_dump($orderDetails);exit;
+		//var_dump($orderDetails);exit;
+		
+		$referrer = urldecode($request->query->get('ref'));
+		
+		$breadCrumbs = [
+			[
+				'title' => 'Dashboard Home',
+				'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'Order List',
+				'link' => $referrer,
+			],
+			[
+				'title' => 'View Order',
+				'link' => $this->generateUrl('view_order', ['id' => $order->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+		];
+		
+		return $this->render('NetFlexOrderBundle:Order:view.html.twig', [
+			'pageTitle' => 'View Order Details',
+			'breadCrumbs' => $breadCrumbs,
+			'pageHeader' => '<h1>View  <small>order details </small></h1>',
+			'listHeader' => 'View Order Details',
+			'referrer' => $referrer,
+			'orderDetails' => $orderDetails,
+		]);
 	}
 	
 	/**

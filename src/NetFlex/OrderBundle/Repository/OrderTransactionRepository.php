@@ -171,6 +171,10 @@ class OrderTransactionRepository extends EntityRepository
 		$rsm->addFieldResult('OIT2', 'item_subtype_id', 'id');
 		$rsm->addFieldResult('OIT2', 'item_subtype_name', 'itemTypeName');
 		
+		$rsm->addJoinedEntityResult('NetFlexDeliveryChargeBundle:WeightUnit', 'WU', 'OI', 'itemWeightUnitId');
+		$rsm->addFieldResult('WU', 'weight_unit_id', 'id');
+		$rsm->addFieldResult('WU', 'weight_unit', 'symbol');
+		
 		$rsm->addJoinedEntityResult('NetFlexOrderBundle:Price', 'OP', 'O', 'orderPrice');
 		$rsm->addFieldResult('OP', 'order_price_id', 'id');
 		$rsm->addFieldResult('OP', 'order_base_charge', 'orderBaseCharge');
@@ -179,6 +183,12 @@ class OrderTransactionRepository extends EntityRepository
 		$rsm->addFieldResult('OP', 'order_user_extra_weight_levied_charge', 'orderUserExtraWeightLeviedCharge');
 		$rsm->addFieldResult('OP', 'order_cod_payment_added_charge', 'orderCodPaymentAddedCharge');
 		$rsm->addFieldResult('OP', 'order_carrier_risk_added_charge', 'orderCarrierRiskAddedCharge');
+		$rsm->addFieldResult('OP', 'order_fuel_surcharge_added_charge', 'orderFuelSurchargeAddedCharge');
+		$rsm->addFieldResult('OP', 'order_service_tax_added_charge', 'orderServiceTaxAddedCharge');
+		
+		$rsm->addJoinedEntityResult('NetFlexDeliveryChargeBundle:Currency', 'CUR', 'OP', 'orderPriceUnitId');
+		$rsm->addFieldResult('CUR', 'currency_id', 'id');
+		$rsm->addFieldResult('CUR', 'currency_symbol', 'currencySymbol');
 		
 		$rsm->addJoinedEntityResult('NetFlexDeliveryChargeBundle:DeliveryCharge', 'DC', 'O', 'deliveryChargeId');
 		$rsm->addFieldResult('DC', 'delivery_charge_id', 'id');
@@ -191,7 +201,7 @@ class OrderTransactionRepository extends EntityRepository
 		$rsm->addFieldResult('DM', 'delivery_mode_name', 'modeName');
 		
 		$rsm->addJoinedEntityResult('NetFlexOrderBundle:Address', 'OA', 'O', 'orderAddress');
-		$rsm->addFieldResult('OA', 'order_id', 'id');
+		$rsm->addFieldResult('OA', 'order_address_id', 'id');
 		$rsm->addFieldResult('OA', 'billing_first_name', 'billingFirstName');
 		$rsm->addFieldResult('OA', 'billing_mid_name', 'billingMidName');
 		$rsm->addFieldResult('OA', 'billing_last_name', 'billingLastName');
@@ -207,7 +217,7 @@ class OrderTransactionRepository extends EntityRepository
 		$rsm->addFieldResult('OA', 'shipping_zip_code', 'shippingZipCode');
 		$rsm->addFieldResult('OA', 'shipping_contact_number', 'shippingContactNumber');
 		
-		/*$rsm->addJoinedEntityResult('NetFlexLocationBundle:Country', 'C1', 'OA', 'billingCountryId');
+		$rsm->addJoinedEntityResult('NetFlexLocationBundle:Country', 'C1', 'OA', 'billingCountryId');
 		$rsm->addFieldResult('C1', 'billing_country_id', 'id');
 		$rsm->addFieldResult('C1', 'billing_country_name', 'name');
 		
@@ -229,7 +239,7 @@ class OrderTransactionRepository extends EntityRepository
 		
 		$rsm->addJoinedEntityResult('NetFlexLocationBundle:City', 'CT2', 'OA', 'shippingCityId');
 		$rsm->addFieldResult('CT2', 'shipping_city_id', 'id');
-		$rsm->addFieldResult('CT2', 'shipping_city_name', 'name');*/
+		$rsm->addFieldResult('CT2', 'shipping_city_name', 'name');
 		
 		$sql = "
 		SELECT 
@@ -245,6 +255,8 @@ class OrderTransactionRepository extends EntityRepository
 		    OIT1.item_type_name item_type_name,
 		    OIT2.id item_subtype_id,
 		    OIT2.item_type_name item_subtype_name,
+		    WU.id weight_unit_id,
+		    WU.symbol weight_unit,
 		    OP.id order_price_id,
 		    OP.order_base_charge order_base_charge,
 		    OP.order_extra_weight_levied_charge order_extra_weight_levied_charge,
@@ -252,11 +264,15 @@ class OrderTransactionRepository extends EntityRepository
 		    OP.order_user_extra_weight_levied_charge order_user_extra_weight_levied_charge,
 		    OP.order_cod_payment_added_charge order_cod_payment_added_charge,
 		    OP.order_carrier_risk_added_charge order_carrier_risk_added_charge,
+		    OP.order_fuel_surcharge_added_charge order_fuel_surcharge_added_charge,
+		    OP.order_service_tax_added_charge order_service_tax_added_charge,
+		    CUR.id currency_id,
+		    CUR.currency_symbol currency_symbol,
 		    DC.id delivery_charge_id,
 		    DMT.id delivery_mode_timeline_id,
 		    DM.id delivery_mode_id,
 		    DM.mode_name delivery_mode_name,
-		    OA.id order_id,
+		    OA.id order_address_id,
 		    OA.billing_first_name billing_first_name,
 		    OA.billing_mid_name billing_mid_name,
 		    OA.billing_last_name billing_last_name,
@@ -270,7 +286,19 @@ class OrderTransactionRepository extends EntityRepository
 		    OA.shipping_address_line_1 shipping_address_line_1,
 		    OA.shipping_address_line_2 shipping_address_line_2,
 		    OA.shipping_zip_code shipping_zip_code,
-		    OA.shipping_contact_number shipping_contact_number
+		    OA.shipping_contact_number shipping_contact_number,
+		    C1.id billing_country_id,
+		    C1.name billing_country_name,
+		    C2.id shipping_country_id,
+		    C2.name shipping_country_name,
+		    S1.id billing_state_id,
+		    S1.name billing_state_name,
+		    S2.id shipping_state_id,
+		    S2.name shipping_state_name,
+		    CT1.id billing_city_id,
+		    CT1.name billing_city_name,
+		    CT2.id shipping_city_id,
+		    CT2.name shipping_city_name
 		FROM
 		    order_transactions O
 		        LEFT JOIN
@@ -279,8 +307,12 @@ class OrderTransactionRepository extends EntityRepository
 		    order_item_types OIT1 ON OI.item_primary_type_id = OIT1.id
 		        LEFT JOIN
 		    order_item_types OIT2 ON OI.item_secondary_type_id = OIT2.id
+		    	LEFT JOIN
+	        weight_units WU ON OI.item_weight_unit_id = WU.id
 		        LEFT JOIN
 		    order_prices OP ON O.id = OP.order_id
+		    	LEFT JOIN
+	        currencies CUR ON OP.order_price_unit_id = CUR.id
 		        LEFT JOIN
 		    delivery_charges DC ON O.delivery_charge_id = DC.id
 		        LEFT JOIN
@@ -305,7 +337,7 @@ class OrderTransactionRepository extends EntityRepository
 		    O.id = ?
 		";
 		
-		$result = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $orderId])->getResult();
+		$result = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $orderId])->getOneOrNullResult();
 		
 		return $result;
 	}
