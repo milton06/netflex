@@ -1,0 +1,28 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+	{{ parent() }}:{{ pageTitle }}
+{% endblock %}
+{% block pageContent %}
+	<!--banner-->
+	<div class="container-fluid">
+		<div class="row">
+			<div class="bannerOverlay">
+				<div class="banner">
+					<h1>We Deliver <span>On Time</span> <strong>Everytime</strong></h1>
+					<a href="javascript:void(0);">Book a Shipment</a>
+					<div class="trackSearch">
+						<div class="input-group stylish-input-group">
+							<input type="text" class="form-control" data-watermark="Search or Tracking Number">
+							<span class="input-group-addon">
+                                <button type="submit">
+                                    <span class="fa fa-search"></span>
+                                </button>
+                            </span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--banner-->
+{% endblock %}

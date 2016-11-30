@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+	{% block pageMeta %}
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	{% endblock %}
+	<title>
+		{% block pageTitle %}
+			Netflex
+		{% endblock %}
+	</title>
+	<!--STYLES-->
+	{% block pageStyles %}
+		{% stylesheets 'bundles/netflexfront/css/bootstrap.css' filter='cssrewrite' %}
+			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
+		{% stylesheets 'bundles/netflexfront/css/jquery.fancybox.css' filter='cssrewrite' %}
+			<link href="{{ asset_url }}" rel="stylesheet" media="screen">
+		{% endstylesheets %}
+		{% stylesheets 'bundles/netflexfront/css/font-awesome.css'
+			'bundles/netflexfront/css/style.css' filter='cssrewrite' %}
+			<link href="{{ asset_url }}" rel="stylesheet">
+		{% endstylesheets %}
+	{% endblock %}
+</head>
+<body>
+<!--header-->
+<div class="container-fluid">
+	<div class="row">
+		<header class="header">
+			<div class="container">
+				<div class="row">
+					<!--logo-->
+					<div class="col-lg-3">
+						<div class="logo">
+							<a href="{{ url('home_page') }}">
+								{% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
+									<img src="{{ asset_url }}" alt="NetFlex Logo">
+								{% endimage %}
+							</a>
+						</div>
+					</div>
+					<!--logo-->
+					<!--call and mail-->
+					<div class="col-lg-5">
+						<div class="callmail">
+							<ul>
+								<li class="call">CALL FREE: +1 <span>212</span>-<span>226</span>-<span>3126</span></li>
+								<li class="mail"><a href="javascript:void(0);">info@netflex.com</a></li>
+							</ul>
+						</div>
+					</div>
+					<!--call and mail-->
+					<!--login and register-->
+					<div class="col-lg-4">
+						<div class="logreg">
+							<ul>
+								<li><a href="javascript:void(0);">About</a></li>
+								<li><a href="javascript:void(0);">Career</a></li>
+								<li><a href="javascript:void(0);">Contact</a></li>
+								<!--login-->
+								{{ include('NetFlexFrontBundle:LayoutPartial:user_login.html.twig') }}
+								<!--login-->
+								<!--register-->
+								<li class="register">
+									<a class="fancybox" href="#inline1">Register</a>
+									<div id="inline1" class="clearfix" style="width:370px;display: none;">
+										{{ render(controller('NetFlexFrontBundle:ClientRegistration:registerClient')) }}
+									</div>
+								</li>
+								<!--register-->
+							</ul>
+						</div>
+					</div>
+					<!--login and register-->
+				</div>
+			</div>
+		</header>
+		<!--nav-->
+		{{ include('NetFlexFrontBundle:LayoutPartial:header_navigation_menu.html.twig') }}
+		<!--nav-->
+	</div>
+</div>
+<!--header-->
+{% block pageContent %}
+	{% block footer %}
+	{% endblock %}
+{% endblock %}
+{% block pageScripts %}
+	{% javascripts '@NetFlexFrontBundle/Resources/public/js/1.11.1/jquery.min.js'
+		'@NetFlexFrontBundle/Resources/public/js/bootstrap.min.js'
+		'@NetFlexFrontBundle/Resources/public/js/jquery.fancybox.pack.js'
+		'@NetFlexFrontBundle/Resources/public/js/Common/common.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+</body>
+</html>

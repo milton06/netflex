@@ -1,0 +1,844 @@
+@font-face {
+    font-family: 'open_sansbold';
+    src: url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.eot');
+    src: url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.woff2') format('woff2'),
+         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.woff') format('woff'),
+         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.ttf') format('truetype'),
+         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.svg#open_sansbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.eot');
+    src: url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.woff2') format('woff2'),
+         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.woff') format('woff'),
+         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.ttf') format('truetype'),
+         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.svg#open_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSans-ExtraBold';
+    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot');
+    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.woff2') format('woff2'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.woff') format('woff'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.ttf') format('truetype'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'OpenSans-ExtraBold';
+    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot');
+    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.woff2') format('woff2'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.woff') format('woff'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.ttf') format('truetype'),
+         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'OpenSans-Light';
+  src: url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.eot');
+  src: url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.woff2') format('woff2'),
+       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.woff') format('woff'),
+       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.ttf') format('truetype'),
+       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.svg#OpenSans-Light') format('svg'),
+       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ul, li{ list-style: none;}
+a:focus{ outline: none;}
+
+body{ background: #f4efdb;}
+
+/*==============HEADER=============*/
+
+header.header{ background: url(../bundles/netflexfront/images/headerbg.jpg) repeat-x; width: 100%; height: 31px;}
+
+header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
+.callmail{ float: right;}
+.callmail ul{ padding: 7px 0 0 0; margin: 0px;}
+.callmail ul li{ padding: 0px; margin: 0px; float: left; font: normal 12px 'open_sansbold'; color: #d4d4d4;}
+.callmail ul li a{font: normal 12px 'open_sansbold'; color: #d4d4d4; transition: all 0.5s ease;}
+.callmail ul li a:hover{ color: #ffffff; text-decoration: none;}
+.callmail ul li.call{ background: url(../bundles/netflexfront/images/phIcon.png) no-repeat left center; padding-left: 20px;}
+.callmail ul li.mail{ background: url(../bundles/netflexfront/images/mailIcon.png) no-repeat left center; padding-left: 20px;}
+.callmail ul li:first-child{ margin-right: 17px;}
+
+.logreg ul{ padding: 0px 0 0 0; margin: 0px; float: right;}
+.logreg ul li{ padding: 5px 8px 0; margin: 0px; float: left;background: url(../bundles/netflexfront/images/dividerIcon.png) no-repeat left 12px;}
+.logreg ul li a{font: normal 10px 'open_sansbold'; color: #d4d4d4; text-transform: uppercase; transition: all 0.5s ease;}
+.logreg ul li a:hover{ color: #ffffff; text-decoration: none;}
+.logreg ul li.login{ background: none;  padding: 0px; padding-top: 0px; position: relative;}
+.logreg ul li.register{ background: none; padding: 0px; padding-top: 4px}
+.logreg ul li.register a{ background: #ff5400; color: #ffffff; padding: 9px 15px;}
+.logreg ul li:first-child{ background: none;}
+#inline1{ background: #ffffff; padding: 20px 0; border-radius: 5px;}
+#inline1 h3{ padding: 0 20px; padding-bottom: 20px; margin: 0px; font: normal 18px 'open_sansbold'; color: #000000;}
+#inline1 .signupForm{ background: #eff3f6; padding: 20px; width: 94%; margin: 0 3%;}
+#inline1 .signupForm input{ background: #ffffff; border: 1px solid #d8d8d8; height: 45px; padding: 0 5px; margin-bottom: 10px; color: #787878; font: normal 14px 'open_sansregular'; width: 100%;}
+#inline1 .signupForm input:last-child{ margin-bottom: 0px;}
+#inline1 .signupFormSub{ padding: 0 20px; width: 94%; margin: 0 3%;}
+#inline1 .signupFormSub input[type="submit"]{ background: #ff5400; cursor: pointer; text-align: center; font: normal 14px  'open_sansbold';  color:#ffffff; border: none; padding: 10px 0; transition: all 0.5s ease; text-transform: uppercase;  width: 100%; margin-top: 30px;}
+#inline1 .signupFormSub input[type="submit"]:hover{ background: #000000;}
+/*==LOGIN==*/
+
+.logreg #login-trigger
+{
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+  text-decoration: none;
+  font: normal 10px 'open_sansbold'; color: #ff5400;
+  background: #ffffff;
+  padding: 8.5px 15px;
+}
+
+.logreg  #login-trigger {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+}
+
+.logreg  #login-trigger:hover,
+.logreg  #login .active{
+  background: #1b1b1b;
+}
+
+.logreg #login-content {
+  display: none;
+  position: absolute;
+  top: 31px;
+  right: 0;
+  z-index: 9999;    
+  background: #1b1b1b;
+  padding: 24px;
+}
+
+.logreg li #login-content {
+  right: 0;
+  width: 251px;  
+}
+.logreg li #login-content input{ width: 100%; height: 30px; background: #ededed; border: none; color: #6d6d6d; font: normal 14px 'open_sansregular'; padding: 0 5px; margin-bottom: 10px;}
+.logreg li #login-content input[type="submit"]{ padding: 5px 23px; background: #ff5400; display: inline-blockin; border: none; cursor: pointer; font: normal 14px 'open_sansregular'; cursor: pointer; margin-bottom: 0px; color: #ffffff; height: auto; width: auto; transition: all 0.5s ease; margin-right: 10px;} 
+.logreg li #login-content input[type="submit"]:hover{ background: #000000;}
+.logreg li #login-content a{ font: italic 10px 'open_sansregular'; color: #898989; text-decoration: underline; text-transform: none; transition: all 0.5s ease;}
+.logreg li #login-content a:hover{ color: #ff5400;}
+
+.logreg a.weldd{ text-transform: none; font: normal 12px 'open_sansregular' !important; color: #646464 !important; padding: 7.5px 15px !important;}
+.logreg a.weldd .username{ color: #ff5400; display: inline-block;}
+.logreg a.weldd span{ color: #000000;}
+.logreg a.active span{ color: #ffffff;}
+.logreg li .userSettingLinks{ width: 100% !important; padding: 5px 15px !important}
+.logreg li .userSettingLinks ul{ padding: 0px; margin: 0px; float: left;}
+.logreg li .userSettingLinks ul li{ padding: 0px; margin: 0px; float: none; clear: both; border-bottom: 1px solid #494949; background: none; left: 0px !important; display: inline-block; width: 100%;}
+.logreg li .userSettingLinks ul li a{ color: #d4d4d4; font: normal 13px 'open_sansregular' !important; text-decoration: none !important; padding: 7px 0; display: block;}
+.logreg li .userSettingLinks ul li:last-child{ border-bottom: 0px;}
+
+
+/*============BANNER=================*/
+.bannerOverlay {
+    position: relative;
+    z-index: 999;
+    overflow-x: hidden;
+}
+.banner{ background-image: url(../bundles/netflexfront/images/banner.jpg);
+background-size: cover;
+position: relative; margin-top: -105px;
+}
+.banner h1{ position: absolute; text-align: center; top: 40%; left: 0%; font: normal 60px 'OpenSans-ExtraBold'; color: #ffffff; text-transform: uppercase; padding: 0px; margin: 0px; width: 100%;}
+.banner h1 strong{ text-decoration: underline;font: normal 60px 'OpenSans-ExtraBold'; }
+.banner h1 span{ color: #ff9600;}
+.banner a{ border-radius: 4px; background: #009cff; text-align: center; display: inline-block; font: normal 24px 'open_sansbold'; color: #ffffff; padding: 30px 0px;position: absolute; text-align: center; top: 60%; left: 50%; transition: all 0.5s ease; width: 370px; margin: 0 auto; text-transform: uppercase; margin-left: -185px;}
+.banner a:hover{ background: #ff9600; text-decoration:none;}
+
+.trackSearch{ width: 770px; left: 50%; margin-left: -385px; bottom: 0px; position: absolute; background: #ededee; padding: 20px;}
+.trackSearch input{ height: 38px; border: 1px solid #d2d2d2; border-radius: 0px; border-right: 0px; font: italic 14px 'open_sansbold'; color: #a0a0a0;}
+.trackSearch .input-group-addon{ background: #ff5400; border:1px solid #ff5400; border-left: 0px; border-radius: 0px; padding: 0px; 
+    }
+.trackSearch button{ background: none; border: none; cursor: pointer; color: #ffffff; padding: 8.5px 12px;}
+
+/*==============BOOK YOUR SHIPMENT====================*/
+
+.tabform{ background: #ffffff; padding: 70px; /*width: 1170px;*/ margin: 0 auto; border: 1px solid #e8e3d0; margin-top: 55px;}
+.tabform h1{ font: normal 24px 'open_sansbold'; color: #232323; padding: 0px; margin: 0px; padding-bottom: 20px;}
+.tabform h1 span{ color: #ff5400;}
+.tabform p{ font: normal 14px/18px 'open_sansregular'; color: #232323; text-align: justify; border-bottom: 1px solid #bfbfbf; padding-bottom: 30px; margin-bottom: 30px; clear: both; content: ""; display: block;}
+.tabform p span{ font-family: 'open_sansbold';}
+.selectShip{ padding: 20px; background: #eff3f5;  padding-top: 30px; margin-top: 30px; margin-bottom: 30px;}
+.usual {
+    background: #fff none repeat scroll 0 0;
+    border: 0;
+    color: #111;
+    margin: 8px auto;
+    padding: 0px 0px;
+    width: 100%;
+}
+.usual ul{ padding: 0px; margin: 0px;}
+.usual li {
+    float: left;
+    list-style: outside none none;
+     padding: 0px; margin: 0px;
+}
+
+.usual ul a.selected {
+    background: #fff;
+    border-bottom: 1px solid snow;
+    color: #000;
+    cursor: default;
+    margin-bottom: 0;
+    border-top: 2px solid #ff5400;
+}
+.usual ul a.selected span{ width: 28px; height: 28px; display: inline-block; font: normal 14px 'open_sansbold'; color: #ffffff; background: #ff5400; text-align: center; margin-right: 10px; line-height: 28px; border-radius: 50%;}
+.usual ul a {
+    background: #ececec none repeat scroll 0 0;
+    color: #727272;
+    display: block;
+    font: normal 14px 'open_sansbold';
+    margin: 0px 0px 0px 0;
+    padding: 13px 30px;
+    text-decoration: none !important;
+    border: 1px solid #cfcfcf;
+    position: relative;
+    z-index: 99;
+    text-transform: uppercase;
+}
+.usual ul a span{width: 28px; height: 28px; display: inline-block; font: normal 14px 'open_sansbold'; color: #ffffff; background: #aeaeae; text-align: center; margin-right: 10px; line-height: 28px; border-radius: 50%;}
+.usual div.tabgrp {
+    background: #fff;
+    clear: left;
+    font: 10pt Georgia;
+    padding: 50px 57px;
+    border: 1px solid #cfcfcf;
+    position: relative;
+    top: -2px;
+}
+
+.formBlk1{ border-bottom: 1px solid #d2d2d2; padding-bottom: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;}
+.formBlk2{ float: right;}
+.formBlk2 input{
+    background: #f6f6f6 none repeat scroll 0 0;
+    border: 1px solid #d2d2d2;
+    float: left;
+    height: 42px;
+    margin-right: 0px !important;
+    width: 230px !important;
+    font: normal 14px "open_sansregular";
+    padding: 10px 5px;
+}
+.tabgrp label.dropdown.weight1::after{
+    right: -1px;
+    text-indent: 14px;
+    top: -15px;
+    width: 36px;
+}
+/*==============NAVIGATION=================*/
+
+div.navigation{ background: #ffffff; margin-bottom: 0px;}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus{ background: none; color: #ff5400;}
+.navbar-default .navbar-nav > .active > a:after, .navbar-default .navbar-nav > .active > a:after, .navbar-default .navbar-nav > .active > a:after{ background: none; color: #ff5400;bottom: 0%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #ff5400;
+	border-width: 6px;
+	margin-left: -6px;
+}
+.navbar-default .navbar-nav > li > a{ font: normal 12px 'open_sansbold'; text-transform: uppercase; position: relative;}
+.navbar-default .navbar-nav > li > a:hover{color: #ff5400;}
+.nav > li > a{ padding-left: 16px; padding-right: 16px; padding-top: 28px; padding-bottom: 28px;}
+.nav > li:hover > a:after{bottom: 0%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(136, 183, 213, 0);
+	border-bottom-color: #ff5400;
+	border-width: 6px;
+	margin-left: -6px;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form{ background: #ffffff;}
+.navbar-default{ border: none; background: #ffffff;}
+.navbar{ margin-bottom: 0px;}
+
+/*==============STYLISH dropdown=================*/
+
+.tabgrp h6{ padding: 0 0 18px; margin: 0 -15px; font: normal 14px 'open_sansbold'; color: #000000;}
+.tabgrp h6.type{ display: inline-block; float: left; padding-top: 8px; margin-right: 30px;}
+.tabgrp h6.type1{ display: inline-block; float: left; padding:0px; padding-top: 0px; margin-right: 0px;}
+.tabgrp input{ float: left; width: 150px; border: 1px solid #d2d2d2; height: 42px; background: #f6f6f6; margin-right: 10px;}
+.tabgrp label.dropdown select {
+	padding: 10px 5px;
+	background: #f6f6f6;
+	color: #686868;
+	border: 1px solid #d2d2d2;
+	border-radius: 0;
+	display: inline-block;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	cursor: pointer;
+	outline: none;
+    font: normal 14px 'open_sansregular';
+    border-radius: 0px;
+    width: 230px;
+    float: left;
+    margin: 0 6px;
+    height: 42px;
+}
+.tabgrp label.dropdown select.weight{ width: 150px;}
+.tabgrp label.dropdown:first-child select{ margin-left: 0px;}
+.tabgrp label.dropdown:last-child select{ margin-right: 0px;}
+.tabgrp label.dropdown select:hover, .tabgrp label.dropdown select:focus{ background: none; border: 1px solid #1277ba;}
+.tabgrp label.dropdown select:-moz-focusring {
+	color: transparent;
+	text-shadow: 0 0 0 #444;
+}
+.tabgrp label.dropdown select::-ms-expand {
+	display: none;
+}
+.tabgrp label.dropdown:before {
+	content: '';
+	right: 5px;
+	top: 1px;
+	width: 30px;
+	height: 33px;
+	background: none;
+	position: absolute;
+	pointer-events: none;
+	display: block;
+}
+.tabgrp label.dropdown:hover, .tabgrp label.dropdown:focus{ background: none;}
+.tabgrp label{ margin-bottom: 0px;}
+.tabgrp label.dropdown { position: relative; }
+.tabgrp label.dropdown:after {
+    color: #444;
+    content: url(../bundles/netflexfront/images/ddIcon.png);
+    font: 16px Consolas,monospace;
+    margin-top: 15px;
+    padding: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 2px;
+    text-indent: 14px;
+    top: -3px;
+    transform: rotate(360deg);
+    width: 35px;
+}
+
+.formBlk1-1 a{ border-radius: 4px; color: #ffffff; font: normal 14px 'OpenSans-ExtraBold'; text-transform: uppercase; display: inline-block; padding: 12px 40px; background: #ff5400; float: right; margin-right: -8px; transition: all 0.5s ease;}
+.formBlk1-1 a:hover{ background: #000000; text-decoration: none;}
+.formBlk1-1 a.bookship{ margin-top: 10px;}
+
+/*============STYLISH CHECKBOX==============*/
+ul.stylecheckbox { padding: 0px; margin: 0px;}
+ul.stylecheckbox li{ float: left; display: inline-block; position: relative;}
+ul.stylecheckbox li h2{ padding: 0px; margin: 0px; font: normal 14px 'open_sansbold'; color: #000000;}
+ul.stylecheckbox li input[type=radio]{
+  position: absolute;
+  visibility: hidden;
+}
+
+ul.stylecheckbox li label{
+  display: block;
+  position: relative;
+  font-weight: 300;
+   font: normal 14px 'open_sansregular'; color: #232323;
+  padding: 0 0 0 54px;
+  margin: 0px auto;
+  height: auto;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+}
+
+
+ul.stylecheckbox li .check{
+  display: block;
+  position: absolute;
+  border: 1px solid #979797;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  top: -2px;
+  left: 20px;
+	z-index: 5;
+	transition: border .25s linear;
+	-webkit-transition: border .25s linear;
+}
+
+
+ul.stylecheckbox li .check::before {
+  display: block;
+  position: absolute;
+	content: '';
+  border-radius: 100%;
+  height: 9px;
+  width: 9px;
+  top: 6px;
+	left: 6px;
+  margin: auto;
+	transition: background 0.25s linear;
+	-webkit-transition: background 0.25s linear;
+}
+
+ul.stylecheckbox li input[type=radio]:checked ~ .check {
+  border: 2px solid #ff5400;
+}
+
+ul.stylecheckbox li input[type=radio]:checked ~ .check::before{
+  background: #ff5400;
+}
+
+ul.stylecheckbox li input[type=radio]:checked ~ label{
+  color: #232323;
+}
+
+/*============STYLISH CHECKBOX==============*/
+
+@media screen\0 {
+	.tabgrp label.dropdown:after {
+		width: 38px;
+		text-indent: 15px;
+        right: 0;
+	}
+}
+@media screen and (min--moz-device-pixel-ratio:0) {
+	.tabgrp label.dropdown select { padding-right: 40px; }
+	.tabgrp label.dropdown:before { right: 6px; }
+	.tabgrp label.dropdown:after {
+		text-indent: 14px;
+		right: 6px;
+		top: -5px;
+		width: 36px;
+	}
+}
+
+/*================STYLISH DROPDOWN===============*/
+
+/*=========SHIP LEFT===========*/
+
+.shipLeft, .shipRight{ background: #eff3f5; border-radius: 5px; padding: 35px;}
+.shipLeft{ width: 45%; float: left;}
+.shipRight{ width: 45%; float: right;}
+.shipLeft h2, .shipRight h2{ font: normal 14px 'open_sansbold'; color: #000000; margin: 0px; padding: 0px; padding-bottom: 15px;}
+.shipLeft input, .shipRight input{ margin-bottom: 9px; border: 1px solid #d2d2d2; padding: 0 10px; height: 38px; background: #f6f6f6; width: 100%; display: block; float: none; clear: both; font: normal 14px 'open_sansregular'; color: #686868;}
+ul.stylecheckbox-tab2 li{ padding-top: 5px;}
+ul.stylecheckbox-tab2 li .check{ left: 0px; top: 2px;}
+ul.stylecheckbox-tab2 li label{ padding-left: 30px;}
+
+/*==============BOOK YOUR SHIPMENT====================*/
+
+/*==============FOOTER=================*/
+
+footer .foot{ font: normal 14px/64px 'open_sansregular'; color: #000000; background: url(../bundles/netflexfront/images/footLogo.png) no-repeat left center; padding-left: 63px; height: 64px; margin: 24px 0;}
+
+/*===========BOOKING AWB==============*/
+
+.tabform h2.cong{ font: normal 36px 'open_sansbold'; color: #ff5400; padding: 0px; margin: 0px; text-align: center;}
+.tabform h3{ font: normal 24px 'open_sansbold'; color: #232323; padding: 0px; margin: 0px; text-align: center;}
+.tabform .awbPanel{ background: #f2f6fb; border: 1px solid #bacfe8; margin: 25px auto; padding: 26px 52px; display: table; text-align: center; width: 290px;}
+.tabform .awbPanel h4{ font: normal 18px 'open_sansbold'; color: #747474; padding: 0px; margin: 0px;}
+.tabform .awbPanel h5{ font: normal 30px 'open_sansbold'; color: #000000; padding: 0px; margin: 0px;}
+.tabform h6.thank{ font: italic 18px 'open_sansbold'; color: #747474; padding: 0px; margin: 0px; text-align: center; padding-bottom: 60px;}
+.tabform .bookBtn{ width: 273px; margin: 0 auto;}
+.tabform .bookBtn a{background: #ff5400 none repeat scroll 0 0; border-radius: 4px; color: #ffffff; display: table; float: none; font: 14px "OpenSans-ExtraBold"; padding: 20px 40px; text-transform: uppercase; transition: all 0.5s ease 0s;}
+.tabform .bookBtn a:hover{ background: #000000; text-decoration: none;}
+.tabform ul.printInvoice{ padding: 14px 0 0; margin: 0px; float: right;}
+.tabform ul.printInvoice li{ padding: 0px; margin: 0px; float: left; padding-left: 30px;}
+.tabform ul.printInvoice li a{ color: #3b3b3a; font: normal 14px 'OpenSans-ExtraBold'; text-transform: uppercase; transition: all 0.5s ease;}
+.tabform ul.printInvoice li a:hover{ color: #ff5400; text-decoration: none;}
+
+.tabform .tracktable{ padding-top: 40px;}
+
+/*=============TRACK=============*/
+
+.tabform .TrackHead{ border-bottom: 1px solid #cacaca; padding-bottom: 5px; clear: both; content: ""; display: block;}
+.tabform .TrackHead h1{ padding: 0px;}
+.tabform .tracktable table{ width: 100%;}
+.tabform .tracktable table tr{ border-bottom: 1px solid #e2e2e2;}
+.tabform .tracktable table td{ font: normal 14px 'open_sansregular'; color: #000000; padding: 10px 0;}
+.tabform .tracktable table td span{ font-family: 'open_sansbold';}
+.tblfrom h2, .tblto h2{ font: normal 14px 'open_sansbold'; color: #000000; margin: 0px; padding: 0px; text-decoration: underline; padding-bottom: 15px; text-align: left;}
+.tblfrom h3, .tblto h3{ font: normal 14px 'open_sansbold'; color: #010101; margin: 0px; padding: 0px; text-align: left;}
+.tblto h3{ color: #ff5400;}
+.tabform .tblfrom p, .tblto p{font: normal 14px/24px 'open_sansregular'; color: #000000; padding: 0px; margin: 0px; border: none;}
+
+/*============TRACK STATUS==============*/
+.trackstatus{ position: relative;}
+ul.trackHeadline { padding: 80px 0 0 0; margin: 0px; border-bottom: 1px solid #e2e2e2; width: 100%; padding-bottom: 5px;}
+ul.trackHeadline li{ padding: 0px; margin: 0px; font: normal 11px 'open_sansbold'; color: #000000; float: left; text-transform: uppercase;}
+ul.trackHeadline li.approve{ text-align: left; width: 23%;}
+ul.trackHeadline li.process{ text-align:  left; width: 23%;}
+ul.trackHeadline li.ship{ text-align: left; width: 23%;}
+ul.trackHeadline li.deliver{ text-align: right; width: 31%;}
+
+ul.trackbar{ padding: 35px 0; margin: 0px}
+ul.trackbar li{ position: relative; float: left;}
+ul.trackbar li.approveLine{ text-align: left; width: 23%; background: url(../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
+ul.trackbar li.processLine{ text-align:  left; width: 23%; background: url(../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
+ul.trackbar li.shipLine{ text-align: left; width: 23%; background: url(../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
+ul.trackbar li.deliverLine{ text-align: right; width: 31%; background: none;}
+
+ul.trackbar li.approveLine a#redDotOne{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 25px;}
+ul.trackbar li.processLine a#redDotTwo{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 30px;}
+ul.trackbar li.shipLine a#redDotThree{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 22px;}
+
+
+.arrow_box {
+	position: absolute;
+	background: #ffffff;
+	border: 1px solid #dddddd;
+    bottom: -50px;
+    width: 100%;
+    left: 0.5%;
+    font: normal 14px 'open_sansregular';
+    color: #ff5400;
+    padding: 15px 0px;
+    width: 360px;
+    text-align: center;
+    margin-left: -3px;
+}
+.arrow_box:after, .arrow_box:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #ffffff;
+	border-width: 9px;
+	margin-left: -9px;
+}
+.arrow_box:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-bottom-color: #dddddd;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+
+
+.arrow_box-1 {
+	position: absolute;
+	background: #ffffff;
+	border: 1px solid #dddddd;
+    bottom: -50px;
+    width: 100%;
+    left: 0.5%;
+    font: normal 14px 'open_sansregular';
+    color: #ff5400;
+    padding: 15px 0px;
+    width: 360px;
+    text-align: center;
+    margin-left: -3px;
+}
+.arrow_box-1:after, .arrow_box-1:before {
+	bottom: 100%;
+	left: 8%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box-1:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #ffffff;
+	border-width: 9px;
+	margin-left: -9px;
+}
+.arrow_box-1:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-bottom-color: #dddddd;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+
+.arrow_box-2 {
+	position: absolute;
+	background: #ffffff;
+	border: 1px solid #dddddd;
+    bottom: -50px;
+    width: 100%;
+    left: 0.5%;
+    font: normal 14px 'open_sansregular';
+    color: #ff5400;
+    padding: 15px 0px;
+    width: 360px;
+    text-align: center;
+    margin-left: -3px;
+}
+.arrow_box-2:after, .arrow_box-2:before {
+	bottom: 100%;
+	left: 89%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box-2:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #ffffff;
+	border-width: 9px;
+	margin-left: -9px;
+}
+.arrow_box-2:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-bottom-color: #dddddd;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+
+/*=============MY ACCOUNT=============*/
+
+#sidebar { width: 230px; float: none; text-align: center;}
+.editpic{ padding: 15px 0 40px;}
+.editpic a{ font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
+.editpic a:hover{ color: #ff5400; text-decoration: none;}
+
+ul.myaccBtn{ padding: 0px; margin: 0px;}
+ul.myaccBtn li{ float: none; clear: both; padding: 5px 0; margin: 0px;}
+ul.myaccBtn li a{ border-radius: 2px; color: #646464; font: normal 14px 'open_sansregular'; width: 100%; padding: 14px 0; border: 1px solid #c9c9c9; background: #ffffff; display: block; transition: all 0.5s ease;}
+ul.myaccBtn li a:hover{ background: #ff5400; border: 1px solid #ff5400; text-decoration: none; color: #ffffff;}
+
+.infEdit h1{ padding: 0px; margin: 0px; font: normal 48px/39px 'OpenSans-Light'; color: #010101;}
+.editBlk{ padding-top: 35px;}
+.editHeading{ border-bottom: 2px solid #000000; padding-bottom: 5px; content: ""; clear: both; display: block;}
+.editHeading ul{ padding: 0px; margin: 0px;}
+.editHeading ul li{ padding: 0px; margin: 0px;}
+.editHeading ul li h2{ padding: 0px; margin: 0px; font: normal 14px 'open_sansbold'; color: #000000;} 
+.editHeading ul li:first-child{ float: left;}
+.editHeading ul li:last-child{ float: right;}
+.editHeading ul li.edit a{ background: url(../bundles/netflexfront/images/myaccount/editIcon.png) no-repeat left center; padding-left: 25px; font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
+.editHeading ul li.edit a:hover{ background: url(../bundles/netflexfront/images/myaccount/editIconHover.png) no-repeat left center; color: #ff5400; text-decoration: none;}
+.editformblk{ padding: 10px 0; border-bottom: 1px solid #dedede;}
+.editformblk label{ color: #646464; font: normal 14px 'open_sansbold'; padding-top: 5px;}
+.editformblk input{ padding: 5px; font: normal 14px 'open_sansbold'; color: #000000; background: none; border: none; width: 315px}
+
+.editformblk1{ padding: 10px 0; border-bottom: 1px solid #dedede;}
+.editformblk1 label{ color: #646464; font: normal 14px 'open_sansbold'; padding-top: 5px;}
+.editformblk1 input{ padding: 5px; font: normal 14px 'open_sansbold'; color: #000000; background: #ffffff; border: 1px solid #d3d4d6; width: 315px}
+#basicInfo1, #changePassBox{ display: none; margin-top: 5px;}
+.basicInfoEditableForm{ padding: 20px; background: #eff3f6; border: 1px solid #dedede;}
+
+.savecancel{ float: right; padding-top: 10px;}
+.savecancel ul{ padding: 0px; margin: 0px;}
+.savecancel ul li{ padding: 0px; margin: 0px; float: left; padding-left: 10px;}
+.savecancel ul li a{ background: #eff3f6; border-radius: 3px; border: 1px solid #c9c9c9; padding: 10px 40px; display: inline-block; transition: all 0.5s ease; font: normal 10px 'open_sansbold'; color: #737373; text-transform: uppercase;}
+.savecancel ul li a:hover{ text-decoration: none; background: #ff5400; border: 1px solid #ff5400; color: #ffffff;}
+
+.editformblk2{ padding: 10px 0; margin: 0 -15px;}
+.editformblk2 label{ color: #646464; font: normal 14px 'open_sansbold'; padding-top: 5px;}
+.editformblk2 input{ padding: 5px; font: normal 14px 'open_sansregular'; color: #000000; background: #ffffff; border: 1px solid #d3d4d6; width: 100%; height: 38px;}
+.basicInfoEditableForm2{ padding: 20px; background: #eff3f6; border: 1px solid #dedede;}
+.editformblk a{ font: normal 16px 'open_sansregular'; color: #1277ba; text-align: right; float: right; margin-top: 3px; transition: all 0.5s ease;}
+.editformblk a:hover{color: #ff5400; text-decoration: none;}
+
+
+/*===BILLING ADDRESS===*/
+.editBlk-1{ padding-top: 0px;}
+.editHeading-1{ border-bottom: 2px solid #000000; padding-bottom: 5px; content: ""; clear: both; display: block; padding-top: 35px;}
+.editHeading-1 ul{ padding: 0px; margin: 0px;}
+.editHeading-1 ul li{ padding: 0px; margin: 0px;}
+.editHeading-1 ul li h2{ padding: 0px; margin: 0px; font: normal 14px 'open_sansbold'; color: #000000;} 
+.edit a{ background: url(../bundles/netflexfront/images/myaccount/editIcon.png) no-repeat left center; padding-left: 25px; font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
+.edit a:hover{ background: url(../bundles/netflexfront/images/myaccount/editIconHover.png) no-repeat left center; color: #ff5400; text-decoration: none;}
+
+.default{ font: normal 14px 'open_sansregular'; color: #ff5400; padding-left: 24px; background: url(../bundles/netflexfront/images/myaccount/defaultTick.png) no-repeat left center; margin-top: 5px;}
+.editBillingContent{ display: none;}
+
+.billingAddForm {
+    background: #eff3f6 none repeat scroll 0 0;
+    border: 1px solid #dedede;
+    padding: 20px;
+    margin-top: 5px;
+}
+.tabform .billingAddForm table td.billAddLeft{ float: left; width: 49%;}
+.tabform .billingAddForm table td.billAddRight{ float: right; width: 49%;}
+.tabform .billingAddForm table td.textLeft{ float: left; width: 49%; padding-bottom: 0px !important;}
+.tabform .billingAddForm table td.textRight{ float: right; width: 49%; padding-bottom: 0px !important;}
+.tabform .billingAddForm table tr{ border: none !important; padding-bottom: 10px;}
+.tabform .billingAddForm table tr td{ padding: 0 0 10px !important;}
+.tabform .billingAddForm table tr td input{ width: 100%; border: 1px solid #d3d4d6; background: #ffffff; height: 38px; padding: 0 5px;}
+
+.tabform .billingAddForm table tr td.defDelSave{ border-top: 1px solid #d3d4d6; padding-top: 15px; margin-top: 15px; padding-bottom: 0px !important;}
+
+/*==CHECKBOX==*/
+.checkbox{ float: left;}
+.checkbox label{ padding-left: 0px; font: normal 14px 'open_sansregular'; color: #646464; padding-top: 2px;}
+.checkbox label:after, 
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr, .radio .cr {
+    border: 1px solid #b6cce7;
+    border-radius: 2px;
+    display: inline-block;
+    float: left;
+    height: 23px;
+    margin-right: 0.5em;
+    position: relative;
+    width: 23px;
+}
+
+.radio .cr {
+    border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+    position: absolute;
+    font-size: 15px;
+    line-height: 0;
+    top: 50%;
+    left: 20%;
+}
+
+.radio .cr .cr-icon {
+    margin-left: 0em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+    display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+    transform: scale(3) rotateZ(-20deg);
+    opacity: 0;
+    transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+    opacity: .5;
+}
+
+/*==STYLISH CHECKBOX==*/
+.delAdd{ float: right; padding-top: 17px;}
+.delAdd a{ font: normal 14px 'open_sansregular'; color: #646464; background: url(../bundles/netflexfront/images/myaccount/delAddIcon.png) no-repeat left center; padding-left: 22px;}
+.billAddMore { padding-top: 15px;}
+.billAddMore a{
+    background: #eff3f6 none repeat scroll 0 0;
+    border: 1px solid #c9c9c9;
+    border-radius: 3px;
+    color: #737373;
+    display: inline-block;
+    font: 10px "open_sansbold";
+    padding: 12px 30px;
+    text-transform: uppercase;
+    transition: all 0.5s ease 0s;
+}
+.billAddMore a:hover{ text-decoration: none; background: #ff5400; border: 1px solid #ff5400; color: #ffffff;}
+.billAddMore a:focus{ text-decoration: none;}
+.billAddMore i{ font-size: 14px; position: relative; top: 2px;}
+#addMoreAddContent, #addMorepickUpContent{ display: none;}
+
+/*=====================CONSIGMENTS======================*/
+.tabform ul.printInvoice li span{ color: #010101; font: normal 30px/1px 'OpenSans-Light'; margin: 0px; padding: 0px;}
+.consigList{ padding: 10px 0; border-bottom: 1px solid #cacaca; margin-bottom: 50px;}
+.consigList ul{ padding: 0px; margin: 0px;}
+.consigList ul li{ padding: 0 57px; margin: 0px; float: left; border-left: 1px solid #d7d7d7; border-right: 1px solid #d7d7d7;}
+.consigList ul li:first-child{ border: none; padding-left: 0px;}
+.consigList ul li:last-child{ border: none; padding-right: 0px; float: right;}
+.consigList ul li label{font: normal 14px 'open_sansregular'; color: #000000; }
+.consigList .checkbox .cr, .radio .cr{ top: -2px;}
+.consigList ul li input{ width: 128px; height: 35px; border: 1px solid #d2d2d2; padding: 0 5px;font: normal 14px 'open_sansregular'; color: #000000;}
+.consigList ul li td.dateand{font: normal 14px 'open_sansregular'; color: #000000; padding: 0 10px;}
+.consigList ul li a.gobtn{font: normal 14px 'open_sansbold'; color: #ffffff; border-radius: 3px; height: 35px; text-align: center; width: 55px; transition: all 0.5s ease; background: #ff5400; display: inline-block; text-transform: uppercase; line-height: 35px; margin-left: 8px;}
+.consigList ul li a.gobtn:hover, .consigList ul li a.gobtn:focus{ background: #000000; text-decoration: none;}
+.consigList ul li .checkbox{ margin-top: 19px !important;}
+.consigList ul li .tabgrp { padding-top: 16px;}
+.consigList ul li td.listLabel{ padding-top: 12px;}
+.consigList ul li .tabgrp select{ width: 130px !important; height: 33px; margin-left: 10px !important;}
+.consigList ul li .tabgrp label.dropdown select{ padding: 3px 0 3px 5px;}
+.consigList ul li .tabgrp label.dropdown::after {
+    right: 6px;
+    text-indent: 14px;
+    top: -9px;
+    width: 27px;
+}
+.consigtable th{font: normal 14px 'open_sansbold'; color: #000000;}
+.consigtable td{font: normal 14px 'open_sansregular'; color: #000000; padding: 17px 0 !important;}
+.consigtable td h2{font: normal 14px 'open_sansbold'; color: #000000; padding: 0px; margin: 0px;}
+.consigtable > .table > thead > tr > th{ border-bottom: 2px solid #000000; padding-left: 0px;}
+table > tbody > tr > td > span.footable-toggle {
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 8px;
+    opacity: 1;
+}
+.consigtable td span.processing{ color: #3c9a64;}
+.consigtable td span.shipped{ color: #00b4ff;}
+.consigtable td span.returned{ color: #d64343;}
+.consigtable td span.delevered{ color: #838383;}
+
+.consigtable > .table > thead > tr > td, .consigtable > .table > tbody > tr > td, .consigtable > .table > tfoot > tr > td{ border-bottom: 1px solid #dedede; border-top: 0px;}
+
+ul.activitypagination{ padding: 0px; margin: 0px; float: right;}
+ul.activitypagination li{ padding: 0 0 0 10px; margin: 0px; float: left; font: normal 14px 'open_sansregular'; color: #646464;}
+ul.activitypagination li a{ font-style: normal; color: #7c7c7c; transition: all 0.5s ease;}
+ul.activitypagination li a:hover{ color: #3c83bf; text-decoration: none;}
+ul.activitypagination li a.paginum{ width: 26px; height: 26px; background: #ffffff; text-align: center; border-radius: 50%; transition: all 0.5s ease; display: block; line-height: 26px; margin-top: -5px;}
+ul.activitypagination li a.paginum:hover{ background: #de4b4b; color: #ffffff;}
+
+
+/*=====================CONSIGMENTS======================*/
+
+@media screen and (min-width : 768px) and (max-width : 1199px){
+    
+}
+
+/*===============TAB VERTION================*/
+
+@media screen and (min-width : 320px) and (max-width : 767px){
+    
+}

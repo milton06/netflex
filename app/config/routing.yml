@@ -1,6 +1,7 @@
-net_flex_user_user:
-    resource: "@NetFlexUserBundle/Controller/UserController.php"
+net_flex_front:
+    resource: "@NetFlexFrontBundle/Controller/"
     type:     annotation
+    prefix:   /
 
 net_flex_location:
     resource: "@NetFlexLocationBundle/Controller/"
@@ -44,7 +45,3 @@ net_flex_dashboard:
     resource: "@NetFlexDashboardBundle/Controller/"
     type:     annotation
     prefix:   /
-
-app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation

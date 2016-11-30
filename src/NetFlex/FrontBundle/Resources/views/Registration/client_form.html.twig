@@ -1,0 +1,14 @@
+<h3>Register</h3>
+{{ form_start(form, { 'attr': { 'id': 'registerClientForm', 'novalidate': 'novalidate' } }) }}
+	<div class="signupForm clearfix">
+		{{ form_widget(form.username, { 'id': 'username' }) }}
+		{{ form_widget(form.password, { 'id': 'password' }) }}
+		{{ form_widget(form.firstName, { 'id': 'firstName' }) }}
+		{{ form_widget(form.lastName, { 'id': 'lastName' }) }}
+		{{ form_widget(form.emails, { 'id': 'email' }) }}
+		{{ form_widget(form.contacts, { 'id': 'contact' }) }}
+	</div>
+	<div class="signupFormSub">
+		<input type="submit" id="registerClientButton" value="register">
+	</div>
+{{ form_end(form) }}

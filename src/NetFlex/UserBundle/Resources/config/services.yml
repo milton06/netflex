@@ -19,3 +19,15 @@ services:
         arguments: ["@request_stack"]
         tags:
             - { name: form.type }
+
+    app.form.front_end_user_registration_email:
+        class: NetFlex\UserBundle\Form\FrontEndUserRegistrationContactType
+        arguments: ["@request_stack"]
+        tags:
+            - { name: form.type }
+
+    app.form.front_end_user_registration_contact:
+        class: NetFlex\UserBundle\Form\FrontEndUserRegistrationEmailType
+        arguments: ["@request_stack"]
+        tags:
+            - { name: form.type }

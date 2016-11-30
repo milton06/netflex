@@ -16,7 +16,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 	        new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new AppBundle\AppBundle(),
             new NetFlex\DashboardBundle\NetFlexDashboardBundle(),
             new NetFlex\MediaBundle\NetFlexMediaBundle(),
             new NetFlex\DeliveryChargeBundle\NetFlexDeliveryChargeBundle(),
@@ -25,6 +24,7 @@ class AppKernel extends Kernel
             new NetFlex\ShipmentTrackBundle\NetFlexShipmentTrackBundle(),
             new NetFlex\UserBundle\NetFlexUserBundle(),
             new NetFlex\LocationBundle\NetFlexLocationBundle(),
+            new NetFlex\FrontBundle\NetFlexFrontBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
