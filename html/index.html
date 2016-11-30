@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--STYLES-->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.steps.css">
+    <link rel="stylesheet" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!--header-->
+    <div class="container-fluid">
+        <div class="row">
+            <header class="header">
+                <div class="container">
+                    <div class="row">
+                        <!--logo-->
+                            <div class="col-lg-3">
+                                <div class="logo">
+                                    <a href="#"><img src="images/netflexLogo.png" alt="NetFlex Logo"></a>
+                                </div>
+                            </div>
+                        <!--logo-->
+                        <!--call and mail-->
+                            <div class="col-lg-5">
+                                <div class="callmail">
+                                    <ul>
+                                        <li class="call">CALL FREE: +1 <span>212</span>-<span>226</span>-<span>3126</span></li>
+                                        <li class="mail"><a href="mailto:info@netflex.com">info@netflex.com</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <!--call and mail-->
+                        <!--login and register-->
+                            <div class="col-lg-4">
+                                <div class="logreg">
+                                    <ul>
+                                        <li><a href="#">About</a></li>
+                                        <li><a href="#">Career</a></li>
+                                        <li><a href="#">Contact</a></li>
+                                        <!--login-->
+                                        <li class="login" id="login">
+                                            <a id="login-trigger" href="#">Log in</a>
+                                            <div id="login-content">
+                                                <input type="text" name="" id="">
+                                                <input type="text" name="" id="">
+                                                <input type="submit" name="" id="" value="Login">
+                                                <a href="#">Forgot your password?</a>
+                                            </div>
+                                        </li>
+                                        <!--login-->
+                                        <!--register-->
+                                        <li class="register">
+                                            <a class="fancybox" href="#inline1">Register</a>
+                                            <div id="inline1" class="clearfix" style="width:370px;display: none;">
+                                                <h3>Register</h3>
+                                                <div class="signupForm clearfix">
+                                                    <input type="text" name="" id="">
+                                                    <input type="text" name="" id="">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                                <div class="signupFormSub">
+                                                    <input type="submit" name="" id="" value="register">
+                                                    <a href="#">Forgot your password?</a>    
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!--register-->
+                                    </ul>
+                                </div>
+                            </div>
+                        <!--login and register-->
+                    </div>
+                </div>
+            </header>
+            <!--nav-->
+            <div class="navigation">
+                <nav class="navbar navbar-default">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Project name</a>
+                      </div>
+                      <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                          <li class="active"><a href="#">Home</a></li>
+                          <li><a href="#">Franchisee</a></li>
+                          <li><a href="#">Track Order </a></li>
+                          <li><a href="#">Book a Shipment</a></li>
+                            <li><a href="#">Customer Enquiry</a></li>
+                            <li><a href="#">Clients</a></li>
+                        </ul>
+                      </div><!--/.nav-collapse -->
+                    </div><!--/.container-fluid -->
+                  </nav>
+            </div>
+            <!--nav-->
+        </div>
+    </div>
+    <!--header-->
+    <!--banner-->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="bannerOverlay">
+                    <div class="banner">
+                        <h1>We Deliver <span>On Time</span> <strong>Everytime</strong></h1>
+                        <a href="#">Book a Shipment</a>
+                        <div class="trackSearch">
+                            <div class="input-group stylish-input-group">
+                                <input type="text" class="form-control" data-watermark="Search or Tracking Number">
+                                <span class="input-group-addon">
+                                    <button type="submit">
+                                        <span class="fa fa-search"></span>
+                                    </button>  
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    <!--banner-->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!--step form-->
+    <script src="js/idTabs.js"></script>
+    <script type="text/javascript"> 
+        $("#usual1 ul").idTabs(); 
+    </script>
+    <script>
+        $(document).ready(function () {
+        $('#login-trigger').click(function () {
+            $('#login-content').slideToggle();
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')){              
+                    $(this).find('span').html('&#x25b2;');
+            }else{
+               //$(this).find('span').html('▼'); 
+            }
+            $('#signup-content').slideUp();
+        })
+        
+    });
+    </script>
+    <script type="text/javascript" src="js/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$('.fancybox').fancybox();
+		});
+	</script>
+    <script>
+        $(document).ready(function(){
+         // Defining a function to set size for #hero 
+            function fullscreen(){
+                $('.banner').css({
+                    width: $(window).width(),
+                    height: $(window).height()
+                });
+            }
+
+            fullscreen();
+
+          // Run the function in case of window resize
+          $(window).resize(function() {
+               fullscreen();         
+            });
+            
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(":input[data-watermark]").each(function () {
+                $(this).val($(this).attr("data-watermark"));
+                $(this).css("color","#a0a0a0");
+                $(this).bind("focus", function () {
+                    if ($(this).val() == $(this).attr("data-watermark")) $(this).val('');
+                    $(this).css("color","#000000");
+                });
+                $(this).bind("blur", function () {
+                    if ($(this).val() == '') 
+                    {
+                        $(this).val($(this).attr("data-watermark"));
+                        $(this).css("color","#a0a0a0");
+                    }
+                    else
+                    {
+                        $(this).css("color","#000000");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

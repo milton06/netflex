@@ -1,0 +1,1580 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--STYLES-->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.steps.css">
+    <link rel="stylesheet" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!--header-->
+    <div class="container-fluid">
+        <div class="row">
+            <header class="header">
+                <div class="container">
+                    <div class="row">
+                        <!--logo-->
+                            <div class="col-lg-3">
+                                <div class="logo">
+                                    <a href="#"><img src="images/netflexLogo.png" alt="NetFlex Logo"></a>
+                                </div>
+                            </div>
+                        <!--logo-->
+                        <!--call and mail-->
+                            <div class="col-lg-5">
+                                <div class="callmail">
+                                    <ul>
+                                        <li class="call">CALL FREE: +1 <span>212</span>-<span>226</span>-<span>3126</span></li>
+                                        <li class="mail"><a href="mailto:info@netflex.com">info@netflex.com</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <!--call and mail-->
+                        <!--login and register-->
+                            <div class="col-lg-4">
+                                <div class="logreg">
+                                    <ul>
+                                        <li><a href="#">About</a></li>
+                                        <li><a href="#">Career</a></li>
+                                        <li><a href="#">Contact</a></li>
+                                        <!--after login-->
+                                        <li class="login" id="login">
+                                            <a id="login-trigger" class="weldd" href="#">Welcome <div class="username">Username!</div>&nbsp;<span>&#x25BC;</span></a>
+                                            <div id="login-content" class="userSettingLinks">
+                                                <ul>
+                                                    <li><a href="#">My Account</a></li>
+                                                    <li><a href="#">Consignment History</a></li>
+                                                    <li><a href="#">Logout</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <!--after login-->
+                                    </ul>
+                                </div>
+                            </div>
+                        <!--login and register-->
+                    </div>
+                </div>
+            </header>
+            <!--nav-->
+            <div class="navigation">
+                <nav class="navbar navbar-default">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Project name</a>
+                      </div>
+                      <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                          <li class="active"><a href="#">Home</a></li>
+                          <li><a href="#">Franchisee</a></li>
+                          <li><a href="#">Track Order </a></li>
+                          <li><a href="#">Book a Shipment</a></li>
+                            <li><a href="#">Customer Enquiry</a></li>
+                            <li><a href="#">Clients</a></li>
+                        </ul>
+                      </div><!--/.nav-collapse -->
+                    </div><!--/.container-fluid -->
+                  </nav>
+            </div>
+            <!--nav-->
+        </div>
+    </div>
+    <!--header-->
+    <!--TAB FORM-->
+        <div class="container">
+            <div class="tabform clearfix">
+                <div class="TrackHead clearfix">
+                    <!--title-->
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <h1><span>My</span> Account</h1>
+                        </div>
+                    </div>
+                    <!--title-->
+                </div>
+                
+                <div class="tracktable clearfix">
+                    <!--fixed element-->
+                    <div class="col-lg-3">
+                        <div class="row">
+                            <div id="sidebar">	
+                                <div class="accImg">
+                                    <img src="images/myaccount/myAccPic.jpg" alt="">
+                                </div>
+                                <div class="editpic"><a href="#">Edit Picture</a></div>
+                                <ul class="myaccBtn">
+                                    <li><a href="#">My Consignments</a></li>
+                                    <li><a href="#">Track a Shipment</a></li>
+                                    <li><a href="#">Book a Shipment</a></li>
+                                    <li><a href="#">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--fixed element-->
+
+                    <!--information-->
+                    <div class="col-lg-9">
+                        <div class="row">
+                            <div class="infEdit">
+                                <h1>K. C. Das</h1>
+                                <!--edit block-->
+                                    <div class="editBlk">
+                                        <!--heading-->
+                                        <div class="editHeading clearfix">
+                                            <ul>
+                                                <li><h2>Basic Info</h2></li>
+                                                <li class="edit"><a id="basicInfoEdit" href="javascript:void(0)">edit</a></li>
+                                            </ul>
+                                        </div>
+                                        <!--heading-->
+                                        <!--basic info form-->
+                                        <div id="basicInfo">
+                                            <div class="editformblk clearfix">
+                                            <div class="col-lg-2">
+                                                <div class="row">
+                                                    <label>Name :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="editformblk clearfix">
+                                            <div class="col-lg-2">
+                                                <div class="row">
+                                                    <label>Username :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="editformblk clearfix">
+                                            <div class="col-lg-2">
+                                                <div class="row">
+                                                    <label>Email :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="editformblk clearfix">
+                                            <div class="col-lg-2">
+                                                <div class="row">
+                                                    <label>Contact No. :</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <div class="row">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div id="basicInfo1">
+                                            <div class="basicInfoEditableForm clearfix">
+                                                    <div class="editformblk1 clearfix">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <label>Name :</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <input type="text" name="" id="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="editformblk1 clearfix">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <label>Username :</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <input type="text" name="" id="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="editformblk1 clearfix">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <label>Email :</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <input type="text" name="" id="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="editformblk1 clearfix">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <label>Contact No. :</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <input type="text" name="" id="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <!--save and cancel button-->
+                                                    <div class="savecancel">
+                                                        <ul>
+                                                            <li><a href="#">save</a></li>
+                                                            <li><a id="basicInfoCancel" href="javascript:void(0)">cancel</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <!--save and cancel button-->
+                                            </div>
+                                        </div>    
+                                        <!--basic info form-->
+                                        
+                                        <!--password-->
+                                        <div id="changePass">
+                                            <div class="editformblk clearfix">
+                                                <div class="col-lg-2">
+                                                    <div class="row">
+                                                        <label>Password :</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <input type="text" name="" id="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="row">
+                                                        <a id="changePassShow" href="javascript:void(0)">Change Password</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="changePassBox">
+                                            <div class="basicInfoEditableForm2 clearfix">
+                                                <div class="">
+                                                    <div class="editformblk2 clearfix">
+                                                        <div class="col-lg-4">
+                                                            <input type="text" name="" id="" data-watermark="Old Password">  
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <input type="text" name="" id="" data-watermark="New Password">
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <input type="text" name="" id="" data-watermark="Confirm New Password">
+                                                        </div>
+                                                    </div>
+                                                <!--save and cancel button-->
+                                                    <div class="savecancel">
+                                                        <ul>
+                                                            <li><a href="#">save</a></li>
+                                                            <li><a id="changePassCancel" href="javascript:void(0)">cancel</a></li>
+                                                        </ul>
+                                                    </div>
+                                                <!--save and cancel button-->
+                                                </div>    
+                                            </div>
+                                        </div>   
+                                        <!--password-->
+                                        
+                                        
+                                        
+                                        
+                                    </div>
+                                <!--edit block-->
+                                <!--billing address-->
+                                        <!--heading-->
+                                            <div class="editHeading-1 clearfix">
+                                                <ul>
+                                                    <li><h2>Billing Address</h2></li>
+                                                </ul>
+                                            </div>
+                                        <!--heading-->
+                                        <div class="editBlk-1">
+                                            <div class="billingAddress">
+                                                <div class="editformblk clearfix">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <label>Raja Dinendra Sarani, Kolkata-700086</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row">
+                                                            <div class="default">Default Billing Address</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            <div class="edit">
+                                                                <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="editBillingContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                
+                                        <div class="editBlk-1">
+                                            <div class="billingAddress">
+                                                <div class="editformblk clearfix">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <label>Raja Dinendra Sarani, Kolkata-700086</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row">
+                                                            <div class="default"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            <div class="edit">
+                                                                <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="editBillingContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                
+                                        <div class="editBlk-1">
+                                            <div class="billingAddress">
+                                                <div class="editformblk clearfix">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <label>Raja Dinendra Sarani, Kolkata-700086</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row">
+                                                            <div class="default"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            <div class="edit">
+                                                                <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="editBillingContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                
+                                        <!--add more-->
+                                            <div id="addMoreAddContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                            <div class="billAddMore">
+                                                <a href="javascript:void(0)" id="addMoreAdd"><i class="fa fa-plus"></i>&nbsp;&nbsp;add more</a>
+                                            </div>
+                                        <!--add more-->
+                                <!--billing address-->
+                                
+                                
+                                
+                                <!--pickup address-->
+                                        <!--heading-->
+                                            <div class="editHeading-1 clearfix">
+                                                <ul>
+                                                    <li><h2>Pickup Address</h2></li>
+                                                </ul>
+                                            </div>
+                                        <!--heading-->
+                                        <div class="editBlk-1">
+                                            <div class="billingAddress">
+                                                <div class="editformblk clearfix">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <label>Raja Dinendra Sarani, Kolkata-700086</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row">
+                                                            <div class="default">Default Billing Address</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            <div class="edit">
+                                                                <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="editBillingContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                
+                                        <div class="editBlk-1">
+                                            <div class="billingAddress">
+                                                <div class="editformblk clearfix">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <label>Raja Dinendra Sarani, Kolkata-700086</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row">
+                                                            <div class="default"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            <div class="edit">
+                                                                <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="editBillingContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                
+                                        <div class="editBlk-1">
+                                            <div class="billingAddress">
+                                                <div class="editformblk clearfix">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <label>Raja Dinendra Sarani, Kolkata-700086</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="row">
+                                                            <div class="default"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="row">
+                                                            <div class="edit">
+                                                                <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="editBillingContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                
+                                        <!--add more-->
+                                            <div id="addMorepickUpContent">
+                                                <div class="billingAddForm clearfix">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <!--left-->
+                                                            <td valign="top" class="billAddLeft">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Full Name">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 1">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Address Line 2">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                                <tr>
+                                                                                    <td class="textLeft"><input type="text" name="" id="" data-watermark="City"></td>
+                                                                                    <td class="textRight"><input type="text" name="" id="" data-watermark="State"></td>
+                                                                                </tr>
+                                                                            </table> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Country">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--left-->
+                                                            <!--right-->
+                                                            <td valign="top" class="billAddRight">
+                                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Post Code">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Nearest landmark">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Email">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="text" name="" id="" data-watermark="Phone">
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <ul class="stylecheckbox stylecheckbox-tab2">
+                                                                                <li>
+                                                                                    <input type="radio" id="ac-option" name="selector">
+                                                                                    <label for="ac-option">Official</label>
+
+                                                                                    <div class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                                <li style="padding-left:20px;">
+                                                                                    <input type="radio" id="ad-option" name="selector">
+                                                                                    <label for="ad-option">Residencial</label>
+
+                                                                                    <div style="left:20px;" class="check"><div class="inside"></div></div>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            <!--right-->
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                        <tr>
+                                                            <td class="defDelSave">
+                                                                <div class="col-lg-6">
+                                                                    <div class="row">
+                                                                        <div class="checkbox">
+                                                                          <label>
+                                                                            <input type="checkbox" value="">
+                                                                            <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                              Default Pickup Address
+                                                                          </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="row">
+                                                                        <div class="delAdd">
+                                                                            <a href="javascript:void(0)">Delete Address</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <div class="row">
+                                                                        <div class="savecancel">
+                                                                            <ul>
+                                                                                <li><a href="#">save</a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!--default delete save-->
+                                                    </table>
+                                                </div>
+                                            </div> 
+                                            <div class="billAddMore">
+                                                <a href="javascript:void(0)" id="addMorePick"><i class="fa fa-plus"></i>&nbsp;&nbsp;add more</a>
+                                            </div>
+                                        <!--add more-->
+                                <!--pickup address-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--information-->
+                </div>
+                
+            </div>
+        </div>
+    <!--TAB FORM-->
+    <!--footer-->
+        <footer>
+            <div class="container">
+                    <div class="foot">&#64; 2016 Copyright Netflex. All Rights Reserved</div>
+            </div>
+        </footer>
+    <!--footer-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!--step form-->
+    <script src="js/idTabs.js"></script>
+    <script type="text/javascript"> 
+        $("#usual1 ul").idTabs(); 
+    </script>
+    <script>
+        $(document).ready(function () {
+        $('#login-trigger').click(function () {
+            $('#login-content').slideToggle();
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')){              
+                    $(this).find('span').html('&#x25b2;');
+            }else{
+               $(this).find('span').html('&#x25BC;'); 
+            }
+            $('#signup-content').slideUp();
+        })
+        
+    });
+    </script>
+    <script type="text/javascript" src="js/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$('.fancybox').fancybox();
+
+
+
+		});
+	</script>
+    <script>
+        $(document).ready(function () {
+            $(":input[data-watermark]").each(function () {
+                $(this).val($(this).attr("data-watermark"));
+                $(this).css("color","#a0a0a0");
+                $(this).bind("focus", function () {
+                    if ($(this).val() == $(this).attr("data-watermark")) $(this).val('');
+                    $(this).css("color","#000000");
+                });
+                $(this).bind("blur", function () {
+                    if ($(this).val() == '') 
+                    {
+                        $(this).val($(this).attr("data-watermark"));
+                        $(this).css("color","#a0a0a0");
+                    }
+                    else
+                    {
+                        $(this).css("color","#000000");
+                    }
+                });
+            });
+        });
+    </script>
+    <!--<script type="text/javascript">
+        $(function() {
+            var offset = $("#sidebar").offset();
+            var topPadding = 15;
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > offset.top) {
+                    $("#sidebar").stop().animate({
+                        marginTop: $(window).scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $("#sidebar").stop().animate({
+                        marginTop: 0
+                    });
+                };
+            });
+        });
+    </script>-->
+    <script>
+        $(document).ready(function () {
+            $("#basicInfoEdit").click(function(){
+                $("#basicInfo").hide();
+                $("#basicInfo1").show();
+            });
+            $("#basicInfoCancel").click(function(){
+                $("#basicInfo").show();
+                $("#basicInfo1").hide();
+            });
+            
+            
+            $("#changePassShow").click(function(){
+                $("#changePass").hide();
+                $("#changePassBox").show();
+            });
+            $("#changePassCancel").click(function(){
+                $("#changePass").show();
+                $("#changePassBox").hide();
+            });
+            
+            $(".editBillAdd").click(function(){
+                $(this).parentsUntil(".editBlk-1").next().toggle();
+            });
+            
+            $("#addMoreAdd").click(function(){
+                $("#addMoreAddContent").toggle();
+            });
+            
+            $("#addMorePick").click(function(){
+                $("#addMorepickUpContent").toggle();
+            });
+        });
+    </script>
+</body>
+</html>

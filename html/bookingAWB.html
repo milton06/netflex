@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--STYLES-->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/jquery.steps.css">
+    <link rel="stylesheet" href="css/jquery.fancybox.css?v=2.1.5" media="screen" />
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!--header-->
+    <div class="container-fluid">
+        <div class="row">
+            <header class="header">
+                <div class="container">
+                    <div class="row">
+                        <!--logo-->
+                            <div class="col-lg-3">
+                                <div class="logo">
+                                    <a href="#"><img src="images/netflexLogo.png" alt="NetFlex Logo"></a>
+                                </div>
+                            </div>
+                        <!--logo-->
+                        <!--call and mail-->
+                            <div class="col-lg-5">
+                                <div class="callmail">
+                                    <ul>
+                                        <li class="call">CALL FREE: +1 <span>212</span>-<span>226</span>-<span>3126</span></li>
+                                        <li class="mail"><a href="mailto:info@netflex.com">info@netflex.com</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        <!--call and mail-->
+                        <!--login and register-->
+                            <div class="col-lg-4">
+                                <div class="logreg">
+                                    <ul>
+                                        <li><a href="#">About</a></li>
+                                        <li><a href="#">Career</a></li>
+                                        <li><a href="#">Contact</a></li>
+                                        <!--login-->
+                                        <li class="login" id="login">
+                                            <a id="login-trigger" href="#">Log in</a>
+                                            <div id="login-content">
+                                                <input type="text" name="" id="">
+                                                <input type="text" name="" id="">
+                                                <div class="signupFormSub">
+                                                    <input type="submit" name="" id="" value="register">
+                                                    <a href="#">Forgot your password?</a>    
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!--login-->
+                                        <!--register-->
+                                        <li class="register">
+                                            <a class="fancybox" href="#inline1">Register</a>
+                                            <div id="inline1" class="clearfix" style="width:370px;display: none;">
+                                                <h3>Register</h3>
+                                                <div class="signupForm clearfix">
+                                                    <input type="text" name="" id="">
+                                                    <input type="text" name="" id="">
+                                                    <input type="text" name="" id="">
+                                                </div>
+                                                <div class="signupFormSub">
+                                                <input type="submit" name="" id="" value="register">
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <!--register-->
+                                    </ul>
+                                </div>
+                            </div>
+                        <!--login and register-->
+                    </div>
+                </div>
+            </header>
+            <!--nav-->
+            <div class="navigation">
+                <nav class="navbar navbar-default">
+                    <div class="container">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">Project name</a>
+                      </div>
+                      <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                          <li class="active"><a href="#">Home</a></li>
+                          <li><a href="#">Franchisee</a></li>
+                          <li><a href="#">Track Order </a></li>
+                          <li><a href="#">Book a Shipment</a></li>
+                            <li><a href="#">Customer Enquiry</a></li>
+                            <li><a href="#">Clients</a></li>
+                        </ul>
+                      </div><!--/.nav-collapse -->
+                    </div><!--/.container-fluid -->
+                  </nav>
+            </div>
+            <!--nav-->
+        </div>
+    </div>
+    <!--header-->
+    <!--TAB FORM-->
+        <div class="container">
+            <div class="tabform clearfix">
+                <h2 class="cong">Congratulations!</h2>        
+                <h3>Your Shipment has been Successfully Booked</h3>
+                <div class="awbPanel clearfix">
+                    <h4>Your AWB number is</h4>
+                    <h5>76498</h5>
+                </div>
+                <h6 class="thank">Thank you for for shipping with us</h6>
+                <div class="bookBtn"><a href="#">Book another shipment</a></div>
+            </div>
+        </div>
+    <!--TAB FORM-->
+    <!--footer-->
+        <footer>
+            <div class="container">
+                
+                    <div class="foot">&#64; 2016 Copyright Netflex. All Rights Reserved</div>
+                
+            </div>
+        </footer>
+    <!--footer-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!--step form-->
+    <script src="js/idTabs.js"></script>
+    <script type="text/javascript"> 
+        $("#usual1 ul").idTabs(); 
+    </script>
+    <script>
+        $(document).ready(function () {
+        $('#login-trigger').click(function () {
+            $('#login-content').slideToggle();
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')){              
+                    $(this).find('span').html('&#x25b2;');
+            }else{
+               //$(this).find('span').html('▼'); 
+            }
+            $('#signup-content').slideUp();
+        })
+        
+    });
+    </script>
+    <script type="text/javascript" src="js/jquery.fancybox.pack.js?v=2.1.5"></script>
+    <script type="text/javascript">
+		$(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$('.fancybox').fancybox();
+
+
+
+		});
+	</script>
+</body>
+</html>
