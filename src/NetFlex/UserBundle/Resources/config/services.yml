@@ -31,3 +31,15 @@ services:
         arguments: ["@request_stack"]
         tags:
             - { name: form.type }
+
+    app.form.front_end_client_profile_preferred_email:
+        class: NetFlex\UserBundle\Form\Front\ClientProfile\PreferredEmail
+        arguments: ['@request_stack']
+        tags:
+            - { name: form.type }
+
+    app.form.front_end_client_profile_preferred_contact:
+        class: NetFlex\UserBundle\Form\Front\ClientProfile\PreferredContact
+        arguments: ['@request_stack']
+        tags:
+            - { name: form.type }

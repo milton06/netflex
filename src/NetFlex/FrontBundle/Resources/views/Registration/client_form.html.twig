@@ -57,7 +57,7 @@
                 },
                 success: function(data, textStatus,jqXHR) {
                     if (false === data.status) {
-                        var errorList = data.errorList;console.log(errorList);
+                        var errorList = data.errorList;
                         $.each(errorList, function(key, value) {
                             $("#" + key).after("<span class='validationError'>" + value + "</span>");
                         });

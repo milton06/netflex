@@ -68,13 +68,13 @@ $(document).ready(function() {
 		fullscreen();
 	});
 	
-	$("#login-trigger, #loginTriggerAlt").click(function() {
+	$("#login-trigger").click(function() {
 		$('#login-content').slideToggle();
 		$(this).toggleClass("active");
 		if ($(this).hasClass("active")) {
 			$(this).find("span").html("&#x25b2;");
 		}
-		$("#register").hide();
+		$("#signup-content").slideUp();
 	});
 	
 	$(":input[data-watermark]").each(function () {
