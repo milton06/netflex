@@ -1,14 +1,81 @@
+{% form_theme form 'NetFlexFrontBundle:FormLayout:user_registration.html.twig' %}
+
+<style>
+    #serverFault{
+        margin: 0 3%;
+        color: #ff3333;
+    }
+    #registrationSuccess{
+        margin: 0 3%;
+        color: #00aa00;
+    }
+    .validationError{
+        color: #ff3333;
+    }
+</style>
+
 <h3>Register</h3>
-{{ form_start(form, { 'attr': { 'id': 'registerClientForm', 'novalidate': 'novalidate' } }) }}
+{{ form_start(form, { 'action': url('front_end_client_registration'), 'attr': { 'id': 'registerClientForm', 'novalidate': 'novalidate' } }) }}
+    <span id="serverFault" class="message" style="display: none;">Server error encountered.</span>
+    <span id="registrationSuccess" class="message" style="display: block;">Congratulations! You are now a registered user. Please <a id="loginLink" href="javascript:void(0);">login</a> here.</span>
 	<div class="signupForm clearfix">
-		{{ form_widget(form.username, { 'id': 'username' }) }}
-		{{ form_widget(form.password, { 'id': 'password' }) }}
-		{{ form_widget(form.firstName, { 'id': 'firstName' }) }}
-		{{ form_widget(form.lastName, { 'id': 'lastName' }) }}
-		{{ form_widget(form.emails, { 'id': 'email' }) }}
-		{{ form_widget(form.contacts, { 'id': 'contact' }) }}
+		{{ form_widget(form.username, { 'id': 'username', 'attr': { 'placeholder': 'Username' } }) }}
+		{{ form_widget(form.password, { 'id': 'password', 'attr': { 'placeholder': 'Password' } }) }}
+		{{ form_widget(form.firstName, { 'id': 'firstName', 'attr': { 'placeholder': 'First Name' } }) }}
+		{{ form_widget(form.lastName, { 'id': 'lastName', 'attr': { 'placeholder': 'Last Name' } }) }}
+        {% for email in form.emails %}
+            {{ form_row(email.email, { 'id': 'email', 'attr': { 'placeholder': 'Email' } }) }}
+        {% endfor %}
+        {% for contact in form.contacts %}
+            {{ form_row(contact.contactNumber, { 'id': 'contactNumber', 'attr': { 'placeholder': 'Contact Number' } }) }}
+        {% endfor %}
 	</div>
 	<div class="signupFormSub">
 		<input type="submit" id="registerClientButton" value="register">
 	</div>
 {{ form_end(form) }}
+
+{% block pageScripts %}
+    {% javascripts '@NetFlexFrontBundle/Resources/public/js/1.11.1/jquery.min.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        $("#registerClientButton").on("click", function(e) {
+            e.preventDefault();
+            $(".message").hide();
+            $(".validationError").remove();
+            $.ajax({
+                url: $("#registerClientForm").attr("action"),
+                type: "post",
+                dataType: "json",
+                data: $("#registerClientForm").serialize(),
+                beforeSend: function(jqXHR, settings) {
+                    $("#registerClientButton").prop("disabled", true);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#serverFault").show();
+                },
+                success: function(data, textStatus,jqXHR) {
+                    if (false === data.status) {
+                        var errorList = data.errorList;console.log(errorList);
+                        $.each(errorList, function(key, value) {
+                            $("#" + key).after("<span class='validationError'>" + value + "</span>");
+                        });
+                    } else {
+                        $("#registrationSuccess").show();
+                    }
+                },
+                complete: function(jqXHR, textStatus) {
+                    $("#registerClientButton").prop("disabled", false);
+                }
+            });
+        });
+
+        $("#loginLink").on("click", function() {
+            $.fancybox.close();
+            if (! $("#login-trigger").hasClass("active")) {
+                $("#login-trigger").trigger("click");
+            }
+        });
+    </script>
+{% endblock %}

@@ -10,13 +10,13 @@ $(document).ready(function() {
 		fullscreen();
 	});
 	
-	$("#login-trigger").click(function() {
+	$("#login-trigger, #loginTriggerAlt").click(function() {
 		$('#login-content').slideToggle();
 		$(this).toggleClass("active");
 		if ($(this).hasClass("active")) {
 			$(this).find("span").html("&#x25b2;");
 		}
-		$("#signup-content").slideUp();
+		$("#register").hide();
 	});
 	
 	$(":input[data-watermark]").each(function () {

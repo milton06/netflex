@@ -1899,6 +1899,7 @@ header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
 #inline1 .signupFormSub{ padding: 0 20px; width: 94%; margin: 0 3%;}
 #inline1 .signupFormSub input[type="submit"]{ background: #ff5400; cursor: pointer; text-align: center; font: normal 14px  'open_sansbold';  color:#ffffff; border: none; padding: 10px 0; transition: all 0.5s ease; text-transform: uppercase;  width: 100%; margin-top: 30px;}
 #inline1 .signupFormSub input[type="submit"]:hover{ background: #000000;}
+#inline1 .signupFormSub input[type="submit"]:disabled{ background: #000000; cursor: wait;}
 /*==LOGIN==*/
 
 .logreg #login-trigger

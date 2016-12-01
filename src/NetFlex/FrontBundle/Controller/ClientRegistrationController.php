@@ -4,12 +4,13 @@ namespace NetFlex\FrontBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use NetFlex\UserBundle\Entity\Role;
 use NetFlex\UserBundle\Entity\Email;
 use NetFlex\UserBundle\Entity\Contact;
-use NetFlex\UserBundle\Entity\Role;
 use NetFlex\UserBundle\Entity\User;
 use NetFlex\UserBundle\Form\FrontEndUserRegistrationType;
 
@@ -21,9 +22,9 @@ class ClientRegistrationController extends Controller
      * @Route("/client/register", name="front_end_client_registration")
      * @Method({"GET", "POST"})
      *
-     * @param  Request  $request A Request instance
+     * @param  Request  $request      A Request instance
      *
-     * @return Response          A Response instance
+     * @return Response|JsonResponse  A Response|JsonResponse instance
      */
     public function registerClientAction(Request $request)
     {
@@ -41,7 +42,7 @@ class ClientRegistrationController extends Controller
 	    }
 	
 	    /**
-	     * Create empty Email, Contact and User entities.
+	     * Create empty Address, Email, Contact and User entities.
 	     */
 	    $email = new Email();
 	    $contact = new Contact();
@@ -58,6 +59,49 @@ class ClientRegistrationController extends Controller
 	     * Create the registration form.
 	     */
 	    $form = $this->createForm(FrontEndUserRegistrationType::class, $user);
+	
+	    /**
+	     * Register client.
+	     */
+	    $form->handleRequest($request);
+	    if ($form->isSubmitted()) {
+		    /**
+		     * Validate
+		     */
+		    $errors = $this->get('validator')->validate($form);
+		    if (0 < count($errors)) {
+			    $errorList = [];
+			    foreach ($errors as $error) {
+				    $errorList[substr($error->getPropertyPath(), (strrpos($error->getPropertyPath(), '.') + 1))] = $error->getMessage();
+			    }
+			    
+			    return $this->json(['status' => false, 'errorList' => $errorList]);
+		    }
+		    /**
+		     * Populate entities with default values.
+		     */
+		    $currentDateTime = new \DateTime();
+		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
+		    $user->setStatus(1);
+		    $user->setCreatedOn($currentDateTime);
+		    $user->setLastModifiedOn($currentDateTime);
+		    foreach ($user->getEmails() as $email) {
+			    $email->setUserId($user);
+			    $email->setIsPrimary(1);
+			    $email->setStatus(1);
+			    $em->persist($email);
+		    }
+		    foreach ($user->getContacts() as $contact) {
+			    $contact->setUserId($user);
+			    $contact->setIsPrimary(1);
+			    $contact->setStatus(1);
+			    $em->persist($contact);
+		    }
+		    
+		    $em->flush();
+		    
+		    return $this->json(['status' => true]);
+	    }
 	    
 	    return $this->render('NetFlexFrontBundle:Registration:client_form.html.twig', [
         	'form' => $form->createView(),

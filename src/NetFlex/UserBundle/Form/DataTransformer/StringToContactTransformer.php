@@ -43,14 +43,6 @@ class StringToContactTransformer implements DataTransformerInterface
 			return null;
 		}
 		
-		/**
-		 * Construct a new Contact object.
-		 */
-		$contact = new Contact();
-		$contact->setContactNumber($contactNumber);
-		$contact->setIsPrimary(1);
-		$contact->setStatus(1);
-		
-		return $contact;
+		return $contactNumber;
 	}
 }

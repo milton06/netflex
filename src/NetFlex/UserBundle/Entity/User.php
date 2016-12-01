@@ -47,6 +47,16 @@ class User implements AdvancedUserInterface, \Serializable
      * @Assert\NotBlank(
      *     message="This field is required."
      * )
+     * @Assert\Regex(
+     *     pattern="/^[a-z][a-z0-9]+$/i",
+     *     message="Only alphanumerics are allowed and must start with an alphabet"
+     * )
+     * @Assert\Length(
+     *     min=5,
+     *     max=15,
+     *     minMessage="Minimum 5 characters",
+     *     maxMessage="Maximum 15 characters"
+     * )
      */
     private $username;
 
@@ -124,7 +134,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var int
      *
-     * @ORM\Column(name="created_by", type="integer")
+     * @ORM\Column(name="created_by", type="integer", nullable=true)
      */
     private $createdBy;
 
@@ -138,7 +148,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var int
      *
-     * @ORM\Column(name="last_modified_by", type="integer")
+     * @ORM\Column(name="last_modified_by", type="integer", nullable=true)
      */
     private $lastModifiedBy;
 	
@@ -491,11 +501,11 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Set createdBy
      *
-     * @param integer $createdBy
+     * @param null|integer $createdBy
      *
      * @return User
      */
-    public function setCreatedBy($createdBy)
+    public function setCreatedBy($createdBy = null)
     {
         $this->createdBy = $createdBy;
 
@@ -505,7 +515,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Get createdBy
      *
-     * @return int
+     * @return null|int
      */
     public function getCreatedBy()
     {
@@ -539,11 +549,11 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Set lastModifiedBy
      *
-     * @param integer $lastModifiedBy
+     * @param null|integer $lastModifiedBy
      *
      * @return User
      */
-    public function setLastModifiedBy($lastModifiedBy)
+    public function setLastModifiedBy($lastModifiedBy = null)
     {
         $this->lastModifiedBy = $lastModifiedBy;
 
@@ -553,7 +563,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Get lastModifiedBy
      *
-     * @return int
+     * @return null|int
      */
     public function getLastModifiedBy()
     {

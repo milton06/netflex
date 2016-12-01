@@ -435,8 +435,6 @@ class OrderController extends Controller
 	{
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOrderDetailsForView($order->getId());
 		
-		//var_dump($orderDetails);exit;
-		
 		$referrer = urldecode($request->query->get('ref'));
 		
 		$breadCrumbs = [
