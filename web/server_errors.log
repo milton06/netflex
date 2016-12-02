@@ -1994,3 +1994,11 @@
 [01-Dec-2016 11:02:23 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
 [01-Dec-2016 11:02:23 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
 [01-Dec-2016 11:02:23 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientRegistrationController->registerClientAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[01-Dec-2016 12:25:22 UTC] PHP Fatal error:  Call to a member function getName() on a non-object in /var/www/html/netflex/src/NetFlex/DeliveryChargeBundle/Controller/BookingController.php on line 115
+[01-Dec-2016 12:25:22 UTC] PHP Stack trace:
+[01-Dec-2016 12:25:22 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[01-Dec-2016 12:25:22 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[01-Dec-2016 12:25:22 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[01-Dec-2016 12:25:22 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[01-Dec-2016 12:25:22 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[01-Dec-2016 12:25:22 UTC] PHP   6. NetFlex\DeliveryChargeBundle\Controller\BookingController->renderBookingForClientPageInDashboardAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
