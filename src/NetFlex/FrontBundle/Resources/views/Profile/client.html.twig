@@ -1,0 +1,325 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+	{{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageContent %}
+	<div class="container">
+		<div class="tabform clearfix">
+			<div class="TrackHead clearfix">
+				<!--title-->
+				<div class="col-lg-6">
+					<div class="row">
+						<h1><span>My</span> Account</h1>
+					</div>
+				</div>
+				<!--title-->
+			</div>
+			
+			<div class="tracktable clearfix">
+				<!--fixed element-->
+				<div class="col-lg-3">
+					<div class="row">
+						<div id="sidebar">
+							<div class="accImg">
+								{% image '@NetFlexFrontBundle/Resources/public/images/myaccount/myAccPic.jpg' %}
+									<img src="{{ asset_url }}" alt="{{ client.username }}-profile-pic">
+								{% endimage %}
+							</div>
+							<div class="editpic"><a href="#">Edit Picture</a></div>
+							<ul class="myaccBtn">
+								<li><a href="javascript:void(0);">My Consignments</a></li>
+								<li><a href="javascript:void(0);">Track a Shipment</a></li>
+								<li><a href="javascript:void(0);">Book a Shipment</a></li>
+								<li><a href="javascript:void(0);">Logout</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!--fixed element-->
+				
+				<!--information-->
+				<div class="col-lg-9">
+					<div class="row">
+						<div class="infEdit">
+							<h1>{{ client.firstName ~ ' ' ~ client.lastName }}</h1>
+							<!--edit block-->
+							<div class="editBlk">
+								<!--heading-->
+								<div class="editHeading clearfix">
+									<ul>
+										<li><h2>Basic Info</h2></li>
+										<li class="edit"><a id="basicInfoEdit" href="javascript:void(0)">edit</a></li>
+									</ul>
+								</div>
+								<!--heading-->
+								<!--basic info form-->
+								<div id="basicInfo">
+									<div class="editformblk clearfix">
+										<div class="col-lg-2">
+											<div class="row">
+												<label>Name :</label>
+											</div>
+										</div>
+										<div class="col-lg-10">
+											<div class="row">
+												<label>{{ client.firstName ~ ((client.midName) ? ' ' ~ client.midName : '') ~ ' ' ~ client.lastName }}</label>
+											</div>
+										</div>
+									</div>
+									<div class="editformblk clearfix">
+										<div class="col-lg-2">
+											<div class="row">
+												<label>Username :</label>
+											</div>
+										</div>
+										<div class="col-lg-10">
+											<div class="row">
+												<label>{{ client.username }}</label>
+											</div>
+										</div>
+									</div>
+									<div class="editformblk clearfix">
+										<div class="col-lg-2">
+											<div class="row">
+												<label>Email :</label>
+											</div>
+										</div>
+										<div class="col-lg-10">
+											<div class="row">
+												{% for email in client.emails %}
+													<label>{{ email.email }}</label>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+									<div class="editformblk clearfix">
+										<div class="col-lg-2">
+											<div class="row">
+												<label>Contact No. :</label>
+											</div>
+										</div>
+										<div class="col-lg-10">
+											<div class="row">
+												{% for contact in client.contacts %}
+													<label>{{ contact.contactNumber }}</label>
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="basicInfo1">
+									<div class="basicInfoEditableForm clearfix">
+										{{ form_start(gdForm, { 'action': url('client_profile_page'), 'attr': { 'id': 'gdForm' } }) }}
+										<div class="editformblk1 clearfix">
+											<div class="col-lg-2">
+												<div class="row">
+													<label>First Name :</label>
+												</div>
+											</div>
+											<div class="col-lg-10">
+												<div class="row">
+													{{ form_widget(gdForm.firstName, { 'id': 'firstName' }) }}
+												</div>
+											</div>
+										</div>
+										<div class="editformblk1 clearfix">
+											<div class="col-lg-2">
+												<div class="row">
+													<label>Mid Name :</label>
+												</div>
+											</div>
+											<div class="col-lg-10">
+												<div class="row">
+													{{ form_widget(gdForm.midName, { 'id': 'midName' }) }}
+												</div>
+											</div>
+										</div>
+										<div class="editformblk1 clearfix">
+											<div class="col-lg-2">
+												<div class="row">
+													<label>Last Name :</label>
+												</div>
+											</div>
+											<div class="col-lg-10">
+												<div class="row">
+													{{ form_widget(gdForm.lastName, { 'id': 'lastName' }) }}
+												</div>
+											</div>
+										</div>
+										<div class="editformblk1 clearfix">
+											<div class="col-lg-2">
+												<div class="row">
+													<label>Username :</label>
+												</div>
+											</div>
+											<div class="col-lg-10">
+												<div class="row">
+													{{ form_widget(gdForm.username, { 'id': 'username' }) }}
+												</div>
+											</div>
+										</div>
+										<div class="editformblk1 clearfix">
+											<div class="col-lg-2">
+												<div class="row">
+													<label>Email :</label>
+												</div>
+											</div>
+											<div class="col-lg-10">
+												{% for email in gdForm.emails %}
+													<div class="row">
+														{{ form_widget(email.email, { 'id': 'email' }) }}
+													</div>
+												{% endfor %}
+											</div>
+										</div>
+										<div class="editformblk1 clearfix">
+											<div class="col-lg-2">
+												<div class="row">
+													<label>Contact No. :</label>
+												</div>
+											</div>
+											<div class="col-lg-10">
+												{% for contact in gdForm.contacts %}
+													<div class="row">
+														{{ form_widget(contact.contactNumber, { 'id': 'contactNumber' }) }}
+													</div>
+												{% endfor %}
+											</div>
+										</div>
+										{{ form_end(gdForm) }}
+										<!--save and cancel button-->
+										<div class="savecancel">
+											<ul>
+												<li><a id="basicInfoUpdate" href="javascript:void(0);">save</a></li>
+												<li><a id="basicInfoCancel" href="javascript:void(0)">cancel</a></li>
+											</ul>
+										</div>
+										<!--save and cancel button-->
+									</div>
+								</div>
+								<!--basic info form-->
+								<!--password-->
+								<div id="changePass">
+									<div class="editformblk clearfix">
+										<div class="col-lg-2">
+											<div class="row">
+												<label>Password :</label>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<div class="row">
+												<input type="text" name="" id="">
+											</div>
+										</div>
+										<div class="col-lg-4">
+											<div class="row">
+												<a id="changePassShow" href="javascript:void(0)">Change Password</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="changePassBox">
+									<div class="basicInfoEditableForm2 clearfix">
+										<div class="">
+											<div class="editformblk2 clearfix">
+												<div class="col-lg-4">
+													<input type="text" name="" id="" data-watermark="Old Password">
+												</div>
+												<div class="col-lg-4">
+													<input type="text" name="" id="" data-watermark="New Password">
+												</div>
+												<div class="col-lg-4">
+													<input type="text" name="" id="" data-watermark="Confirm New Password">
+												</div>
+											</div>
+											<!--save and cancel button-->
+											<div class="savecancel">
+												<ul>
+													<li><a href="#">save</a></li>
+													<li><a id="changePassCancel" href="javascript:void(0)">cancel</a></li>
+												</ul>
+											</div>
+											<!--save and cancel button-->
+										</div>
+									</div>
+								</div>
+								<!--password-->
+							</div>
+							<!--edit block-->
+						</div>
+					</div>
+				</div>
+				<!--information-->
+			</div>
+		
+		</div>
+	</div>
+	{% block footer %}
+		{{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+	{% endblock %}
+{% endblock %}
+{% block pageScripts %}
+	{{ parent() }}
+	{% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script>
+		$("#usual1 ul").idTabs();
+		$(document).ready(function() {
+			$("#basicInfoEdit, #basicInfoCancel").on("click", function(e) {
+				$("#basicInfo, #basicInfo1").toggle();
+			});
+			$("#basicInfoUpdate").on("click", function(e) {
+				$.ajax({
+					url: $("#gdForm").attr("action"),
+					type: "post",
+					dataType: "json",
+					data: $("#gdForm").serialize(),
+					beforeSend: function(jqXHR, settings) {
+						$("#basicInfoUpdate").addClass("disabled");
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						
+					},
+					success: function(data, textStatus,jqXHR) {
+						
+					},
+					complete: function(jqXHR, textStatus) {
+						//$("#basicInfoUpdate").removeClass("disabled");
+					}
+				});
+			});
+		});
+		$(document).ready(function () {
+			/*$("#basicInfoEdit").click(function(){
+				$("#basicInfo").hide();
+				$("#basicInfo1").show();
+			});
+			$("#basicInfoCancel").click(function(){
+				$("#basicInfo").show();
+				$("#basicInfo1").hide();
+			});*/
+			
+			$("#changePassShow").click(function(){
+				$("#changePass").hide();
+				$("#changePassBox").show();
+			});
+			$("#changePassCancel").click(function(){
+				$("#changePass").show();
+				$("#changePassBox").hide();
+			});
+			
+			$(".editBillAdd").click(function(){
+				$(this).parentsUntil(".editBlk-1").next().toggle();
+			});
+			
+			$("#addMoreAdd").click(function(){
+				$("#addMoreAddContent").toggle();
+			});
+			
+			$("#addMorePick").click(function(){
+				$("#addMorepickUpContent").toggle();
+			});
+		});
+	</script>
+{% endblock %}

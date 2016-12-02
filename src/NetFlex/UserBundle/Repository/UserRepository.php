@@ -3,6 +3,7 @@
 namespace NetFlex\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * UserRepository
@@ -12,6 +13,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+	public function findUserExistence($userId)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		$qb->select('partial U.{id, firstName, midName, lastName}')
+			->from('NetFlexUserBundle:User', 'U')
+			->where($qb->expr()->andX(
+				$qb->expr()->eq('U.id', ':userId'),
+				$qb->expr()->eq('U.status', 1)
+			))
+			->setParameters(['userId' => $userId])
+			->setFirstResult(0)
+			->setMaxResults(1);
+		
+		$user = $qb->getQuery()->getResult();
+		
+		return $user[0];
+	}
+	
 	public function findUserEncryptedPassword($userId)
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder();
@@ -48,22 +68,63 @@ class UserRepository extends EntityRepository
 		return $stmt->fetchAll();
 	}
 	
-	public function findUserExistence($userId)
+	public function findClientProfileData($id)
 	{
-		$qb = $this->getEntityManager()->createQueryBuilder();
+		$rsm = new ResultSetMapping();
 		
-		$qb->select('partial U.{id, firstName, midName, lastName}')
-		->from('NetFlexUserBundle:User', 'U')
-		->where($qb->expr()->andX(
-			$qb->expr()->eq('U.id', ':userId'),
-			$qb->expr()->eq('U.status', 1)
-		))
-		->setParameters(['userId' => $userId])
-		->setFirstResult(0)
-		->setMaxResults(1);
+		$rsm->addEntityResult('NetFlexUserBundle:User', 'U');
+		$rsm->addFieldResult('U', 'user_id', 'id');
+		$rsm->addFieldResult('U', 'username', 'username');
+		$rsm->addFieldResult('U', 'password', 'password');
+		$rsm->addFieldResult('U', 'first_name', 'firstName');
+		$rsm->addFieldResult('U', 'mid_name', 'midName');
+		$rsm->addFieldResult('U', 'last_name', 'lastName');
 		
-		$user = $qb->getQuery()->getResult();
+		$rsm->addJoinedEntityResult('NetFlexUserBundle:Email', 'UE', 'U', 'emails');
+		$rsm->addFieldResult('UE', 'email_id', 'id');
+		$rsm->addFieldResult('UE', 'email', 'email');
 		
-		return $user[0];
+		$rsm->addJoinedEntityResult('NetFlexUserBundle:Contact', 'UC', 'U', 'contacts');
+		$rsm->addFieldResult('UC', 'contact_id', 'id');
+		$rsm->addFieldResult('UC', 'contact_number', 'contactNumber');
+		
+		$sql = "
+			SELECT 
+			    U.id user_id,
+			    U.username,
+			    U.password,
+			    U.first_name,
+			    U.mid_name,
+			    U.last_name,
+			    UE.*,
+			    UC.*
+			FROM
+			    users U
+			        LEFT JOIN
+			    (SELECT 
+			        E.user_id, E.id email_id, E.email
+			    FROM
+			        emails E
+			    WHERE
+			        E.user_id = ? AND E.status = 1
+			    ORDER BY E.is_primary DESC , E.id DESC
+			    LIMIT 0 , 1) UE ON U.id = UE.user_id
+			    	LEFT JOIN
+			    (SELECT 
+			        C.user_id, C.id contact_id, C.contact_number
+			    FROM
+			        contacts C
+			    WHERE
+			        C.user_id = ? AND C.status = 1
+			    ORDER BY C.is_primary DESC , C.id DESC
+			    LIMIT 0 , 1) UC ON U.id = UC.user_id
+			WHERE
+			    U.id = ? AND U.status = 1
+		";
+		
+		$query = $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $id, 2 => $id, 3 => $id]);
+		$resultSet = $query->getOneOrNullResult();
+		
+		return $resultSet;
 	}
 }
