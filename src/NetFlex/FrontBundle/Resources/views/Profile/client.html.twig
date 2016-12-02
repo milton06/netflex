@@ -2,6 +2,18 @@
 {% block pageTitle %}
 	{{ parent() }} : {{ pageTitle }}
 {% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    <style>
+        #gdServerFault, #cpServerFault{
+            color: #ff3333;
+        }
+        .validationError{
+            color: #ff3333;
+            margin-left: 5px;
+        }
+    </style>
+{% endblock %}
 {% block pageContent %}
 	<div class="container">
 		<div class="tabform clearfix">
@@ -109,7 +121,12 @@
 								</div>
 								<div id="basicInfo1">
 									<div class="basicInfoEditableForm clearfix">
-										{{ form_start(gdForm, { 'action': url('client_profile_page'), 'attr': { 'id': 'gdForm' } }) }}
+										{{ form_start(gdForm, { 'action': url('client_profile_page'), 'attr': { 'id': 'gdForm', 'novalidate': 'novalidate' } }) }}
+                                        <div id="gdServerFault" class="row message" style="display: none;">
+                                            <div class="col-lg-12">
+                                                Server error encountered.
+                                            </div>
+                                        </div>
 										<div class="editformblk1 clearfix">
 											<div class="col-lg-2">
 												<div class="row">
@@ -202,14 +219,10 @@
 								<div id="changePass">
 									<div class="editformblk clearfix">
 										<div class="col-lg-2">
-											<div class="row">
-												<label>Password :</label>
-											</div>
+											<div class="row">&nbsp;</div>
 										</div>
 										<div class="col-lg-6">
-											<div class="row">
-												<input type="text" name="" id="">
-											</div>
+											<div class="row">&nbsp;</div>
 										</div>
 										<div class="col-lg-4">
 											<div class="row">
@@ -221,25 +234,32 @@
 								<div id="changePassBox">
 									<div class="basicInfoEditableForm2 clearfix">
 										<div class="">
-											<div class="editformblk2 clearfix">
-												<div class="col-lg-4">
-													<input type="text" name="" id="" data-watermark="Old Password">
-												</div>
-												<div class="col-lg-4">
-													<input type="text" name="" id="" data-watermark="New Password">
-												</div>
-												<div class="col-lg-4">
-													<input type="text" name="" id="" data-watermark="Confirm New Password">
-												</div>
-											</div>
-											<!--save and cancel button-->
-											<div class="savecancel">
-												<ul>
-													<li><a href="#">save</a></li>
-													<li><a id="changePassCancel" href="javascript:void(0)">cancel</a></li>
-												</ul>
-											</div>
-											<!--save and cancel button-->
+                                            {{ form_start(cpForm, { 'action': url('client_profile_page'), 'attr': { 'id': 'cpForm', 'novalidate': 'novalidate' } }) }}
+                                            <div id="cpServerFault" class="row message" style="display: none;">
+                                                <div class="col-lg-12">
+                                                    Server error encountered.
+                                                </div>
+                                            </div>
+                                            <div class="editformblk2 clearfix">
+                                                <div class="col-lg-4">
+                                                    {{ form_widget(cpForm.oldPassword, { 'id': 'oldPassword', 'attr': { 'placeholder': 'Old Password' } }) }}
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    {{ form_widget(cpForm.password, { 'id': 'password', 'attr': { 'placeholder': 'New Password' } }) }}
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    {{ form_widget(cpForm.repeatPassword, { 'id': 'repeatPassword', 'attr': { 'placeholder': 'Repeat Password' } }) }}
+                                                </div>
+                                            </div>
+                                            <!--save and cancel button-->
+                                            <div class="savecancel">
+                                                <ul>
+                                                    <li><a id="changePassButton" href="javascript:void(0);">save</a></li>
+                                                    <li><a id="changePassCancel" href="javascript:void(0)">cancel</a></li>
+                                                </ul>
+                                            </div>
+                                            <!--save and cancel button-->
+                                            {{ form_end(cpForm) }}
 										</div>
 									</div>
 								</div>
@@ -248,10 +268,141 @@
 							<!--edit block-->
 						</div>
 					</div>
+                    <!--billing address-->
+                    <!--heading-->
+                    <div class="editHeading-1 clearfix">
+                        <ul>
+                            <li><h2>Billing Address</h2></li>
+                        </ul>
+                    </div>
+                    <!--heading-->
+                    {% if clientBillingAddresses %}
+                        {% for key, clientBillingAddress in clientBillingAddresses %}
+                            <div class="editBlk-1">
+                                <div class="billingAddress">
+                                    <div class="editformblk clearfix">
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <label>{{ clientBillingAddress.addressLine1 }}, {{ clientBillingAddress.stateId.name }}-{{ clientBillingAddress.zipCode }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="row">
+                                                {% if clientBillingAddress.isPrimary %}
+                                                    <div class="default">Default Billing Address</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <div class="row">
+                                                <div class="edit">
+                                                    <a class="editBillAdd" href="javascript:void(0)">edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ form_start(baForms[key], { 'action': url('client_profile_page'), 'attr': { 'class': 'baForms', 'novalidate': 'novalidate', 'style': 'display: none;' } }) }}
+                                <div class="billingAddForm clearfix">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <!--left-->
+                                            <td valign="top" class="billAddLeft">
+                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td>
+                                                            {{ form_widget(baForms[key].addressLine1, { 'attr': { 'class': 'addressLine1', 'placeholder': 'Address Line 1' } }) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            {{ form_widget(baForms[key].addressLine2, { 'attr': { 'class': 'addressLine2', 'placeholder': 'Address Line 2' } }) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            {{ form_widget(baForms[key].countryId, { 'attr': { 'class': 'countryId' } }) }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
+                                                                <tr>
+                                                                    <td class="textLeft">
+                                                                        {{ form_widget(baForms[key].stateId, { 'attr': { 'class': 'stateId' } }) }}
+                                                                    </td>
+                                                                    <td class="textRight">
+                                                                        {{ form_widget(baForms[key].cityId, { 'attr': { 'class': 'cityId' } }) }}
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <!--left-->
+                                            <!--right-->
+                                            <td valign="top" class="billAddRight">
+                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td>
+                                                            {{ form_widget(baForms[key].zipCode, { 'attr': { 'class': 'zipCode' } }) }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <!--right-->
+                                        </tr>
+                                        <!--default delete save-->
+                                        <tr>
+                                            <td class="defDelSave">
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                {{ form_widget(baForms[key].isPrimary, { 'attr': { 'class': 'zipCode' } }) }}
+                                                                <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+                                                                Default Billing Address
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="row">
+                                                        <div class="delAdd">
+                                                            <a href="javascript:void(0);">Delete Address</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="row">
+                                                        <div class="savecancel">
+                                                            <ul>
+                                                                <li><a href="javascript:void(0);" class="updateBillingAddress">save</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!--default delete save-->
+                                    </table>
+                                </div>
+                                {{ form_end(baForms[key]) }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!--add more-->
+                    <div id="addMoreAddContent">
+                    </div>
+                    <div class="billAddMore">
+                        <a href="javascript:void(0)" id="addMoreAdd"><i class="fa fa-plus"></i>&nbsp;&nbsp;add more</a>
+                    </div>
+                    <!--add more-->
+                    <!--billing address-->
 				</div>
 				<!--information-->
 			</div>
-		
 		</div>
 	</div>
 	{% block footer %}
@@ -270,48 +421,99 @@
 				$("#basicInfo, #basicInfo1").toggle();
 			});
 			$("#basicInfoUpdate").on("click", function(e) {
-				$.ajax({
-					url: $("#gdForm").attr("action"),
-					type: "post",
-					dataType: "json",
-					data: $("#gdForm").serialize(),
-					beforeSend: function(jqXHR, settings) {
-						$("#basicInfoUpdate").addClass("disabled");
-					},
-					error: function(jqXHR, textStatus, errorThrown) {
-						
-					},
-					success: function(data, textStatus,jqXHR) {
-						
-					},
-					complete: function(jqXHR, textStatus) {
-						//$("#basicInfoUpdate").removeClass("disabled");
-					}
-				});
+                if (! $(this).hasClass("disabled")) {
+                    $.ajax({
+                        url: $("#gdForm").attr("action"),
+                        type: "post",
+                        dataType: "json",
+                        data: $("#gdForm").serialize(),
+                        beforeSend: function(jqXHR, settings) {
+                            $("#basicInfoUpdate .message").hide();
+                            $("#gdForm .validationError").remove();
+                            $("#basicInfoUpdate").addClass("disabled");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            $("#gdServerFault").show();
+                        },
+                        success: function(data, textStatus,jqXHR) {
+                            if (data.status) {
+                                location.reload();
+                            } else {
+                                $.each(data.errorList, function(key, value) {
+                                    $("#gdForm #" + key).after("<span class='validationError'>" + value + "</span>");
+                                });
+                            }
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            $("#basicInfoUpdate").removeClass("disabled");
+                        }
+                    });
+                }
 			});
+
+            $("#changePassShow, #changePassCancel").on("click", function(e) {
+                $("#changePass, #changePassBox").toggle();
+            });
+
+            $("#changePassButton").on("click", function(e) {
+                if (! $(this).hasClass("disabled")) {
+                    $.ajax({
+                        url: $("#cpForm").attr("action"),
+                        type: "post",
+                        dataType: "json",
+                        data: $("#cpForm").serialize(),
+                        beforeSend: function(jqXHR, settings) {
+                            $("#cpForm .message").hide();
+                            $("#cpForm .validationError").remove();
+                            $("#changePassButton").addClass("disabled");
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            $("#cpServerFault").show();
+                        },
+                        success: function(data, textStatus,jqXHR) {
+                            if (data.status) {
+                                location.reload();
+                            } else {
+                                $.each(data.errorList, function(key, value) {
+                                    $("#cpForm #" + key).after("<span class='validationError'>" + value + "</span>");
+                                });
+                            }
+                        },
+                        complete: function(jqXHR, textStatus) {
+                            $("#changePassButton").removeClass("disabled");
+                        }
+                    });
+                }
+            });
+
+            $(".editBillAdd").click(function(){
+                console.log($(this).parentsUntil(".editBlk-1").next());
+                $(this).parentsUntil(".editBlk-1").next().toggle();
+            });
+            $(".updateBillingAddress").on("click", function(e) {
+                $.ajax({
+                    url: $(this).closest("form").attr("action"),
+                    type: "post",
+                    dataType: "json",
+                    data: $(this).closest("form").serialize(),
+                    beforeSend: function(jqXHR, settings) {
+                        //
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //
+                    },
+                    success: function(data, textStatus,jqXHR) {
+                        //
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        //
+                    }
+                });
+            });
 		});
 		$(document).ready(function () {
-			/*$("#basicInfoEdit").click(function(){
-				$("#basicInfo").hide();
-				$("#basicInfo1").show();
-			});
-			$("#basicInfoCancel").click(function(){
-				$("#basicInfo").show();
-				$("#basicInfo1").hide();
-			});*/
 			
-			$("#changePassShow").click(function(){
-				$("#changePass").hide();
-				$("#changePassBox").show();
-			});
-			$("#changePassCancel").click(function(){
-				$("#changePass").show();
-				$("#changePassBox").hide();
-			});
-			
-			$(".editBillAdd").click(function(){
-				$(this).parentsUntil(".editBlk-1").next().toggle();
-			});
+
 			
 			$("#addMoreAdd").click(function(){
 				$("#addMoreAddContent").toggle();

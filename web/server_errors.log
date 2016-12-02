@@ -2002,3 +2002,99 @@
 [01-Dec-2016 12:25:22 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
 [01-Dec-2016 12:25:22 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
 [01-Dec-2016 12:25:22 UTC] PHP   6. NetFlex\DeliveryChargeBundle\Controller\BookingController->renderBookingForClientPageInDashboardAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 06:08:39 UTC] PHP Fatal error:  Call to undefined method Symfony\Component\Validator\ConstraintViolation::getProppertyPath() in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 37
+[02-Dec-2016 06:08:39 UTC] PHP Stack trace:
+[02-Dec-2016 06:08:39 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 06:08:39 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 06:08:39 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 06:08:39 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 06:08:39 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 06:08:39 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 07:46:14 UTC] PHP Fatal error:  Call to undefined method NetFlex\UserBundle\Entity\User::getOldPassword() in /var/www/html/netflex/src/NetFlex/UserBundle/Form/EventSubscriber/Front/ClientProfile/ChangePasswordFormEventSubscriber.php on line 22
+[02-Dec-2016 07:46:14 UTC] PHP Stack trace:
+[02-Dec-2016 07:46:14 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 07:46:14 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 07:46:14 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 07:46:14 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 07:46:14 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 07:46:14 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 07:46:14 UTC] PHP   7. Symfony\Component\Form\Form->handleRequest() /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php:49
+[02-Dec-2016 07:46:14 UTC] PHP   8. Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler->handleRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:488
+[02-Dec-2016 07:46:14 UTC] PHP   9. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/HttpFoundation/HttpFoundationRequestHandler.php:113
+[02-Dec-2016 07:46:14 UTC] PHP  10. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:628
+[02-Dec-2016 07:46:14 UTC] PHP  11. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[02-Dec-2016 07:46:14 UTC] PHP  12. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[02-Dec-2016 07:46:14 UTC] PHP  13. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[02-Dec-2016 07:46:14 UTC] PHP  14. NetFlex\UserBundle\Form\EventSubscriber\Front\ClientProfile\ChangePasswordFormEventSubscriber->submit() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[02-Dec-2016 07:50:33 UTC] PHP Fatal error:  Cannot use object of type NetFlex\UserBundle\Entity\User as array in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 52
+[02-Dec-2016 07:50:33 UTC] PHP Stack trace:
+[02-Dec-2016 07:50:33 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 07:50:33 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 07:50:33 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 07:50:33 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 07:50:33 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 07:50:33 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 07:51:25 UTC] PHP Fatal error:  Call to undefined method NetFlex\UserBundle\Entity\User::get() in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 52
+[02-Dec-2016 07:51:25 UTC] PHP Stack trace:
+[02-Dec-2016 07:51:25 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 07:51:25 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 07:51:25 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 07:51:25 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 07:51:25 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 07:51:25 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 08:10:10 UTC] PHP Fatal error:  Call to undefined method Symfony\Component\Security\Core\Encoder\UserPasswordEncoder::getClassMethods() in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 61
+[02-Dec-2016 08:10:10 UTC] PHP Stack trace:
+[02-Dec-2016 08:10:10 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 08:10:10 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 08:10:10 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 08:10:10 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 08:10:10 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 08:10:10 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 08:10:56 UTC] PHP Fatal error:  Call to undefined method Symfony\Component\Security\Core\Encoder\UserPasswordEncoder::get_class_methods() in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 61
+[02-Dec-2016 08:10:56 UTC] PHP Stack trace:
+[02-Dec-2016 08:10:56 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 08:10:56 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 08:10:56 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 08:10:56 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 08:10:56 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 08:10:56 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 08:31:47 UTC] PHP Fatal error:  Call to undefined function NetFlex\FrontBundle\Controller\encodePassword() in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 76
+[02-Dec-2016 08:31:47 UTC] PHP Stack trace:
+[02-Dec-2016 08:31:47 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 08:31:47 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 08:31:47 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 08:31:47 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 08:31:47 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 08:31:47 UTC] PHP   6. NetFlex\FrontBundle\Controller\ClientProfileController->renderClientProfilePageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[02-Dec-2016 09:43:10 UTC] PHP Parse error:  syntax error, unexpected ')' in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/ClientProfileController.php on line 34
+[02-Dec-2016 09:43:10 UTC] PHP Stack trace:
+[02-Dec-2016 09:43:10 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[02-Dec-2016 09:43:10 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[02-Dec-2016 09:43:10 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[02-Dec-2016 09:43:10 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[02-Dec-2016 09:43:10 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:129
+[02-Dec-2016 09:43:10 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/TraceableEventDispatcher.php:136
+[02-Dec-2016 09:43:10 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[02-Dec-2016 09:43:10 UTC] PHP   8. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[02-Dec-2016 09:43:10 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[02-Dec-2016 09:43:10 UTC] PHP  10. call_user_func:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/WrappedListener.php:61}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/WrappedListener.php:61
+[02-Dec-2016 09:43:10 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/WrappedListener.php:61
+[02-Dec-2016 09:43:10 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /var/www/html/netflex/var/cache/dev/classes.php:2364
+[02-Dec-2016 09:43:10 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /var/www/html/netflex/var/cache/dev/classes.php:1632
+[02-Dec-2016 09:43:10 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /var/www/html/netflex/var/cache/dev/classes.php:1664
+[02-Dec-2016 09:43:10 UTC] PHP  15. call_user_func:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[02-Dec-2016 09:43:10 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[02-Dec-2016 09:43:10 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /var/www/html/netflex/var/cache/dev/classes.php:1654
+[02-Dec-2016 09:43:10 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /var/www/html/netflex/var/cache/dev/classes.php:1702
+[02-Dec-2016 09:43:10 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /var/www/html/netflex/var/cache/dev/classes.php:1921
+[02-Dec-2016 09:43:10 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[02-Dec-2016 09:43:10 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[02-Dec-2016 09:43:10 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[02-Dec-2016 09:43:10 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[02-Dec-2016 09:43:10 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[02-Dec-2016 09:43:10 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[02-Dec-2016 09:43:10 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[02-Dec-2016 09:43:10 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[02-Dec-2016 09:43:10 UTC] PHP  28. ReflectionClass->__construct() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[02-Dec-2016 09:43:10 UTC] PHP  29. spl_autoload_call() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[02-Dec-2016 09:43:10 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
