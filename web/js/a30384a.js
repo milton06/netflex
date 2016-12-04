@@ -224,7 +224,7 @@ jQuery(document).ready(function() {
 			var thatClosestPrimarySetter = jQuery(this).parent().parent().next(".form-group").find(".primary-address-selector");
 			var isThatMadeMadePrimary = jQuery(thatClosestPrimarySetter).parent('[class*="icheckbox"]').hasClass("checked");
 			
-			if ((thisId !== thatId) && (thisValue === thatValue) && (isThisMadePrimary === isThatMadeMadePrimary)) {
+			if ((thisId !== thatId) && (thisValue === thatValue) && (true === isThisMadePrimary) && (true === isThatMadeMadePrimary)) {
 				swal("Not Allowed!", "You can set only one billing and one pickup address as preferred at a time!");
 				
 				jQuery("#" + thisClosestPrimarySetterId).prop("checked", false);

@@ -1,0 +1,63 @@
+{% block pageStyles %}
+	<style>
+		#serverFault{
+			margin: 0 3%;
+			color: #ff3333;
+		}
+		.validationError, .clientValidationError{
+			color: #ff3333;
+		}
+	</style>
+{% endblock %}
+
+<li class="login" id="login">
+	<a id="login-trigger" href="javascript:void(0);">Client Login</a>
+	<div id="login-content">
+		<form name="client_login_form" id="clientLoginForm" action="{{ url('client_login') }}" method="POST">
+			{% if clientLoginError %}
+				<span class="validationError">Authentication failed</span>
+			{% endif %}
+			<input type="text" name="_username" id="username" value="{{ username }}" placeholder="Username">
+			{% if clientLoginError and clientLoginError._username is defined %}
+				<span class="validationError">{{ clientLoginError._username }}</span>
+			{% endif %}
+			<input type="password" name="_password" id="password" placeholder="password">
+			{% if clientLoginError and clientLoginError._password is defined %}
+				<span class="validationError">{{ clientLoginError._password }}</span>
+			{% endif %}
+			<input type="hidden" name="_netflex_client_login_csrf_token" value="{{ csrf_token('%nE^t207C1ll*X') }}">
+			<input type="hidden" name="loginError" id="loginError" value="{{ (clientLoginError) ? true : false }}"/>
+			<input type="submit" id="loginButton" name="" value="Login">
+			{#<a href="#">Forgot your password?</a>#}
+		</form>
+	</div>
+</li>
+
+{% block pageScripts %}
+	{% javascripts '@NetFlexFrontBundle/Resources/public/js/1.11.1/jquery.min.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script>
+		$(document).ready(function() {
+			$("#loginButton").on("click", function(e) {
+				e.preventDefault();
+				
+				$(".clientValidationError").remove();
+				var formHasError = false;
+				
+				if (! $("#username").val()) {
+					$("#username").after("<span class='validationError'>Username is required</span>");
+					formHasError = true;
+				}
+				if (! $("#password").val()) {
+					$("#password").after("<span class='validationError'>Password is required</span>");
+					formHasError = true;
+				}
+				
+				if (false === formHasError) {
+					$("#clientLoginForm").submit();
+				}
+			});
+		});
+	</script>
+{% endblock %}

@@ -10,4 +10,20 @@ namespace NetFlex\UserBundle\Repository;
  */
 class ContactRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findUserContact($userId)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		return $qb->select('C.contactNumber')
+			->from('NetFlexUserBundle:Contact', 'C')
+			->innerJoin('C.userId', 'U')
+			->where('U.id = :userId')
+			->orderBy('C.isPrimary', 'DESC')
+			->addOrderBy('C.id', 'DESC')
+			->setFirstResult(0)
+			->setMaxResults(1)
+			->setParameter('userId', $userId)
+			->getQuery()
+			->getOneOrNullResult();
+	}
 }

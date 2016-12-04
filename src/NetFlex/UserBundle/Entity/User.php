@@ -97,6 +97,27 @@ class User implements AdvancedUserInterface, \Serializable
     private $lastName;
 	
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="profile_image", type="string", length=255, nullable=true)
+	 *
+	 * @Assert\NotBlank(
+	 *     groups={"update_profile_image"},
+	 *     message="Please select an image"
+	 * )
+	 * @Assert\Image(
+	 *     groups={"update_profile_image"},
+	 *     mimeTypes={"image/jpg", "image/jpeg"},
+	 *     minWidth=230,
+	 *     minHeight=230,
+	 *     mimeTypesMessage="Please upload a .jpeg image",
+	 *     minWidthMessage="Allowed minimum image size 230X230",
+	 *     minHeightMessage="Allowed minimum image size 230X230"
+	 * )
+	 */
+	private $profileImage;
+	
+	/**
 	 * @ORM\OneToMany(targetEntity="Address", mappedBy="userId")
 	 *
 	 * @Assert\Valid
@@ -335,6 +356,30 @@ class User implements AdvancedUserInterface, \Serializable
     {
         return $this->lastName;
     }
+	
+	/**
+	 * Set profileImage
+	 *
+	 * @param string $profileImage
+	 *
+	 * @return User
+	 */
+	public function setProfileImage($profileImage)
+	{
+		$this->profileImage = $profileImage;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get profileImage
+	 *
+	 * @return string
+	 */
+	public function getProfileImage()
+	{
+		return $this->profileImage;
+	}
 	
 	/**
 	 * Add address

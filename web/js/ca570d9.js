@@ -98,3 +98,8 @@ $(document).ready(function() {
 	
 	$(".fancybox").fancybox();
 });
+$(window).load(function() {
+	if ($("#loginError").val()) {
+		$("#login-trigger").trigger("click");
+	}
+});

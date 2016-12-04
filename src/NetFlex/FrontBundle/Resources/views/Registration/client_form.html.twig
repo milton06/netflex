@@ -17,7 +17,7 @@
 <h3>Register</h3>
 {{ form_start(form, { 'action': url('front_end_client_registration'), 'attr': { 'id': 'registerClientForm', 'novalidate': 'novalidate' } }) }}
     <span id="serverFault" class="message" style="display: none;">Server error encountered.</span>
-    <span id="registrationSuccess" class="message" style="display: block;">Congratulations! You are now a registered user. Please <a id="loginLink" href="javascript:void(0);">login</a> here.</span>
+    <span id="registrationSuccess" class="message" style="display: none;">Congratulations! Your registration was successful and awating admin approval</span>
 	<div class="signupForm clearfix">
 		{{ form_widget(form.username, { 'id': 'username', 'attr': { 'placeholder': 'Username' } }) }}
 		{{ form_widget(form.password, { 'id': 'password', 'attr': { 'placeholder': 'Password' } }) }}
@@ -59,7 +59,7 @@
                     if (false === data.status) {
                         var errorList = data.errorList;
                         $.each(errorList, function(key, value) {
-                            $("#" + key).after("<span class='validationError'>" + value + "</span>");
+                            $("#registerClientForm #" + key).after("<span class='validationError'>" + value + "</span>");
                         });
                     } else {
                         $("#registrationSuccess").show();

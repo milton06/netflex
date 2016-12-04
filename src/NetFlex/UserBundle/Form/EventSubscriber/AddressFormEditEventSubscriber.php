@@ -38,27 +38,43 @@ class AddressFormEditEventSubscriber implements EventSubscriberInterface
 					->where('country.status = 1')
 					->orderBy('country.name', 'ASC');
 			},
-			'data' => (null !== $formData) ? $formData->getCountryId() : $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1])
+			'data' => ((null !== $formData) && ($formData->getCountryId())) ? $formData->getCountryId() : $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1])
 		]);
 		$form->add('stateId', EntityType::class, [
 			'placeholder' => '-Select A State-',
 			'class' => 'NetFlexLocationBundle:State',
-			'query_builder' => function(EntityRepository $er) {
-				return $er->createQueryBuilder('states')
-					->where('states.status = 1')
-					->orderBy('states.name', 'ASC');
+			'query_builder' => function(EntityRepository $er) use($formData) {
+				if ((null !== $formData) && ($formData->getCountryId())) {
+					return $er->createQueryBuilder('states')
+						->where('states.countryId = ' . $formData->getCountryId()->getId())
+						->andWhere('states.status = 1')
+						->orderBy('states.name', 'ASC');
+				} else {
+					return $er->createQueryBuilder('states')
+						->where('states.countryId = 1')
+						->andWhere('states.status = 1')
+						->orderBy('states.name', 'ASC');
+				}
 			},
-			'data' => (null !== $formData) ? $formData->getStateId() : $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
+			'data' => ((null !== $formData) && ($formData->getStateId())) ? $formData->getStateId() : $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
 		]);
 		$form->add('cityId', EntityType::class, [
 			'placeholder' => '-Select A City-',
 			'class' => 'NetFlexLocationBundle:City',
-			'query_builder' => function(EntityRepository $er) {
-				return $er->createQueryBuilder('cities')
-					->where('cities.status = 1')
-					->orderBy('cities.name', 'ASC');
+			'query_builder' => function(EntityRepository $er) use($formData) {
+				if ((null !== $formData) && ($formData->getStateId())) {
+					return $er->createQueryBuilder('cities')
+						->where('cities.stateId = ' . $formData->getStateId()->getId())
+						->andWhere('cities.status = 1')
+						->orderBy('cities.name', 'ASC');
+				} else {
+					return $er->createQueryBuilder('cities')
+						->where('cities.stateId = 41')
+						->andWhere('cities.status = 1')
+						->orderBy('cities.name', 'ASC');
+				}
 			},
-			'data' => (null !== $formData) ? $formData->getCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1])
+			'data' => ((null !== $formData) && ($formData->getCityId())) ? $formData->getCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1])
 		]);
 		$form->add('addressTypeId', EntityType::class, [
 			'placeholder' => '-Select An Address Type-',

@@ -101,8 +101,7 @@
 							<div class="col-md-4"></div>
 						</div>
 						<hr/>
-						{% if orderForm.clientOtherPickupAddresses is null %}
-						{% else %}
+						{% if orderForm.clientOtherPickupAddresses is defined and orderForm.clientOtherPickupAddresses %}
 							<div class="row">
 								<div class="col-md-4">
 									<strong>Choose From Other Pickup Addresses:</strong>
@@ -112,6 +111,7 @@
 								</div>
 							</div>
 							<hr/>
+						{% else %}
 						{% endif %}
 						<div class="row">
 							<div class="col-md-12">
@@ -413,8 +413,7 @@
 							</div>
 						</div>
 						<hr/>
-						{% if orderForm.clientOtherBillingAddresses is null %}
-						{% else %}
+						{% if orderForm.clientOtherBillingAddresses is defined and orderForm.clientOtherBillingAddresses %}
 							<div class="row">
 								<div class="col-md-4">
 									<strong>Choose From Other Billing Addresses:</strong>
@@ -424,6 +423,7 @@
 								</div>
 							</div>
 							<hr/>
+						{% else %}
 						{% endif %}
 						<div class="row form-group">
 							{{ form_label(orderForm.orderAddress.billingFirstName, 'First Name', { 'label_attr': { 'class': 'col-md-4' } }) }}

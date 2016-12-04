@@ -258,9 +258,23 @@ jQuery(document).ready(function() {
 					cityOptions += "<option value='" + key + "' " + ((0 === i++) ? "selected='selected'" : "") + ">" + value + "</option>";
 				});
 				
+				jQuery("#pickup-country").val(countryId);
+				
 				jQuery(element).parent().parent().parent().next(".col-md-3").find(".cd-state-selectors").empty().html(stateOptions);
+				if ('cd-source-country' == jQuery(element).attr("id")) {
+					jQuery("#pickup-state").empty().html(stateOptions);
+				}
+				if ('cd-destination-country' == jQuery(element).attr("id")) {
+					jQuery("#shipping-state").empty().html(stateOptions);
+				}
 				
 				jQuery(element).parent().parent().parent().next(".col-md-3").next(".col-md-3").find(".cd-city-selectors").empty().html(cityOptions);
+				if ('cd-source-country' == jQuery(element).attr("id")) {
+					jQuery("#pickup-city").empty().html(cityOptions);
+				}
+				if ('cd-destination-country' == jQuery(element).attr("id")) {
+					jQuery("#shipping-city").empty().html(cityOptions);
+				}
 			}
 		});
 	});
@@ -286,6 +300,12 @@ jQuery(document).ready(function() {
 				});
 				
 				jQuery(element).parent().parent().parent().next(".col-md-3").find(".cd-city-selectors").empty().html(cityOptions);
+				if ('cd-source-state' == jQuery(element).attr("id")) {
+					jQuery("#pickup-city").empty().html(cityOptions);
+				}
+				if ('cd-destination-state' == jQuery(element).attr("id")) {
+					jQuery("#shipping-city").empty().html(cityOptions);
+				}
 			}
 		});
 	});
@@ -472,6 +492,14 @@ jQuery(document).ready(function() {
 						jQuery("#order-fuel-surcharge-added-charge").val(deliveryParams.orderFuelSurchargeAddedCharge);
 						jQuery("#order-service-tax-added-charge").val(deliveryParams.orderServiceTaxAddedCharge);
 						jQuery("#order-carrier-risk-added-charge").val(deliveryParams.orderCarrierRiskAddedCharge);
+						jQuery("#pickup-country").val(sourceCountryId);
+						jQuery("#pickup-state").val(sourceStateId);
+						jQuery("#pickup-city").val(sourceCityId);
+						jQuery("#pickup-zip-code").val(sourceZipCode);
+						jQuery("#shipping-country").val(destinationCountryId);
+						jQuery("#shipping-state").val(destinationStateId);
+						jQuery("#shipping-city").val(destinationCityId);
+						jQuery("#shipping-zip-code").val(destinationZipCode);
 						
 						jQuery("#tab-booking-options").addClass('disabled');
 						jQuery("#tab-booking-options > a").removeAttr("data-toggle");

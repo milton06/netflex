@@ -91,7 +91,7 @@ jQuery("#bulk-delete-button").on("click", function(e) {
 		function(isConfirm){
 			if (isConfirm) {
 				selectedRecordCount = clientIds.length;
-				clientIds = clientIds.join("-");
+				clientIds = (1 < clientIds.length) ? clientIds.join("-") : clientIds[0];
 				
 				deleteUrl = deleteUrl.replace('%25clientIds%25', clientIds);
 				deleteUrl = deleteUrl.replace('%25selectedRecordCount%25', selectedRecordCount);
@@ -102,5 +102,26 @@ jQuery("#bulk-delete-button").on("click", function(e) {
 				jQuery("#bulk-record-selector").iCheck("uncheck");
 			}
 		});
+	}
+});
+
+jQuery("#bulk-approve-button").on("click", function(e) {
+	e.preventDefault();
+	
+	var ids = [];
+	var approveUrl = jQuery(this).attr("href");
+	
+	jQuery(".single-record-selector").each(function() {
+		if (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked")) {
+			ids.push(jQuery(this).val());
+		}
+	});
+	
+	if (0 < ids.length) {
+		ids = (1 < ids.length) ? ids.join("-") : ids[0];
+		
+		approveUrl = approveUrl.replace('%25ids%25', ids);
+		
+		self.location = approveUrl;
 	}
 });

@@ -18,7 +18,7 @@ class StringToCountryTransformer implements DataTransformerInterface
 	public function transform($country)
 	{
 		if (null === $country) {
-			return '';
+			return $this->em->getRepository('NetFlexLocationBundle:Country')->findOneById(1)->getName();
 		}
 		
 		return $country->getName();

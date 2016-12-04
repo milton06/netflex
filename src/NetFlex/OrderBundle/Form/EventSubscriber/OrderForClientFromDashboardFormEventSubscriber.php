@@ -38,23 +38,27 @@ class OrderForClientFromDashboardFormEventSubscriber implements EventSubscriberI
 	{
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();
-		$clientPreferredPickupAddress = ($this->clientOtherPickupAddresses) ? array_values($this->clientOtherPickupAddresses)[0] : null;
-		$clientPreferredBillingAddress = ($this->clientOtherBillingAddresses) ? array_values($this->clientOtherBillingAddresses)[0] : null;
 		
-		$form->add('clientOtherPickupAddresses', ChoiceType::class, [
-			'placeholder' => '-Select A Pickup Address-',
-			'choices' => $this->clientOtherPickupAddresses,
-			'data' => $clientPreferredPickupAddress,
-			'mapped' => false,
-			'error_bubbling' => false,
-		]);
-		$form->add('clientOtherBillingAddresses', ChoiceType::class, [
-			'placeholder' => '-Select A Billing Address-',
-			'choices' => $this->clientOtherBillingAddresses,
-			'data' => $clientPreferredBillingAddress,
-			'mapped' => false,
-			'error_bubbling' => false,
-		]);
+		if ($this->clientOtherPickupAddresses) {
+			$clientPreferredPickupAddress = ($this->clientOtherPickupAddresses) ? array_values($this->clientOtherPickupAddresses)[0] : null;
+			$form->add('clientOtherPickupAddresses', ChoiceType::class, [
+				'placeholder' => '-Select A Pickup Address-',
+				'choices' => $this->clientOtherPickupAddresses,
+				'data' => $clientPreferredPickupAddress,
+				'mapped' => false,
+				'error_bubbling' => false,
+			]);
+		}
+		if ($this->clientOtherBillingAddresses) {
+			$clientPreferredBillingAddress = ($this->clientOtherBillingAddresses) ? array_values($this->clientOtherBillingAddresses)[0] : null;
+			$form->add('clientOtherBillingAddresses', ChoiceType::class, [
+				'placeholder' => '-Select A Billing Address-',
+				'choices' => $this->clientOtherBillingAddresses,
+				'data' => $clientPreferredBillingAddress,
+				'mapped' => false,
+				'error_bubbling' => false,
+			]);
+		}
 	}
 	
 	public function preSubmit(FormEvent $formEvent)

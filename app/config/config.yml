@@ -33,6 +33,11 @@ parameters:
     inversed_order_statuses: { '1': 'Waiting admin approval', '2': 'Waiting client approval', '3': 'Disapproved by client', '4': 'Shipped', '5': 'Delivered' }
     payment_statuses: { 'Pending': '0', 'Paid': '1' }
     inversed_payment_statuses: { '0': 'Pending', '1': 'Paid' }
+    user_statuses: { 'Active': '1', 'Pending Admin Approval': '2' }
+    inversed_user_statuses: { '1': 'Active', '2': 'Pending Admin Approval' }
+    client_profile_image_upload_directory_name: 'uploads/client_profile_images'
+    client_profile_image_upload_directory_path: '%kernel.root_dir%/../web/uploads/client_profile_images'
+    client_profile_image_max_width_and_height: 230
 
 framework:
     #esi:             ~
@@ -71,6 +76,7 @@ twig:
         orderRiskApplicableAbove: '%order_risk_applicable_above%'
         orderStatuses: '%inversed_order_statuses%'
         paymentStatuses: '%inversed_payment_statuses%'
+        userStatuses: '%inversed_user_statuses%'
 
 # Doctrine Configuration
 doctrine:

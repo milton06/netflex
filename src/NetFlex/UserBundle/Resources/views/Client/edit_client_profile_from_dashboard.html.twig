@@ -20,30 +20,28 @@
 
 {% block pageContent %}
     <div class="row">
-		<div class="col-md-12">
-			{% if app.session.flashbag.peek('success') %}
-				<div class="alert alert-success server-message">
-					<button data-dismiss="alert" class="close">×</button>
-					<i class="fa fa-check-circle"></i>
-					{% for success in app.session.flashbag.get('success') %}
-						<strong>Well done!</strong> {{ success }}.
-					{% endfor %}
-				</div>
-			{% endif %}
-			<div class="errorHandler alert alert-danger no-display">
-				<button data-dismiss="alert" class="close">×</button>
-				<i class="fa fa-times-circle"></i>
-				You have some form errors. Please check below.
-			</div>
-		</div>
-	</div>
-	<div class="row">
         <div class="col-md-12">
             {{ form_start(registerClientForm, { 'attr': { 'id': 'form-register-client-from-dashboard', 'role': 'form', 'novalidate': 'novalidate' } }) }}
             <div class="row">
                 <div class="col-md-12">
+	                {% if app.session.flashbag.peek('success') %}
+		                <div class="alert alert-success server-message">
+			                <button data-dismiss="alert" class="close">×</button>
+			                <i class="fa fa-check-circle"></i>
+			                {% for success in app.session.flashbag.get('success') %}
+				                <strong>Well done!</strong> {{ success }}.
+			                {% endfor %}
+		                </div>
+	                {% endif %}
+	                {% if false == registerClientForm.vars.valid %}
+		                <div class="errorHandler alert alert-danger server-message">
+			                <button data-dismiss="alert" class="close">×</button>
+			                <i class="fa fa-times"></i> You have some form errors. Please check under each tab below.
+		                </div>
+	                {% endif %}
                     <div class="errorHandler alert alert-danger no-display">
-                        <i class="fa fa-times-sign"></i> You have some form errors. Please check below.
+	                    <button data-dismiss="alert" class="close">×</button>
+                        <i class="fa fa-times"></i> You have some form errors. Please check under each tab below.
                     </div>
                 </div>
             </div>

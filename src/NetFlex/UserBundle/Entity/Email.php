@@ -12,6 +12,11 @@ use NetFlex\UserBundle\Entity\User;
  *
  * @ORM\Table(name="emails")
  * @ORM\Entity(repositoryClass="NetFlex\UserBundle\Repository\EmailRepository")
+ *
+ * @UniqueEntity(
+ *     {"email"},
+ *     message="This email is already taken."
+ * )
  */
 class Email
 {

@@ -23,7 +23,7 @@ class OrderTransactionRepository extends EntityRepository
 		
 		if (('U.firstName' === $sortColumn) || ($name)) {
 			$qb->addSelect('partial U.{id, firstName, midName, lastName}');
-			$qb->leftJoin('O.userId', 'U');
+			$qb->innerJoin('O.userId', 'U');
 		}
 		
 		if ($awbNumber) {

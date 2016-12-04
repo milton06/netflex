@@ -10,7 +10,6 @@ security:
         persistent_user_provider:
             entity:
                 class: NetFlexUserBundle:User
-                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -40,9 +39,27 @@ security:
                 path: /dashboard/logout
                 target: /dashboard/login
 
+        secured_client:
+            pattern: ^/client
+            provider: persistent_user_provider
+            anonymous: ~
+            form_login:
+                login_path: client_login
+                check_path: client_login
+                failure_path: home_page
+                default_target_path: client_profile_page
+                csrf_token_generator: security.csrf.token_manager
+                csrf_parameter: _netflex_client_login_csrf_token
+                csrf_token_id: '%nE^t207C1ll*X'
+            logout:
+                path: /client/logout
+                target: /
+
     access_control:
         - { path: ^/dashboard/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
         - { path: ^/dashboard, roles: [ROLE_SUPER_ADMIN, ROLE_ADMIN] }
+        - { path: ^/client/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/client, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
 
     encoders:
         Symfony\Component\Security\Core\User\User:

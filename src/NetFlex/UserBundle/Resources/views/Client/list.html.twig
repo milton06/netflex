@@ -21,10 +21,13 @@
         <div class="col-md-9">
             <div class="row">
                 {{ form_start(searchForm, { 'attr': { 'class': 'form-horizontal', 'role': 'form', 'novalidate': 'novalidate' } }) }}
-                <div class="col-md-6">
+                <div class="col-md-4">
                     {{ form_widget(searchForm.clientName, { 'id': 'client-name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Username Or Full Name' } }) }}
                 </div>
-                <div class="col-md-6">
+	            <div class="col-md-4">
+		            {{ form_widget(searchForm.clientStatus, { 'id': 'client-status', 'required': false, 'attr': { 'class': 'form-control' } }) }}
+	            </div>
+                <div class="col-md-4">
                     <input type="submit" class="btn btn-sm btn-primary tooltips" value="Filter" data-placement="top" data-original-title="Filter clients">
                     {% if app.session.has('clientName') %}
                         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -144,6 +147,9 @@
                                 <th>
                                     Registered On
                                 </th>
+                                <th>
+                                    Status
+                                </th>
                                 <th class="center">
                                     Operations
                                 </th>
@@ -152,7 +158,7 @@
                             <tbody>
                             {% if clients is empty %}
                                 <tr>
-                                    <td colspan="6" class="center">{{ noRecordFoundText }}</td>
+                                    <td colspan="7" class="center">{{ noRecordFoundText }}</td>
                                 </tr>
                             {% else %}
                                 {% for thisClient in clients %}
@@ -168,6 +174,7 @@
                                         <td>{{ thisClient.username }}</td>
                                         <td>{{ thisClient.fullname }}</td>
                                         <td>{{ thisClient.created_on|date('F jS, Y') }}</td>
+	                                    <td>{{ userStatuses[thisClient.status] }}</td>
                                         <td class="center">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-primary">
@@ -178,22 +185,29 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    <li>
-                                                        <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': thisClient.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': clients|length }) }}" class="delete-buttons" ><i class="fa fa-trash-o"></i> Delete</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ url('edit_client_profile_from_dashboard', { 'userId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
-                                                    </li>
+	                                                {% if 2 == thisClient.status %}
+	                                                <li>
+		                                                <a href="{{ url('approve_client', { 'id': thisClient.id, 'allRouteParameters': allRouteParameters, }) }}"><i class="clip-checkmark-2"></i> Approve</a>
+	                                                </li>
+	                                                {% endif %}
                                                     <li>
                                                         <a href="{{ url('view_client_profile_in_dashboard', { 'userId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-eye"></i> View</a>
                                                     </li>
-                                                    <li class="divider"></li>
-                                                    <li>
-                                                        <a href="{{ url('book_a_client_shipment_from_dashboard', { 'clientId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-truck"></i> Book A Shipment</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ url('client_order_list', { 'clientId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-list"></i> Orders</a>
-                                                    </li>
+	                                                <li>
+		                                                <a href="{{ url('edit_client_profile_from_dashboard', { 'userId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+	                                                </li>
+	                                                <li>
+		                                                <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': thisClient.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': clients|length }) }}" class="delete-buttons" ><i class="fa fa-trash-o"></i> Delete</a>
+	                                                </li>
+                                                    {% if 1 == thisClient.status %}
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                            <a href="{{ url('book_a_client_shipment_from_dashboard', { 'clientId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-truck"></i> Book A Shipment</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ url('client_order_list', { 'clientId': thisClient.id, 'ref': referrer }) }}"><i class="fa fa-list"></i> Orders</a>
+                                                        </li>
+                                                    {% endif %}
                                                 </ul>
                                             </div>
                                         </td>
@@ -206,9 +220,10 @@
                                 <td class="center">
                                     {% if clients %}
                                         <a href="{{ url('delete_client', { 'mode': 'sync', 'client_id': '%clientIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': clients|length }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected Clients"><i class="clip-remove"></i></a>
+	                                    <a href="{{ url('approve_multiple_clients', { 'ids': '%ids%', 'allRouteParameters': allRouteParameters }) }}" id="bulk-approve-button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="Approve selected Clients"><i class="clip-checkmark"></i></a>
                                     {% endif %}
                                 </td>
-                                <td colspan="5" class="center">
+                                <td colspan="6" class="center">
                                     {{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
                                 </td>
                             </tr>
