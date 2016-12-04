@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\RequestStack;
+use NetFlex\UserBundle\Form\EventSubscriber\AddressFormAddEventSubscriber;
 use NetFlex\UserBundle\Form\EventSubscriber\AddressFormEditEventSubscriber;
 use NetFlex\UserBundle\Entity\Address;
 
@@ -78,6 +79,8 @@ class AddressType extends AbstractType
 			    ])
 			    ->add('zipCode')
 			    ->add('isPrimary');
+		    
+		    $builder->addEventSubscriber(new AddressFormAddEventSubscriber($this->em));
 	    } elseif ('edit_client_profile_from_dashboard' === $this->request->get('_route')) {
 		    $builder->add('addressLine1')
 			    ->add('addressLine2', null, [

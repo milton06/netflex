@@ -57,9 +57,19 @@ class AuthController extends Controller
 		     */
 		    return ['_username' => 'This username is not registered with us'];
 	    }
+	
+	    /**
+	     * Now we'll check the status of the user.
+	     */
+	    if (1 != $user->getStatus()) {
+		    /**
+		     * User is not active anymore.
+		     */
+		    return ['_username' => 'Your profile is not active anymore'];
+	    }
 	    
 	    /**
-	     * If username was found, then the password must have been wrong.
+	     * If we've come so far, then the password must have been wrong.
 	     */
 	    return ['_password' => 'Wrong password provided'];
     }

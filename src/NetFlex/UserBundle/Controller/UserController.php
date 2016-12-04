@@ -2,11 +2,13 @@
 
 namespace NetFlex\UserBundle\Controller;
 
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -62,13 +64,18 @@ class UserController extends Controller
 		$sortOrder = strtoupper($sortOrder);
 		
 		$clientName = (true === $session->has('clientName')) ? $session->get('clientName') : '';
+		$clientStatus = (true === $session->has('clientStatus')) ? $session->get('clientStatus') : '';
 		
 		$searchForm = $this->createFormBuilder()
 			->setAction($this->generateUrl('client_list', [], UrlGeneratorInterface::ABSOLUTE_URL))
 			->setMethod('POST')
 			->add('clientName', TextType::class, [
-				'empty_data' => '',
 				'data' => $clientName,
+			])
+			->add('clientStatus', ChoiceType::class, [
+				'placeholder' => '-All-',
+				'choices' => $this->getParameter('user_statuses'),
+				'data' => $clientStatus,
 			])
 			->getForm();
 		
@@ -78,19 +85,20 @@ class UserController extends Controller
 			$searchData = $searchForm->getData();
 			
 			$session->set('clientName', $searchData['clientName']);
+			$session->set('clientStatus', $searchData['clientStatus']);
 			
 			return $this->redirectToRoute('client_list', array_merge($routeParameters, $routeExtraParameters));
 		}
 		
 		$clientRole = $roleRepo->findOneBy(['id' => 3, 'status' => 1]);
 		
-		$clients = $clientRepo->findUsers($sortColumn, $sortOrder, $clientName);
+		$clients = $clientRepo->findUsers($sortColumn, $sortOrder, $clientName, $clientStatus);
 		
 		$clientCount = count($clients);
 		
 		$totalPageCount = $paginationService->getTotalPageCount($limit, $clientCount);
 		
-		$clients = $clientRepo->findUsers($sortColumn, $sortOrder, $clientName, $offset, $limit);
+		$clients = $clientRepo->findUsers($sortColumn, $sortOrder, $clientName, $clientStatus, $offset, $limit);
 		
 		$pageLinks = $paginationService->getPageLinks($page, $limit, $neighbor, $clientCount, $totalPageCount, 'client_list', $routeParameters, $routeExtraParameters);
 		
@@ -177,7 +185,8 @@ class UserController extends Controller
 	    
 	    $registerClientForm->handleRequest($request);
 	    
-	    if ($registerClientForm->isSubmitted()) {
+	    
+	    if ($registerClientForm->isSubmitted() && $registerClientForm->isValid()) {
 		    $em = $this->getDoctrine()->getManager();
 		    
 		    $roleRepo = $em->getRepository('NetFlexUserBundle:Role');
@@ -281,7 +290,7 @@ class UserController extends Controller
 		/**
 		 * Find active user by ID.
 		 */
-		$user = $userRepo->findOneBy(['id' => $userId, 'status' => 1]);
+		$user = $userRepo->findOneBy(['id' => $userId, 'status' => [1, 2]]);
 		
 		if (! $user) {
 			throw $this->createNotFoundException("No such user with ID: $userId exists");
@@ -352,15 +361,15 @@ class UserController extends Controller
 						 * New address. Set status to active.
 						 */
 						$thisAddress->setStatus(1);
+						$em->persist($thisAddress);
 					} else {
 						/**
 						 * Old address made inactive.
 						 */
-						$thisAddress->setStatus(0);
+						//$thisAddress->setStatus(0);
+						$em->remove($thisAddress);
 					}
 				}
-				
-				$em->persist($thisAddress);
 			}
 			
 			foreach ($emails as $thisEmail) {
@@ -370,15 +379,15 @@ class UserController extends Controller
 						 * New email. Set status to active.
 						 */
 						$thisEmail->setStatus(1);
+						$em->persist($thisEmail);
 					} else {
 						/**
 						 * Old email made inactive.
 						 */
-						$thisEmail->setStatus(0);
+						//$thisEmail->setStatus(0);
+						$em->remove($thisEmail);
 					}
 				}
-				
-				$em->persist($thisEmail);
 			}
 			
 			foreach ($contacts as $thisContact) {
@@ -388,15 +397,15 @@ class UserController extends Controller
 						 * New contact. Set status to active.
 						 */
 						$thisContact->setStatus(1);
+						$em->persist($thisContact);
 					} else {
 						/**
 						 * Old contact made inactive.
 						 */
-						$thisContact->setStatus(0);
+						//$thisContact->setStatus(0);
+						$em->remove($thisContact);
 					}
 				}
-				
-				$em->persist($thisContact);
 			}
 			
 			$em->flush();
@@ -452,7 +461,7 @@ class UserController extends Controller
 		/**
 		 * Find active user by ID.
 		 */
-		$user = $userRepo->findOneBy(['id' => $userId, 'status' => 1]);
+		$user = $userRepo->findOneBy(['id' => $userId, 'status' => [1, 2]]);
 		
 		if (! $user) {
 			throw $this->createNotFoundException("No such user with ID: $userId exists");
@@ -663,6 +672,68 @@ class UserController extends Controller
 	}
 	
 	/**
+	 * Approves a client.
+	 *
+	 * @Route("/dashboard/client/approve/{id}", name="approve_client", requirements={"id": "\d+"})
+	 * @Method({"GET"})
+	 *
+	 * @param int     $id
+	 * @param Request $request A request instance
+	 *
+	 * @return RedirectResponse
+	 */
+	public function approveClientAction($id, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$allRouteParameters = $request->query->get('allRouteParameters');
+		
+		$client = $em->getRepository('NetFlexUserBundle:User')->findOneById($id);
+		$client->setStatus(1);
+		$client->setLastModifiedOn(new \DateTime());
+		$client->setLastModifiedBy($this->getUser()->getId());
+		
+		$em->persist($client);
+		$em->flush();
+		
+		$this->addFlash('success', 'Client approval was successful');
+		
+		return $this->redirectToRoute('client_list', $allRouteParameters);
+	}
+	
+	/**
+	 * Approves a client.
+	 *
+	 * @Route("/dashboard/client/bulk-approve", name="approve_multiple_clients")
+	 * @Method({"GET"})
+	 *
+	 * @param int     $ids
+	 * @param Request $request A request instance
+	 *
+	 * @return RedirectResponse
+	 */
+	public function approveMultipleClientAction($ids, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$allRouteParameters = $request->query->get('allRouteParameters');
+		$ids = (false !== strpos($request->query->get('ids'), '-')) ? explode('-', $request->query->get('ids')) : [$request->query->get('ids')];
+		
+		foreach ($ids as $id) {
+			$client = $em->getRepository('NetFlexUserBundle:User')->findOneById($id);
+			$client->setStatus(1);
+			$client->setLastModifiedOn(new \DateTime());
+			$client->setLastModifiedBy($this->getUser()->getId());
+			
+			$em->persist($client);
+		}
+		
+		$em->flush();
+		
+		$this->addFlash('success', 'Client approval was successful');
+		
+		return $this->redirectToRoute('client_list', $allRouteParameters);
+	}
+	
+	/**
 	 * Deletes a single client.
 	 *
 	 * @param int    $clientId
@@ -676,10 +747,17 @@ class UserController extends Controller
 		
 		$thisClient = $clientRepo->findOneById($clientId);
 		
-		$thisClient->setStatus(0);
-		$thisClient->setLastModifiedOn(new \DateTime());
-		$thisClient->setLastModifiedBy($this->getUser()->getId());
+		foreach ($thisClient->getEmails() as $email) {
+			$em->remove($email);
+		}
+		foreach ($thisClient->getAddresses() as $address) {
+			$em->remove($address);
+		}
+		foreach ($thisClient->getContacts() as $contact) {
+			$em->remove($contact);
+		}
 		
+		$em->remove($thisClient);
 		$em->flush();
 		
 		return ['status' => true];
@@ -720,6 +798,7 @@ class UserController extends Controller
 		$referrer = $request->query->get('ref');
 		
 		$session->remove('clientName');
+		$session->remove('clientStatus');
 		
 		return $this->redirect($referrer);
 	}

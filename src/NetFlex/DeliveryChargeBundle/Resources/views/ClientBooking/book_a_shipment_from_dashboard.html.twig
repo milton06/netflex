@@ -101,17 +101,17 @@
 					            <div class="col-md-4"></div>
 				            </div>
 				            <hr/>
-                            {% if orderForm.clientOtherPickupAddresses is null %}
+                            {% if orderForm.clientOtherPickupAddresses is defined and orderForm.clientOtherPickupAddresses %}
+	                            <div class="row">
+		                            <div class="col-md-4">
+			                            <strong>Choose From Other Pickup Addresses:</strong>
+		                            </div>
+		                            <div class="col-md-8">
+			                            {{ form_widget(orderForm.clientOtherPickupAddresses, { 'id': 'choose-another-pickup-address', 'attr': { 'class': 'form-control', 'required': false } }) }}
+		                            </div>
+	                            </div>
+	                            <hr/>
                             {% else %}
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <strong>Choose From Other Pickup Addresses:</strong>
-                                    </div>
-                                    <div class="col-md-8">
-                                        {{ form_widget(orderForm.clientOtherPickupAddresses, { 'id': 'choose-another-pickup-address', 'attr': { 'class': 'form-control', 'required': false } }) }}
-                                    </div>
-                                </div>
-                                <hr/>
                             {% endif %}
 				            <div class="row">
 					            <div class="col-md-12">
@@ -405,17 +405,17 @@
 					        </div>
 				        </div>
 				        <hr/>
-                        {% if orderForm.clientOtherBillingAddresses is null %}
+                        {% if orderForm.clientOtherBillingAddresses is defined and orderForm.clientOtherBillingAddresses %}
+	                        <div class="row">
+		                        <div class="col-md-4">
+			                        <strong>Choose From Other Billing Addresses:</strong>
+		                        </div>
+		                        <div class="col-md-8">
+			                        {{ form_widget(orderForm.clientOtherBillingAddresses, { 'id': 'choose-another-billing-address', 'attr': { 'class': 'form-control', 'required': false } }) }}
+		                        </div>
+	                        </div>
+	                        <hr/>
                         {% else %}
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <strong>Choose From Other Billing Addresses:</strong>
-                                </div>
-                                <div class="col-md-8">
-                                    {{ form_widget(orderForm.clientOtherBillingAddresses, { 'id': 'choose-another-billing-address', 'attr': { 'class': 'form-control', 'required': false } }) }}
-                                </div>
-                            </div>
-                            <hr/>
                         {% endif %}
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.billingFirstName, 'First Name', { 'label_attr': { 'class': 'col-md-4' } }) }}

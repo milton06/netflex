@@ -68,21 +68,27 @@ class ClientRegistrationController extends Controller
 		    /**
 		     * Validate
 		     */
+		    $errorList = [];
 		    $errors = $this->get('validator')->validate($form);
 		    if (0 < count($errors)) {
-			    $errorList = [];
 			    foreach ($errors as $error) {
 				    $errorList[substr($error->getPropertyPath(), (strrpos($error->getPropertyPath(), '.') + 1))] = $error->getMessage();
 			    }
-			    
+		    }
+		    /*$email = $user->getEmails()[0]->getEmail();
+		    if (0 < $em->getRepository('NetFlexUserBundle:Email')->findAnExistingUserEmail($email)) {
+			    $errorList['email'] = 'This email is already taken';
+		    }*/
+		    if ($errorList) {
 			    return $this->json(['status' => false, 'errorList' => $errorList]);
 		    }
+		    
 		    /**
 		     * Populate entities with default values.
 		     */
 		    $currentDateTime = new \DateTime();
 		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
-		    $user->setStatus(1);
+		    $user->setStatus(2);
 		    $user->setCreatedOn($currentDateTime);
 		    $user->setLastModifiedOn($currentDateTime);
 		    foreach ($user->getEmails() as $email) {

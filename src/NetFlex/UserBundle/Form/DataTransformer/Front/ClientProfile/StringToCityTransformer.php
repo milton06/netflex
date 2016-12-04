@@ -18,7 +18,7 @@ class StringToCityTransformer implements DataTransformerInterface
 	public function transform($city)
 	{
 		if (null === $city) {
-			return '';
+			return $this->em->getRepository('NetFlexLocationBundle:City')->findOneBy(['countryId' => 1, 'stateId' => 41, 'id' => 5583])->getName();
 		}
 		
 		return $city->getName();

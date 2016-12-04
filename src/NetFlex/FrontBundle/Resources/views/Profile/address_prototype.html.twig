@@ -1,0 +1,138 @@
+<div class="billingAddForm clearfix">
+	<div class="row aServerFault message" style="display: none;">
+		<div class="col-lg-12">
+			Server error encountered.
+		</div>
+	</div>
+	<table width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<!--left-->
+			<td valign="top" class="billAddLeft">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							{{ form_widget(address.addressTypeId, { 'attr': { 'class': 'addressTypeId' } }) }}
+							{{ form_widget(address.addressLine1, { 'attr': { 'class': 'addressLine1', 'placeholder': 'Address Line 1' } }) }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{{ form_widget(address.addressLine2, { 'attr': { 'class': 'addressLine2', 'placeholder': 'Address Line 2' } }) }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{{ form_widget(address.countryId, { 'attr': { 'class': 'countryId' } }) }}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table width="100%" cellpadding="0" cellspacing="0" width="48%">
+								<tr>
+									<td class="textLeft">
+										{{ form_widget(address.stateId, { 'attr': { 'class': 'stateId' } }) }}
+									</td>
+									<td class="textRight">
+										{{ form_widget(address.cityId, { 'attr': { 'class': 'cityId' } }) }}
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<!--left-->
+			<!--right-->
+			<td valign="top" class="billAddRight">
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+							{{ form_widget(address.zipCode, { 'attr': { 'class': 'zipCode', 'placeholder': 'Zip Code' } }) }}
+						</td>
+					</tr>
+				</table>
+			</td>
+			<!--right-->
+		</tr>
+		<!--default delete save-->
+		<tr>
+			<td class="defDelSave">
+				<div class="col-lg-6">
+					<div class="row">
+						<div class="checkbox">
+							<label>
+								{{ form_widget(address.isPrimary, { 'attr': { 'class': 'isPrimary' } }) }}
+								<span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+								Default Billing Address
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="row">
+						<div class="delAdd">
+							<a href="javascript:void(0);" class="deleteAddress">Delete Address</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-2">
+					<div class="row">
+						<div class="savecancel">
+							<ul>
+								<li><a href="javascript:void(0);" class="createAddress">save</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+		<!--default delete save-->
+	</table>
+</div>
+
+<script>
+	$(".countryId").autoComplete({
+		minChars: 1,
+		delay: 50,
+		source: function(term, suggest) {
+			$.getJSON("{{ url('get_country_list') }}", { "countryHint": term }, function(data){ suggest(data.countryList) });
+		}
+	});
+	$(".stateId").autoComplete({
+		minChars: 1,
+		delay: 50,
+		source: function(term, suggest){
+			$.ajax({
+				url: "{{ url('get_state_list') }}",
+				method: "get",
+				dataType: "json",
+				data: {
+					"countryName": $(".stateId:focus").closest(".billingAddForm").find(".countryId").val(),
+					"stateHint": term
+				},
+				success: function(data) {
+					suggest(data.stateList)
+				}
+			});
+		}
+	});
+	$(".cityId").autoComplete({
+		minChars: 1,
+		delay: 50,
+		source: function(term, suggest){
+			$.ajax({
+				url: "{{ url('get_city_list') }}",
+				method: "get",
+				dataType: "json",
+				data: {
+					"countryName": $(".cityId:focus").closest(".billingAddForm").find(".countryId").val(),
+					"stateName": $(".cityId:focus").closest(".billingAddForm").find(".stateId").val(),
+					"cityHint": term
+				},
+				success: function(data) {
+					suggest(data.cityList)
+				}
+			});
+		}
+	});
+</script>

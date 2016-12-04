@@ -314,7 +314,7 @@ class OrderController extends Controller
 			 * Get client's pickup and billing addresses.
 			 */
 			$clientPickupAndBillingAddresses = $clientAddressRepo->findClientPreferredPickupAndBillingAddresses($order->getUserId()->getId());
-			if ($clientPickupAndBillingAddresses) {
+			if (0 < $clientPickupAndBillingAddresses[0]['billingAddressCount']) {
 				$clientBillingAddressCount = $clientPickupAndBillingAddresses[0]['billingAddressCount'];
 				unset($clientPickupAndBillingAddresses[0]);
 				list($clientBillingAddresses, $clientPickupAddresses) = array_chunk($clientPickupAndBillingAddresses, $clientBillingAddressCount);
@@ -356,6 +356,33 @@ class OrderController extends Controller
 		$orderForm->handleRequest($request);
 		
 		if ($orderForm->isSubmitted()) {
+			/**
+			 * Populate mandatory pickup address fields on absence.
+			 */
+			if (! $order->getOrderAddress()->getPickupFirstName()) {
+				$order->getOrderAddress()->setPickupFirstName($order->getUserId()->getFirstName());
+			}
+			if (! $order->getOrderAddress()->getPickupMidName()) {
+				$order->getOrderAddress()->getPickupMidName($order->getUserId()->getMidName());
+			}
+			if (! $order->getOrderAddress()->getPickupLastName()) {
+				$order->getOrderAddress()->setPickupLastName($order->getUserId()->getLastName());
+			}
+			if (! $order->getOrderAddress()->getPickupAddressLine1()) {
+				$order->getOrderAddress()->setPickupAddressLine1('Not Given');
+			}
+			if (! $order->getOrderAddress()->getPickupContactNumber()) {
+				$contact = $em->getRepository('NetFlexUserBundle:Contact')->findUserContact($order->getUserId()->getId());
+				if (! $contact) {
+					$order->getOrderAddress()->setPickupContactNumber('Not Found');
+				} else {
+					$order->getOrderAddress()->setPickupContactNumber($contact['contactNumber']);
+				}
+			}
+			if (! $order->getOrderAddress()->getPickupZipCode()) {
+				$order->getOrderAddress()->setPickupZipCode('Not Given');
+			}
+			
 			/**
 			 * Validate.
 			 */

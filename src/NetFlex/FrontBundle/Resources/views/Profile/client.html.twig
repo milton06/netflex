@@ -4,13 +4,42 @@
 {% endblock %}
 {% block pageStyles %}
     {{ parent() }}
+	{% stylesheets 'bundles/netflexfront/css/jquery.auto-complete.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
     <style>
-        #gdServerFault, #cpServerFault{
+        #gdServerFault, #cpServerFault, .aServerFault{
             color: #ff3333;
         }
         .validationError{
             color: #ff3333;
             margin-left: 5px;
+        }
+	    .aValidationError{
+		    color: #ff3333;
+		    font-size:12px;
+	    }
+        .ppValidationError{
+	        color: #ff3333;
+        }
+        .btn-file {
+	        position: relative;
+	        overflow: hidden;
+        }
+        .btn-file input[type=file] {
+	        position: absolute;
+	        top: 0;
+	        right: 0;
+	        min-width: 100%;
+	        min-height: 100%;
+	        font-size: 100px;
+	        text-align: right;
+	        filter: alpha(opacity=0);
+	        opacity: 0;
+	        outline: none;
+	        background: white;
+	        cursor: inherit;
+	        display: block;
         }
     </style>
 {% endblock %}
@@ -33,11 +62,27 @@
 					<div class="row">
 						<div id="sidebar">
 							<div class="accImg">
-								{% image '@NetFlexFrontBundle/Resources/public/images/myaccount/myAccPic.jpg' %}
-									<img src="{{ asset_url }}" alt="{{ client.username }}-profile-pic">
-								{% endimage %}
+								{% if client.profileImage is empty %}
+									{% image '@NetFlexFrontBundle/Resources/public/images/noImage.png' %}
+										<img src="{{ asset_url }}" alt="{{ client.username }}-profile-pic">
+									{% endimage %}
+								{% else %}
+									<img src="{{ asset(client.profileImage) }}" alt="{{ client.username }}-profile-pic">
+								{% endif %}
 							</div>
-							<div class="editpic"><a href="#">Edit Picture</a></div>
+							<div class="editpic clearfix"><a id="editImage" href="javascript:void(0);">Edit Picture</a></div>
+							<div id="uploadImageContainer" {{ (0 < ppForm.profileImage.vars.errors|length) ? '' : 'style="display:none"' }}>
+							{{ form_start(ppForm) }}
+								<span class="btn btn-success btn-file">
+		                            <i class="fa fa-plus"></i>
+		                            <span>Add file...</span>
+									{{ form_widget(ppForm.profileImage, { 'id': 'profileImage', 'required': false }) }}
+		                        </span>
+								<span class="ppValidationError">{{ form_errors(ppForm.profileImage) }}</span>
+								<input type="submit" value="upload" class="btn btn-primary">
+								<a href="javascript:void(0);" id="cancelImageUpload" class="btn btn-warning"><i class="fa fa-undo"></i> Cancel</a>
+							{{ form_end(ppForm) }}
+							</div>
 							<ul class="myaccBtn">
 								<li><a href="javascript:void(0);">My Consignments</a></li>
 								<li><a href="javascript:void(0);">Track a Shipment</a></li>
@@ -276,130 +321,273 @@
                         </ul>
                     </div>
                     <!--heading-->
-                    {% if clientBillingAddresses %}
-                        {% for key, clientBillingAddress in clientBillingAddresses %}
-                            <div class="editBlk-1">
-                                <div class="billingAddress">
-                                    <div class="editformblk clearfix">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <label>{{ clientBillingAddress.addressLine1 }}, {{ clientBillingAddress.stateId.name }}-{{ clientBillingAddress.zipCode }}</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="row">
-                                                {% if clientBillingAddress.isPrimary %}
-                                                    <div class="default">Default Billing Address</div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2">
-                                            <div class="row">
-                                                <div class="edit">
-                                                    <a class="editBillAdd" href="javascript:void(0)">edit</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{ form_start(baForms[key], { 'action': url('client_profile_page'), 'attr': { 'class': 'baForms', 'novalidate': 'novalidate', 'style': 'display: none;' } }) }}
-                                <div class="billingAddForm clearfix">
-                                    <table width="100%" cellpadding="0" cellspacing="0">
-                                        <tr>
-                                            <!--left-->
-                                            <td valign="top" class="billAddLeft">
-                                                <table width="100%" cellpadding="0" cellspacing="0">
-                                                    <tr>
-                                                        <td>
-                                                            {{ form_widget(baForms[key].addressLine1, { 'attr': { 'class': 'addressLine1', 'placeholder': 'Address Line 1' } }) }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            {{ form_widget(baForms[key].addressLine2, { 'attr': { 'class': 'addressLine2', 'placeholder': 'Address Line 2' } }) }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            {{ form_widget(baForms[key].countryId, { 'attr': { 'class': 'countryId' } }) }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <table width="100%" cellpadding="0" cellspacing="0" width="48%">
-                                                                <tr>
-                                                                    <td class="textLeft">
-                                                                        {{ form_widget(baForms[key].stateId, { 'attr': { 'class': 'stateId' } }) }}
-                                                                    </td>
-                                                                    <td class="textRight">
-                                                                        {{ form_widget(baForms[key].cityId, { 'attr': { 'class': 'cityId' } }) }}
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                            <!--left-->
-                                            <!--right-->
-                                            <td valign="top" class="billAddRight">
-                                                <table width="100%" cellpadding="0" cellspacing="0">
-                                                    <tr>
-                                                        <td>
-                                                            {{ form_widget(baForms[key].zipCode, { 'attr': { 'class': 'zipCode' } }) }}
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                            <!--right-->
-                                        </tr>
-                                        <!--default delete save-->
-                                        <tr>
-                                            <td class="defDelSave">
-                                                <div class="col-lg-6">
-                                                    <div class="row">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                {{ form_widget(baForms[key].isPrimary, { 'attr': { 'class': 'zipCode' } }) }}
-                                                                <span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
-                                                                Default Billing Address
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <div class="row">
-                                                        <div class="delAdd">
-                                                            <a href="javascript:void(0);">Delete Address</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-2">
-                                                    <div class="row">
-                                                        <div class="savecancel">
-                                                            <ul>
-                                                                <li><a href="javascript:void(0);" class="updateBillingAddress">save</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <!--default delete save-->
-                                    </table>
-                                </div>
-                                {{ form_end(baForms[key]) }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    <!--add more-->
-                    <div id="addMoreAddContent">
-                    </div>
-                    <div class="billAddMore">
-                        <a href="javascript:void(0)" id="addMoreAdd"><i class="fa fa-plus"></i>&nbsp;&nbsp;add more</a>
-                    </div>
-                    <!--add more-->
-                    <!--billing address-->
+					{{ form_start(aForm, { 'attr': { 'id': 'aForm', 'novalidate': 'novalidate' } }) }}
+						{% if aForm.addresses %}
+							{% for key, address in aForm.addresses if 1 == address.vars.value.addressTypeId.id %}
+								<div class="editBlk-1">
+									<div class="row aServerFault message" style="display: none;">
+										<div class="col-lg-12">
+											Server error encountered.
+										</div>
+									</div>
+									<div class="billingAddress">
+										<div class="editformblk clearfix">
+											<div class="col-lg-6">
+												<div class="row">
+													<label>{{ address.vars.value.addressLine1 }}, {{ address.vars.value.stateId.name }}-{{ address.vars.value.zipCode }}</label>
+												</div>
+											</div>
+											<div class="col-lg-4">
+												<div class="row">
+													{% if address.vars.value.isPrimary %}
+														<div class="default">Default Billing Address</div>
+													{% endif %}
+												</div>
+											</div>
+											<div class="col-lg-2">
+												<div class="row">
+													<div class="edit">
+														<a class="editBillAdd" href="javascript:void(0)">edit</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="billingAddForm clearfix" style="display: none;">
+										
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<!--left-->
+												<td valign="top" class="billAddLeft">
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td>
+																<input type="hidden" name="addressId[{{ address.vars.value.id }}]" value="{{ address.vars.value.id }}" class="addressId">
+																{{ form_widget(address.addressTypeId, { 'attr': { 'class': 'addressTypeId' } }) }}
+																{{ form_widget(address.addressLine1, { 'attr': { 'class': 'addressLine1', 'placeholder': 'Address Line 1' } }) }}
+															</td>
+														</tr>
+														<tr>
+															<td>
+																{{ form_widget(address.addressLine2, { 'attr': { 'class': 'addressLine2', 'placeholder': 'Address Line 2' } }) }}
+															</td>
+														</tr>
+														<tr>
+															<td>
+																{{ form_widget(address.countryId, { 'attr': { 'class': 'countryId' } }) }}
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<table width="100%" cellpadding="0" cellspacing="0" width="48%">
+																	<tr>
+																		<td class="textLeft">
+																			{{ form_widget(address.stateId, { 'attr': { 'class': 'stateId' } }) }}
+																		</td>
+																		<td class="textRight">
+																			{{ form_widget(address.cityId, { 'attr': { 'class': 'cityId' } }) }}
+																		</td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<!--left-->
+												<!--right-->
+												<td valign="top" class="billAddRight">
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td>
+																{{ form_widget(address.zipCode, { 'attr': { 'class': 'zipCode', 'placeholder': 'Zip Code' } }) }}
+															</td>
+														</tr>
+													</table>
+												</td>
+												<!--right-->
+											</tr>
+											<!--default delete save-->
+											<tr>
+												<td class="defDelSave">
+													<div class="col-lg-6">
+														<div class="row">
+															<div class="checkbox">
+																<label>
+																	{{ form_widget(address.isPrimary, { 'attr': { 'class': 'isPrimary' } }) }}
+																	<span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+																	Default Billing Address
+																</label>
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-4">
+														<div class="row">
+															<div class="delAdd">
+																<a href="javascript:void(0);" class="deleteAddress">Delete Address</a>
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-2">
+														<div class="row">
+															<div class="savecancel">
+																<ul>
+																	<li><a href="javascript:void(0);" class="updateBillingAddress">save</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+											<!--default delete save-->
+										</table>
+									</div>
+								</div>
+							{% endfor %}
+							<!--add more-->
+							<div id="addMoreBillingAddresses" data-prototype="{{ include('NetFlexFrontBundle:Profile:address_prototype.html.twig', { 'address': aForm.addresses.vars.prototype })|e }}">
+							</div>
+							<div class="billAddMore">
+								<a href="javascript:void(0)" id="addMoreBillingAddressesButton"><i class="fa fa-plus"></i>&nbsp;&nbsp;add Another</a>
+							</div>
+							<!--add more-->
+							<!--billing address-->
+							<!--pickup address-->
+							<!--heading-->
+							<div class="editHeading-1 clearfix">
+								<ul>
+									<li><h2>Pickup Address</h2></li>
+								</ul>
+							</div>
+							<!--heading-->
+							{% for address in aForm.addresses if 2 == address.vars.value.addressTypeId.id %}
+								<div class="editBlk-1">
+									<div class="billingAddress">
+										<div class="editformblk clearfix">
+											<div class="col-lg-6">
+												<div class="row">
+													<label>{{ address.vars.value.addressLine1 }}, {{ address.vars.value.stateId.name }}-{{ address.vars.value.zipCode }}</label>
+												</div>
+											</div>
+											<div class="col-lg-4">
+												<div class="row">
+													{% if address.vars.value.isPrimary %}
+														<div class="default">Default Pickup Address</div>
+													{% endif %}
+												</div>
+											</div>
+											<div class="col-lg-2">
+												<div class="row">
+													<div class="edit">
+														<a class="editBillAdd" href="javascript:void(0)">edit</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="billingAddForm clearfix" style="display: none;">
+										<div class="row aServerFault message" style="display: none;">
+											<div class="col-lg-12">
+												Server error encountered.
+											</div>
+										</div>
+										<table width="100%" cellpadding="0" cellspacing="0">
+											<tr>
+												<!--left-->
+												<td valign="top" class="billAddLeft">
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td>
+																<input type="hidden" name="addressId[{{ address.vars.value.id }}]" value="{{ address.vars.value.id }}" class="addressId">
+																{{ form_widget(address.addressTypeId, { 'attr': { 'class': 'addressTypeId' } }) }}
+																{{ form_widget(address.addressLine1, { 'attr': { 'class': 'addressLine1', 'placeholder': 'Address Line 1' } }) }}
+															</td>
+														</tr>
+														<tr>
+															<td>
+																{{ form_widget(address.addressLine2, { 'attr': { 'class': 'addressLine2', 'placeholder': 'Address Line 2' } }) }}
+															</td>
+														</tr>
+														<tr>
+															<td>
+																{{ form_widget(address.countryId, { 'attr': { 'class': 'countryId' } }) }}
+															</td>
+														</tr>
+														<tr>
+															<td>
+																<table width="100%" cellpadding="0" cellspacing="0" width="48%">
+																	<tr>
+																		<td class="textLeft">
+																			{{ form_widget(address.stateId, { 'attr': { 'class': 'stateId' } }) }}
+																		</td>
+																		<td class="textRight">
+																			{{ form_widget(address.cityId, { 'attr': { 'class': 'cityId' } }) }}
+																		</td>
+																	</tr>
+																</table>
+															</td>
+														</tr>
+													</table>
+												</td>
+												<!--left-->
+												<!--right-->
+												<td valign="top" class="billAddRight">
+													<table width="100%" cellpadding="0" cellspacing="0">
+														<tr>
+															<td>
+																{{ form_widget(address.zipCode, { 'attr': { 'class': 'zipCode', 'placeholder': 'Zip Code' } }) }}
+															</td>
+														</tr>
+													</table>
+												</td>
+												<!--right-->
+											</tr>
+											<!--default delete save-->
+											<tr>
+												<td class="defDelSave">
+													<div class="col-lg-6">
+														<div class="row">
+															<div class="checkbox">
+																<label>
+																	{{ form_widget(address.isPrimary, { 'attr': { 'class': 'isPrimary' } }) }}
+																	<span class="cr"><i class="cr-icon glyphicon fa fa-check"></i></span>
+																	Default Billing Address
+																</label>
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-4">
+														<div class="row">
+															<div class="delAdd">
+																<a href="javascript:void(0);" class="deleteAddress">Delete Address</a>
+															</div>
+														</div>
+													</div>
+													<div class="col-lg-2">
+														<div class="row">
+															<div class="savecancel">
+																<ul>
+																	<li><a href="javascript:void(0);" class="updateBillingAddress">save</a></li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</td>
+											</tr>
+											<!--default delete save-->
+										</table>
+									</div>
+								</div>
+							{% endfor %}
+							<!--add more-->
+							<div id="addMorePickupAddresses">
+							</div>
+							<div class="billAddMore">
+								<a href="javascript:void(0)" id="addMorePickupAddressesButton"><i class="fa fa-plus"></i>&nbsp;&nbsp;add Another</a>
+							</div>
+							<!--add more-->
+							<!--pickup address-->
+						{% endif %}
+					{{ form_end(aForm) }}
 				</div>
 				<!--information-->
 			</div>
@@ -411,12 +599,15 @@
 {% endblock %}
 {% block pageScripts %}
 	{{ parent() }}
-	{% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js' %}
+	{% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js'
+		'@NetFlexFrontBundle/Resources/public/js/jquery.auto-complete.min.js' %}
 		<script src="{{ asset_url }}"></script>
 	{% endjavascripts %}
 	<script>
 		$("#usual1 ul").idTabs();
 		$(document).ready(function() {
+			var existingAddressesCount = $(document).find(".billingAddForm").length;
+			
 			$("#basicInfoEdit, #basicInfoCancel").on("click", function(e) {
 				$("#basicInfo, #basicInfo1").toggle();
 			});
@@ -487,40 +678,251 @@
             });
 
             $(".editBillAdd").click(function(){
-                console.log($(this).parentsUntil(".editBlk-1").next());
                 $(this).parentsUntil(".editBlk-1").next().toggle();
             });
             $(".updateBillingAddress").on("click", function(e) {
-                $.ajax({
-                    url: $(this).closest("form").attr("action"),
-                    type: "post",
-                    dataType: "json",
-                    data: $(this).closest("form").serialize(),
-                    beforeSend: function(jqXHR, settings) {
-                        //
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        //
-                    },
-                    success: function(data, textStatus,jqXHR) {
-                        //
-                    },
-                    complete: function(jqXHR, textStatus) {
-                        //
-                    }
-                });
+	            var element = $(this);
+	            if (! $(this).hasClass("disabled")) {
+		            $.ajax({
+			            url: "{{ url('update_client_address') }}",
+			            type: "post",
+			            dataType: "json",
+			            data: {
+				            'userId': "{{ client.id }}",
+				            'addressId': $(this).closest(".billingAddForm").find(".addressId").val(),
+				            'addressTypeId': $(this).closest(".billingAddForm").find(".addressTypeId").val(),
+				            'addressLine1': $(this).closest(".billingAddForm").find(".addressLine1").val(),
+				            'addressLine2': $(this).closest(".billingAddForm").find(".addressLine2").val(),
+				            'countryId': $(this).closest(".billingAddForm").find(".countryId").val(),
+				            'stateId': $(this).closest(".billingAddForm").find(".stateId").val(),
+				            'cityId': $(this).closest(".billingAddForm").find(".cityId").val(),
+				            'zipCode': $(this).closest(".billingAddForm").find(".zipCode").val(),
+				            'isPrimary': ($(this).closest(".billingAddForm").find(".isPrimary").prop("checked")) ? 1 : 0
+			            },
+			            beforeSend: function(jqXHR, settings) {
+				            $(element).addClass('disabled');
+				            $(element).closest(".billingAddForm").find(".aServerFault").hide();
+				            $(element).closest(".billingAddForm").find(".aValidationError").remove();
+			            },
+			            error: function(jqXHR, textStatus, errorThrown) {
+				            $(element).closest(".billingAddForm").find(".aServerFault").show();
+			            },
+			            success: function(data, textStatus,jqXHR) {
+				            if (! data.status) {
+					            $.each(data.errorList, function(key, value) {
+						            if ("isPrimary" === key) {
+							            $(element).closest(".billingAddForm").find("." + key).parentsUntil(".col-lg-6").eq(2).after("<span class='aValidationError'>" + value + "</span>");
+						            } else {
+							            $(element).closest(".billingAddForm").find("." + key).after("<span class='aValidationError'>" + value + "</span>");
+						            }
+					            });
+				            } else {
+					            location.reload();
+				            }
+			            },
+			            complete: function(jqXHR, textStatus) {
+				            $(element).removeClass('disabled');
+			            }
+		            });
+	            }
             });
-		});
-		$(document).ready(function () {
 			
-
-			
-			$("#addMoreAdd").click(function(){
-				$("#addMoreAddContent").toggle();
+			$(".deleteAddress").on("click", function() {
+				if (! $(this).hasClass("disabled")) {
+					$.ajax({
+						url: "{{ url('delete_client_address') }}",
+						type: "post",
+						dataType: "json",
+						data: {
+							'userId': "{{ client.id }}",
+							'addressId': $(this).closest(".billingAddForm").find(".addressId").val()
+						},
+						beforeSend: function(jqXHR, settings) {
+							$(this).addClass('disabled');
+							$(this).closest(".billingAddForm").find(".aServerFault").hide();
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							$(this).closest(".billingAddForm").find(".aServerFault").show();
+						},
+						success: function(data, textStatus,jqXHR) {
+							location.reload();
+						},
+						complete: function(jqXHR, textStatus) {
+							$(this).removeClass('disabled');
+						}
+					});
+				}
 			});
 			
-			$("#addMorePick").click(function(){
-				$("#addMorepickUpContent").toggle();
+			$("#addMoreBillingAddressesButton").on("click", function() {
+				var prototype = $("#addMoreBillingAddresses").data("prototype");
+				prototype = prototype.replace("/__name__/", existingAddressesCount);
+				$("#addMoreBillingAddresses").append(prototype);
+				$("#addMoreBillingAddresses").find(".addressTypeId").val(1);
+				$(this).hide();
+			});
+			
+			$("#addMoreBillingAddresses").on("click", ".createAddress", function(e) {
+				var element = $(this);
+				if (! $(this).hasClass('disabled')) {
+					$.ajax({
+						url: "{{ url('add_client_address') }}",
+						type: "post",
+						dataType: "json",
+						data: {
+							'userId': "{{ client.id }}",
+							'addressTypeId': $(this).closest(".billingAddForm").find(".addressTypeId").val(),
+							'addressLine1': $(this).closest(".billingAddForm").find(".addressLine1").val(),
+							'addressLine2': $(this).closest(".billingAddForm").find(".addressLine2").val(),
+							'countryId': $(this).closest(".billingAddForm").find(".countryId").val(),
+							'stateId': $(this).closest(".billingAddForm").find(".stateId").val(),
+							'cityId': $(this).closest(".billingAddForm").find(".cityId").val(),
+							'zipCode': $(this).closest(".billingAddForm").find(".zipCode").val(),
+							'isPrimary': ($(this).closest(".billingAddForm").find(".isPrimary").prop("checked")) ? 1 : 0
+						},
+						beforeSend: function(jqXHR, settings) {
+							$(element).addClass('disabled');
+							$(element).closest(".billingAddForm").find(".aServerFault").hide();
+							$(element).closest(".billingAddForm").find(".aValidationError").remove();
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							$(this).closest(".billingAddForm").find(".aServerFault").show();
+						},
+						success: function(data, textStatus,jqXHR) {
+							if (! data.status) {
+								$.each(data.errorList, function(key, value) {
+									if ("isPrimary" === key) {
+										$(element).closest(".billingAddForm").find("." + key).parentsUntil(".col-lg-6").eq(2).after("<span class='aValidationError'>" + value + "</span>");
+									} else {
+										$(element).closest(".billingAddForm").find("." + key).after("<span class='aValidationError'>" + value + "</span>");
+									}
+								});
+							} else {
+								location.reload();
+							}
+						},
+						complete: function(jqXHR, textStatus) {
+							$(element).removeClass('disabled');
+						}
+					});
+				}
+			});
+			
+			$("#addMoreBillingAddresses").on("click", ".deleteAddress", function(e) {
+				$("#addMoreBillingAddresses").empty();
+				$("#addMoreBillingAddressesButton").show();
+			});
+			
+			$("#addMorePickupAddressesButton").on("click", function() {
+				var prototype = $("#addMoreBillingAddresses").data("prototype");
+				prototype = prototype.replace("/__name__/", existingAddressesCount);
+				$("#addMorePickupAddresses").append(prototype);
+				$("#addMorePickupAddresses").find(".addressTypeId").val(2);
+				$(this).hide();
+			});
+			
+			$("#addMorePickupAddresses").on("click", ".createAddress", function(e) {
+				var element = $(this);
+				if (! $(this).hasClass('disabled')) {
+					$.ajax({
+						url: "{{ url('add_client_address') }}",
+						type: "post",
+						dataType: "json",
+						data: {
+							'userId': "{{ client.id }}",
+							'addressTypeId': $(this).closest(".billingAddForm").find(".addressTypeId").val(),
+							'addressLine1': $(this).closest(".billingAddForm").find(".addressLine1").val(),
+							'addressLine2': $(this).closest(".billingAddForm").find(".addressLine2").val(),
+							'countryId': $(this).closest(".billingAddForm").find(".countryId").val(),
+							'stateId': $(this).closest(".billingAddForm").find(".stateId").val(),
+							'cityId': $(this).closest(".billingAddForm").find(".cityId").val(),
+							'zipCode': $(this).closest(".billingAddForm").find(".zipCode").val(),
+							'isPrimary': ($(this).closest(".billingAddForm").find(".isPrimary").prop("checked")) ? 1 : 0
+						},
+						beforeSend: function(jqXHR, settings) {
+							$(element).addClass('disabled');
+							$(element).closest(".billingAddForm").find(".aServerFault").hide();
+							$(element).closest(".billingAddForm").find(".aValidationError").remove();
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							$(element).closest(".billingAddForm").find(".aServerFault").show();
+						},
+						success: function(data, textStatus,jqXHR) {
+							if (! data.status) {
+								if ("isPrimary" === key) {
+									$(element).closest(".billingAddForm").find("." + key).parentsUntil(".col-lg-6").eq(2).after("<span class='aValidationError'>" + value + "</span>");
+								} else {
+									$(element).closest(".billingAddForm").find("." + key).after("<span class='aValidationError'>" + value + "</span>");
+								}
+							} else {
+								location.reload();
+							}
+						},
+						complete: function(jqXHR, textStatus) {
+							$(element).removeClass('disabled');
+						}
+					});
+				}
+			});
+			
+			$("#addMorePickupAddresses").on("click", ".deleteAddress", function(e) {
+				$("#addMorePickupAddresses").empty();
+				$("#addMorePickupAddressesButton").show();
+			});
+			
+			$(".countryId").autoComplete({
+				minChars: 1,
+				delay: 50,
+				source: function(term, suggest) {
+					$.getJSON("{{ url('get_country_list') }}", { "countryHint": term }, function(data){ suggest(data.countryList) });
+				}
+			});
+			$(".stateId").autoComplete({
+				minChars: 1,
+				delay: 50,
+				source: function(term, suggest){
+					$.ajax({
+						url: "{{ url('get_state_list') }}",
+						method: "get",
+						dataType: "json",
+						data: {
+							"countryName": $(".stateId:focus").closest(".billingAddForm").find(".countryId").val(),
+							"stateHint": term
+						},
+						success: function(data) {
+							suggest(data.stateList)
+						}
+					});
+				}
+			});
+			$(".cityId").autoComplete({
+				minChars: 1,
+				delay: 50,
+				source: function(term, suggest){
+					$.ajax({
+						url: "{{ url('get_city_list') }}",
+						method: "get",
+						dataType: "json",
+						data: {
+							"countryName": $(".cityId:focus").closest(".billingAddForm").find(".countryId").val(),
+							"stateName": $(".cityId:focus").closest(".billingAddForm").find(".stateId").val(),
+							"cityHint": term
+						},
+						success: function(data) {
+							suggest(data.cityList)
+						}
+					});
+				}
+			});
+			
+			$("#editImage").on("click", function() {
+				$(".ppValidationError").remove();
+				$("#uploadImageContainer").toggle();
+			});
+			$("#cancelImageUpload").on("click", function() {
+				$(".ppValidationError").remove();
+				$("#profileImage").val("");
+				$("#uploadImageContainer").hide();
 			});
 		});
 	</script>

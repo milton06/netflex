@@ -57,15 +57,22 @@
 								<li><a href="javascript:void(0);">Career</a></li>
 								<li><a href="javascript:void(0);">Contact</a></li>
 								<!--login-->
-								{{ include('NetFlexFrontBundle:LayoutPartial:user_login.html.twig') }}
+								{% if app.user %}
+									{{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}
+								{% else %}
+									{{ render(controller('NetFlexFrontBundle:ClientAuth:authenticateClient')) }}
+								{% endif %}
 								<!--login-->
 								<!--register-->
-								<li class="register">
-									<a class="fancybox" href="#inline1">Register</a>
-									<div id="inline1" class="clearfix" style="width:370px;display: none;">
-										{{ render(controller('NetFlexFrontBundle:ClientRegistration:registerClient')) }}
-									</div>
-								</li>
+								{% if app.user %}
+								{% else %}
+									<li class="register">
+										<a class="fancybox" href="#inline1">Client Register</a>
+										<div id="inline1" class="clearfix" style="width:370px;display: none;">
+											{{ render(controller('NetFlexFrontBundle:ClientRegistration:registerClient')) }}
+										</div>
+									</li>
+								{% endif %}
 								<!--register-->
 							</ul>
 						</div>

@@ -18,7 +18,7 @@ class StringToStateTransformer implements DataTransformerInterface
 	public function transform($state)
 	{
 		if (null === $state) {
-			return '';
+			return $this->em->getRepository('NetFlexLocationBundle:State')->findOneBy(['countryId' => 1, 'id' => 41])->getName();
 		}
 		
 		return $state->getName();

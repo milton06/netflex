@@ -287,6 +287,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 							->orderBy('cities.name', 'ASC');
 					}
 				},
+				'data' => (($formData) && ($formData->getPickupCityId())) ? $formData->getPickupCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1]),
 			])
 			->add('pickupZipCode', null, [
 				'data' => (($formData) && ($formData->getPickupZipCode())) ? $formData->getPickupZipCode() : '',

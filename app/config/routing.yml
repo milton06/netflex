@@ -16,6 +16,9 @@ net_flex_user:
 net_flex_dashboard_logout:
     path: /dashboard/logout
 
+net_flex_client_logout:
+    path: /client/logout
+
 net_flex_shipment_track:
     resource: "@NetFlexShipmentTrackBundle/Controller/"
     type:     annotation
