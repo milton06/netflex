@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use NetFlex\DeliveryChargeBundle\Entity\Currency;
 
-class CurrencyType extends AbstractType
+class CurrencyType1 extends AbstractType
 {
 	/**
      * {@inheritdoc}
