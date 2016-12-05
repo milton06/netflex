@@ -38,7 +38,7 @@ class OrderForClientFromDashboardType extends OrderTransactionType
         ])
         ->add('deliveryChargeId', HiddenType::class);
 	    
-	    if ('edit_order' === $this->request->get('_route')) {
+	    if (in_array($this->request->get('_route'), ['edit_order', 'client_book_a_shipment', 'client_place_shipment_order'])) {
 		    //
 	    } else {
 		    $builder->add('userId', HiddenType::class, [
