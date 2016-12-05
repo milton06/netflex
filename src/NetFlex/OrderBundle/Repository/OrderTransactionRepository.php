@@ -341,4 +341,67 @@ class OrderTransactionRepository extends EntityRepository
 		
 		return $result;
 	}
+	
+	public function countClientOrders($clientId, $fromDateObject, $toDateObject)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		$qb->select('O')
+			->from('NetFlexOrderBundle:OrderTransaction', 'O');
+		
+		if ($fromDateObject && ! $toDateObject) {
+			$qb->andWhere('O.createdOn >= :fromDateObject');
+			$qb->setParameter('fromDateObject', $fromDateObject);
+		} elseif (! $fromDateObject && $toDateObject) {
+			$qb->andWhere('O.createdOn <= :toDateObject');
+			$qb->setParameter('toDateObject', $toDateObject);
+		} elseif ($fromDateObject && $toDateObject) {
+			$qb->andWhere('O.createdOn between :fromDateObject and :toDateObject');
+			$qb->setParameters(['fromDateObject' => $fromDateObject, 'toDateObject' => $toDateObject]);
+		} else {
+			//
+		}
+		
+		$qb->andWhere($qb->expr()->eq('O.userId', ':userId'));
+		$qb->setParameter(':userId', $clientId);
+		
+		$qb->orderBy('O.id', 'DESC');
+		
+		$result = $qb->getQuery()->getResult();
+		
+		return count($result);
+	}
+	
+	public function findClientOrders($offset, $limit, $clientId, $fromDateObject, $toDateObject)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		$qb->select('O')
+			->from('NetFlexOrderBundle:OrderTransaction', 'O');
+		
+		if ($fromDateObject && ! $toDateObject) {
+			$qb->andWhere('O.createdOn >= :fromDateObject');
+			$qb->setParameter('fromDateObject', $fromDateObject);
+		} elseif (! $fromDateObject && $toDateObject) {
+			$qb->andWhere('O.createdOn <= :toDateObject');
+			$qb->setParameter('toDateObject', $toDateObject);
+		} elseif ($fromDateObject && $toDateObject) {
+			$qb->andWhere('O.createdOn between :fromDateObject and :toDateObject');
+			$qb->setParameters(['fromDateObject' => $fromDateObject, 'toDateObject' => $toDateObject]);
+		} else {
+			//
+		}
+		
+		$qb->andWhere($qb->expr()->eq('O.userId', ':userId'));
+		$qb->setParameter(':userId', $clientId);
+		
+		$qb->orderBy('O.id', 'DESC');
+		
+		$qb->setFirstResult($offset);
+		$qb->setMaxResults($limit);
+		
+		$result = $qb->getQuery()->getResult();
+		
+		return $result;
+	}
 }

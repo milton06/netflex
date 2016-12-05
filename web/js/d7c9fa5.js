@@ -356,12 +356,11 @@ jQuery(document).ready(function() {
 	});
 	
 	jQuery("#prev-button").on("click", function(e) {
-		e.preventDefault();
-		
+		jQuery("#tab-shipment-addresses > a").removeClass("selected");
 		jQuery("#tab-shipment-addresses > a").addClass("inactiveLink");
 		jQuery("#tab-booking-options > a").removeClass("inactiveLink");
 		jQuery("#tab-booking-options > a").addClass("selected");
-		$("#usual1 ul").idTabs("tab-booking-options");
+		jQuery("#usual1 ul").idTabs("tab-booking-options");
 	});
 	
 	jQuery(".country-selectors").on("change", function(e) {
@@ -509,10 +508,11 @@ jQuery(document).ready(function() {
 						jQuery("#shipping-city").val(destinationCityId);
 						jQuery("#shipping-zip-code").val(destinationZipCode);
 						
+						jQuery("#tab-booking-options > a").removeClass("selected");
 						jQuery("#tab-booking-options > a").addClass("inactiveLink");
 						jQuery("#tab-shipment-addresses > a").removeClass("inactiveLink");
 						jQuery("#tab-shipment-addresses > a").addClass("selected");
-						$("#usual1 ul").idTabs("tab-shipment-addresses");
+						jQuery("#usual1 ul").idTabs("tab-shipment-addresses");
 					}
 				},
 				error: function() {

@@ -124,7 +124,7 @@
                                 <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
                             </tr>
                             <tr>
-                                <td>Ph: {{ orderDetails.orderAddress.billingZipCode }}</td>
+                                <td>Ph: {{ orderDetails.orderAddress.billingContactNumber }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -147,7 +147,7 @@
                                 <td>{{ orderDetails.orderAddress.shippingCityId.name ~ ', ' ~ orderDetails.orderAddress.shippingStateId.name ~ ' - ' ~ orderDetails.orderAddress.shippingZipCode }}</td>
                             </tr>
                             <tr>
-                                <td>Ph: {{ orderDetails.orderAddress.shippingZipCode }}</td>
+                                <td>Ph: {{ orderDetails.orderAddress.shippingContactNumber }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -163,6 +163,16 @@
             <h4 class="modal-title">Print Invoice</h4>
         </div>
         <div id="printThis" class="modal-body">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    {% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
+                    <img src="{{ asset_url }}" alt="Netflex-logo">
+                    {% endimage %}
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div class="row"><div class="col-md-12">&nbsp;</div></div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="table-responsive">
@@ -304,7 +314,7 @@
                                         <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Ph: {{ orderDetails.orderAddress.billingZipCode }}</td>
+                                        <td>Ph: {{ orderDetails.orderAddress.billingContactNumber }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -327,7 +337,7 @@
                                         <td>{{ orderDetails.orderAddress.shippingCityId.name ~ ', ' ~ orderDetails.orderAddress.shippingStateId.name ~ ' - ' ~ orderDetails.orderAddress.shippingZipCode }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Ph: {{ orderDetails.orderAddress.shippingZipCode }}</td>
+                                        <td>Ph: {{ orderDetails.orderAddress.shippingContacNumber }}</td>
                                     </tr>
                                 </tbody>
                             </table>

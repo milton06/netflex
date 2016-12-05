@@ -326,6 +326,10 @@
 													<li>
 														<a href="{{ url('view_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-eye"></i> View</a>
 													</li>
+													<li class="divider"></li>
+													<li>
+														<a href="{{ url('toggle_order_payment_status', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="clip-checkmark"></i> Change Payment Status</a>
+													</li>
 												</ul>
 											</div>
 										</td>
@@ -338,6 +342,7 @@
 								<td class="center">
 									{% if orders %}
 										<a href="{{ url('delete_order', { 'order_id': '%orderIds%', 'allRouteParameters': allRouteParameters, 'selectedRecordCount': '%selectedRecordCount%', 'totalRecordOnPage': orders|length }) }}" id="bulk-delete-button" class="btn btn-xs btn-bricky tooltips" data-placement="top" data-original-title="Delete selected orders"><i class="clip-remove"></i></a>
+										<a href="{{ url('toggle_order_payment_status', { 'id': '%ids%', 'ref': referrer }) }}" id="bulk-payment-status-toggle-button" class="btn btn-xs btn-primary tooltips" data-placement="top" data-original-title="Toggle payment status for selected orders"><i class="clip-checkmark"></i></a>
 									{% endif %}
 								</td>
 								<td colspan="8" class="center">

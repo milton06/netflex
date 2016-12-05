@@ -830,6 +830,7 @@ ul.activitypagination li a{ font-style: normal; color: #7c7c7c; transition: all 
 ul.activitypagination li a:hover{ color: #3c83bf; text-decoration: none;}
 ul.activitypagination li a.paginum{ width: 26px; height: 26px; background: #ffffff; text-align: center; border-radius: 50%; transition: all 0.5s ease; display: block; line-height: 26px; margin-top: -5px;}
 ul.activitypagination li a.paginum:hover{ background: #de4b4b; color: #ffffff;}
+ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background: #de4b4b; color: #ffffff; text-align: center; border-radius: 50%; transition: all 0.5s ease; display: block; line-height: 26px; margin-top: -5px; }
 
 
 /*=====================CONSIGMENTS======================*/

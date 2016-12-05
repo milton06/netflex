@@ -12,9 +12,9 @@
 					<a href="javascript:void(0);">Book a Shipment</a>
 					<div class="trackSearch">
 						<div class="input-group stylish-input-group">
-							<input type="text" class="form-control" data-watermark="Search or Tracking Number">
+							<input type="text" id="trackingCode" class="form-control" placeholder="Search or Tracking Number">
 							<span class="input-group-addon">
-                                <button type="submit">
+                                <button id="trackingButton" type="submit">
                                     <span class="fa fa-search"></span>
                                 </button>
                             </span>
@@ -25,4 +25,21 @@
 		</div>
 	</div>
 	<!--banner-->
+{% endblock %}
+{% block pageScripts %}
+	{{ parent() }}
+	<script>
+		$(document).ready(function() {
+			$("#trackingButton").on("click", function(e) {
+				e.preventDefault();
+				
+				if ($("#trackingCode").val()) {
+					var trackingUrl = "{{ url('client_view_own_order', { 'awbNumber': '999999999999999' }) }}";
+					trackingUrl = trackingUrl.replace('999999999999999', $("#trackingCode").val().trim());
+					
+					self.location = trackingUrl;
+				}
+			})
+		});
+	</script>
 {% endblock %}

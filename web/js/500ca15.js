@@ -1417,7 +1417,10 @@ var clientOrderList = function() {
 	};
 	
 	var runDatePicker = function () {
-		jQuery('.date-picker').datepicker({
+		jQuery("#order-from-date").datepicker({
+			autoclose: true
+		});
+		jQuery("#order-to-date").datepicker({
 			autoclose: true
 		});
 	};
@@ -1517,5 +1520,42 @@ jQuery("#bulk-delete-button").on("click", function(e) {
 				jQuery("#bulk-record-selector").iCheck("uncheck");
 			}
 		});
+	}
+});
+
+jQuery("#bulk-payment-status-toggle-button").on("click", function(e) {
+	e.preventDefault();
+	
+	var ids = [];
+	var orderPaymentSttausToggleUrl = jQuery(this).attr("href");
+	
+	jQuery(".single-record-selector").each(function() {
+		if (jQuery(this).parent('[class*="icheckbox"]').hasClass("checked")) {
+			ids.push(jQuery(this).val());
+		}
+	});
+	
+	if (0 < ids.length) {
+		swal({
+				title: "Are You Sure To Change Payment Status?",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Yes, proceed!",
+				closeOnConfirm: true,
+			},
+			function(isConfirm){
+				if (isConfirm) {
+					selectedRecordCount = ids.length;
+					ids = ids.join("-");
+					
+					orderPaymentSttausToggleUrl = orderPaymentSttausToggleUrl.replace('%25ids%25', ids);
+					
+					self.location = orderPaymentSttausToggleUrl;
+				} else {
+					jQuery(".single-record-selector").iCheck("uncheck");
+					jQuery("#bulk-record-selector").iCheck("uncheck");
+				}
+			});
 	}
 });

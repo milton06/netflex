@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,6 +20,135 @@ use NetFlex\OrderBundle\Form\OrderForClientFromDashboardType;
 
 class ClientOrderController extends Controller
 {
+	/**
+	 * Renders client consignment page.
+	 *
+	 * @Route("/client/order/list/{page}/{limit}", name="client_own_order_list", defaults={"page": 1, "limit": 5}, requirements={"page": "\d+", "limit": "\d+"})
+	 * @Method({"GET", "POST"})
+	 *
+	 * @param  int     $page
+	 * @param  int     $limit
+	 * @param  Request $request   A request Instance
+	 *
+	 * @return Response           A response instance
+	 */
+	public function renderClintOwnOrderListPageAction($page, $limit, Request $request)
+	{
+		if (! $this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+			return $this->redirectToRoute('home_page');
+		}
+		
+		$clientId = $this->getUser()->getId();
+		$orderRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction');
+		$session = $request->getSession();
+		$paginationService = $this->get('pagination_service');
+		
+		$routeParameters = [
+			'page' => $page,
+			'limit' => $limit,
+		];
+		$routeExtraParameters = $request->query->all();
+		
+		$orderPaginationParams = ['record_per_page' => $limit, 'neighbor' => 1];
+		$neighbor = $orderPaginationParams['neighbor'];
+		$offset = $paginationService->getRecordOffset($page, $limit);
+		
+		$fromDate = (true === $session->has('fromDate')) ? $session->get('fromDate') : '';
+		$toDate = (true === $session->has('toDate')) ? $session->get('toDate') : '';
+		
+		$searchForm = $this->createFormBuilder()
+			->setAction($this->generateUrl('client_own_order_list', [], UrlGeneratorInterface::ABSOLUTE_URL))
+			->setMethod('POST')
+			->add('fromDate', TextType::class, [
+				'attr' => [
+					'placeholder' => 'From:',
+				],
+				'data' => $fromDate,
+			])
+			->add('toDate', TextType::class, [
+				'attr' => [
+					'placeholder' => 'To:',
+				],
+				'data' => $toDate,
+			])
+			->getForm();
+		
+		$searchForm->handleRequest($request);
+		
+		if ($searchForm->isSubmitted()) {
+			$searchData = $searchForm->getData();
+			
+			$session->set('fromDate', $searchData['fromDate']);
+			$session->set('toDate', $searchData['toDate']);
+			
+			return $this->redirectToRoute('client_own_order_list');
+		}
+		
+		$fromDateObject = (! $fromDate) ? null : (\DateTime::createFromFormat('d/m/Y H:i:s', "$fromDate 00:00:00"));
+		$toDateObject = (! $toDate) ? null : (\DateTime::createFromFormat('d/m/Y H:i:s', "$toDate 23:59:59"));
+		
+		$orderCount = $orderRepo->countClientOrders($clientId, $fromDateObject, $toDateObject);
+		
+		$totalPageCount = $paginationService->getTotalPageCount($limit, $orderCount);
+		
+		$orders = $orderRepo->findClientOrders($offset, $limit, $clientId, $fromDateObject, $toDateObject);
+		
+		$pageLinks = $paginationService->getPageLinks($page, $limit, $neighbor, $orderCount, $totalPageCount, 'client_own_order_list', $routeParameters, $routeExtraParameters);
+		
+		return $this->render('NetFlexFrontBundle:Booking:client_order_list.html.twig', [
+			'pageTitle' => 'Client Order List',
+			'searchForm' => $searchForm->createView(),
+			'page' => $page,
+			'limit' => $limit,
+			'orderCount' => $orderCount,
+			'totalPageCount' => $totalPageCount,
+			'orders' => $orders,
+			'pageLinks' => $pageLinks,
+		]);
+	}
+	
+	/**
+	 * @Route("/client/order/exit-from-search", name="exit_from_client_own_order_search")
+	 *
+	 * @param  Request $request
+	 *
+	 * @return RedirectResponse
+	 */
+	public function exitFromClientOwnOrderSearchAction(Request $request)
+	{
+		$session = $request->getSession();
+		
+		$session->remove('fromDate');
+		$session->remove('toDate');
+		
+		return $this->redirectToRoute('client_own_order_list');
+	}
+	
+	/**
+	 * Renders the order view page.
+	 *
+	 * @Route("/client/order/view/{awbNumber}", name="client_view_own_order")
+	 * @Method({"GET"})
+	 *
+	 * @param string  $awbNumber
+	 * @param Request $request   A request instance
+	 *
+	 * @return Response
+	 */
+	public function renderClientViewOwnOrderPageAction($awbNumber, Request $request)
+	{
+		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
+		
+		if (! $orderDetails) {
+			throw $this->createNotFoundException('AWB number does not exist');
+		}
+		
+		return $this->render('NetFlexFrontBundle:Booking:client_order_details.html.twig', [
+			'pageTitle' => 'Order Details',
+			'orderDetails' => $orderDetails,
+		]);
+	}
+	
 	/**
 	 * Renders the booking page.
 	 *

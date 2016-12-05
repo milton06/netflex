@@ -174,7 +174,6 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 			->add('billingZipCode', null, [
 				'data' => (($formData) && ($formData->getBillingZipCode())) ? $formData->getBillingZipCode() : '',
 			])
-				
 			->add('billingEmail', null, [
 				'data' => (($formData) && ($formData->getBillingEmail())) ? $formData->getBillingEmail() : '',
 			])
@@ -226,6 +225,9 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 					}
 				},
 				'data' => (($formData) && ($formData->getShippingCityId())) ? $formData->getShippingCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1]),
+			])
+			->add('shippingZipCode', null, [
+				'data' => (($formData) && ($formData->getShippingZipCode())) ? $formData->getShippingZipCode() : '',
 			]);
 		} else {
 			$form->add('pickupFirstName', null, [
@@ -769,6 +771,9 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 					}
 				},
 				'data' => ($formData['shippingCityId']) ? $this->em->getReference('NetFlexLocationBundle:City', ['id' => $formData['shippingCityId'], 'status' => 1]) : '',
+			])
+			->add('shippingZipCode', null, [
+				'data' => (($formData) && ($formData['shippingZipCode'])) ? $formData['shippingZipCode'] : '',
 			]);
 		}
 	}

@@ -1,4 +1,7 @@
 jQuery(document).ready(function() {
+	var originalPickupZipCode = jQuery("#pickup-zip-code").val();
+	var originalShippingZipCode = jQuery("#shipping-zip-code").val();
+	
 	var validateCheckDeliverabilityForm = function() {
 		var errorCount = 0;
 		jQuery(".errorHandler").hide();
@@ -246,9 +249,11 @@ jQuery(document).ready(function() {
 				
 				jQuery(element).parent().parent().parent().next(".col-md-3").find(".cd-state-selectors").empty().html(stateOptions);
 				if ('cd-source-country' == jQuery(element).attr("id")) {
+					jQuery("#pickup-country").val(countryId);
 					jQuery("#pickup-state").empty().html(stateOptions);
 				}
 				if ('cd-destination-country' == jQuery(element).attr("id")) {
+					jQuery("#shipping-country").val(countryId);
 					jQuery("#shipping-state").empty().html(stateOptions);
 				}
 				
@@ -476,14 +481,20 @@ jQuery(document).ready(function() {
 						jQuery("#order-fuel-surcharge-added-charge").val(deliveryParams.orderFuelSurchargeAddedCharge);
 						jQuery("#order-service-tax-added-charge").val(deliveryParams.orderServiceTaxAddedCharge);
 						jQuery("#order-carrier-risk-added-charge").val(deliveryParams.orderCarrierRiskAddedCharge);
-						jQuery("#pickup-country").val(sourceCountryId);
+						/*jQuery("#pickup-country").val(sourceCountryId);
 						jQuery("#pickup-state").val(sourceStateId);
 						jQuery("#pickup-city").val(sourceCityId);
 						jQuery("#pickup-zip-code").val(sourceZipCode);
 						jQuery("#shipping-country").val(destinationCountryId);
 						jQuery("#shipping-state").val(destinationStateId);
 						jQuery("#shipping-city").val(destinationCityId);
-						jQuery("#shipping-zip-code").val(destinationZipCode);
+						jQuery("#shipping-zip-code").val(destinationZipCode);*/
+						if ((sourceZipCode) && (sourceZipCode !== originalPickupZipCode)) {
+							jQuery("#pickup-zip-code").val(sourceZipCode);
+						}
+						if ((destinationZipCode) && (destinationZipCode !== originalShippingZipCode)) {
+							jQuery("#shipping-zip-code").val(destinationZipCode);
+						}
 						
 						jQuery("#tab-booking-options").addClass('disabled');
 						jQuery("#tab-booking-options > a").removeAttr("data-toggle");

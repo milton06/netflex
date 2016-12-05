@@ -499,7 +499,7 @@ class OrderController extends Controller
 	 *
 	 * @return RedirectResponse
 	 */
-	public function deleteClientAction(Request $request)
+	public function deleteOrderAction(Request $request)
 	{
 		$orderId = $request->query->get('order_id');
 		
@@ -687,5 +687,69 @@ class OrderController extends Controller
 		$session->remove('toDate');
 		
 		return $this->redirect($referrer);
+	}
+	
+	/**
+	 * Toggles payment status for an order.
+	 *
+	 * @Route("/dashboard/order/toggle-payment-status", name="toggle_order_payment_status")
+	 * @Method({"GET"})
+	 *
+	 * @param Request $request A request instance
+	 *
+	 * @return RedirectResponse
+	 */
+	public function toggleOrderPaymentStatusAction(Request $request)
+	{
+		$orderId = $request->query->get('id');
+		$referrer = $request->query->get('ref');
+		
+		if (false === strpos($orderId, '-')) {
+			if (false === $this->toggleOrderPaymentStatus($orderId)) {
+				$this->addFlash('error', 'Payment status couldn\'t be changed');
+			} else {
+				$this->addFlash('success', 'Payment status has been changed successfully');
+			}
+		} else {
+			$orderIds = explode('-', $orderId);
+			$paymentStatusToggleResults = [];
+			foreach ($orderIds as $orderId) {
+				if (false === $this->toggleOrderPaymentStatus($orderId)) {
+					$paymentStatusToggleResults[] = $orderId;
+				}
+			}
+			if ($paymentStatusToggleResults) {
+				if (count($orderIds) === count($paymentStatusToggleResults)) {
+					$this->addFlash('error', 'Payment statuses couldn\'t be changed');
+				} else {
+					$this->addFlash('warning', 'Payment statuses for order IDs: ' . implode(', ', $paymentStatusToggleResults) . ' couldn\'t be changed');
+				}
+			} else {
+				$this->addFlash('success', 'Payment statuses have been changed successfully');
+			}
+		}
+		
+		return $this->redirect($referrer);
+	}
+	
+	protected function toggleOrderPaymentStatus($orderId)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$order = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById($orderId);
+		if (! $order) {
+			return false;
+		}
+		
+		$currentPaymentStatus = $order->getPaymentStatus();
+		$newPaymentStatus = (0 == $currentPaymentStatus) ? 1 : 0;
+		$order->setPaymentStatus($newPaymentStatus);
+		
+		try {
+			$em->persist($order);
+			$em->flush();
+		} catch (\Exception $ex) {
+			return false;
+		}
 	}
 }

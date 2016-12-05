@@ -1,0 +1,186 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+	{{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+	{{ parent() }}
+	{% stylesheets 'bundles/netflexfront/css/datePicker.css' filter='cssrewrite' %}
+		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}">
+	{% endstylesheets %}
+	{% stylesheets 'bundles/netflexfront/css/footable.bootstrap.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
+{% endblock %}
+{% block pageContent %}
+	<div class="container">
+		<div class="tabform clearfix">
+			<div class="TrackHead clearfix">
+				<!--title-->
+				<div class="col-lg-6">
+					<div class="row">
+						<h1><span>My</span> Consignments</h1>
+					</div>
+				</div>
+				<!--title-->
+				<!--button-->
+				<div class="col-lg-6">
+					<div class="row">
+						<ul class="printInvoice">
+							<li><span>{{ app.user.firstName ~ ' ' ~ app.user.lastName }}</span></li>
+						</ul>
+					</div>
+				</div>
+				<!--button-->
+			</div>
+			<!--consigment list-->
+			<div class="consigList clearfix">
+				<ul>
+					<li>
+						<table>
+							<tr>
+								<td colspan="4"><label>List consignments between :</label></td>
+							</tr>
+							<tr>
+								{{ form_start(searchForm, { 'attr': { 'id': 'searchForm' } }) }}
+									<td>
+										{{ form_widget(searchForm.fromDate, { 'id': 'fromDate', 'attr': { 'class': 'date-pick' } }) }}
+									</td>
+									<td class="dateand">&amp;</td>
+									<td>
+										{{ form_widget(searchForm.toDate, { 'id': 'toDate', 'attr': { 'class': 'date-pick' } }) }}
+									</td>
+									<td>
+										<a id="searchButton" class="gobtn" href="javascript:void(0);">go</a>
+										&nbsp;&nbsp;&nbsp;
+										{% if app.session.has('fromDate') %}
+											<a class="gobtn" href="{{ url('exit_from_client_own_order_search') }}">Clear</a>
+										{% endif %}
+									</td>
+								{{ form_end(searchForm) }}
+							</tr>
+						</table>
+					</li>
+					<li>
+						<table>
+							<tr>
+								<td class="listLabel">
+									<label>Listing per page :</label>
+								</td>
+								<td>
+									<div class="tabgrp">
+										<label class="dropdown">
+											<select id="selectPageRecordLimit" class="weight">
+												<option value="5" {{ (5 == limit) ? 'selected="selected"' : '' }}>5</option>
+												<option value="10" {{ (10 == limit) ? 'selected="selected"' : '' }}>10</option>
+												<option value="15" {{ (15 == limit) ? 'selected="selected"' : '' }}>15</option>
+												<option value="20" {{ (20 == limit) ? 'selected="selected"' : '' }}>20</option>
+											</select>
+										</label>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ul>
+			</div>
+			<!--consigment list-->
+			<!--consigment table-->
+			<div class="consigtable clearfix">
+				<table id="hiding-columns-example-2" class="table" data-expand-first="false">
+					<thead>
+					<tr>
+						<th data-type="html" data-visible="true">AWB #</th>
+						<th data-breakpoints="xs">From/Place</th>
+						<th data-breakpoints="xs">To/Place</th>
+						<th data-breakpoints="xs sm">Date/Time of Booking</th>
+						<th data-type="html">Status</th>
+						<th data-type="html" data-breakpoints="xs sm">&nbsp;</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% if orders %}
+						{% for order in orders %}
+							<tr>
+								<td><h2>{{ order.awbNumber }}</h2></td>
+								<td>{{ order.orderAddress.billingFirstName ~ ' ' ~ order.orderAddress.billingLastName }} / {{ order.orderAddress.billingCityId.name }}</td>
+								<td>{{ order.orderAddress.shippingFirstName ~ ' ' ~ order.orderAddress.shippingLastName }} / {{ order.orderAddress.shippingCityId.name }}</td>
+								<td>{{ order.createdOn|date('j / n / Y @ g:i a') }}</td>
+								<td><span class="{{ orderStatusCssClassMap[order.orderStatus] }}">{{ orderStatuses[order.orderStatus] }}</span></td>
+								<td><a href="{{ url('client_view_own_order', { 'awbNumber': order.awbNumber }) }}">Details</a></td>
+							</tr>
+						{% endfor %}
+					{% else %}
+						<tr>
+							<td colspan="6"><h2>{{ noRecordFoundText }}</h2></td>
+						</tr>
+					{% endif %}
+					</tbody>
+				</table>
+				<!--pagination-->
+				<div class="col-lg-12">
+					<div class="row">
+						{% if pageLinks %}
+							<ul class="activitypagination">
+								<li><a href="{{ (1 == page) ? 'javascript:void(0);' : pageLinks.previous }}"><i class="fa fa-angle-left"></i></a></li>
+								{% for key, thisLink in pageLinks.links %}
+									<li><a href="{{ (key == page) ? 'javascript:void(0);' : thisLink }}" class="{{ (key == page) ? 'paginumActive' : 'paginum' }}">{{ key }}</a></li>
+								{% endfor %}
+								<li><a href="{{ (totalPageCount == page) ? 'javascript:void(0);' : pageLinks.next }}"><i class="fa fa-angle-right"></i></a></li>
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+				<!--pagination-->
+			</div>
+			<!--consigment table-->
+		</div>
+	</div>
+	{% block footer %}
+		{{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+	{% endblock %}
+{% endblock %}
+{% block pageScripts %}
+	{{ parent() }}
+	{% javascripts '@NetFlexFrontBundle/Resources/public/js/date.js'
+		'@NetFlexFrontBundle/Resources/public/js/jquery.datePicker.js'
+		'@NetFlexFrontBundle/Resources/public/js/footable.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+	<script>
+		$(function() {
+			var testCallback = function($td, thisDate, month, year) {
+				$td.bind(
+					'click',
+					function() {
+						var d = thisDate.getDate();
+						var dateString = d + "/" + (Number(month)+1) + "/" + year;
+						$("#toDate").dpSetStartDate(dateString);
+					}
+				)
+			}
+			$('#fromDate').datePicker({
+				startDate: '01/01/2000',
+				renderCallback: testCallback,
+			});
+			$('#toDate').datePicker({
+				startDate: '01/01/2000',
+			});
+		});
+		jQuery(function($){
+			$('#hiding-columns-example-1').footable();
+			$('#hiding-columns-example-2').footable();
+		});
+		jQuery(document).ready(function() {
+			jQuery("#selectPageRecordLimit").on("change", function() {
+				var limit = jQuery(this).val();
+				var redirectTo = "{{ url('client_own_order_list', { 'page': 1, 'limit': '9999999999999999' }) }}";
+				redirectTo = redirectTo.replace('9999999999999999', limit);
+				self.location.href = redirectTo;
+			});
+			
+			jQuery("#searchButton").on("click", function() {
+				jQuery("#searchForm").submit();
+			});
+		});
+	</script>
+{% endblock %}
