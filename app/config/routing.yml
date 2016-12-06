@@ -1,3 +1,11 @@
+net_flex_shipment_track_order_shipment_track_record:
+    resource: "@NetFlexShipmentTrackBundle/Controller/OrderShipmentTrackRecordController.php"
+    type:     annotation
+
+net_flex_shipment_track_track_status:
+    resource: "@NetFlexShipmentTrackBundle/Controller/TrackStatusController.php"
+    type:     annotation
+
 net_flex_front:
     resource: "@NetFlexFrontBundle/Controller/"
     type:     annotation

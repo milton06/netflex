@@ -326,6 +326,9 @@
 													<li>
 														<a href="{{ url('view_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-eye"></i> View</a>
 													</li>
+													<li>
+														<a href="{{ url('dashboard_order_shipment_track_list', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="clip-location"></i> Track Order</a>
+													</li>
 													<li class="divider"></li>
 													<li>
 														<a href="{{ url('toggle_order_payment_status', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="clip-checkmark"></i> Change Payment Status</a>

@@ -1,0 +1,74 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                                <th class="center">Operations</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if trackStatuses is empty %}
+                                <tr>
+                                    <td colspan="4" class="center">{{ noRecordFoundText }}</td>
+                                </tr>
+                            {% else %}
+                                {% for trackStatus in trackStatuses %}
+                                    <tr>
+                                        <td>{{ trackStatus.id }}</td>
+                                        <td>{{ trackStatus.name }}</td>
+                                        <td>{{ trackStatus.description }}</td>
+                                        <td class="center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary">
+                                                    <i class="fa fa-wrench"></i>
+                                                    Operations
+                                                </button>
+                                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="{{ url('dashboard_shipment_track_status_edit', { 'id': trackStatus.id }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

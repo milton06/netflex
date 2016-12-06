@@ -1,0 +1,88 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% form_theme editForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{ url('dashboard_shipment_track_status_list') }}" class="btn btn-primary pull-right"><i class="fa fa-arrow-circle-o-left"></i> Back To List</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {{ form_start(editForm, { 'attr': { 'id': 'editForm', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+                        {% if false == editForm.vars.valid %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger">
+                                        <button data-dismiss="alert" class="close">×</button>
+                                        <i class="fa fa-times-circle"></i>
+                                        You have some form errors. Please check below.
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if app.session.flashbag.peek('success') %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-success">
+                                        <button data-dismiss="alert" class="close">×</button>
+                                        <i class="fa fa-times-circle"></i>
+                                        {% for message in app.session.flashbag.get('success') %}
+                                            {{ message }}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="row form-group{{ (0 < editForm.name.vars.errors|length) ? ' has-error' : '' }}">
+                            {{ form_label(editForm.name, 'Name', { 'label_attr': { 'for': 'name', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(editForm.name, { 'id': 'name', 'attr': { 'class': 'form-control', 'placeholder': 'Name' } }) }}
+                                <span class="help-block">{{ form_errors(editForm.name) }}</span>
+                            </div>
+                        </div>
+                        <div class="row form-group{{ (0 < editForm.description.vars.errors|length) ? ' has-error' : '' }}">
+                            {{ form_label(editForm.description, 'Description', { 'label_attr': { 'for': 'description', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(editForm.description, { 'id': 'description', 'attr': { 'class': 'form-control', 'row': 5, 'placeholder': 'Description' } }) }}
+                                <span class="help-block">{{ form_errors(editForm.description) }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> Update</button>
+                            </div>
+                        </div>
+                    {{ form_end(editForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block pageScripts %}
+    {{ parent() }}
+{% endblock %}

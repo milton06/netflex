@@ -123,42 +123,52 @@
 								</div>
 							</div>
 						</div>
-						<!--track status-->
-						<div class="col-lg-12">
-							<div class="row">
-								<div class="trackstatus">
-									<ul class="trackHeadline clearfix">
-										<li class="approve">Approval</li>
-										<li class="process">PROCESSING</li>
-										<li class="ship">SHIPPING</li>
-										<li class="deliver">DELIVERY</li>
-									</ul>
-									<ul class="trackbar clearfix">
-										<li class="approveLine">
-											<a href="#" id="redDotOne"></a>
-										
-										</li>
-										<li class="processLine">
-											<a href="#" id="redDotTwo"></a>
-											<div id="trackboxTwo">
-											</div>
-										</li>
-										<li class="shipLine">
-											<a href="#" id="redDotThree"></a>
-											<div id="trackboxThree">
-											</div>
-										</li>
-										<li class="deliverLine"></li>
-									</ul>
-									
-									<div class="arrow_box">
-										Your consignment has been processed
-									</div>
-								
-								</div>
-							</div>
-						</div>
-						<!--track status-->
+                        <!--track status-->
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="trackstatus">
+                                    <ul class="trackHeadline clearfix">
+                                        {% for orderTrackStatus in orderTrackStatuses %}
+                                            <li class="{{ trackStatusCssClassMap[orderTrackStatus.id] }}">{{ orderTrackStatus.name|upper }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <ul class="trackbar clearfix">
+                                        {% if orderTrackingDetails %}
+                                            {% for thisOrderTrackDetail in orderTrackingDetails %}
+                                                {% if 1 == loop.index %}
+                                                    <li class="approveLine">
+                                                        <a href="javascript:void(0);" id="redDotOne" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></a>
+                                                    </li>
+                                                {% endif %}
+                                                {% if 2 == loop.index %}
+                                                    <li class="processLine">
+                                                        <a href="javascript:void(0);" id="redDotTwo" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></a>
+                                                        <div id="trackboxTwo">
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                                {% if 3 == loop.index %}
+                                                    <li class="shipLine">
+                                                        <a href="javascript:void(0);" id="redDotThree" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></a>
+                                                        <div id="trackboxThree">
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                                {% if 4 == loop.index %}
+                                                    <li class="deliverLine" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                    {% if orderTrackingDetails %}
+                                        <div class="{{ (1 == orderTrackingDetails|length) ? 'arrow_box-1' : ((2 == orderTrackingDetails|length) ? 'arrow_box' : ((3 == orderTrackingDetails|length) ? 'arrow_box-2' : '')) }}">
+                                            {{ orderTrackingDetails[(orderTrackingDetails|length - 1)].trackStatusId.description }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!--track status-->
 					</div>
 				</div>
 				<!--right section-->
@@ -379,22 +389,33 @@
 	<script>
 		function printElement(elem) {
 			var domClone = elem.cloneNode(true);
-			
+
 			var $printSection = document.getElementById("printSection");
-			
+
 			if (!$printSection) {
 				var $printSection = document.createElement("div");
 				$printSection.id = "printSection";
 				document.body.appendChild($printSection);
 			}
-			
+
 			$printSection.innerHTML = "";
 			$printSection.appendChild(domClone);
 			window.print();
 		}
-		
+
 		jQuery("#print-button").click(function(e) {
 			printElement(document.getElementById("printThis"));
 		});
+
+        $(document).ready(function() {
+            $('#redDotOne').hover(function(){
+                $('.arrow_box').toggleClass("arrow_box-1");
+                $('.arrow_box').empty().html($('#redDotOne').data('status'));
+            });
+            $('#redDotThree').hover(function(){
+                $('.arrow_box').toggleClass("arrow_box-2");
+                $('.arrow_box').empty().html($('#redDotThree').data('status'));
+            });
+        });
 	</script>
 {% endblock %}

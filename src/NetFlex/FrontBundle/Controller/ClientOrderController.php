@@ -138,6 +138,8 @@ class ClientOrderController extends Controller
 	public function renderClientViewOwnOrderPageAction($awbNumber, Request $request)
 	{
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
+		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy([], ['id' => 'ASC']);
+		$orderTrackingDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:OrderShipmentTrackRecord')->findBy(['orderId' => $orderDetails->getId()], ['trackStatusId' => 'ASC']);
 		
 		if (! $orderDetails) {
 			throw $this->createNotFoundException('AWB number does not exist');
@@ -146,6 +148,8 @@ class ClientOrderController extends Controller
 		return $this->render('NetFlexFrontBundle:Booking:client_order_details.html.twig', [
 			'pageTitle' => 'Order Details',
 			'orderDetails' => $orderDetails,
+			'orderTrackStatuses' => $orderTrackStatuses,
+			'orderTrackingDetails' => $orderTrackingDetails,
 		]);
 	}
 	

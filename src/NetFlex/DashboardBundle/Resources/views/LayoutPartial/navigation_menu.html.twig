@@ -30,7 +30,13 @@
             <span class="title"> Orders </span>
         </a>
     </li>
-    <li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
+    <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'dashboard_order_shipment_track_list', 'dashboard_order_shipment_track_record_new', 'dashboard_order_shipment_track_record_edit']) ? 'active open' : '' }}">
+        <a href="{{ url('dashboard_shipment_track_status_list') }}">
+            <i class="clip-location"></i>
+            <span class="title"> Shipment Tracking </span>
+        </a>
+    </li>
+    {#<li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">
             <i class="clip-camera"></i>
             <span class="title"> Media </span>
@@ -48,5 +54,5 @@
                 </a>
             </li>
         </ul>
-    </li>
+    </li>#}
 </ul>

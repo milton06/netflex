@@ -1,0 +1,94 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                                <th>Created On</th>
+                                <th>Created By</th>
+                                <th>Last Modified On</th>
+                                <th>Last Modified By</th>
+                                <th class="center">Operations</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if orderShipmentTrackRecords is empty %}
+                                <tr>
+                                    <td colspan="8" class="center">{{ noRecordFoundText }}</td>
+                                </tr>
+                            {% else %}
+                                {% for orderShipmentTrackRecord in orderShipmentTrackRecords %}
+                                    <tr>
+                                        <td>{{ orderShipmentTrackRecord.id }}</td>
+                                        <td>{{ orderShipmentTrackRecord.trackStatusId.name }}</td>
+                                        <td>{{ orderShipmentTrackRecord.remark }}</td>
+                                        <td>{{ orderShipmentTrackRecord.createdOn|date('F jS, Y g:i A') }}</td>
+                                        <td>{{ orderShipmentTrackRecord.createdBy.firstName ~ ' ' ~ orderShipmentTrackRecord.createdBy.lastName }}</td>
+                                        <td>{{ orderShipmentTrackRecord.lastModifiedOn|date('F jS, Y g:i A') }}</td>
+                                        <td>{{ orderShipmentTrackRecord.lastModifiedBy.firstName ~ ' ' ~ orderShipmentTrackRecord.lastModifiedBy.lastName }}</td>
+                                        <td class="center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary">
+                                                    <i class="fa fa-wrench"></i>
+                                                    Operations
+                                                </button>
+                                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="{{ url('dashboard_order_shipment_track_record_edit', { 'id': orderShipmentTrackRecord.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7">&nbsp;</td>
+                                    <td>
+                                        {% if referrer %}
+                                            <a href="{{ backReferrer }}" class="btn btn-primary"><i class="fa fa-arrow-left"> Back To Order List</i></a>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% endif %}
+                                        <a href="{{ url('dashboard_order_shipment_track_record_new', { 'id': orderId, 'ref': referrer }) }}" class="btn btn-primary"><i class="fa fa-plus"> Add Track Status</i></a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
