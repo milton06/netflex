@@ -34,8 +34,14 @@ class ClientProfileController extends Controller
 	    if (! $this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 		    return $this->redirectToRoute('home_page');
 	    }
-	    
+	
 	    $id = $this->getUser()->getId();
+	    
+	    $session = $request->getSession();
+	    if (! $session->has('loggedInUsername')) {
+		    $session->set('loggedInUsername', $this->getUser()->getUsername());
+	    }
+	    
 	    $em = $this->getDoctrine()->getManager();
 	    $client = $em->getRepository('NetFlexUserBundle:User')->findOneBy(['id' => $id, 'status' => 1]);
 	    $profileImageUploadUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/' . $this->getParameter('generic_media_upload_directory_name') . '/';

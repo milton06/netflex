@@ -26,4 +26,25 @@ class HomeController extends Controller
         	'pageTitle' => 'Home',
         ]);
     }
+	
+	/**
+	 * Dummy logging out option.
+	 *
+	 * @Route("/logout", name="dummy_logout")
+	 * @Method({"GET"})
+	 *
+	 * @param  Request  $request A Request instance
+	 *
+	 * @return Response          A Response instance
+	 */
+	public function logUserOutAction(Request $request)
+	{
+		$session = $request->getSession();
+		
+		if ($session->has('loggedInUsername')) {
+			$session->remove('loggedInUsername');
+		}
+		
+		return $this->redirectToRoute('net_flex_client_logout');
+	}
 }

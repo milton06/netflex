@@ -12,7 +12,7 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
-					<li {{ ('home_page' == app.request.attributes.get('_route')) ? 'class="active"' : '' }}><a href="javascript:void(0);">Home</a></li>
+					<li {{ ('home_page' == app.request.attributes.get('_route')) ? 'class="active"' : '' }}><a href="{{ url('home_page') }}">Home</a></li>
 					<li {{ ('client_book_a_shipment' == app.request.attributes.get('_route')) ? 'class="active"' : '' }}><a href="{{ url('client_book_a_shipment') }}">Book a Shipment</a></li>
 					<li><a href="javascript:void(0);">Track Order </a></li>
 					<li><a href="javascript:void(0);">Customer Enquiry</a></li>

@@ -2,11 +2,14 @@
 
 namespace NetFlex\OrderBundle\Controller;
 
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -33,8 +36,24 @@ class OrderController extends Controller
      */
     public function renderClintOrderListPageAction($clientId, $page, $sortColumn, $sortOrder, Request $request)
     {
-	    if (! ($client = $this->getDoctrine()->getManager()->getRepository('NetFlexUserBundle:User')->findOneById($clientId))) {
+	    $em = $this->getDoctrine()->getManager();
+	    
+	    if (! ($client = $em->getRepository('NetFlexUserBundle:User')->findOneById($clientId))) {
 		    throw $this->createNotFoundException("No client with ID: $clientId exists");
+	    }
+	
+	    $trackStatuses = $em->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy([], ['id' => 'ASC']);
+	    $trackStatusList = $inversedTrackStatusList = [];
+	    foreach ($trackStatuses as $trackStatus) {
+		    $trackStatusList[$trackStatus->getId()] = $trackStatus->getName();
+		    $inversedTrackStatusList[$trackStatus->getName()] = $trackStatus->getId();
+	    }
+	
+	    $paymentStatuses = $em->getRepository('NetFlexPaymentBundle:PaymentStatus')->findBy([], ['id' => 'ASC']);
+	    $paymentStatusList = $inversedPaymentStatusList = [];
+	    foreach ($paymentStatuses as $paymentStatus) {
+		    $paymentStatusList[$paymentStatus->getId()] = $paymentStatus->getName();
+		    $inversedPaymentStatusList[$paymentStatus->getName()] = $paymentStatus->getId();
 	    }
 	    
 	    $orderRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction');
@@ -78,12 +97,12 @@ class OrderController extends Controller
 		    ])
 		    ->add('orderStatus', ChoiceType::class, [
 			    'placeholder' => '-All-',
-			    'choices' => $this->getParameter('order_statuses'),
+			    'choices' => $inversedTrackStatusList,
 			    'data' => $orderStatus,
 		    ])
 		    ->add('paymentStatus', ChoiceType::class, [
 			    'placeholder' => '-All-',
-			    'choices' => $this->getParameter('payment_statuses'),
+			    'choices' => $inversedPaymentStatusList,
 			    'data' => $paymentStatus,
 		    ])
 		    ->add('fromDate', TextType::class, [
@@ -148,6 +167,8 @@ class OrderController extends Controller
 		    'listHeader' => 'Client Order List',
 		    'searchForm' => $searchForm->createView(),
 		    'clientId' => $clientId,
+		    'trackStatusList' => $trackStatusList,
+		    'paymentStatusList' => $paymentStatusList,
 		    'orderCount' => $orderCount,
 		    'totalPageCount' => $totalPageCount,
 		    'orders' => $orders,
@@ -170,7 +191,23 @@ class OrderController extends Controller
 	 */
 	public function renderOrderListPageAction($page, $sortColumn, $sortOrder, Request $request)
 	{
-		$orderRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction');
+		$em = $this->getDoctrine()->getManager();
+		
+		$trackStatuses = $em->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy([], ['id' => 'ASC']);
+		$trackStatusList = $inversedTrackStatusList = [];
+		foreach ($trackStatuses as $trackStatus) {
+			$trackStatusList[$trackStatus->getId()] = $trackStatus->getName();
+			$inversedTrackStatusList[$trackStatus->getName()] = $trackStatus->getId();
+		}
+		
+		$paymentStatuses = $em->getRepository('NetFlexPaymentBundle:PaymentStatus')->findBy([], ['id' => 'ASC']);
+		$paymentStatusList = $inversedPaymentStatusList = [];
+		foreach ($paymentStatuses as $paymentStatus) {
+			$paymentStatusList[$paymentStatus->getId()] = $paymentStatus->getName();
+			$inversedPaymentStatusList[$paymentStatus->getName()] = $paymentStatus->getId();
+		}
+		
+		$orderRepo = $em->getRepository('NetFlexOrderBundle:OrderTransaction');
 		
 		$session = $request->getSession();
 		$paginationService = $this->get('pagination_service');
@@ -213,12 +250,12 @@ class OrderController extends Controller
 			])
 			->add('orderStatus', ChoiceType::class, [
 				'placeholder' => '-All-',
-				'choices' => $this->getParameter('order_statuses'),
+				'choices' => $inversedTrackStatusList,
 				'data' => $orderStatus,
 			])
 			->add('paymentStatus', ChoiceType::class, [
 				'placeholder' => '-All-',
-				'choices' => $this->getParameter('payment_statuses'),
+				'choices' => $inversedPaymentStatusList,
 				'data' => $paymentStatus,
 			])
 			->add('fromDate', TextType::class, [
@@ -279,6 +316,8 @@ class OrderController extends Controller
 			'pageHeader' => '<h1>Order<small> list </small></h1>',
 			'listHeader' => 'Order List',
 			'searchForm' => $searchForm->createView(),
+			'trackStatusList' => $trackStatusList,
+			'paymentStatusList' => $paymentStatusList,
 			'orderCount' => $orderCount,
 			'totalPageCount' => $totalPageCount,
 			'orders' => $orders,
@@ -460,7 +499,23 @@ class OrderController extends Controller
 	 */
 	public function renderViewOrderPageAction(OrderTransaction $order, Request $request)
 	{
-		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOrderDetailsForView($order->getId());
+		$em = $this->getDoctrine()->getManager();
+		
+		$trackStatuses = $em->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy([], ['id' => 'ASC']);
+		$trackStatusList = $inversedTrackStatusList = [];
+		foreach ($trackStatuses as $trackStatus) {
+			$trackStatusList[$trackStatus->getId()] = $trackStatus->getName();
+			$inversedTrackStatusList[$trackStatus->getName()] = $trackStatus->getId();
+		}
+		
+		$paymentStatuses = $em->getRepository('NetFlexPaymentBundle:PaymentStatus')->findBy([], ['id' => 'ASC']);
+		$paymentStatusList = $inversedPaymentStatusList = [];
+		foreach ($paymentStatuses as $paymentStatus) {
+			$paymentStatusList[$paymentStatus->getId()] = $paymentStatus->getName();
+			$inversedPaymentStatusList[$paymentStatus->getName()] = $paymentStatus->getId();
+		}
+		
+		$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOrderDetailsForView($order->getId());
 		
 		$referrer = urldecode($request->query->get('ref'));
 		
@@ -485,6 +540,8 @@ class OrderController extends Controller
 			'pageHeader' => '<h1>View  <small>order details </small></h1>',
 			'listHeader' => 'View Order Details',
 			'referrer' => $referrer,
+			'trackStatusList' => $trackStatusList,
+			'paymentStatusList' => $paymentStatusList,
 			'orderDetails' => $orderDetails,
 		]);
 	}
@@ -690,66 +747,196 @@ class OrderController extends Controller
 	}
 	
 	/**
-	 * Toggles payment status for an order.
+	 * Renders the order status edit page.
 	 *
-	 * @Route("/dashboard/order/toggle-payment-status", name="toggle_order_payment_status")
-	 * @Method({"GET"})
+	 * @Route("/dashboard/order/change-status/{id}", name="change_order_status", requirements={"id": "\d+"})
+	 * @Method({"GET", "POST"})
 	 *
-	 * @param Request $request A request instance
+	 * @param int        $id
+	 * @param Request $request
 	 *
-	 * @return RedirectResponse
+	 * @return RedirectResponse|Response
 	 */
-	public function toggleOrderPaymentStatusAction(Request $request)
-	{
-		$orderId = $request->query->get('id');
-		$referrer = $request->query->get('ref');
-		
-		if (false === strpos($orderId, '-')) {
-			if (false === $this->toggleOrderPaymentStatus($orderId)) {
-				$this->addFlash('error', 'Payment status couldn\'t be changed');
-			} else {
-				$this->addFlash('success', 'Payment status has been changed successfully');
-			}
-		} else {
-			$orderIds = explode('-', $orderId);
-			$paymentStatusToggleResults = [];
-			foreach ($orderIds as $orderId) {
-				if (false === $this->toggleOrderPaymentStatus($orderId)) {
-					$paymentStatusToggleResults[] = $orderId;
-				}
-			}
-			if ($paymentStatusToggleResults) {
-				if (count($orderIds) === count($paymentStatusToggleResults)) {
-					$this->addFlash('error', 'Payment statuses couldn\'t be changed');
-				} else {
-					$this->addFlash('warning', 'Payment statuses for order IDs: ' . implode(', ', $paymentStatusToggleResults) . ' couldn\'t be changed');
-				}
-			} else {
-				$this->addFlash('success', 'Payment statuses have been changed successfully');
-			}
-		}
-		
-		return $this->redirect($referrer);
-	}
-	
-	protected function toggleOrderPaymentStatus($orderId)
+	public function changeOrderStatusAction($id, Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
 		
-		$order = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById($orderId);
+		$order = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById($id);
 		if (! $order) {
-			return false;
+			throw $this->createNotFoundException("Order with ID: $id doesn't exist");
 		}
 		
-		$currentPaymentStatus = $order->getPaymentStatus();
-		$newPaymentStatus = (0 == $currentPaymentStatus) ? 1 : 0;
-		$order->setPaymentStatus($newPaymentStatus);
+		$trackStatuses = $em->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy([], ['id' => 'ASC']);
+		if (! $trackStatuses) {
+			throw $this->createNotFoundException('No tracking status was found');
+		}
 		
-		try {
+		$trackStatusList = [];
+		foreach ($trackStatuses as $trackStatus) {
+			$trackStatusList[$trackStatus->getName()] = $trackStatus->getId();
+		}
+		
+		$referrer = ($request->query->has('ref')) ? urldecode($request->query->get('ref')) : '';
+		
+		$form = $this->createFormBuilder()
+					 ->setAction($this->generateUrl('change_order_status', ['id' => $id, 'ref' => $referrer], UrlGeneratorInterface::ABSOLUTE_URL))
+					 ->setMethod('POST')
+					 ->add('orderStatus', ChoiceType::class, [
+					 	'placeholder' => '-Select A Status-',
+						 'choices' => $trackStatusList,
+						 'data' => $order->getOrderStatus(),
+						 'constraints' => [
+						 	new NotBlank([
+						 		'message' => 'Please select a status',
+						    ])
+						 ],
+					 ])
+					 ->add('orderStatusChangeRemark', TextareaType::class, [
+					 	'data' => $order->getOrderStatusChangeRemark(),
+					 	'constraints' => [
+					 		new NotBlank([
+					 			'message' => 'Please add a remark',
+						    ]),
+					    ],
+					 ])
+					 ->getForm();
+		$form->handleRequest($request);
+		
+		if ($form->isSubmitted() && $form->isValid()) {
+			$formData = $form->getData();
+			
+			$order->setOrderStatus($formData['orderStatus']);
+			$order->setOrderStatusChangeRemark($formData['orderStatusChangeRemark']);
+			$order->setLastModifiedOn(new \DateTime());
+			$order->setLastModifiedBy($this->getUser()->getId());
+			
 			$em->persist($order);
 			$em->flush();
-		} catch (\Exception $ex) {
-			return false;
+			
+			$this->addFlash('success', 'Order status changed successfully');
+			
+			return $this->redirectToRoute('change_order_status', ['id' => $id, 'ref' => $referrer]);
 		}
+		
+		$breadCrumbs = [
+			[
+				'title' => 'Dashboard Home',
+				'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'Order List',
+				'link' => $referrer,
+			],
+			[
+				'title' => 'Change Order Status',
+				'link' => $this->generateUrl('change_order_status', ['id' => $id, 'ref' => $referrer], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+		];
+		
+		return $this->render('NetFlexOrderBundle:Order:change_order_status.html.twig', [
+			'pageTitle' => 'Change Order Status',
+			'referrer' => $referrer,
+			'breadCrumbs' => $breadCrumbs,
+			'pageHeader' => '<h1>Change<small> order status</small></h1>',
+			'listHeader' => 'Change Order Status',
+			'form' => $form->createView(),
+		]);
+	}
+	
+	/**
+	 * Renders the order payment status edit page.
+	 *
+	 * @Route("/dashboard/order/change-payment-status/{id}", name="change_order_payment_status", requirements={"id": "\d+"})
+	 * @Method({"GET", "POST"})
+	 *
+	 * @param int        $id
+	 * @param Request $request
+	 *
+	 * @return RedirectResponse|Response
+	 */
+	public function changeOrderPaymentStatusAction($id, Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$order = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById($id);
+		if (! $order) {
+			throw $this->createNotFoundException("Order with ID: $id doesn't exist");
+		}
+		
+		$paymentStatuses = $em->getRepository('NetFlexPaymentBundle:PaymentStatus')->findBy([], ['id' => 'ASC']);
+		if (! $paymentStatuses) {
+			throw $this->createNotFoundException('No payment status was found');
+		}
+		
+		$paymentStatusList = [];
+		foreach ($paymentStatuses as $paymentStatus) {
+			$paymentStatusList[$paymentStatus->getName()] = $paymentStatus->getId();
+		}
+		
+		$referrer = ($request->query->has('ref')) ? urldecode($request->query->get('ref')) : '';
+		
+		$form = $this->createFormBuilder()
+			->setAction($this->generateUrl('change_order_payment_status', ['id' => $id, 'ref' => $referrer], UrlGeneratorInterface::ABSOLUTE_URL))
+			->setMethod('POST')
+			->add('paymentStatus', ChoiceType::class, [
+				'placeholder' => '-Select A Status-',
+				'choices' => $paymentStatusList,
+				'data' => $order->getPaymentStatus(),
+				'constraints' => [
+					new NotBlank([
+						'message' => 'Please select a status',
+					])
+				],
+			])
+			->add('paymentStatusChangeRemark', TextareaType::class, [
+				'data' => $order->getPaymentStatusChangeRemark(),
+				'constraints' => [
+					new NotBlank([
+						'message' => 'Please add a remark',
+					]),
+				],
+			])
+			->getForm();
+		$form->handleRequest($request);
+		
+		if ($form->isSubmitted() && $form->isValid()) {
+			$formData = $form->getData();
+			
+			$order->setPaymentStatus($formData['paymentStatus']);
+			$order->setPaymentStatusChangeRemark($formData['paymentStatusChangeRemark']);
+			$order->setLastModifiedOn(new \DateTime());
+			$order->setLastModifiedBy($this->getUser()->getId());
+			
+			$em->persist($order);
+			$em->flush();
+			
+			$this->addFlash('success', 'Payment status changed successfully');
+			
+			return $this->redirectToRoute('change_order_payment_status', ['id' => $id, 'ref' => $referrer]);
+		}
+		
+		$breadCrumbs = [
+			[
+				'title' => 'Dashboard Home',
+				'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+			[
+				'title' => 'Order List',
+				'link' => $referrer,
+			],
+			[
+				'title' => 'Change Order Payment Status',
+				'link' => $this->generateUrl('change_order_payment_status', ['id' => $id, 'ref' => $referrer], UrlGeneratorInterface::ABSOLUTE_URL),
+			],
+		];
+		
+		return $this->render('NetFlexOrderBundle:Order:change_order_payment_status.html.twig', [
+			'pageTitle' => 'Change Order Payment Status',
+			'referrer' => $referrer,
+			'breadCrumbs' => $breadCrumbs,
+			'pageHeader' => '<h1>Change<small> order payment status</small></h1>',
+			'listHeader' => 'Change Order Payment Status',
+			'form' => $form->createView(),
+		]);
 	}
 }

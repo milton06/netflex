@@ -98,9 +98,16 @@ class OrderTransaction
     /**
      * @var string
      *
-     * @ORM\Column(name="remark", type="text", nullable=true)
+     * @ORM\Column(name="order_status_change_remark", type="text", nullable=true)
      */
-    private $remark;
+    private $orderStatusChangeRemark;
+	
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="payment_status_change_remark", type="text", nullable=true)
+	 */
+	private $paymentStatusChangeRemark;
 
     /**
      * @var \DateTime
@@ -365,28 +372,52 @@ class OrderTransaction
     }
 
     /**
-     * Set remark
+     * Set orderStatusChangeRemark
      *
-     * @param string $remark
+     * @param string $orderStatusChangeRemark
      *
      * @return OrderTransaction
      */
-    public function setRemark($remark)
+    public function setOrderStatusChangeRemark($orderStatusChangeRemark)
     {
-        $this->remark = $remark;
+        $this->orderStatusChangeRemark = $orderStatusChangeRemark;
 
         return $this;
     }
 
     /**
-     * Get remark
+     * Get orderStatusChangeRemark
      *
      * @return string
      */
-    public function getRemark()
+    public function getOrderStatusChangeRemark()
     {
-        return $this->remark;
+        return $this->orderStatusChangeRemark;
     }
+	
+	/**
+	 * Set paymentStatusChangeRemark
+	 *
+	 * @param string $paymentStatusChangeRemark
+	 *
+	 * @return OrderTransaction
+	 */
+	public function setPaymentStatusChangeRemark($paymentStatusChangeRemark)
+	{
+		$this->paymentStatusChangeRemark = $paymentStatusChangeRemark;
+		
+		return $this;
+	}
+	
+	/**
+	 * Get paymentStatusChangeRemark
+	 *
+	 * @return string
+	 */
+	public function getPaymentStatusChangeRemark()
+	{
+		return $this->paymentStatusChangeRemark;
+	}
 
     /**
      * Set createdOn

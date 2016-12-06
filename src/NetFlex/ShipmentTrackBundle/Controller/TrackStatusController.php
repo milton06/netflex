@@ -56,7 +56,7 @@ class TrackStatusController extends Controller
      * @Route("/{id}/edit", name="dashboard_shipment_track_status_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, TrackStatus $trackStatus)
+    public function editShipmentTrackStatusAction(Request $request, TrackStatus $trackStatus)
     {
         $editForm = $this->createForm(TrackStatusType::class, $trackStatus);
         $editForm->handleRequest($request);

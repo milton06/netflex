@@ -39,7 +39,7 @@ parameters:
     client_profile_image_upload_directory_name: 'uploads/client_profile_images'
     client_profile_image_upload_directory_path: '%kernel.root_dir%/../web/uploads/client_profile_images'
     client_profile_image_max_width_and_height: 230
-    track_status_css_class_map: { '1': 'approve', '2': 'process', '3': 'ship', '4': 'deliver' }
+    track_status_css_class_map: { '1': 'approve', '2': 'approve', '3': 'process', '4': 'ship', '5': 'deliver' }
 
 framework:
     #esi:             ~

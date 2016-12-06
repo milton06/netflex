@@ -1,0 +1,78 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+
+{% form_theme form 'NetFlexDashboardBundle::form_layout.html.twig' %}
+
+{% block pageTitle %}
+	{{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+
+{% block pageHeader %}
+	{{ pageHeader|raw }}
+{% endblock %}
+
+{% block pageContent %}
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					{{ listHeader }}
+					<div class="panel-tools">
+						<a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+						</a>
+						<a class="btn btn-xs btn-link panel-expand" href="#">
+							<i class="fa fa-resize-full"></i>
+						</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					{% if false == form.vars.valid %}
+						<div class="alert alert-danger server-message">
+							<button data-dismiss="alert" class="close">×</button>
+							<i class="fa fa-times-circle"></i>
+							<strong>Oh snap!</strong> There are errors in the form.
+						</div>
+					{% endif %}
+					{% if app.session.flashbag.peek('success') %}
+						<div class="alert alert-success server-message">
+							<button data-dismiss="alert" class="close">×</button>
+							<i class="fa fa-check-circle"></i>
+							{% for success in app.session.flashbag.get('success') %}
+								<strong>Well done!</strong> {{ success }}.
+							{% endfor %}
+						</div>
+					{% endif %}
+					<div class="row">
+						<div class="col-md-12">
+							{{ form_start(form, { 'attr': { 'id': 'changeOrderPaymentStatusForm', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+								<div class="row form-group{{ (0 < form.paymentStatus.vars.errors|length) ? ' has-error' : '' }}">
+									{{ form_label(form.paymentStatus, 'Status', { 'label_attr': { 'for': 'paymentStatus', 'class': 'col-md-4' } }) }}
+									<div class="col-md-8">
+										{{ form_widget(form.paymentStatus, { 'id': 'paymentStatus', 'attr': { 'class': 'form-control' } }) }}
+										<span class="help-block">{{ form_errors(form.paymentStatus) }}</span>
+									</div>
+								</div>
+								<div class="row form-group{{ (0 < form.paymentStatusChangeRemark.vars.errors|length) ? ' has-error' : '' }}">
+									{{ form_label(form.paymentStatusChangeRemark, 'Remark', { 'label_attr': { 'for': 'paymentStatusChangeRemark', 'class': 'col-md-4' } }) }}
+									<div class="col-md-8">
+										{{ form_widget(form.paymentStatusChangeRemark, { 'id': 'paymentStatusChangeRemark', 'attr': { 'class': 'form-control', 'rows': 10, 'placeholder': 'Remark' } }) }}
+										<span class="help-block">{{ form_errors(form.paymentStatusChangeRemark) }}</span>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-md-offset-4">
+										<button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button>
+										{% if referrer %}
+											<a href="{{ referrer }}" class="btn btn-primary"><i class="fa fa-arrow-circle-left"></i> Back To Order List</a>
+										{% endif %}
+									</div>
+								</div>
+							{{ form_end(form) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

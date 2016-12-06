@@ -79,7 +79,7 @@
                         <tr>
                             <th>Risk Type</th>
                             <td>
-                                {{ ('0.00' == orderDetails.orderPrice.orderCarrierRiskAddedCharge) ? 'Own' : 'Carrier' }}
+                                {{ ('0.00' == orderDetails.orderPrice.orderCarrierRiskAddedCharge) ? 'Own' : 'Courier' }}
                             </td>
                         </tr>
                         <tr>
@@ -149,6 +149,28 @@
                             <tr>
                                 <td>Ph: {{ orderDetails.orderAddress.shippingContactNumber }}</td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Current Order Status</th>
+                                <td>{{ trackStatusList[orderDetails.orderStatus] }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6 table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th>Current Payment Status</th>
+                            <td>{{ paymentStatusList[orderDetails.paymentStatus] }}</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -284,7 +306,7 @@
                                                 {% endif %}
                                                 <tr>
                                                     <th>Total</th>
-                                                    <td class="right">{{ (orderDetails.orderPrice.orderBaseCharge + orderDetails.orderPrice.orderExtraWeightLeviedCharge + orderDetails.orderPrice.orderCodPaymentAddedCharge + orderDetails.orderPrice.orderCarrierRiskAddedCharge + orderDetails.orderPrice.orderFuelSurchargeAddedCharge + orderDetails.orderPrice.orderServiceTaxAddedCharge) }}</td>
+                                                    <td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ (orderDetails.orderPrice.orderBaseCharge + orderDetails.orderPrice.orderExtraWeightLeviedCharge + orderDetails.orderPrice.orderCodPaymentAddedCharge + orderDetails.orderPrice.orderCarrierRiskAddedCharge + orderDetails.orderPrice.orderFuelSurchargeAddedCharge + orderDetails.orderPrice.orderServiceTaxAddedCharge) }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

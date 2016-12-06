@@ -48,6 +48,7 @@ security:
                 check_path: client_login
                 failure_path: home_page
                 default_target_path: client_profile_page
+                always_use_default_target_path: true
                 csrf_token_generator: security.csrf.token_manager
                 csrf_parameter: _netflex_client_login_csrf_token
                 csrf_token_id: '%nE^t207C1ll*X'

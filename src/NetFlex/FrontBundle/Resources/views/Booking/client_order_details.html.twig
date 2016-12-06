@@ -129,42 +129,16 @@
                                 <div class="trackstatus">
                                     <ul class="trackHeadline clearfix">
                                         {% for orderTrackStatus in orderTrackStatuses %}
-                                            <li class="{{ trackStatusCssClassMap[orderTrackStatus.id] }}">{{ orderTrackStatus.name|upper }}</li>
+                                            <li class="approve">{{ orderTrackStatus.name|upper }}</li>
                                         {% endfor %}
                                     </ul>
-                                    <ul class="trackbar clearfix">
-                                        {% if orderTrackingDetails %}
-                                            {% for thisOrderTrackDetail in orderTrackingDetails %}
-                                                {% if 1 == loop.index %}
-                                                    <li class="approveLine">
-                                                        <a href="javascript:void(0);" id="redDotOne" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></a>
-                                                    </li>
-                                                {% endif %}
-                                                {% if 2 == loop.index %}
-                                                    <li class="processLine">
-                                                        <a href="javascript:void(0);" id="redDotTwo" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></a>
-                                                        <div id="trackboxTwo">
-                                                        </div>
-                                                    </li>
-                                                {% endif %}
-                                                {% if 3 == loop.index %}
-                                                    <li class="shipLine">
-                                                        <a href="javascript:void(0);" id="redDotThree" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></a>
-                                                        <div id="trackboxThree">
-                                                        </div>
-                                                    </li>
-                                                {% endif %}
-                                                {% if 4 == loop.index %}
-                                                    <li class="deliverLine" data-status="{{ thisOrderTrackDetail.trackStatusId.description }}"></li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    </ul>
-                                    {% if orderTrackingDetails %}
-                                        <div class="{{ (1 == orderTrackingDetails|length) ? 'arrow_box-1' : ((2 == orderTrackingDetails|length) ? 'arrow_box' : ((3 == orderTrackingDetails|length) ? 'arrow_box-2' : '')) }}">
-                                            {{ orderTrackingDetails[(orderTrackingDetails|length - 1)].trackStatusId.description }}
-                                        </div>
-                                    {% endif %}
+	                                <ul class="trackbar clearfix">
+		                                {% for i in 1..orderDetails.orderStatus %}
+			                                <li class="approveLine">
+				                                <a href="javascript:void(0);" class="redDotOne" data-toggle="tooltip" data-placement="bottom"  title="{{ trackStatusList[i] }}"></a>
+			                                </li>
+		                                {% endfor %}
+	                                </ul>
                                 </div>
                             </div>
                         </div>
@@ -406,16 +380,5 @@
 		jQuery("#print-button").click(function(e) {
 			printElement(document.getElementById("printThis"));
 		});
-
-        $(document).ready(function() {
-            $('#redDotOne').hover(function(){
-                $('.arrow_box').toggleClass("arrow_box-1");
-                $('.arrow_box').empty().html($('#redDotOne').data('status'));
-            });
-            $('#redDotThree').hover(function(){
-                $('.arrow_box').toggleClass("arrow_box-2");
-                $('.arrow_box').empty().html($('#redDotThree').data('status'));
-            });
-        });
 	</script>
 {% endblock %}

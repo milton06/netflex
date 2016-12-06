@@ -283,8 +283,9 @@ class BookingController extends Controller
 	    $order->getOrderPrice()->setOrderUserBaseCharge($order->getOrderPrice()->getOrderBaseCharge());
 	    $order->getOrderPrice()->setOrderUserExtraWeightLeviedCharge($order->getOrderPrice()->getOrderExtraWeightLeviedCharge());
 	    $order->setAwbNumber('nfcs-' . time());
+	    $order->setInvoiceNumber('nfon-' . time());
 	    $order->setOrderStatus(1);
-	    $order->setPaymentStatus(0);
+	    $order->setPaymentStatus(1);
 	    $order->setCreatedOn($currentDateTime);
 	    $order->setCreatedBy($this->getUser()->getId());
 	    $order->setLastModifiedOn($currentDateTime);

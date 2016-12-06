@@ -57,14 +57,14 @@
 								<li><a href="javascript:void(0);">Career</a></li>
 								<li><a href="javascript:void(0);">Contact</a></li>
 								<!--login-->
-								{% if app.user %}
+								{% if app.session.has('loggedInUsername') %}
 									{{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}
 								{% else %}
 									{{ render(controller('NetFlexFrontBundle:ClientAuth:authenticateClient')) }}
 								{% endif %}
 								<!--login-->
 								<!--register-->
-								{% if app.user %}
+								{% if app.session.has('loggedInUsername') %}
 								{% else %}
 									<li class="register">
 										<a class="fancybox" href="#inline1">Client Register</a>

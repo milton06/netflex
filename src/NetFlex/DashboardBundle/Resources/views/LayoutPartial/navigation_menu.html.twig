@@ -30,10 +30,16 @@
             <span class="title"> Orders </span>
         </a>
     </li>
-    <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'dashboard_order_shipment_track_list', 'dashboard_order_shipment_track_record_new', 'dashboard_order_shipment_track_record_edit']) ? 'active open' : '' }}">
+    <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'change_order_status']) ? 'active open' : '' }}">
         <a href="{{ url('dashboard_shipment_track_status_list') }}">
             <i class="clip-location"></i>
             <span class="title"> Shipment Tracking </span>
+        </a>
+    </li>
+    <li class="{{ (currentRoute in ['dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'change_order_payment_status']) ? 'active open' : '' }}">
+        <a href="{{ url('dashboard_payment_status_list') }}">
+            <i class="fa fa-rupee"></i>
+            <span class="title"> Payment </span>
         </a>
     </li>
     {#<li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">

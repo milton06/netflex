@@ -5,6 +5,7 @@ namespace NetFlex\ShipmentTrackBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use NetFlex\ShipmentTrackBundle\Entity\TrackStatus;
 
 class TrackStatusType extends AbstractType
 {
@@ -21,9 +22,9 @@ class TrackStatusType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'NetFlex\ShipmentTrackBundle\Entity\TrackStatus'
-        ));
+        $resolver->setDefaults([
+	        'data_class' => TrackStatus::class,
+        ]);
     }
 
     /**

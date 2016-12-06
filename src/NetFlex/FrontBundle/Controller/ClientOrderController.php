@@ -138,8 +138,11 @@ class ClientOrderController extends Controller
 	public function renderClientViewOwnOrderPageAction($awbNumber, Request $request)
 	{
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
-		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy([], ['id' => 'ASC']);
-		$orderTrackingDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:OrderShipmentTrackRecord')->findBy(['orderId' => $orderDetails->getId()], ['trackStatusId' => 'ASC']);
+		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy(['id' => [1, 2, 3, 4, 5]], ['id' => 'ASC']);
+		$trackStatusList = [];
+		foreach ($orderTrackStatuses as $trackStatus) {
+			$trackStatusList[$trackStatus->getId()] = $trackStatus->getDescription();
+		}
 		
 		if (! $orderDetails) {
 			throw $this->createNotFoundException('AWB number does not exist');
@@ -149,7 +152,7 @@ class ClientOrderController extends Controller
 			'pageTitle' => 'Order Details',
 			'orderDetails' => $orderDetails,
 			'orderTrackStatuses' => $orderTrackStatuses,
-			'orderTrackingDetails' => $orderTrackingDetails,
+			'trackStatusList' => $trackStatusList,
 		]);
 	}
 	
@@ -534,6 +537,7 @@ class ClientOrderController extends Controller
 		$order->getOrderPrice()->setOrderUserBaseCharge($order->getOrderPrice()->getOrderBaseCharge());
 		$order->getOrderPrice()->setOrderUserExtraWeightLeviedCharge($order->getOrderPrice()->getOrderExtraWeightLeviedCharge());
 		$order->setAwbNumber('nfcs-' . time());
+		$order->setInvoiceNumber('nfon-' . time());
 		$order->setOrderStatus(1);
 		$order->setPaymentStatus(0);
 		$order->setCreatedOn($currentDateTime);

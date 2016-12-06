@@ -1,20 +1,20 @@
 <?php
 
-namespace NetFlex\ShipmentTrackBundle\Form;
+namespace NetFlex\PaymentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use NetFlex\ShipmentTrackBundle\Entity\OrderShipmentTrackRecord;
+use NetFlex\PaymentBundle\Entity\PaymentStatus;
 
-class OrderShipmentTrackRecordType extends AbstractType
+class PaymentStatusType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-	    //
+	    $builder->add('name')->add('description');
     }
     
     /**
@@ -22,9 +22,9 @@ class OrderShipmentTrackRecordType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => OrderShipmentTrackRecord::class,
-        ));
+        $resolver->setDefaults([
+        	'data_class' => PaymentStatus::class,
+        ]);
     }
 
     /**
@@ -32,6 +32,8 @@ class OrderShipmentTrackRecordType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'netflex_shipmenttrackbundle_ordershipmenttrackrecord';
+        return 'netflex_paymentbundle_paymentstatus';
     }
+
+
 }
