@@ -105,7 +105,7 @@
 								<td>{{ order.orderAddress.billingFirstName ~ ' ' ~ order.orderAddress.billingLastName }} / {{ order.orderAddress.billingCityId.name }}</td>
 								<td>{{ order.orderAddress.shippingFirstName ~ ' ' ~ order.orderAddress.shippingLastName }} / {{ order.orderAddress.shippingCityId.name }}</td>
 								<td>{{ order.createdOn|date('j / n / Y @ g:i a') }}</td>
-								<td><span class="{{ orderStatusCssClassMap[order.orderStatus] }}">{{ orderStatuses[order.orderStatus] }}</span></td>
+								<td><span class="{{ orderStatusCssClassMap[order.orderStatus] }}">{{ trackStatusList[order.orderStatus] }}</span></td>
 								<td><a href="{{ url('client_view_own_order', { 'awbNumber': order.awbNumber }) }}">Details</a></td>
 							</tr>
 						{% endfor %}

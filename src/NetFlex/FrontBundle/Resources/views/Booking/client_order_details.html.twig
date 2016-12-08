@@ -192,6 +192,12 @@
 									</td>
 								</tr>
 								<tr>
+									<th>Invoice Value</th>
+									<td>
+                                        {{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderInvoicePrice }}
+									</td>
+								</tr>
+								<tr>
 									<td colspan="2">
 										<table class="table table-responsive table-bordered">
 											<thead>
@@ -205,7 +211,7 @@
 												<td class="right">{{ orderDetails.orderItem.itemBaseWeight|number_format(2) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
 											</tr>
 											<tr>
-												<th>Chargable Extra Weight</th>
+												<th>Chargable Extra Weight <small>(above {{ orderDetails.deliveryChargeId.shipmentAccountableExtraWeight }} {{ orderDetails.deliveryChargeId.shipmentWeightUnitId.symbol }})</small></th>
 												<td class="right">{{ orderDetails.orderItem.itemAccountableExtraWeight|number_format(2) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
 											</tr>
 											<tr>
@@ -244,36 +250,36 @@
 											</thead>
 											<tbody>
 											<tr>
-												<th>Base Price</th>
+												<th>Base Price <small>(for first {{ orderDetails.deliveryChargeId.shipmentBaseWeightUpperLimit }} {{ orderDetails.deliveryChargeId.shipmentWeightUnitId.symbol }})</small></th>
 												<td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderBaseCharge|number_format(2) }}</td>
 											</tr>
 											{% if orderDetails.orderPrice.orderExtraWeightLeviedCharge %}
 												<tr>
-													<th>Extra Weight Charge</th>
+													<th>Extra Weight Charge <small>({{ orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol }} {{ orderDetails.deliveryChargeId.deliveryExtraPriceMultiplier }} / {{ orderDetails.deliveryChargeId.shipmentAccountableExtraWeight }} {{ orderDetails.deliveryChargeId.shipmentWeightUnitId.symbol }})</small></th>
 													<td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderExtraWeightLeviedCharge|number_format(2) }}</td>
 												</tr>
 											{% endif %}
 											{% if '0.00' != orderDetails.orderPrice.orderFuelSurchargeAddedCharge %}
 												<tr>
-													<th>Added Fuel Surcharge</th>
+													<th>Added Fuel Surcharge <small>( {{ (orderDetails.deliveryChargeId.fuelSurchargeFixedPrice) ? orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol ~ ' ' ~ orderDetails.deliveryChargeId.fuelSurchargeFixedPrice : orderDetails.deliveryChargeId.fuelSurchargePercentageOnBasePrice ~ '% on base price' }})</small></th>
 													<td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderFuelSurchargeAddedCharge|number_format(2) }}</td>
 												</tr>
 											{% endif %}
 											{% if '0.00' != orderDetails.orderPrice.orderServiceTaxAddedCharge %}
 												<tr>
-													<th>Added Service Tax</th>
+													<th>Added Service Tax <small>( {{ orderDetails.deliveryChargeId.serviceTaxPercentageOnBasePrice ~ '% on base price' }})</small></th>
 													<td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderServiceTaxAddedCharge|number_format(2) }}</td>
 												</tr>
 											{% endif %}
 											{% if '0.00' != orderDetails.orderPrice.orderCodPaymentAddedCharge %}
 												<tr>
-													<th>COD Amount</th>
+													<th>COD Amount <small>( {{ (orderDetails.deliveryChargeId.codDeliveryBasePrice) ? orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol ~ ' ' ~ orderDetails.deliveryChargeId.codDeliveryBasePrice : orderDetails.deliveryChargeId.codDeliveryPercentageOnBasePrice ~ '% on base price' }})</small></th>
 													<td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCodPaymentAddedCharge|number_format(2) }}</td>
 												</tr>
 											{% endif %}
 											{% if '0.00' != orderDetails.orderPrice.orderCarrierRiskAddedCharge %}
 												<tr>
-													<th>Courier Risk Charge</th>
+													<th>Courier Risk Charge <small>( {{ orderDetails.deliveryChargeId.shipmentRiskPercentageOnBasePrice ~ '% on base price' }})</small></th>
 													<td class="right">{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCarrierRiskAddedCharge|number_format(2) }}</td>
 												</tr>
 											{% endif %}

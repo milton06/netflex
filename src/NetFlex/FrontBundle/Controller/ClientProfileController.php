@@ -35,13 +35,12 @@ class ClientProfileController extends Controller
 		    return $this->redirectToRoute('home_page');
 	    }
 	
-	    $id = $this->getUser()->getId();
-	    
 	    $session = $request->getSession();
 	    if (! $session->has('loggedInUsername')) {
 		    $session->set('loggedInUsername', $this->getUser()->getUsername());
 	    }
-	    
+	
+	    $id = $this->getUser()->getId();
 	    $em = $this->getDoctrine()->getManager();
 	    $client = $em->getRepository('NetFlexUserBundle:User')->findOneBy(['id' => $id, 'status' => 1]);
 	    $profileImageUploadUrl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/' . $this->getParameter('generic_media_upload_directory_name') . '/';
@@ -366,7 +365,7 @@ class ClientProfileController extends Controller
 		}
 		
 		// Set data to this address entity.
-		$address->setAddressTypeId($em->getRepository('NetFlexUserBundle:AddressType')->findOneById($request->request->get('addressTypeId')));
+		$address->setAddressTypeId($em->getRepository('NetFlexUserBundle:AddressType')->findOneById((int) $request->request->get('addressTypeId')));
 		$address->setAddressLine1($request->request->get('addressLine1'));
 		$address->setAddressLine2($request->request->get('addressLine2'));
 		$address->setCountryId($country);
@@ -394,8 +393,8 @@ class ClientProfileController extends Controller
 			}
 		}
 		if ($request->request->get('isPrimary')) {
-			foreach ($client->getAddresses() as $address) {
-				if (($request->request->get('addressTypeId') == $address->getAddressTypeId()->getId()) && ($address->getIsPrimary())) {
+			foreach ($client->getAddresses() as $thisAddress) {
+				if (($request->request->get('addressTypeId') == $thisAddress->getAddressTypeId()->getId()) && ($thisAddress->getIsPrimary())) {
 					$errorList['isPrimary'] = 'One default address already exists';
 					
 					break;

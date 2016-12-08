@@ -97,7 +97,6 @@ header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
 #inline1 .signupFormSub{ padding: 0 20px; width: 94%; margin: 0 3%;}
 #inline1 .signupFormSub input[type="submit"]{ background: #ff5400; cursor: pointer; text-align: center; font: normal 14px  'open_sansbold';  color:#ffffff; border: none; padding: 10px 0; transition: all 0.5s ease; text-transform: uppercase;  width: 100%; margin-top: 30px;}
 #inline1 .signupFormSub input[type="submit"]:hover{ background: #000000;}
-#inline1 .signupFormSub input[type="submit"]:disabled{ background: #000000; cursor: wait;}
 /*==LOGIN==*/
 
 .logreg #login-trigger
@@ -155,13 +154,21 @@ header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
 
 /*============BANNER=================*/
 .bannerOverlay {
-    position: relative;
-    z-index: 999;
+    height: 100%;
+    position: absolute;
     overflow-x: hidden;
+    z-index: 999;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-29%);
+    z-index: 999;
+
 }
-.banner{ background-image: url(../bundles/netflexfront/images/banner.jpg);
+.banner{/*  background-image: url(../images/banner.jpg);
 background-size: cover;
-position: relative; margin-top: -105px;
+position: relative; margin-top: -105px; */
+
 }
 .banner h1{ position: absolute; text-align: center; top: 40%; left: 0%; font: normal 60px 'OpenSans-ExtraBold'; color: #ffffff; text-transform: uppercase; padding: 0px; margin: 0px; width: 100%;}
 .banner h1 strong{ text-decoration: underline;font: normal 60px 'OpenSans-ExtraBold'; }
@@ -493,11 +500,11 @@ footer .foot{ font: normal 14px/64px 'open_sansregular'; color: #000000; backgro
 .trackstatus{ position: relative;}
 ul.trackHeadline { padding: 80px 0 0 0; margin: 0px; border-bottom: 1px solid #e2e2e2; width: 100%; padding-bottom: 5px;}
 ul.trackHeadline li{ padding: 0px; margin: 0px; font: normal 11px 'open_sansbold'; color: #000000; float: left; text-transform: uppercase;}
-/*ul.trackHeadline li.approve{ text-align: left; width: 23%;}*/
-ul.trackHeadline li.process{ text-align:  left; width: 23%;}
+ul.trackHeadline li.approve{ text-align: left; width: 20%;}
+/*ul.trackHeadline li.process{ text-align:  left; width: 23%;}
 ul.trackHeadline li.ship{ text-align: left; width: 23%;}
 ul.trackHeadline li.deliver{ text-align: right; width: 31%;}
-ul.trackHeadline li.approve{ text-align: left; width: 20%;}
+ul.trackHeadline li.approve{ text-align: left; width: 23%;}*/
 
 ul.trackbar{ padding: 35px 0; margin: 0px}
 ul.trackbar li{ position: relative; float: left;}

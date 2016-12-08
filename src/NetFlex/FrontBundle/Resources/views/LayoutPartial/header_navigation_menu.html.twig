@@ -8,16 +8,16 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="javascript:void(0);">Netflex</a>
+				<a class="navbar-brand" href="{{ url('home_page') }}">Netflex</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li {{ ('home_page' == app.request.attributes.get('_route')) ? 'class="active"' : '' }}><a href="{{ url('home_page') }}">Home</a></li>
-					<li {{ ('client_book_a_shipment' == app.request.attributes.get('_route')) ? 'class="active"' : '' }}><a href="{{ url('client_book_a_shipment') }}">Book a Shipment</a></li>
-					<li><a href="javascript:void(0);">Track Order </a></li>
-					<li><a href="javascript:void(0);">Customer Enquiry</a></li>
-					<li><a href="javascript:void(0);">Clients</a></li>
-					<li><a href="javascript:void(0);">Franchisee</a></li>
+					<li {{ ('client_book_a_shipment' == app.request.attributes.get('_route')) ? 'class="active"' : '' }}><a id="bookAShipment" href="{{ url('client_book_a_shipment') }}">Book a Shipment</a></li>
+					<li><a href="{{ url('home_page') }}">Track Order </a></li>
+					<li {{ ('customer-enquiry' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }}><a href="{{ url('cms_page', { 'cmsPageSlug': 'customer-enquiry' }) }}">Customer Enquiry</a></li>
+					<li {{ ('client' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }}><a href="{{ url('cms_page', { 'cmsPageSlug': 'client' }) }}">Clients</a></li>
+					<li {{ ('franchisee' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }}><a href="{{ url('cms_page', { 'cmsPageSlug': 'franchisee' }) }}">Franchisee</a></li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div><!--/.container-fluid -->

@@ -53,9 +53,9 @@
 					<div class="col-lg-4">
 						<div class="logreg">
 							<ul>
-								<li><a href="javascript:void(0);">About</a></li>
-								<li><a href="javascript:void(0);">Career</a></li>
-								<li><a href="javascript:void(0);">Contact</a></li>
+								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About</a></li>
+								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
+								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'contact' }) }}">Contact</a></li>
 								<!--login-->
 								{% if app.session.has('loggedInUsername') %}
 									{{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}
@@ -87,6 +87,11 @@
 	</div>
 </div>
 <!--header-->
+{% if app.session.has('sf_redirect') %}
+    {% if (app.session.get('sf_redirect')['route'] in ['client_profile_page', 'client_own_order_list', 'client_book_a_shipment']) %}
+        {% set referer = app.session.get('sf_redirect')['route'] %}
+    {% endif %}
+{% endif %}
 {% block pageContent %}
 	{% block footer %}
 	{% endblock %}
@@ -98,6 +103,20 @@
 		'@NetFlexFrontBundle/Resources/public/js/Common/common.js' %}
 		<script src="{{ asset_url }}"></script>
 	{% endjavascripts %}
+	<script>
+        var loggedInUsername = "{{ app.session.get('loggedInUsername') }}";
+        var referer = "{{ (referer is defined) ? referer : null }}";
+        $(document).ready(function() {
+            if (referer) {
+                $("#targetPath").val(referer);
+            }
+        });
+        $(window).load(function() {
+            if (referer) {
+                $("#login-trigger").trigger("click");
+            }
+        });
+    </script>
 {% endblock %}
 </body>
 </html>

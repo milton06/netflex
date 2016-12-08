@@ -38,6 +38,11 @@ class ClientOrderController extends Controller
 			return $this->redirectToRoute('home_page');
 		}
 		
+		$session = $request->getSession();
+		if (! $session->has('loggedInUsername')) {
+			$session->set('loggedInUsername', $this->getUser()->getUsername());
+		}
+		
 		$clientId = $this->getUser()->getId();
 		$orderRepo = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction');
 		$session = $request->getSession();
@@ -95,6 +100,12 @@ class ClientOrderController extends Controller
 		
 		$pageLinks = $paginationService->getPageLinks($page, $limit, $neighbor, $orderCount, $totalPageCount, 'client_own_order_list', $routeParameters, $routeExtraParameters);
 		
+		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy(['id' => [1, 2, 3, 4, 5]], ['id' => 'ASC']);
+		$trackStatusList = [];
+		foreach ($orderTrackStatuses as $trackStatus) {
+			$trackStatusList[$trackStatus->getId()] = $trackStatus->getDescription();
+		}
+		
 		return $this->render('NetFlexFrontBundle:Booking:client_order_list.html.twig', [
 			'pageTitle' => 'Client Order List',
 			'searchForm' => $searchForm->createView(),
@@ -103,6 +114,7 @@ class ClientOrderController extends Controller
 			'orderCount' => $orderCount,
 			'totalPageCount' => $totalPageCount,
 			'orders' => $orders,
+			'trackStatusList' => $trackStatusList,
 			'pageLinks' => $pageLinks,
 		]);
 	}
@@ -137,6 +149,15 @@ class ClientOrderController extends Controller
 	 */
 	public function renderClientViewOwnOrderPageAction($awbNumber, Request $request)
 	{
+		if (! $this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+			return $this->redirectToRoute('home_page');
+		}
+		
+		$session = $request->getSession();
+		if (! $session->has('loggedInUsername')) {
+			$session->set('loggedInUsername', $this->getUser()->getUsername());
+		}
+		
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
 		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy(['id' => [1, 2, 3, 4, 5]], ['id' => 'ASC']);
 		$trackStatusList = [];
@@ -170,6 +191,11 @@ class ClientOrderController extends Controller
 	{
 		if (! $this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 			return $this->redirectToRoute('home_page');
+		}
+		
+		$session = $request->getSession();
+		if (! $session->has('loggedInUsername')) {
+			$session->set('loggedInUsername', $this->getUser()->getUsername());
 		}
 		
 		$clientId = $this->getUser()->getId();
@@ -539,7 +565,7 @@ class ClientOrderController extends Controller
 		$order->setAwbNumber('nfcs-' . time());
 		$order->setInvoiceNumber('nfon-' . time());
 		$order->setOrderStatus(1);
-		$order->setPaymentStatus(0);
+		$order->setPaymentStatus(1);
 		$order->setCreatedOn($currentDateTime);
 		$order->setCreatedBy($this->getUser()->getId());
 		$order->setLastModifiedOn($currentDateTime);
@@ -579,6 +605,9 @@ class ClientOrderController extends Controller
 		}
 		
 		$session = $request->getSession();
+		if (! $session->has('loggedInUsername')) {
+			$session->set('loggedInUsername', $this->getUser()->getUsername());
+		}
 		
 		if (! $session->has('awbNumber')) {
 			return $this->redirectToRoute('home_page');

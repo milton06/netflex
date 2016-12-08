@@ -28,9 +28,61 @@ class HomeController extends Controller
     }
 	
 	/**
+	 * Renders a NetFlex CMS page.
+	 *
+	 * @Route("/{cmsPageSlug}", name="cms_page", requirements={"cmsPageSlug": "[a-zA-z0-9_\-]+"})
+	 * @Method({"GET"})
+	 *
+	 * @param  string  $cmsPageSlug
+	 * @param  Request $request A Request instance
+	 *
+	 * @return Response          A Response instance
+	 */
+	public function renderCMSPageAction($cmsPageSlug, Request $request)
+	{
+		$cmsPageSlug = trim($cmsPageSlug);
+		
+		$pageSlugDataMap = [
+			'about-us' => [
+				'title' => 'About Netflex',
+				'pageHeader' => 'About Netflex',
+			],
+			'career' => [
+				'title' => 'Career With Netflex',
+				'pageHeader' => 'Career With Netflex',
+			],
+			'contact' => [
+				'title' => 'Contact Netflex',
+				'pageHeader' => 'Contact Netflex',
+			],
+			'customer-enquiry' => [
+				'title' => 'Customer Enquiry',
+				'pageHeader' => 'Customer Enquiry',
+			],
+			'client' => [
+				'title' => 'Netflex Clientele',
+				'pageHeader' => 'Netflex Clientele',
+			],
+			'franchisee' => [
+				'title' => 'Netflex Franchisee',
+				'pageHeader' => 'Netflex Franchisee',
+			],
+		];
+		
+		if (false === array_key_exists($cmsPageSlug, $pageSlugDataMap)) {
+			throw $this->createNotFoundException('Page Not Found');
+		}
+		
+		return $this->render('NetFlexFrontBundle:Home:page.html.twig', [
+			'pageTitle' => $pageSlugDataMap[$cmsPageSlug]['title'],
+			'pageHeader' => $pageSlugDataMap[$cmsPageSlug]['pageHeader'],
+		]);
+	}
+	
+	/**
 	 * Dummy logging out option.
 	 *
-	 * @Route("/logout", name="dummy_logout")
+	 * @Route("/client/dummy-logout", name="dummy_logout")
 	 * @Method({"GET"})
 	 *
 	 * @param  Request  $request A Request instance

@@ -26,6 +26,7 @@
 				<span class="validationError">{{ clientLoginError._password }}</span>
 			{% endif %}
 			<input type="hidden" name="_netflex_client_login_csrf_token" value="{{ csrf_token('%nE^t207C1ll*X') }}">
+			<input type="hidden" name="_target_path" id="targetPath" value="{{ url('client_profile_page') }}" />
 			<input type="hidden" name="loginError" id="loginError" value="{{ (clientLoginError) ? true : false }}"/>
 			<input type="submit" id="loginButton" name="" value="Login">
 			{#<a href="#">Forgot your password?</a>#}

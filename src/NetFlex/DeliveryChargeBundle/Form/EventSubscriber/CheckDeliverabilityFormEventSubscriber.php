@@ -126,22 +126,36 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 			->add('sourceStateId', EntityType::class, [
 				'class' => 'NetFlexLocationBundle:State',
 				'placeholder' => '-Select A State-',
-				'query_builder' => function(EntityRepository $er) {
-					return $er->createQueryBuilder('s')
-						->where('s.countryId = 1')
-						->andWhere('s.status = 1')
-						->orderBy('s.name', 'ASC');
+				'query_builder' => function(EntityRepository $er) use($formData) {
+					if (($formData) && ($formData->getSourceCountryId())) {
+						return $er->createQueryBuilder('s')
+							->where('s.countryId = ' . $formData->getSourceCountryId()->getId())
+							->andWhere('s.status = 1')
+							->orderBy('s.name', 'ASC');
+					} else {
+						return $er->createQueryBuilder('s')
+							->where('s.countryId = 1')
+							->andWhere('s.status = 1')
+							->orderBy('s.name', 'ASC');
+					}
 				},
 				'data' => (($formData) && ($formData->getSourceStateId())) ? $formData->getSourceStateId() : $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1])
 			])
 			->add('sourceCityId', EntityType::class, [
 				'class' => 'NetFlexLocationBundle:City',
 				'placeholder' => '-Select A City-',
-				'query_builder' => function(EntityRepository $er) {
-					return $er->createQueryBuilder('ci')
-						->where('ci.stateId = 41')
-						->andWhere('ci.status = 1')
-						->orderBy('ci.name', 'ASC');
+				'query_builder' => function(EntityRepository $er) use($formData) {
+					if (($formData) && ($formData->getSourceStateId())) {
+						return $er->createQueryBuilder('ci')
+							->where('ci.stateId = ' . $formData->getSourceStateId()->getId())
+							->andWhere('ci.status = 1')
+							->orderBy('ci.name', 'ASC');
+					} else {
+						return $er->createQueryBuilder('ci')
+							->where('ci.stateId = 41')
+							->andWhere('ci.status = 1')
+							->orderBy('ci.name', 'ASC');
+					}
 				},
 				'data' => (($formData) && ($formData->getSourceCityId())) ? $formData->getSourceCityId() : $this->em->getReference('NetFlexLocationBundle:City', ['id' => 5583, 'status' => 1])
 			])

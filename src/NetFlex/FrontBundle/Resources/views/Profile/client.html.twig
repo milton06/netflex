@@ -849,11 +849,13 @@
 						},
 						success: function(data, textStatus,jqXHR) {
 							if (! data.status) {
-								if ("isPrimary" === key) {
-									$(element).closest(".billingAddForm").find("." + key).parentsUntil(".col-lg-6").eq(2).after("<span class='aValidationError'>" + value + "</span>");
-								} else {
-									$(element).closest(".billingAddForm").find("." + key).after("<span class='aValidationError'>" + value + "</span>");
-								}
+                                $.each(data.errorList, function(key, value) {
+                                    if ("isPrimary" === key) {
+                                        $(element).closest(".billingAddForm").find("." + key).parentsUntil(".col-lg-6").eq(2).after("<span class='aValidationError'>" + value + "</span>");
+                                    } else {
+                                        $(element).closest(".billingAddForm").find("." + key).after("<span class='aValidationError'>" + value + "</span>");
+                                    }
+                                });
 							} else {
 								location.reload();
 							}
@@ -874,32 +876,35 @@
 				minChars: 1,
 				delay: 50,
 				source: function(term, suggest) {
-					$.getJSON("{{ url('get_country_list') }}", { "countryHint": term }, function(data){ suggest(data.countryList) });
+                    try { xhr.abort(); } catch(e){}
+                    xhr = $.getJSON("{{ url('get_country_list') }}", { "countryHint": term }, function(data){ suggest(data.countryList) });
 				}
 			});
 			$(".stateId").autoComplete({
 				minChars: 1,
 				delay: 50,
 				source: function(term, suggest){
-					$.ajax({
-						url: "{{ url('get_state_list') }}",
-						method: "get",
-						dataType: "json",
-						data: {
-							"countryName": $(".stateId:focus").closest(".billingAddForm").find(".countryId").val(),
-							"stateHint": term
-						},
-						success: function(data) {
-							suggest(data.stateList)
-						}
-					});
+                    try { xhr.abort(); } catch(e){}
+					xhr = $.ajax({
+                        url: "{{ url('get_state_list') }}",
+                        method: "get",
+                        dataType: "json",
+                        data: {
+                            "countryName": $(".stateId:focus").closest(".billingAddForm").find(".countryId").val(),
+                            "stateHint": term
+                        },
+                        success: function(data) {
+                            suggest(data.stateList)
+                        }
+                    });
 				}
 			});
 			$(".cityId").autoComplete({
 				minChars: 1,
 				delay: 50,
 				source: function(term, suggest){
-					$.ajax({
+                    try { xhr.abort(); } catch(e){}
+                    xhr = $.ajax({
 						url: "{{ url('get_city_list') }}",
 						method: "get",
 						dataType: "json",

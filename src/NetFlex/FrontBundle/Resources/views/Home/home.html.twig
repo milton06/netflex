@@ -4,12 +4,12 @@
 {% endblock %}
 {% block pageContent %}
 	<!--banner-->
-	<div class="container-fluid">
+	<div class="container-fluid" id="less-height">
 		<div class="row">
-			<div class="bannerOverlay">
+            <div class="bannerOverlay">
 				<div class="banner">
 					<h1>We Deliver <span>On Time</span> <strong>Everytime</strong></h1>
-					<a href="javascript:void(0);">Book a Shipment</a>
+					<a href="{{ url('client_book_a_shipment') }}">Book a Shipment</a>
 					<div class="trackSearch">
 						<div class="input-group stylish-input-group">
 							<input type="text" id="trackingCode" class="form-control" placeholder="Search or Tracking Number">
@@ -22,6 +22,31 @@
 					</div>
 				</div>
 			</div>
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner home-banner" role="listbox">
+                    {#<div class="item active">
+                        {% image '@NetFlexFrontBundle/Resources/public/images/banner.jpg' %}
+                            <img src="{{ asset_url }}" alt="netflex-home-banner-1">
+                        {% endimage %}
+                    </div>#}
+                    <div class="item active">
+                        {% image '@NetFlexFrontBundle/Resources/public/images/banner2.jpg' %}
+                            <img src="{{ asset_url }}" alt="netflex-home-banner-2">
+                        {% endimage %}
+                    </div>
+                    <div class="item">
+                        {% image '@NetFlexFrontBundle/Resources/public/images/banner3.jpg' %}
+                            <img src="{{ asset_url }}" alt="netflex-home-banner-3">
+                        {% endimage %}
+                    </div>
+                    <div class="item">
+                        {% image '@NetFlexFrontBundle/Resources/public/images/banner4.jpg' %}
+                            <img src="{{ asset_url }}" alt="netflex-home-banner-4">
+                        {% endimage %}
+                    </div>
+                </div>
+            </div>
 		</div>
 	</div>
 	<!--banner-->
@@ -40,6 +65,11 @@
 					self.location = trackingUrl;
 				}
 			})
+            var bannerTexts = ['<span>Connecting</span> People <strong>Worldwide</strong>', '<span>Excellence</span> Carefully <strong>Delivered</strong>', 'We Deliver <span>On Time</span> <strong>Everytime</strong>'];
+            $('#carousel-example-generic').on('slide.bs.carousel', function() {
+                var currentIndex = $('div.active').index();
+                $(".banner > h1").html(bannerTexts[currentIndex]);
+            });
 		});
 	</script>
 {% endblock %}
