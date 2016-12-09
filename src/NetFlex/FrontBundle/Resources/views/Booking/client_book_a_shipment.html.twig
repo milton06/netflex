@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            {{ form_start(checkDeliverabilityForm, { 'attr': { 'id': 'check-deliverability-form', 'novalidate': 'novalidate' } }) }}
+            {{ form_start(checkDeliverabilityForm, { 'attr': { 'id': 'check-deliverability-form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
             <div class="selectShip clearfix">
                 <ul class="stylecheckbox">
                     <li><h2>Select Shipment Type :</h2></li>
@@ -143,7 +143,7 @@
                                 </div>
                             </div>
             {{ form_end(checkDeliverabilityForm) }}
-            {{ form_start(orderForm, { 'attr': { 'id': 'book-a-shipment-form', 'novalidate': 'novalidate' } }) }}
+            {{ form_start(orderForm, { 'attr': { 'id': 'book-a-shipment-form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
                             <!--blk 2-->
                             <!--blk 3-->
                             <div class="formBlk1 clearfix">
@@ -306,13 +306,13 @@
                                 {{ form_widget(orderForm.orderAddress.shippingAddressLine1, { 'id': 'shipping-address-line-1', 'attr': { 'placeholder': 'Address Line 1' } }) }}
                                 {{ form_widget(orderForm.orderAddress.shippingAddressLine2, { 'id': 'shipping-address-line-2', 'attr': { 'placeholder': 'Address Line 2' } }) }}
                                 <label class="dropdown weight1" style="margin-top: 9px; margin-bottom: 9px;">
-                                    {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'attr': { 'class': 'weight country-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                    {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'disabled': 'disabled', 'attr': { 'class': 'weight country-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
                                 </label>
                                 <label class="dropdown weight1" style="margin-bottom: 9px;">
-                                    {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'attr': { 'class': 'weight state-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                    {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'disabled': 'disabled', 'attr': { 'class': 'weight state-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
                                 </label>
                                 <label class="dropdown weight1" style="margin-bottom: 9px;">
-                                    {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'attr': { 'class': 'weight city-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                    {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'disabled': 'disabled', 'attr': { 'class': 'weight city-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
                                 </label>
                                 {{ form_widget(orderForm.orderAddress.shippingZipCode, { 'id': 'shipping-zip-code', 'attr': { 'placeholder': 'Zip Code' } }) }}
                                 {{ form_widget(orderForm.orderAddress.shippingLandMark, { 'id': 'shipping-land-mark', 'attr': { 'placeholder': 'Landmark' } }) }}

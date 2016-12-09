@@ -72,11 +72,13 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData->getPickUpCountryId()->getId())
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = 1')
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					}
 				},
@@ -143,11 +145,13 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData->getBillingCountryId()->getId())
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = 1')
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					}
 				},
@@ -198,11 +202,13 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData->getShippingCountryId()->getId())
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = 1')
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					}
 				},
@@ -263,11 +269,13 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData->getPickUpCountryId()->getId())
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = 1')
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					}
 				},
@@ -333,11 +341,13 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData->getBillingCountryId()->getId())
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = 1')
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					}
 				},
@@ -387,6 +397,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 					return $er->createQueryBuilder('states')
 						->where('states.status = 1')
 						->andWhere('states.countryId = 1')
+						->andWhere('states.id not in (42, 43, 44, 45)')
 						->orderBy('states.name', 'ASC');
 				},
 				'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => 41, 'status' => 1]),
@@ -448,6 +459,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData['pickupCountryId'])
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return null;
@@ -516,6 +528,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData['billingCountryId'])
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return null;
@@ -569,6 +582,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData['shippingCountryId'])
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return null;
@@ -629,6 +643,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData['pickupCountryId'])
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return null;
@@ -697,6 +712,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData['billingCountryId'])
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return null;
@@ -750,6 +766,7 @@ class OrderAddressForClientFromDashboardFormEventSubscriber implements EventSubs
 						return $er->createQueryBuilder('states')
 							->where('states.status = 1')
 							->andWhere('states.countryId = ' . $formData['shippingCountryId'])
+							->andWhere('states.id not in (42, 43, 44, 45)')
 							->orderBy('states.name', 'ASC');
 					} else {
 						return null;

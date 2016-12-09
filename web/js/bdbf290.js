@@ -532,6 +532,7 @@ jQuery(document).ready(function() {
 		e.preventDefault();
 		
 		if (validateCheckDeliverabilityForm() && validateOrderForm()) {
+			$("#shipping-country, #shipping-state, #shipping-city").prop("disabled", false);
 			jQuery.ajax({
 				url: updateOrderUrl,
 				type: "post",

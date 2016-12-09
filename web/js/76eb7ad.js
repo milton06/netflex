@@ -426,9 +426,9 @@ jQuery(document).ready(function() {
 			var sourceCityId = jQuery("#cd-source-city").val();
 			var sourceZipCode = jQuery("#cd-source-zip-code").val();
 			
-			var destinationCountryId = jQuery("#cd-destination-country").val();
-			var destinationStateId = jQuery("#cd-destination-state").val();
-			var destinationCityId = jQuery("#cd-destination-city").val();
+			destinationCountryId = jQuery("#cd-destination-country").val();
+			destinationStateId = jQuery("#cd-destination-state").val();
+			destinationCityId = jQuery("#cd-destination-city").val();
 			var destinationZipCode = jQuery("#cd-destination-zip-code").val();
 			
 			var itemPrimaryType = jQuery("#item-primary-type").val();
@@ -523,6 +523,7 @@ jQuery(document).ready(function() {
 		e.preventDefault();
 		
 		if (validateCheckDeliverabilityForm() && validateOrderForm()) {
+			$("#shipping-country, #shipping-state, #shipping-city").prop("disabled", false);
 			jQuery.ajax({
 				url: bookShipmentUrl,
 				type: "post",

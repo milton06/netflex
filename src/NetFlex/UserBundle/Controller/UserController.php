@@ -555,6 +555,9 @@ class UserController extends Controller
 	    $cities = $states[0]->getCities();
 	
 	    foreach ($states as $thisState) {
+		    if (42 == $thisState->getId()) {
+			    continue;
+		    }
 		    $stateList[$thisState->getId()] = $thisState->getName();
 	    }
 	    

@@ -52,6 +52,7 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 				'query_builder' => function(EntityRepository $er) use($formData) {
 					return $er->createQueryBuilder('s')
 						->where('s.countryId = ' . $formData->getSourceCountryId()->getId())
+						->andWhere('s.id not in (42, 43, 44, 45)')
 						->andWhere('s.status = 1')
 						->orderBy('s.name', 'ASC');
 				},
@@ -91,6 +92,7 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 				'query_builder' => function(EntityRepository $er) use($formData) {
 					return $er->createQueryBuilder('s')
 						->where('s.countryId = ' . $formData->getDestinationCountryId()->getId())
+						->andWhere('s.id not in (42, 43, 44, 45)')
 						->andWhere('s.status = 1')
 						->orderBy('s.name', 'ASC');
 				},
@@ -130,11 +132,13 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 					if (($formData) && ($formData->getSourceCountryId())) {
 						return $er->createQueryBuilder('s')
 							->where('s.countryId = ' . $formData->getSourceCountryId()->getId())
+							->andWhere('s.id not in (42, 43, 44, 45)')
 							->andWhere('s.status = 1')
 							->orderBy('s.name', 'ASC');
 					} else {
 						return $er->createQueryBuilder('s')
 							->where('s.countryId = 1')
+							->andWhere('s.id not in (42, 43, 44, 45)')
 							->andWhere('s.status = 1')
 							->orderBy('s.name', 'ASC');
 					}
@@ -179,6 +183,7 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 				'query_builder' => function(EntityRepository $er) {
 					return $er->createQueryBuilder('s')
 						->where('s.countryId = 1')
+						->andWhere('s.id not in (42, 43, 44, 45)')
 						->andWhere('s.status = 1')
 						->orderBy('s.name', 'ASC');
 				},
@@ -229,6 +234,7 @@ class CheckDeliverabilityFormEventSubscriber implements EventSubscriberInterface
 				'query_builder' => function(EntityRepository $er) {
 					return $er->createQueryBuilder('s')
 						->where('s.countryId = 1')
+						->andWhere('s.id != 42')
 						->andWhere('s.status = 1')
 						->orderBy('s.name', 'ASC');
 				},

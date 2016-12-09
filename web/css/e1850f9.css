@@ -2252,7 +2252,7 @@ ul.stylecheckbox li input[type=radio]:checked ~ label{
 
 /*=========SHIP LEFT===========*/
 
-.shipLeft, .shipRight{ background: #eff3f5; border-radius: 5px; padding: 35px;}
+.shipLeft, .shipRight{ background: #eff3f5; border-radius: 5px; padding: 35px; min-height: 700px;}
 .shipLeft{ width: 45%; float: left;}
 .shipRight{ width: 45%; float: right;}
 .shipLeft h2, .shipRight h2{ font: normal 14px 'open_sansbold'; color: #000000; margin: 0px; padding: 0px; padding-bottom: 15px;}

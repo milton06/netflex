@@ -86,7 +86,7 @@
 						        </div>
 					        </div>
 				        </div>
-				        {{ form_start(checkDeliverabilityForm, { 'attr': { 'id': 'check-deliverability-form', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+				        {{ form_start(checkDeliverabilityForm, { 'attr': { 'id': 'check-deliverability-form', 'role': 'form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
 				            <div class="row">
 					            <div class="col-md-8">
 						            <strong>Deliver Via:</strong>
@@ -195,7 +195,7 @@
 						        </div>
 					        </div>
 				        {{ form_end(checkDeliverabilityForm) }}
-				        {{ form_start(orderForm, { 'attr': { 'id': 'book-a-shipment-form', 'role': 'form', 'novalidate': 'novalidate' } }) }}
+				        {{ form_start(orderForm, { 'attr': { 'id': 'book-a-shipment-form', 'role': 'form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
 					        <hr/>
 					        <div class="row">
 						        <div class="col-md-12">
@@ -529,19 +529,19 @@
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingCountryId, 'Country', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'attr': { 'class': 'country-selectors' } }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'disabled': 'disabled', 'attr': { 'class': 'country-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingStateId, 'State', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'attr': { 'class': 'state-selectors' } }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'disabled': 'disabled', 'attr': { 'class': 'state-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
 					        {{ form_label(orderForm.orderAddress.shippingCityId, 'City', { 'label_attr': { 'class': 'col-md-4' } }) }}
 					        <div class="col-md-8">
-						        {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'attr': { 'class': 'city-selectors' } }) }}
+						        {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'disabled': 'disabled', 'attr': { 'class': 'city-selectors' } }) }}
 					        </div>
 				        </div>
 				        <div class="row form-group">
