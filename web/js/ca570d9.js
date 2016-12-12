@@ -57,7 +57,7 @@ position:"bottom"},beforeShow:function(a){var d=b.current,e=d.title,c=a.type;f.i
 "click.fb-start",l):e.unbind("click.fb-start").bind("click.fb-start",l);this.filter("[data-fancybox-start=1]").trigger("click");return this};p.ready(function(){var a,d;f.scrollbarWidth===w&&(f.scrollbarWidth=function(){var a=f('<div style="width:50px;height:50px;overflow:auto"><div/></div>').appendTo("body"),b=a.children(),b=b.innerWidth()-b.height(99).innerWidth();a.remove();return b});f.support.fixedPosition===w&&(f.support.fixedPosition=function(){var a=f('<div style="position:fixed;top:20px;"></div>').appendTo("body"),
 b=20===a[0].offsetTop||15===a[0].offsetTop;a.remove();return b}());f.extend(b.defaults,{scrollbarWidth:f.scrollbarWidth(),fixed:f.support.fixedPosition,parent:f("body")});a=f(s).width();K.addClass("fancybox-lock-test");d=f(s).width();K.removeClass("fancybox-lock-test");f("<style type='text/css'>.fancybox-margin{margin-right:"+(d-a)+"px;}</style>").appendTo("head")})})(window,document,jQuery);
 $(document).ready(function() {
-	var fullscreen = function() {
+	/*var fullscreen = function() {
 		$('.banner').css({
 			width: $(window).width(),
 			height: $(window).height()
@@ -66,7 +66,7 @@ $(document).ready(function() {
 	fullscreen();
 	$(window).resize(function() {
 		fullscreen();
-	});
+	});*/
 	
 	$("#login-trigger").click(function() {
 		$('#login-content').slideToggle();
@@ -98,8 +98,19 @@ $(document).ready(function() {
 	
 	$(".fancybox").fancybox();
 });
+var fullscreen = function() {
+	$('.home-banner').css({
+		width: $(window).width(),
+		height: $(window).height()
+	});
+};
 $(window).load(function() {
 	if ($("#loginError").val()) {
 		$("#login-trigger").trigger("click");
 	}
+	
+	//fullscreen();
+});
+$(window).resize(function() {
+	//fullscreen();
 });

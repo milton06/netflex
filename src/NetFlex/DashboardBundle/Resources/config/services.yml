@@ -5,3 +5,6 @@ services:
     pagination_service:
         class: NetFlex\DashboardBundle\Service\PaginationService
         arguments: ["%pagination_parameters%", "@router"]
+    mailer_service:
+        class: NetFlex\DashboardBundle\Service\MailerService
+        arguments: ["@mailer"]

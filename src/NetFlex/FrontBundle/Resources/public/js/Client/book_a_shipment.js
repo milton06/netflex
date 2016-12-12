@@ -495,6 +495,18 @@ jQuery(document).ready(function() {
 						jQuery("#shipping-city").val(destinationCityId);
 						jQuery("#shipping-zip-code").val(destinationZipCode);
 						
+						if ('' !== jQuery("#pickup-zip-code").val()) {
+							jQuery("#pickup-zip-code").prop("disabled", true);
+						} else {
+							jQuery("#pickup-zip-code").prop("disabled", false);
+						}
+						
+						if ('' !== jQuery("#shipping-zip-code").val()) {
+							jQuery("#shipping-zip-code").prop("disabled", true);
+						} else {
+							jQuery("#shipping-zip-code").prop("disabled", false);
+						}
+						
 						jQuery("#tab-booking-options > a").removeClass("selected");
 						jQuery("#tab-booking-options > a").addClass("inactiveLink");
 						jQuery("#tab-shipment-addresses > a").removeClass("inactiveLink");
@@ -516,7 +528,7 @@ jQuery(document).ready(function() {
 		e.preventDefault();
 		
 		if (validateCheckDeliverabilityForm() && validateOrderForm()) {
-			$("#shipping-country, #shipping-state, #shipping-city").prop("disabled", false);
+			$("#pickup-country, #pickup-state, #pickup-city, #pickup-zip-code, #shipping-country, #shipping-state, #shipping-city, #shipping-zip-code").prop("disabled", false);
 			jQuery.ajax({
 				url: bookShipmentUrl,
 				type: "post",

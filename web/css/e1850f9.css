@@ -1868,7 +1868,7 @@ ul, li{ list-style: none;}
 a:focus{ outline: none;}
 
 body{ background: #f4efdb;}
-
+img{max-width:100%;}
 /*==============HEADER=============*/
 
 header.header{ background: url(../bundles/netflexfront/images/headerbg.jpg) repeat-x; width: 100%; height: 31px;}
@@ -1953,32 +1953,34 @@ header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
 .logreg li .userSettingLinks ul li a{ color: #d4d4d4; font: normal 13px 'open_sansregular' !important; text-decoration: none !important; padding: 7px 0; display: block;}
 .logreg li .userSettingLinks ul li:last-child{ border-bottom: 0px;}
 
-
+.banner-content{position:relative;}
 /*============BANNER=================*/
 .bannerOverlay {
-    height: 100%;
     position: absolute;
-    overflow-x: hidden;
     z-index: 999;
     top: 50%;
     left: 0;
     width: 100%;
-    transform: translateY(-29%);
+    height: 100%;
+    transform: translateY(-50%);
     z-index: 999;
-
+    
 }
 .banner{/*  background-image: url(../images/banner.jpg);
 background-size: cover;
 position: relative; margin-top: -105px; */
 
 }
-.banner h1{ position: absolute; text-align: center; top: 40%; left: 0%; font: normal 60px 'OpenSans-ExtraBold'; color: #ffffff; text-transform: uppercase; padding: 0px; margin: 0px; width: 100%;}
+/*.banner h1{ position: absolute; text-align: center; top: 40%; left: 0%; font: normal 60px 'OpenSans-ExtraBold'; color: #ffffff; text-transform: uppercase; padding: 0px; margin: 0px; width: 100%;}*/
+.banner h1{ position: absolute; text-align: center; top: 30%; left: 0%; font: normal 60px 'OpenSans-ExtraBold'; color: #ffffff; text-transform: uppercase; padding: 0px; margin: 0px; width: 100%;}
 .banner h1 strong{ text-decoration: underline;font: normal 60px 'OpenSans-ExtraBold'; }
 .banner h1 span{ color: #ff9600;}
-.banner a{ border-radius: 4px; background: #009cff; text-align: center; display: inline-block; font: normal 24px 'open_sansbold'; color: #ffffff; padding: 30px 0px;position: absolute; text-align: center; top: 60%; left: 50%; transition: all 0.5s ease; width: 370px; margin: 0 auto; text-transform: uppercase; margin-left: -185px;}
+/*.banner a{ border-radius: 4px; background: #009cff; text-align: center; display: inline-block; font: normal 24px 'open_sansbold'; color: #ffffff; padding: 30px 0px;position: absolute; text-align: center; top: 60%; left: 50%; transition: all 0.5s ease; width: 370px; margin: 0 auto; text-transform: uppercase; margin-left: -185px;}*/
+.banner a{ border-radius: 4px; background: #009cff; text-align: center; display: inline-block; font: normal 24px 'open_sansbold'; color: #ffffff; padding: 30px 0px;position: absolute; text-align: center; top: 50%; left: 50%; transition: all 0.5s ease; width: 370px; margin: 0 auto; text-transform: uppercase; margin-left: -185px;}
 .banner a:hover{ background: #ff9600; text-decoration:none;}
 
-.trackSearch{ width: 770px; left: 50%; margin-left: -385px; bottom: 0px; position: absolute; background: #ededee; padding: 20px;}
+/*.trackSearch{ width: 770px; left: 50%; margin-left: -385px; bottom: 0px; position: absolute; background: #ededee; padding: 20px;}*/
+.trackSearch{ width: 770px; left: 50%; margin-left: -385px; bottom: 20%; position: absolute; background: #ededee; padding: 20px;}
 .trackSearch input{ height: 38px; border: 1px solid #d2d2d2; border-radius: 0px; border-right: 0px; font: italic 14px 'open_sansbold'; color: #a0a0a0;}
 .trackSearch .input-group-addon{ background: #ff5400; border:1px solid #ff5400; border-left: 0px; border-radius: 0px; padding: 0px; 
     }
@@ -2038,6 +2040,10 @@ position: relative; margin-top: -105px; */
     border: 1px solid #cfcfcf;
     position: relative;
     top: -2px;
+}
+
+#shipment-addresses {
+    padding: 50px 15px;
 }
 
 .formBlk1{ border-bottom: 1px solid #d2d2d2; padding-bottom: 20px; margin-bottom: 20px; margin-left: 8px; margin-right: 8px;}
@@ -2252,11 +2258,17 @@ ul.stylecheckbox li input[type=radio]:checked ~ label{
 
 /*=========SHIP LEFT===========*/
 
-.shipLeft, .shipRight{ background: #eff3f5; border-radius: 5px; padding: 35px; min-height: 700px;}
-.shipLeft{ width: 45%; float: left;}
-.shipRight{ width: 45%; float: right;}
+/*.shipLeft, .shipRight{ background: #eff3f5; border-radius: 5px; padding: 35px; min-height: 700px;}*/
+.shipLeft, .shipMid, .shipRight{ background: #eff3f5; border-radius: 5px; padding: 35px; min-height: 760px;}
+/*.shipLeft{ width: 45%; float: left;}
+.shipRight{ width: 45%; float: right;}*/
+.shipLeft{ width: 30%; float: left;}
+.shipMid { width: 30%; float: left; margin-left: 5%; }
+.shipRight{ width: 30%; float: right;}
 .shipLeft h2, .shipRight h2{ font: normal 14px 'open_sansbold'; color: #000000; margin: 0px; padding: 0px; padding-bottom: 15px;}
+.shipMid h2{ font: normal 14px 'open_sansbold'; color: #000000; margin: 0px; padding: 0px; padding-bottom: 15px;}
 .shipLeft input, .shipRight input{ margin-bottom: 9px; border: 1px solid #d2d2d2; padding: 0 10px; height: 38px; background: #f6f6f6; width: 100%; display: block; float: none; clear: both; font: normal 14px 'open_sansregular'; color: #686868;}
+.shipMid input{ margin-bottom: 9px; border: 1px solid #d2d2d2; padding: 0 10px; height: 38px; background: #f6f6f6; width: 100%; display: block; float: none; clear: both; font: normal 14px 'open_sansregular'; color: #686868;}
 ul.stylecheckbox-tab2 li{ padding-top: 5px;}
 ul.stylecheckbox-tab2 li .check{ left: 0px; top: 2px;}
 ul.stylecheckbox-tab2 li label{ padding-left: 30px;}
@@ -2644,6 +2656,12 @@ ul.activitypagination li a.paginum{ width: 26px; height: 26px; background: #ffff
 ul.activitypagination li a.paginum:hover{ background: #de4b4b; color: #ffffff;}
 ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background: #de4b4b; color: #ffffff; text-align: center; border-radius: 50%; transition: all 0.5s ease; display: block; line-height: 26px; margin-top: -5px; }
 
+.inner-banner{position:relative}
+.about-txt{width: 770px; left: 50%; transform: translateX(-50%);bottom: 35px;  position: absolute;}
+.about-txt .trackSearch{    margin-left:0; position:static}
+
+.inner-title{background:#ff5400; font-size:36px; margin:0; color:#fff;font-family: 'OpenSans-ExtraBold'; text-transform:uppercase; display:inline-block; padding:10px;}
+.why-franchisee{background:#fff; padding:50px 0;}
 
 /*=====================CONSIGMENTS======================*/
 

@@ -495,19 +495,20 @@ jQuery(document).ready(function() {
 						jQuery("#order-fuel-surcharge-added-charge").val(deliveryParams.orderFuelSurchargeAddedCharge);
 						jQuery("#order-service-tax-added-charge").val(deliveryParams.orderServiceTaxAddedCharge);
 						jQuery("#order-carrier-risk-added-charge").val(deliveryParams.orderCarrierRiskAddedCharge);
-						/*jQuery("#pickup-country").val(sourceCountryId);
-						jQuery("#pickup-state").val(sourceStateId);
-						jQuery("#pickup-city").val(sourceCityId);
+						
 						jQuery("#pickup-zip-code").val(sourceZipCode);
-						jQuery("#shipping-country").val(destinationCountryId);
-						jQuery("#shipping-state").val(destinationStateId);
-						jQuery("#shipping-city").val(destinationCityId);
-						jQuery("#shipping-zip-code").val(destinationZipCode);*/
-						if ((sourceZipCode) && (sourceZipCode !== originalPickupZipCode)) {
-							jQuery("#pickup-zip-code").val(sourceZipCode);
+						jQuery("#shipping-zip-code").val(destinationZipCode);
+						
+						if ('' !== jQuery("#pickup-zip-code").val()) {
+							jQuery("#pickup-zip-code").prop("disabled", true);
+						} else {
+							jQuery("#pickup-zip-code").prop("disabled", false);
 						}
-						if ((destinationZipCode) && (destinationZipCode !== originalShippingZipCode)) {
-							jQuery("#shipping-zip-code").val(destinationZipCode);
+						
+						if ('' !== jQuery("#shipping-zip-code").val()) {
+							jQuery("#shipping-zip-code").prop("disabled", true);
+						} else {
+							jQuery("#shipping-zip-code").prop("disabled", false);
 						}
 						
 						jQuery("#tab-booking-options").addClass('disabled');
@@ -532,7 +533,7 @@ jQuery(document).ready(function() {
 		e.preventDefault();
 		
 		if (validateCheckDeliverabilityForm() && validateOrderForm()) {
-			$("#shipping-country, #shipping-state, #shipping-city").prop("disabled", false);
+			$("#pickup-country, #pickup-state, #pickup-city, #pickup-zip-code, #shipping-country, #shipping-state, #shipping-city, #shipping-zip-code").prop("disabled", false);
 			jQuery.ajax({
 				url: updateOrderUrl,
 				type: "post",

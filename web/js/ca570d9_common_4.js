@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var fullscreen = function() {
+	/*var fullscreen = function() {
 		$('.banner').css({
 			width: $(window).width(),
 			height: $(window).height()
@@ -8,7 +8,7 @@ $(document).ready(function() {
 	fullscreen();
 	$(window).resize(function() {
 		fullscreen();
-	});
+	});*/
 	
 	$("#login-trigger").click(function() {
 		$('#login-content').slideToggle();
@@ -40,8 +40,19 @@ $(document).ready(function() {
 	
 	$(".fancybox").fancybox();
 });
+var fullscreen = function() {
+	$('.home-banner').css({
+		width: $(window).width(),
+		height: $(window).height()
+	});
+};
 $(window).load(function() {
 	if ($("#loginError").val()) {
 		$("#login-trigger").trigger("click");
 	}
+	
+	//fullscreen();
+});
+$(window).resize(function() {
+	//fullscreen();
 });

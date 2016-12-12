@@ -251,25 +251,32 @@
                             {{ form_widget(orderForm.orderPrice.orderReturnCharge, { 'id': 'order-return-charge' }) }}
                         </div>
                         <div id="shipment-addresses" class="tabgrp clearfix">
-                            <!--invisible-->
-                            <div style="display: none;">
-                                {{ form_widget(orderForm.orderAddress.pickupFirstName, { 'id': 'pickup-first-name' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupMidName, { 'id': 'pickup-mid-name' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupLastName, { 'id': 'pickup-last-name' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupAddressLine1, { 'id': 'pickup-address-line-1' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupAddressLine2, { 'id': 'pickup-address-line-2' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country', 'attr': { 'class': 'country-selectors' } }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state', 'attr': { 'class': 'state-selectors' } }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city', 'attr': { 'class': 'city-selectors' } }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupZipCode, { 'id': 'pickup-zip-code' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupLandMark, { 'id': 'pickup-land-mark' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupEmail, { 'id': 'pickup-email' }) }}
-                                {{ form_widget(orderForm.orderAddress.pickupContactNumber, { 'id': 'pickup-contact-number' }) }}
-                            </div>
-                            <!--invisible-->
                             <!--left-->
                             <div class="shipLeft clearfix">
-                                <h2>From :</h2>
+                                <h2>Pickup At :</h2>
+                                {{ form_widget(orderForm.orderAddress.pickupFirstName, { 'id': 'pickup-first-name', 'attr': { 'placeholder': 'First Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupMidName, { 'id': 'pickup-mid-name', 'attr': { 'placeholder': 'Mid Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupLastName, { 'id': 'pickup-last-name', 'attr': { 'placeholder': 'Last Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupAddressLine1, { 'id': 'pickup-address-line-1', 'attr': { 'placeholder': 'Address Line 1' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupAddressLine2, { 'id': 'pickup-address-line-2', 'attr': { 'placeholder': 'Address Line 2' } }) }}
+                                <label class="dropdown weight1" style="margin-top: 9px; margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country', 'disabled': 'disabled', 'attr': { 'class': 'weight country-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state', 'disabled': 'disabled', 'attr': { 'class': 'weight state-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city', 'disabled': 'disabled', 'attr': { 'class': 'weight city-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                {{ form_widget(orderForm.orderAddress.pickupZipCode, { 'id': 'pickup-zip-code', 'attr': { 'placeholder': 'Zip Code' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupLandMark, { 'id': 'pickup-land-mark', 'attr': { 'placeholder': 'Landmark' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupEmail, { 'id': 'pickup-email', 'attr': { 'placeholder': 'Email' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupContactNumber, { 'id': 'pickup-contact-number', 'attr': { 'placeholder': 'Contact Number' } }) }}
+                            </div>
+                            <!--left-->
+                            <!--mid-->
+                            <div class="shipMid clearfix">
+                                <h2>Bill To :</h2>
                                 {% if orderForm.clientOtherBillingAddresses is defined and orderForm.clientOtherBillingAddresses %}
                                     <label class="dropdown weight1" style="margin-bottom: 9px;">
                                         {{ form_widget(orderForm.clientOtherBillingAddresses, { 'id': 'choose-another-billing-address', 'attr': { 'class': 'weight', 'required': false, 'style': 'margin-top:-10px; margin-left: 0px;' } }) }}
@@ -296,10 +303,10 @@
                                 {{ form_widget(orderForm.orderAddress.billingEmail, { 'id': 'billing-email', 'attr': { 'placeholder': 'Email' } }) }}
                                 {{ form_widget(orderForm.orderAddress.billingContactNumber, { 'id': 'billing-contact-number', 'attr': { 'placeholder': 'Contact Number' } }) }}
                             </div>
-                            <!--left-->
+                            <!--mid-->
                             <!--right-->
                             <div class="shipRight clearfix">
-                                <h2>To (Destination) :</h2>
+                                <h2>Ship To :</h2>
                                 {{ form_widget(orderForm.orderAddress.shippingFirstName, { 'id': 'shipping-first-name', 'attr': { 'placeholder': 'First Name' } }) }}
                                 {{ form_widget(orderForm.orderAddress.shippingMidName, { 'id': 'shipping-mid-name', 'attr': { 'placeholder': 'Middle Name' } }) }}
                                 {{ form_widget(orderForm.orderAddress.shippingLastName, { 'id': 'shipping-last-name', 'attr': { 'placeholder': 'Last Name' } }) }}

@@ -4,7 +4,7 @@
 {% endblock %}
 {% block pageContent %}
 	<!--banner-->
-	<div class="container-fluid" id="less-height">
+	<div class="container-fluid banner-content">
 		<div class="row">
             <div class="bannerOverlay">
 				<div class="banner">
@@ -25,11 +25,6 @@
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner home-banner" role="listbox">
-                    {#<div class="item active">
-                        {% image '@NetFlexFrontBundle/Resources/public/images/banner.jpg' %}
-                            <img src="{{ asset_url }}" alt="netflex-home-banner-1">
-                        {% endimage %}
-                    </div>#}
                     <div class="item active">
                         {% image '@NetFlexFrontBundle/Resources/public/images/banner2.jpg' %}
                             <img src="{{ asset_url }}" alt="netflex-home-banner-2">
