@@ -210,7 +210,8 @@ class UserController extends Controller
 		    /**
 		     * Set encoded password.
 		     */
-		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
+		    $plainTextPassword = $user->getPassword();
+		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $plainTextPassword));
 		    
 		    $addresses = $user->getAddresses();
 		    $emails = $user->getEmails();
@@ -235,6 +236,21 @@ class UserController extends Controller
 		    }
 		    
 		    $em->flush();
+		
+		    /**
+		     * Send mail.
+		     */
+		    $mailerService = $this->get('mailer_service');
+		    list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CRT_CLNT');
+		    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+			    'mailBody' => $message,
+			    'firstName' => $user->getFirstName(),
+			    'lastName' => $user->getLastName(),
+			    'username' => $user->getUsername(),
+			    'password' => $plainTextPassword,
+		    ]);
+		    $mailerService->setMessage($fromEmail, $email->getEmail(), $subject, $message, 1, $fromName, $user->getFirstName() . ' ' . $user->getLastName());
+		    $mailerService->sendMail();
 		    
 		    $userId = $user->getId();
 		
@@ -698,6 +714,22 @@ class UserController extends Controller
 		$em->persist($client);
 		$em->flush();
 		
+		/**
+		 * Send mail.
+		 */
+		$email = $em->getRepository('NetFlexUserBundle:Email')->findClientPreferredOrFirstEmail($client->getId());
+		if ($email) {
+			$mailerService = $this->get('mailer_service');
+			list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_ACC_APPRV');
+			$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+				'mailBody' => $message,
+				'firstName' => $client->getFirstName(),
+				'lastName' => $client->getLastName(),
+			]);
+			$mailerService->setMessage($fromEmail, $email, $subject, $message, 1, $fromName, $client->getFirstName() . ' ' . $client->getLastName());
+			$mailerService->sendMail();
+		}
+		
 		$this->addFlash('success', 'Client approval was successful');
 		
 		return $this->redirectToRoute('client_list', $allRouteParameters);
@@ -727,6 +759,22 @@ class UserController extends Controller
 			$client->setLastModifiedBy($this->getUser()->getId());
 			
 			$em->persist($client);
+			
+			/**
+			 * Send mail.
+			 */
+			$email = $em->getRepository('NetFlexUserBundle:Email')->findClientPreferredOrFirstEmail($client->getId());
+			if ($email) {
+				$mailerService = $this->get('mailer_service');
+				list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_ACC_APPRV');
+				$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+					'mailBody' => $message,
+					'firstName' => $client->getFirstName(),
+					'lastName' => $client->getLastName(),
+				]);
+				$mailerService->setMessage($fromEmail, $email, $subject, $message, 1, $fromName, $client->getFirstName() . ' ' . $client->getLastName());
+				$mailerService->sendMail();
+			}
 		}
 		
 		$em->flush();
@@ -758,6 +806,10 @@ class UserController extends Controller
 		}
 		foreach ($thisClient->getContacts() as $contact) {
 			$em->remove($contact);
+		}
+		
+		foreach ($thisClient->getRoles() as $role) {
+			$thisClient->removeRole($em->getRepository('NetFlexUserBundle:Role')->findOneByName($role));
 		}
 		
 		$em->remove($thisClient);

@@ -2162,3 +2162,74 @@
 [06-Dec-2016 10:27:15 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
 [06-Dec-2016 10:27:15 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
 [06-Dec-2016 10:27:15 UTC] PHP   6. NetFlex\ShipmentTrackBundle\Controller\OrderShipmentTrackRecordController->editAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 06:50:23 UTC] PHP Fatal error:  Class 'PHPUnit_Framework_TestCase' not found in /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.php on line 24
+[13-Dec-2016 06:50:23 UTC] PHP Stack trace:
+[13-Dec-2016 06:50:23 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[13-Dec-2016 06:50:23 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[13-Dec-2016 06:50:23 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[13-Dec-2016 06:50:23 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[13-Dec-2016 06:50:23 UTC] PHP   5. Symfony\Component\EventDispatcher\Debug\TraceableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:129
+[13-Dec-2016 06:50:23 UTC] PHP   6. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/TraceableEventDispatcher.php:136
+[13-Dec-2016 06:50:23 UTC] PHP   7. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[13-Dec-2016 06:50:23 UTC] PHP   8. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[13-Dec-2016 06:50:23 UTC] PHP   9. Symfony\Component\EventDispatcher\Debug\WrappedListener->__invoke() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[13-Dec-2016 06:50:23 UTC] PHP  10. call_user_func:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/WrappedListener.php:61}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/WrappedListener.php:61
+[13-Dec-2016 06:50:23 UTC] PHP  11. Symfony\Component\HttpKernel\EventListener\RouterListener->onKernelRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/Debug/WrappedListener.php:61
+[13-Dec-2016 06:50:23 UTC] PHP  12. Symfony\Component\Routing\Router->matchRequest() /var/www/html/netflex/var/cache/dev/classes.php:2364
+[13-Dec-2016 06:50:23 UTC] PHP  13. Symfony\Component\Routing\Router->getMatcher() /var/www/html/netflex/var/cache/dev/classes.php:1632
+[13-Dec-2016 06:50:23 UTC] PHP  14. Symfony\Component\Config\ResourceCheckerConfigCacheFactory->cache() /var/www/html/netflex/var/cache/dev/classes.php:1664
+[13-Dec-2016 06:50:23 UTC] PHP  15. call_user_func:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[13-Dec-2016 06:50:23 UTC] PHP  16. Symfony\Component\Routing\Router->Symfony\Component\Routing\{closure}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/ResourceCheckerConfigCacheFactory.php:46
+[13-Dec-2016 06:50:23 UTC] PHP  17. Symfony\Component\Routing\Router->getMatcherDumperInstance() /var/www/html/netflex/var/cache/dev/classes.php:1654
+[13-Dec-2016 06:50:23 UTC] PHP  18. Symfony\Bundle\FrameworkBundle\Routing\Router->getRouteCollection() /var/www/html/netflex/var/cache/dev/classes.php:1702
+[13-Dec-2016 06:50:23 UTC] PHP  19. Symfony\Bundle\FrameworkBundle\Routing\DelegatingLoader->load() /var/www/html/netflex/var/cache/dev/classes.php:1921
+[13-Dec-2016 06:50:23 UTC] PHP  20. Symfony\Component\Config\Loader\DelegatingLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Routing/DelegatingLoader.php:72
+[13-Dec-2016 06:50:23 UTC] PHP  21. Symfony\Component\Routing\Loader\YamlFileLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/DelegatingLoader.php:45
+[13-Dec-2016 06:50:23 UTC] PHP  22. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[13-Dec-2016 06:50:23 UTC] PHP  23. Symfony\Component\Config\Loader\FileLoader->import() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[13-Dec-2016 06:50:23 UTC] PHP  24. Symfony\Component\Routing\Loader\YamlFileLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[13-Dec-2016 06:50:23 UTC] PHP  25. Symfony\Component\Routing\Loader\YamlFileLoader->parseImport() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:83
+[13-Dec-2016 06:50:23 UTC] PHP  26. Symfony\Component\Config\Loader\FileLoader->import() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/YamlFileLoader.php:145
+[13-Dec-2016 06:50:23 UTC] PHP  27. Symfony\Component\Routing\Loader\AnnotationDirectoryLoader->load() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Config/Loader/FileLoader.php:103
+[13-Dec-2016 06:50:23 UTC] PHP  28. ReflectionClass->__construct() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[13-Dec-2016 06:50:23 UTC] PHP  29. spl_autoload_call() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[13-Dec-2016 06:50:23 UTC] PHP  30. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[13-Dec-2016 06:50:23 UTC] PHP  31. require_once() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:142
+[13-Dec-2016 06:50:23 UTC] PHP  32. spl_autoload_call() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:7
+[13-Dec-2016 06:50:23 UTC] PHP  33. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:7
+[13-Dec-2016 06:50:23 UTC] PHP  34. require_once() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:142
+[13-Dec-2016 06:50:23 UTC] PHP  35. spl_autoload_call() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:22
+[13-Dec-2016 06:50:23 UTC] PHP  36. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:22
+[13-Dec-2016 06:50:23 UTC] PHP  37. require_once() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Debug/DebugClassLoader.php:142
+[13-Dec-2016 08:34:15 UTC] PHP Fatal error:  Call to a member function getUsername() on a non-object in /var/www/html/netflex/src/NetFlex/UserBundle/Controller/AuthController.php on line 27
+[13-Dec-2016 08:34:15 UTC] PHP Stack trace:
+[13-Dec-2016 08:34:15 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[13-Dec-2016 08:34:15 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[13-Dec-2016 08:34:15 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[13-Dec-2016 08:34:15 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[13-Dec-2016 08:34:15 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 08:34:15 UTC] PHP   6. NetFlex\UserBundle\Controller\AuthController->indexAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 08:35:06 UTC] PHP Fatal error:  Class 'NetFlex\MailerBundle\Controller\UrlGeneratorInterface' not found in /var/www/html/netflex/src/NetFlex/MailerBundle/Controller/MailTemplateController.php on line 28
+[13-Dec-2016 08:35:06 UTC] PHP Stack trace:
+[13-Dec-2016 08:35:06 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[13-Dec-2016 08:35:06 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[13-Dec-2016 08:35:06 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[13-Dec-2016 08:35:06 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[13-Dec-2016 08:35:06 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 08:35:06 UTC] PHP   6. NetFlex\MailerBundle\Controller\MailTemplateController->renderMailTemplateListAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 08:35:49 UTC] PHP Fatal error:  Class 'NetFlex\MailerBundle\Controller\UrlGeneratorInterface' not found in /var/www/html/netflex/src/NetFlex/MailerBundle/Controller/MailTemplateController.php on line 28
+[13-Dec-2016 08:35:49 UTC] PHP Stack trace:
+[13-Dec-2016 08:35:49 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[13-Dec-2016 08:35:49 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[13-Dec-2016 08:35:49 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[13-Dec-2016 08:35:49 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[13-Dec-2016 08:35:49 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 08:35:49 UTC] PHP   6. NetFlex\MailerBundle\Controller\MailTemplateController->renderMailTemplateListAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 12:13:30 UTC] PHP Fatal error:  Call to a member function getEmail() on a non-object in /var/www/html/netflex/src/NetFlex/UserBundle/Controller/UserController.php on line 712
+[13-Dec-2016 12:13:30 UTC] PHP Stack trace:
+[13-Dec-2016 12:13:30 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[13-Dec-2016 12:13:30 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[13-Dec-2016 12:13:30 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[13-Dec-2016 12:13:30 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[13-Dec-2016 12:13:30 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[13-Dec-2016 12:13:30 UTC] PHP   6. NetFlex\UserBundle\Controller\UserController->approveClientAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153

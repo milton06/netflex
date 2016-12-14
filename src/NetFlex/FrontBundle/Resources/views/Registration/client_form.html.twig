@@ -17,7 +17,7 @@
 <h3>Client Register</h3>
 {{ form_start(form, { 'action': url('front_end_client_registration'), 'attr': { 'id': 'registerClientForm', 'novalidate': 'novalidate' } }) }}
     <span id="serverFault" class="message" style="display: none;">Server error encountered.</span>
-    <span id="registrationSuccess" class="message" style="display: none;">Congratulations! Your registration was successful and awating admin approval</span>
+    <span id="registrationSuccess" class="message" style="display: none;">Congratulations! Your registration was successful. A mail has been sent to the email ID you registered with. You would be able to login once the Administrator approves your account.</span>
 	<div class="signupForm clearfix">
 		{{ form_widget(form.username, { 'id': 'username', 'attr': { 'placeholder': 'Username' } }) }}
 		{{ form_widget(form.password, { 'id': 'password', 'attr': { 'placeholder': 'Password' } }) }}
@@ -63,12 +63,12 @@
                         });
                     } else {
                         $("#registrationSuccess").show();
+                        $("#registerClientForm input[type='text']").val("");
+                        $("#registerClientForm input[type='password']").val("");
                     }
                 },
                 complete: function(jqXHR, textStatus) {
                     $("#registerClientButton").prop("disabled", false);
-                    $("#registerClientForm input[type='text']").val("");
-                    $("#registerClientForm input[type='password']").val("");
                 }
             });
         });

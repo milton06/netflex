@@ -1,0 +1,7 @@
+services:
+#    net_flex_mailer.example:
+#        class: NetFlex\MailerBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    mailer_service:
+        class: NetFlex\MailerBundle\Service\MailerService
+        arguments: ["@mailer", "@doctrine.orm.default_entity_manager"]

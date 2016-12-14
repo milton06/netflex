@@ -73,7 +73,7 @@ jQuery(document).ready(function() {
 		
 		jQuery("#shipment-addresses input, #shipment-addresses select").each(function() {
 			var thisElementId = jQuery(this).attr("id");
-			var exclude = ["pickup-first-name", "pickup-mid-name", "pickup-last-name", "pickup-address-line-1", "pickup-address-line-2", "pickup-country", "pickup-state", "pickup-city", "pickup-zip-code", "pickup-land-mark", "pickup-email", "pickup-contact-number", "choose-another-billing-address", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email", "order_for_client_from_dashboard_deliveryChargeId"];
+			var exclude = ["pickup-mid-name", "pickup-address-line-2", "pickup-land-mark", "pickup-email", "choose-another-billing-address", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email", "order_for_client_from_dashboard_deliveryChargeId"];
 			
 			if ((-1 === exclude.indexOf(thisElementId)) && (! jQuery(this).val())) {
 				++errorCount;

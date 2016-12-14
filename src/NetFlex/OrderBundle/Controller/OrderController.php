@@ -364,6 +364,14 @@ class OrderController extends Controller
 		 * Create the check deliverability form.
 		 */
 		$deliveryModeTimeline = $order->getDeliveryChargeId()->getDeliveryModeTimelineId();
+		$deliveryModeTimeline->setSourceCountryId($order->getOrderAddress()->getPickupCountryId());
+		$deliveryModeTimeline->setSourceStateId($order->getOrderAddress()->getPickupStateId());
+		$deliveryModeTimeline->setSourceCityId($order->getOrderAddress()->getPickupCityId());
+		$deliveryModeTimeline->setSourceZipCode($order->getOrderAddress()->getPickupZipCode());
+		$deliveryModeTimeline->setDestinationCountryId($order->getOrderAddress()->getShippingCountryId());
+		$deliveryModeTimeline->setDestinationStateId($order->getOrderAddress()->getShippingStateId());
+		$deliveryModeTimeline->setDestinationCityId($order->getOrderAddress()->getShippingCityId());
+		$deliveryModeTimeline->setDestinationZipCode($order->getOrderAddress()->getShippingZipCode());
 		$checkDeliverabilityForm = $this->createForm(CheckDeliverabilityType::class, $deliveryModeTimeline);
 		
 		$clientOtherPickupAddresses = $clientOtherBillingAddresses = [];
@@ -440,7 +448,9 @@ class OrderController extends Controller
 			
 			$associatedCustomerRoles = $order->getUserId()->getRoles();
 			if (in_array('ROLE_CLIENT', $associatedCustomerRoles)) {
-				$order->setOrderStatus(2);
+				if (1 == $order->getOrderStatus()) {
+					$order->setOrderStatus(2);
+				}
 			}
 			
 			$order->getOrderItem()->setItemBaseWeight($order->getOrderItem()->getItemBaseWeight() - $order->getOrderItem()->getItemAccountableExtraWeight());

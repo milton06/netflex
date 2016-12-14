@@ -75,10 +75,7 @@ class ClientRegistrationController extends Controller
 				    $errorList[substr($error->getPropertyPath(), (strrpos($error->getPropertyPath(), '.') + 1))] = $error->getMessage();
 			    }
 		    }
-		    /*$email = $user->getEmails()[0]->getEmail();
-		    if (0 < $em->getRepository('NetFlexUserBundle:Email')->findAnExistingUserEmail($email)) {
-			    $errorList['email'] = 'This email is already taken';
-		    }*/
+		    
 		    if ($errorList) {
 			    return $this->json(['status' => false, 'errorList' => $errorList]);
 		    }
@@ -87,7 +84,8 @@ class ClientRegistrationController extends Controller
 		     * Populate entities with default values.
 		     */
 		    $currentDateTime = new \DateTime();
-		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $user->getPassword()));
+		    $plainTextPassword = $user->getPassword();
+		    $user->setPassword($this->get('security.password_encoder')->encodePassword($user, $plainTextPassword));
 		    $user->setStatus(2);
 		    $user->setCreatedOn($currentDateTime);
 		    $user->setLastModifiedOn($currentDateTime);
@@ -105,6 +103,21 @@ class ClientRegistrationController extends Controller
 		    }
 		    
 		    $em->flush();
+		
+		    /**
+		     * Send mail.
+		     */
+		    $mailerService = $this->get('mailer_service');
+		    list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_REG_SUCC');
+		    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+		    	'mailBody' => $message,
+		    	'firstName' => $user->getFirstName(),
+			    'lastName' => $user->getLastName(),
+			    'username' => $user->getUsername(),
+			    'password' => $plainTextPassword,
+		    ]);
+		    $mailerService->setMessage($fromEmail, $email->getEmail(), $subject, $message, 1, $fromName, $user->getFirstName() . ' ' . $user->getLastName());
+		    $mailerService->sendMail();
 		    
 		    return $this->json(['status' => true]);
 	    }

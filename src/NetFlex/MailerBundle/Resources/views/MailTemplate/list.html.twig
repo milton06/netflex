@@ -1,0 +1,56 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mail Type Key</th>
+                                    <th>Mail Type Name</th>
+                                    <th>Operations</th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                {% if mailTemplates %}
+                                    {% for mailTemplate in mailTemplates %}
+                                        <tr>
+                                            <td>{{ mailTemplate.id }}</td>
+                                            <td>{{ mailTemplate.typeKey }}</td>
+                                            <td>{{ mailTemplate.typeName }}</td>
+                                            <td>
+                                                <a href="{{ url('edit_mail_template', { 'id': mailTemplate.id }) }}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr><td class="center" colspan="3">{{ noRecordFoundText }}</td></tr>
+                                {% endif %}
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -30,7 +30,13 @@ class AddressFormAddEventSubscriber implements EventSubscriberInterface
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();
 		
-		$form->add('cityId', null, [
+		$form->add('countryId', null, [
+			'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => $formData['countryId'], 'status' => 1])
+		])
+		->add('stateId', null, [
+			'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => $formData['stateId'], 'status' => 1])
+		])
+		->add('cityId', null, [
 			'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => $formData['cityId'], 'status' => 1])
 		]);
 	}

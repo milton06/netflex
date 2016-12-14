@@ -22,6 +22,7 @@ class AddressFormEditEventSubscriber implements EventSubscriberInterface
 	{
 		return [
 			FormEvents::POST_SET_DATA => 'postSetData',
+			FormEvents::PRE_SUBMIT => 'preSubmit',
 		];
 	}
 	
@@ -86,6 +87,22 @@ class AddressFormEditEventSubscriber implements EventSubscriberInterface
 					->orderBy('addressType.id', 'ASC');
 			},
 			'data' => (null !== $formData) ? $formData->getAddressTypeId() : $this->em->getReference('NetFlexUserBundle:AddressType', ['id' => 1, 'status' => 1]),
+		]);
+	}
+	
+	public function preSubmit(FormEvent $formEvent)
+	{
+		$form = $formEvent->getForm();
+		$formData = $formEvent->getData();
+		
+		$form->add('countryId', null, [
+			'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => $formData['countryId'], 'status' => 1])
+		])
+		->add('stateId', null, [
+			'data' => $this->em->getReference('NetFlexLocationBundle:State', ['id' => $formData['stateId'], 'status' => 1])
+		])
+		->add('cityId', null, [
+			'data' => $this->em->getReference('NetFlexLocationBundle:City', ['id' => $formData['cityId'], 'status' => 1])
 		]);
 	}
 }

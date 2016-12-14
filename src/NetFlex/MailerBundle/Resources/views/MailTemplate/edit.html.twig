@@ -1,0 +1,112 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme form 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                    <div class="panel-tools">
+                        <a class="btn btn-xs btn-link panel-collapse collapses" href="#">
+                        </a>
+                        <a class="btn btn-xs btn-link panel-expand" href="#">
+                            <i class="fa fa-resize-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_start(form, { 'attr': { 'id': 'editMailTemplateForm', 'role': 'form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                                {% if false == form.vars.valid %}
+                                    <div class="alert alert-danger server-message">
+                                        <button data-dismiss="alert" class="close">×</button>
+                                        <i class="fa fa-times-circle"></i>
+                                        <strong>Oh snap!</strong> There are errors in the form.
+                                    </div>
+                                {% endif %}
+                                {% if app.session.flashbag.peek('success') %}
+                                    <div class="alert alert-success server-message">
+                                        <button data-dismiss="alert" class="close">×</button>
+                                        <i class="fa fa-check-circle"></i>
+                                        {% for success in app.session.flashbag.get('success') %}
+                                            <strong>Well done!</strong> {{ success }}.
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="row form-group{{ (0 < form.typeKey.vars.errors|length) ? ' has-error' : '' }}">
+                                    {{ form_label(form.typeKey, 'Identifier', { 'label_attr': { 'for': 'typeKey', 'class': 'col-md-4' } }) }}
+                                    <div class="col-md-8">
+                                        {{ form_widget(form.typeKey, { 'id': 'typeKey', 'required': false, 'disabled': true, 'attr': { 'class': 'form-control', 'placeholder': 'Mail Type Identifier' } }) }}
+                                        <span class="help-block">{{ form_errors(form.typeKey) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group{{ (0 < form.typeKey.vars.errors|length) ? ' has-error' : '' }}">
+                                    {{ form_label(form.typeName, 'Name', { 'label_attr': { 'for': 'typeName', 'class': 'col-md-4' } }) }}
+                                    <div class="col-md-8">
+                                        {{ form_widget(form.typeName, { 'id': 'typeName', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Mail Type Name' } }) }}
+                                        <span class="help-block">{{ form_errors(form.typeName) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group{{ (0 < form.sentFromEmail.vars.errors|length) ? ' has-error' : '' }}">
+                                    {{ form_label(form.sentFromEmail, 'Send From Email', { 'label_attr': { 'for': 'sentFromEmail', 'class': 'col-md-4' } }) }}
+                                    <div class="col-md-8">
+                                        {{ form_widget(form.sentFromEmail, { 'id': 'sentFromEmail', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Send Mail From' } }) }}
+                                        <span class="help-block">{{ form_errors(form.sentFromEmail) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group{{ (0 < form.sentFromName.vars.errors|length) ? ' has-error' : '' }}">
+                                    {{ form_label(form.sentFromName, 'Send On Behalf Of', { 'label_attr': { 'for': 'sentFromName', 'class': 'col-md-4' } }) }}
+                                    <div class="col-md-8">
+                                        {{ form_widget(form.sentFromName, { 'id': 'sentFromName', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Send Mail On Behalf Of' } }) }}
+                                        <span class="help-block">{{ form_errors(form.sentFromName) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group{{ (0 < form.subject.vars.errors|length) ? ' has-error' : '' }}">
+                                    {{ form_label(form.subject, 'Mail Subject', { 'label_attr': { 'for': 'subject', 'class': 'col-md-4' } }) }}
+                                    <div class="col-md-8">
+                                        {{ form_widget(form.subject, { 'id': 'subject', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Send Mail Subject' } }) }}
+                                        <span class="help-block">{{ form_errors(form.subject) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row form-group{{ (0 < form.body.vars.errors|length) ? ' has-error' : '' }}">
+                                    {{ form_label(form.body, 'Mail Body', { 'label_attr': { 'for': 'body', 'class': 'col-md-4' } }) }}
+                                    <div class="col-md-8">
+                                        {{ form_widget(form.body, { 'id': 'body', 'required': false, 'attr': { 'rows': 10, 'class': 'form-control', 'placeholder': 'Mail Body' } }) }}
+                                        <span class="help-block">{{ form_errors(form.body) }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 col-md-offset-4">
+                                        <button type="submit" id="editMailTemplateFormButton" class="btn btn-primary"><i class="fa fa-edit"></i> Update</button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="{{ url('list_mail_templates') }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back To listing</a>
+                                    </div>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            jQuery("#editMailTemplateFormButton").on("click", function(e) {
+                e.preventDefault();
+                jQuery("#typeKey").prop("disabled", false);
+                jQuery("#editMailTemplateForm").submit();
+            });
+        });
+    </script>
+{% endblock %}

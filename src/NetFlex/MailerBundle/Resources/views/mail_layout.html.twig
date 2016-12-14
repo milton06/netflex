@@ -1,0 +1,37 @@
+{% block pageStyles %}
+    {% stylesheets 'bundles/netflexfront/css/bootstrap.css' filter='cssrewrite' %}
+        <link href="{{ asset_url }}" rel="stylesheet">
+    {% endstylesheets %}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td align="center">
+                                {% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
+                                    <img src="{{ asset_url }}" alt="netflex-logo"/>
+                                {% endimage %}
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ mailBody }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {% javascripts '@NetFlexFrontBundle/Resources/public/js/1.11.1/jquery.min.js'
+        '@NetFlexFrontBundle/Resources/public/js/bootstrap.min.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

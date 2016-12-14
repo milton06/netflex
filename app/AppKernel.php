@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new NetFlex\UserBundle\NetFlexUserBundle(),
             new NetFlex\LocationBundle\NetFlexLocationBundle(),
             new NetFlex\FrontBundle\NetFlexFrontBundle(),
+            new NetFlex\MailerBundle\NetFlexMailerBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

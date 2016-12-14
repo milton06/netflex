@@ -32,4 +32,24 @@ class EmailRepository extends EntityRepository
 		
 		return ($result) ? count($result) : 0;
 	}
+	
+	public function findClientPreferredOrFirstEmail($clientId)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		$result = $qb->select('E.email')
+			->from('NetFlexUserBundle:Email', 'E')
+			->where($qb->expr()->andX(
+				$qb->expr()->eq('E.userId', ':clientId'),
+				$qb->expr()->eq('E.status', 1)
+			))
+			->orderBy('E.isPrimary', 'DESC')
+			->setFirstResult(0)
+			->setMaxResults(1)
+			->setParameters(['clientId' => $clientId])
+			->getQuery()
+			->getResult();
+		
+		return ($result) ? $result[0]['email'] : '';
+	}
 }
