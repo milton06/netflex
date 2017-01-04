@@ -481,4 +481,21 @@ class BookAShipmentService
 			'orderCarrierRiskAddedCharge' => $orderCarrierRiskAddedCharge,
 		];
 	}
+	
+	public function getExpieryYears()
+	{
+		$expieryYers = [];
+		
+		$currentDateTimeObject = new \DateTime();
+		$currentYear = $currentDateTimeObject->format('Y');
+		
+		$maxDateTimeObject = $currentDateTimeObject->add(new \DateInterval('P50Y'));
+		$latestYear = $maxDateTimeObject->format('Y');
+		
+		for ($i = $currentYear; $i <= $latestYear; $i++) {
+			$expieryYers[$i] = (string) $i;
+		}
+		
+		return $expieryYers;
+	}
 }

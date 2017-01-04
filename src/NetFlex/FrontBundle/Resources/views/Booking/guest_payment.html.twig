@@ -1,3 +1,5 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageContent %}
 <div class="tracktable clearfix">
     <!--left section-->
     <div class="col-lg-4">
@@ -78,7 +80,7 @@
                                             <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderServiceTaxAddedCharge }}</td>
                                         </tr>
                                     {% endif %}
-                                    {% if '0.00' != orderDetails.orderPrice.orderCodPaymentAddedCharge %}
+                                    {% if orderDetails.orderPrice.orderCodPaymentAddedCharge %}
                                         <tr>
                                             <th>COD Amount <small>( {{ (orderDetails.deliveryChargeId.codDeliveryBasePrice) ? orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol ~ ' ' ~ orderDetails.deliveryChargeId.codDeliveryBasePrice : orderDetails.deliveryChargeId.codDeliveryPercentageOnBasePrice ~ '% on base price' }})</small></th>
                                             <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
@@ -184,24 +186,110 @@
                 </tbody>
             </table>
         </div>
-            <div class="row table-responsive">
+        <div class="row table-responsive">
+            {{ form_start(cardDetailsForm, { 'attr': { 'id': 'ccCardDetailsForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
                 <div class="selectShip clearfix">
                     <ul class="stylecheckbox">
                         <li><h2>Pay By:</h2></li>
                         <li>
-                            <input type="radio" name="payBy" value="CC" checked="checked" id="cc" onchange="renderCardDetailsForm(this)" data-card-details-form="">
+                            {{ form_widget(cardDetailsForm.paymentModes.0, { 'id': 'cc', 'required': false, 'attr': { 'class': 'paymentModes', 'checked': true, 'onchange': 'selectPaymentMode("CC")' } }) }}
                             <label for="cc">Credit Card</label>
                             <div class="check"><div class="inside"></div></div>
                         </li>
                         <li>
-                            <input type="radio" name="payBy" value="DC" id="dc" onchange="renderCardDetailsForm(this)" data-card-details-form="">
+                            {{ form_widget(cardDetailsForm.paymentModes.1, { 'id': 'dc', 'required': false, 'attr': {
+                                'class': 'paymentModes', 'onchange': 'selectPaymentMode("DC")' } }) }}
                             <label for="dc">Debit Card</label>
                             <div class="check"><div class="inside"></div></div>
                         </li>
                     </ul>
                 </div>
-            </div>
+                <div id="debitCardTypesContainer" class="formBlk1 clearfix" style="display: none;">
+                    <div class="col-lg-12">
+                        <h6 class="type">Debit Card Types :</h6>
+                        <div class="row">
+                            <label class="dropdown">
+                                {{ form_widget(cardDetailsForm.dcTypes, { 'id': 'dcType', 'required': false, 'onchange': 'selectDebitCardType(this.value)' }) }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {{ form_widget(cardDetailsForm.key) }}
+                {{ form_widget(cardDetailsForm.txnid) }}
+                {{ form_widget(cardDetailsForm.amount) }}
+                {{ form_widget(cardDetailsForm.productinfo) }}
+                {{ form_widget(cardDetailsForm.firstname) }}
+                {{ form_widget(cardDetailsForm.email) }}
+                {{ form_widget(cardDetailsForm.phone) }}
+                {{ form_widget(cardDetailsForm.surl) }}
+                {{ form_widget(cardDetailsForm.furl) }}
+                {{ form_widget(cardDetailsForm.curl) }}
+                {{ form_widget(cardDetailsForm.HASH) }}
+                {{ form_widget(cardDetailsForm.pg, { 'id': 'pg' }) }}
+                {{ form_widget(cardDetailsForm.bankcode, { 'id': 'bankcode' }) }}
+                <div class="formBlk1 clearfix">
+                    <div class="col-lg-12">
+                        <h6 class="type">Card Number :</h6>
+                        <div class="row">
+                            {{ form_widget(cardDetailsForm.ccnum, { 'id': 'ccnum', 'required': false }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="formBlk1 clearfix">
+                    <div class="col-lg-12">
+                        <h6 class="type">Name on Card :</h6>
+                        <div class="row">
+                            {{ form_widget(cardDetailsForm.ccname, { 'id': 'ccname', 'required': false }) }}
+                        </div>
+                    </div>
+                </div>
+                <div id="cvvAndExpieryContainer">
+                    <div class="formBlk1 clearfix">
+                        <div class="col-lg-12">
+                            <h6 class="type">CVV :</h6>
+                            <div class="row">
+                                {{ form_widget(cardDetailsForm.ccvv, { 'id': 'ccvv', 'required': false }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="formBlk1 clearfix">
+                        <div class="col-lg-12">
+                            <h6 class="type">Card Expiery :</h6>
+                            <div class="row">
+                                <label class="dropdown">
+                                    {{ form_widget(cardDetailsForm.ccexpmon, { 'id': 'ccexpmon', 'required': false }) }}
+                                </label>
+                                <label class="dropdown">
+                                    {{ form_widget(cardDetailsForm.ccexpyr, { 'id': 'ccexpyr', 'required': false }) }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p id="toggleCvvAndExpieryContainerMessage" style="display:none">
+                    <a href="javascript:void(0);">Click</a> if your card has CVV and Expiry date mentioned on it.
+                </p>
+            {{ form_end(cardDetailsForm) }}
         </div>
     </div>
     <!--right section-->
 </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var stateListFetchUrl = "{{ url('guest_book_a_shipment_state_list') }}";
+        var cityListFetchUrl = "{{ url('guest_book_a_shipment_city_list') }}";
+        var getSecondaryItemTypeUrl = "{{ url('guest_book_a_shipment_secondary_item_type') }}";
+        var checkDeliverabilityUrl = "{{ url('guest_book_a_shipment_check_deliverability') }}";
+        var bookShipmentUrl = "{{ url('guest_book_a_shipment_place_order') }}";
+        var paymentUrl = "{{ url('guest_book_a_shipment_payment') }}";
+    </script>
+    {% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js'
+    '@NetFlexFrontBundle/Resources/public/js/Guest/book_a_shipment.js' %}
+    <script src="{{ asset_url }}"></script>
+    <script type="text/javascript">
+        $("#usual1 ul").idTabs();
+    </script>
+    {% endjavascripts %}
+{% endblock %}

@@ -13,7 +13,16 @@ class CardDetails extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('key', HiddenType::class, [
+		$builder->add('paymentModes', ChoiceType::class, [
+			'placeholder' => false,
+			'expanded' => true,
+			'choices' => $options['paymentModes'],
+		])
+		->add('dcTypes', ChoiceType::class, [
+			'placeholder' => '-Select A Debit Card Type-',
+			'choices' => $options['dcTypes'],
+		])
+		->add('key', HiddenType::class, [
 			'data' => $options['key'],
 		])
 		->add('txnid', HiddenType::class, [
@@ -54,32 +63,23 @@ class CardDetails extends AbstractType
 		->add('ccvv', TextType::class)
 		->add('ccexpmon', ChoiceType::class, [
 			'placeholder' => '-Select A Month',
-			'choices' => [
-				'JAN' => 1,
-				'FEB' => 2,
-				'MAR' => 3,
-				'APR' => 4,
-				'MAY' => 5,
-				'JUN' => 6,
-				'JUL' => 7,
-				'AUG' => 8,
-				'SEP' => 9,
-				'OCT' => 10,
-				'NOV' => 11,
-				'DEC' => 12,
-			],
+			'choices' => $options['months'],
 		])
 		->add('ccexpyr', ChoiceType::class, [
 			'placeholder' => 'Select A Year',
-			'choices' => $options['expYear'],
+			'choices' => $options['years'],
 		])
-		->add('bankcode', HiddenType::class);
+		->add('bankcode', HiddenType::class, [
+			'data' => $options['bankcode'],
+		]);
 	}
 	
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
 			'data_class' => null,
+			'paymentModes' => [],
+			'dcTypes' => [],
 			'key' => '',
 			'txnid' => '',
 			'amount' => '',
@@ -91,9 +91,10 @@ class CardDetails extends AbstractType
 			'furl' => '',
 			'curl' => '',
 			'HASH' => '',
-			'HASH' => '',
 			'pg' => '',
-			'expYear' => [],
+			'bankcode' => '',
+			'months' => [],
+			'years' => [],
 		]);
 	}
 	

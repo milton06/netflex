@@ -491,3 +491,21 @@ jQuery(document).ready(function() {
 		}
 	});
 });
+
+var selectPaymentMode = function(paymentMode) {
+	if ("DC" === paymentMode) {
+		$("#debitCardTypesContainer").show();
+	} else {
+		$("#debitCardTypesContainer").hide();
+	}
+};
+
+var selectDebitCardType = function(debitCardType) {
+	if (("MAES" === debitCardType) || ("SMAE" === debitCardType)) {
+		$("#cvvAndExpieryContainer").hide();
+	} else {
+		$("#cvvAndExpieryContainer").show();
+	}
+	
+	
+};

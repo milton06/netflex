@@ -14,6 +14,7 @@ use NetFlex\DeliveryChargeBundle\Entity\DeliveryModeTimeline;
 use NetFlex\FrontBundle\Form\Guest\Deliverability;
 use NetFlex\OrderBundle\Entity\OrderTransaction;
 use NetFlex\FrontBundle\Form\Guest\Order;
+use NetFlex\FrontBundle\Form\Guest\CardDetails;
 
 /**
  * @Route("/guest/book-a-shipment")
@@ -257,7 +258,7 @@ class GuestOrderController extends Controller
 	 * Gets order details for guest.
 	 *
 	 * @Route("/payment", name="guest_book_a_shipment_payment")
-	 * @Method({"POST"})
+	 * @Method({"GET", "POST"})
 	 *
 	 * @param  Request $request A request instance
 	 *
@@ -265,12 +266,62 @@ class GuestOrderController extends Controller
 	 */
 	public function guestBookAShipmentPaymentAction(Request $request)
 	{
-		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById($request->request->get('orderId'));
+		/**
+		 * Get required services.
+		 */
+		$em = $this->getDoctrine()->getManager();
+		$bookAShipmentService = $this->get('guest_book_a_shipment');
 		
+		/**
+		 * Fetch the current order details.
+		 */
+		//$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById
+	($request->request->get('orderId'));
+		$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById(11);
 		
+		/**
+		 * Payment mode and debit card type choices.
+		 */
+		$paymentModes = [
+			'CC' => 'Credit Card',
+			'DC' => 'Debit Card'
+		];
+		$dcTypes = [
+			'MasterCard Debit Cards (All Banks)' => 'MAST',
+			'Other Maestro Cards' => 'MAES',
+			'Rupay Debit CardRUPAY' => 'RUPAY',
+			'State Bank Maestro Cards' => 'SMAE',
+			'Visa Debit Cards (All Banks)' => 'VISA',
+		];
+		
+		/**
+		 * PayU embedded form parameters.
+		 */
+		$key = $this->getParameter('payu_merchant_key');
+		$txnid = bin2hex(openssl_random_pseudo_bytes(20));
+		$amount = ($orderDetails->getOrderPrice()->getOrderBaseCharge() + $orderDetails->getOrderPrice()->getOrderExtraWeightLeviedCharge() + $orderDetails->getOrderPrice()->getOrderFuelSurchargeAddedCharge() + $orderDetails->getOrderPrice()->getOrderServiceTaxAddedCharge() + $orderDetails->getOrderPrice()->getOrderCarrierRiskAddedCharge());
+		$productinfo = 'Netflex Guest Shipment: ' . $orderDetails->getOrderItem()->getItemSecondaryTypeId()->getItemTypeName() . ' ' . $orderDetails->getOrderItem()->getItemPrimaryTypeId()->getItemTypeName();
+		$firstname = $orderDetails->getOrderAddress()->getBillingFirstName() . ' ' . $orderDetails->getOrderAddress()->getBillingLastName();
+		$email = $orderDetails->getOrderAddress()->getBillingEmail();
+		$phone = $orderDetails->getOrderAddress()->getBillingContactNumber();
+		$curl = '';
+		$furl = '';
+		$surl = '';
+		$salt = $this->getParameter('payu_merchant_salt');
+		$hashSequence = "$key|$txnid|$amount|$productinfo|$firstname|$email|||||||||||$salt";
+		$HASH = strtolower(hash('sha512', $hashSequence));
+		$pg = 'CC';
+		$bankcode = 'CC';
+		$months = ['JAN' => '1', 'FEB' => '2', 'MAR' => '3', 'APR' => '4', 'MAY' => '5', 'JUN' => '6', 'JUL' => '7', 'AUG' => '8', 'SEP' => '9', 'OCT' => '10', 'NOV' => '11', 'DEC' => '12'];
+		$years = $bookAShipmentService->getExpieryYears();
+		
+		$options = compact('paymentModes', 'dcTypes', 'key', 'txnid', 'amount', 'productinfo', 'firstname', 'email', 'phone', 'curl', 'furl', 'surl', 'HASH', 'pg', 'bankcode', 'months', 'years');
+		
+		$cardDetailsForm = $this->createForm(CardDetails::class, null, $options);
 		
 		return $this->render('NetFlexFrontBundle:Booking:guest_payment.html.twig', [
 			'orderDetails' => $orderDetails,
+			'cardDetailsForm' => $cardDetailsForm->createView(),
 		]);
 	}
 	
