@@ -94,13 +94,9 @@ class ClientProfileController extends Controller
 	    
 	    $cpForm->handleRequest($request);
 	    if ($cpForm->isSubmitted()) {
-		    $oldPassword = $cpForm->get('oldPassword')->getData();
 		    $repeatPassword = $cpForm->get('repeatPassword')->getData();
 		    $errorList = [];
 		    
-		    if (! $oldPassword) {
-			    $errorList['oldPassword'] = 'This field is required';
-		    }
 		    if (! $repeatPassword) {
 			    $errorList['repeatPassword'] = 'This field is required';
 		    }

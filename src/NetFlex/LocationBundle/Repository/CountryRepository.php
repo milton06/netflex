@@ -3,6 +3,7 @@
 namespace NetFlex\LocationBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr;
 
 /**
  * CountryRepository
@@ -24,5 +25,74 @@ class CountryRepository extends EntityRepository
 			))
 			->getQuery()
 			->getResult();
+	}
+	
+	public function findActiveCountries($defaultCountryId = null, $defaultStateId = null, $excludedStateIds = [])
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		return $qb->select('COUNTRY, STATE, CITY')
+			->from('NetFlexLocationBundle:Country', 'COUNTRY')
+			->leftJoin(
+				'COUNTRY.states',
+				'STATE',
+				'WITH',
+				$qb->expr()->andX(
+					$qb->expr()->eq('STATE.countryId', (($defaultCountryId) ? $defaultCountryId : 1)),
+					$qb->expr()->notIn('STATE.id', (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45])),
+					$qb->expr()->eq('STATE.status', 1)
+				),
+				'STATE.id'
+			)
+			->leftJoin(
+				'COUNTRY.cities',
+				'CITY',
+				'WITH',
+				$qb->expr()->andX(
+					$qb->expr()->eq('CITY.countryId', (($defaultCountryId) ? $defaultCountryId : 1)),
+					$qb->expr()->eq('CITY.stateId', (($defaultStateId) ? $defaultStateId : 41)),
+					$qb->expr()->eq('CITY.status', 1)
+				),
+				'CITY.id'
+			)
+			->where($qb->expr()->eq('COUNTRY.status', 1))
+			->orderBy('COUNTRY.id', 'ASC')
+			->addOrderBy('STATE.name', 'ASC')
+			->addOrderBy('CITY.name', 'ASC')
+			->getQuery()
+			->getResult();
+	}
+	
+	public function findStatesAndCitiesByCountryId($countryId, $excludedStateIds = [])
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		return $qb->select('COUNTRY, STATE, CITY')
+			->from('NetFlexLocationBundle:Country', 'COUNTRY')
+			->leftJoin(
+				'COUNTRY.states',
+				'STATE',
+				'WITH',
+				$qb->expr()->andX(
+					$qb->expr()->notIn('STATE.id', (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45])),
+					$qb->expr()->eq('STATE.status', 1)
+				),
+				'STATE.id'
+			)
+			->leftJoin(
+				'STATE.cities',
+				'CITY',
+				'WITH',
+				$qb->expr()->andX(
+					$qb->expr()->eq('CITY.status', 1)
+				),
+				'CITY.id'
+			)
+			->where($qb->expr()->eq('COUNTRY.id', ':countryId'))
+			->setParameter('countryId', $countryId)
+			->addOrderBy('STATE.name', 'ASC')
+			->addOrderBy('CITY.name', 'ASC')
+			->getQuery()
+			->getOneOrNullResult();
 	}
 }

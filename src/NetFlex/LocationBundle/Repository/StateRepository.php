@@ -28,4 +28,26 @@ class StateRepository extends EntityRepository
 			->getQuery()
 			->getResult();
 	}
+	
+	public function findCitiesByStateId($stateId)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		
+		return $qb->select('STATE, CITY')
+			->from('NetFlexLocationBundle:State', 'STATE')
+			->leftJoin(
+				'STATE.cities',
+				'CITY',
+				'WITH',
+				$qb->expr()->andX(
+					$qb->expr()->eq('CITY.status', 1)
+				),
+				'CITY.id'
+			)
+			->where($qb->expr()->eq('STATE.id', ':stateId'))
+			->setParameter('stateId', $stateId)
+			->addOrderBy('CITY.name', 'ASC')
+			->getQuery()
+			->getOneOrNullResult();
+	}
 }

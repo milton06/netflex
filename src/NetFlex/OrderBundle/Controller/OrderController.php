@@ -461,6 +461,21 @@ class OrderController extends Controller
 			
 			$em->flush();
 			
+			if (2 == $order->getOrderStatus()) {
+				/**
+				 * Shipment has been approved, send mail.
+				 */
+				$mailerService = $this->get('mailer_service');
+				list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_BK_APPRV');
+				$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+					'mailBody' => $message,
+				]);
+				$message = str_replace(['[clientName]', '[trackUrl]'], [$order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName(), $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+				$message = html_entity_decode($message);
+				$mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName());
+				$mailerService->sendMail();
+			}
+			
 			$orderId = $order->getId();
 			$awbNumber = $order->getAwbNumber();
 			
@@ -815,6 +830,8 @@ class OrderController extends Controller
 		if ($form->isSubmitted() && $form->isValid()) {
 			$formData = $form->getData();
 			
+			$previousOrderStatus = $order->getOrderStatus();
+			
 			$order->setOrderStatus($formData['orderStatus']);
 			$order->setOrderStatusChangeRemark($formData['orderStatusChangeRemark']);
 			$order->setLastModifiedOn(new \DateTime());
@@ -822,6 +839,36 @@ class OrderController extends Controller
 			
 			$em->persist($order);
 			$em->flush();
+			
+			if ($previousOrderStatus != $formData['orderStatus']) {
+				if (5 == $formData['orderStatus']) {
+					/**
+					 * Shipment has been delivered, send mail.
+					 */
+					$mailerService = $this->get('mailer_service');
+					list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_DLVRD');
+					$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+						'mailBody' => $message,
+					]);
+					$message = str_replace('[clientName]', $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName(), $message);
+					$message = html_entity_decode($message);
+					$mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName());
+					$mailerService->sendMail();
+				} elseif (2 == $formData['orderStatus']) {
+					/**
+					 * Shipment has been approved, send mail.
+					 */
+					$mailerService = $this->get('mailer_service');
+					list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_BK_APPRV');
+					$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+						'mailBody' => $message,
+					]);
+					$message = str_replace(['[clientName]', '[trackUrl]'], [$order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName(), $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+					$message = html_entity_decode($message);
+					$mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName());
+					$mailerService->sendMail();
+				}
+			}
 			
 			$this->addFlash('success', 'Order status changed successfully');
 			

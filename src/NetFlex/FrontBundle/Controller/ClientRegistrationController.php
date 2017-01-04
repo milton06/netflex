@@ -110,12 +110,10 @@ class ClientRegistrationController extends Controller
 		    $mailerService = $this->get('mailer_service');
 		    list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_REG_SUCC');
 		    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
-		    	'mailBody' => $message,
-		    	'firstName' => $user->getFirstName(),
-			    'lastName' => $user->getLastName(),
-			    'username' => $user->getUsername(),
-			    'password' => $plainTextPassword,
+			    'mailBody' => $message,
 		    ]);
+		    $message = str_replace(['[clientName]', '[username]', '[password]'], [$user->getFirstName() . ' ' . $user->getLastName(), $user->getUsername(), $plainTextPassword], $message);
+		    $message = html_entity_decode($message);
 		    $mailerService->setMessage($fromEmail, $email->getEmail(), $subject, $message, 1, $fromName, $user->getFirstName() . ' ' . $user->getLastName());
 		    $mailerService->sendMail();
 		    

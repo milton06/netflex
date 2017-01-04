@@ -244,11 +244,9 @@ class UserController extends Controller
 		    list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CRT_CLNT');
 		    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
 			    'mailBody' => $message,
-			    'firstName' => $user->getFirstName(),
-			    'lastName' => $user->getLastName(),
-			    'username' => $user->getUsername(),
-			    'password' => $plainTextPassword,
 		    ]);
+		    $message = str_replace(['[clientName]', '[username]', '[password]'], [$user->getFirstName() . ' ' . $user->getLastName(), $user->getUsername(), $plainTextPassword], $message);
+		    $message = html_entity_decode($message);
 		    $mailerService->setMessage($fromEmail, $email->getEmail(), $subject, $message, 1, $fromName, $user->getFirstName() . ' ' . $user->getLastName());
 		    $mailerService->sendMail();
 		    
@@ -382,7 +380,6 @@ class UserController extends Controller
 						/**
 						 * Old address made inactive.
 						 */
-						//$thisAddress->setStatus(0);
 						$em->remove($thisAddress);
 					}
 				}
@@ -400,7 +397,6 @@ class UserController extends Controller
 						/**
 						 * Old email made inactive.
 						 */
-						//$thisEmail->setStatus(0);
 						$em->remove($thisEmail);
 					}
 				}
@@ -418,7 +414,6 @@ class UserController extends Controller
 						/**
 						 * Old contact made inactive.
 						 */
-						//$thisContact->setStatus(0);
 						$em->remove($thisContact);
 					}
 				}
@@ -723,9 +718,9 @@ class UserController extends Controller
 			list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_ACC_APPRV');
 			$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
 				'mailBody' => $message,
-				'firstName' => $client->getFirstName(),
-				'lastName' => $client->getLastName(),
 			]);
+			$message = str_replace(['[clientName]'], [$client->getFirstName() . ' ' . $client->getLastName()], $message);
+			$message = html_entity_decode($message);
 			$mailerService->setMessage($fromEmail, $email, $subject, $message, 1, $fromName, $client->getFirstName() . ' ' . $client->getLastName());
 			$mailerService->sendMail();
 		}
@@ -769,9 +764,9 @@ class UserController extends Controller
 				list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_ACC_APPRV');
 				$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
 					'mailBody' => $message,
-					'firstName' => $client->getFirstName(),
-					'lastName' => $client->getLastName(),
 				]);
+				$message = str_replace(['[clientName]'], [$client->getFirstName() . ' ' . $client->getLastName()], $message);
+				$message = html_entity_decode($message);
 				$mailerService->setMessage($fromEmail, $email, $subject, $message, 1, $fromName, $client->getFirstName() . ' ' . $client->getLastName());
 				$mailerService->sendMail();
 			}
@@ -810,6 +805,19 @@ class UserController extends Controller
 		
 		foreach ($thisClient->getRoles() as $role) {
 			$thisClient->removeRole($em->getRepository('NetFlexUserBundle:Role')->findOneByName($role));
+		}
+		
+		$orders = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findBy(['userId' => $thisClient->getId()]);
+		foreach ($orders as $thisOrder) {
+			$orderPrice = $thisOrder->getOrderPrice();
+			$orderItem = $thisOrder->getOrderItem();
+			$orderAddress = $thisOrder->getOrderAddress();
+			
+			$em->remove($orderPrice);
+			$em->remove($orderItem);
+			$em->remove($orderAddress);
+			
+			$em->remove($thisOrder);
 		}
 		
 		$em->remove($thisClient);

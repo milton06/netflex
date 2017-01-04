@@ -1,0 +1,207 @@
+<div class="tracktable clearfix">
+    <!--left section-->
+    <div class="col-lg-4">
+        <div class="row table-responsive">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Goods Type</th>
+                        <td>
+                            {{ orderDetails.orderItem.itemPrimaryTypeId.itemTypeName() }} > {{ orderDetails.orderItem.itemSecondaryTypeId.itemTypeName() }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Parcel Weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Base Weight</th>
+                                        <td>{{ orderDetails.orderItem.itemBaseWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Chargable Extra Weight <small>(above {{ orderDetails.deliveryChargeId.shipmentAccountableExtraWeight }} {{ orderDetails.deliveryChargeId.shipmentWeightUnitId.symbol }})</small></th>
+                                        <td>{{ orderDetails.orderItem.itemAccountableExtraWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td>{{ (orderDetails.orderItem.itemBaseWeight + orderDetails.orderItem.itemAccountableExtraWeight)|number_format(2) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Risk Type</th>
+                        <td>
+                            {{ ('0.00' == orderDetails.orderPrice.orderCarrierRiskAddedCharge) ? 'Own' : 'Carrier' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Shipment Type</th>
+                        <td>
+                            {{ orderDetails.deliveryChargeId.deliveryModeTimelineId.deliveryModeId.modeName }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Shipment Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Base Price <small>(for first {{ orderDetails.deliveryChargeId.shipmentBaseWeightUpperLimit }} {{ orderDetails.deliveryChargeId.shipmentWeightUnitId.symbol }})</small></th>
+                                        <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderBaseCharge }}</td>
+                                    </tr>
+                                    {% if orderDetails.orderPrice.orderExtraWeightLeviedCharge %}
+                                        <tr>
+                                            <th>Extra Weight Charge <small>({{ orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol }} {{ orderDetails.deliveryChargeId.deliveryExtraPriceMultiplier }} / {{ orderDetails.deliveryChargeId.shipmentAccountableExtraWeight }} {{ orderDetails.deliveryChargeId.shipmentWeightUnitId.symbol }})</small></th>
+                                            <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderExtraWeightLeviedCharge }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if '0.00' != orderDetails.orderPrice.orderFuelSurchargeAddedCharge %}
+                                        <tr>
+                                            <th>Added Fuel Surcharge <small>( {{ (orderDetails.deliveryChargeId.fuelSurchargeFixedPrice) ? orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol ~ ' ' ~ orderDetails.deliveryChargeId.fuelSurchargeFixedPrice : orderDetails.deliveryChargeId.fuelSurchargePercentageOnBasePrice ~ '% on base price' }})</small></th>
+                                            <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderFuelSurchargeAddedCharge }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if '0.00' != orderDetails.orderPrice.orderServiceTaxAddedCharge %}
+                                        <tr>
+                                            <th>Added Service Tax <small>( {{ orderDetails.deliveryChargeId.serviceTaxPercentageOnBasePrice ~ '% on base price' }})</small></th>
+                                            <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderServiceTaxAddedCharge }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if '0.00' != orderDetails.orderPrice.orderCodPaymentAddedCharge %}
+                                        <tr>
+                                            <th>COD Amount <small>( {{ (orderDetails.deliveryChargeId.codDeliveryBasePrice) ? orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol ~ ' ' ~ orderDetails.deliveryChargeId.codDeliveryBasePrice : orderDetails.deliveryChargeId.codDeliveryPercentageOnBasePrice ~ '% on base price' }})</small></th>
+                                            <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if '0.00' != orderDetails.orderPrice.orderCarrierRiskAddedCharge %}
+                                        <tr>
+                                            <th>Carrier Risk Charge <small>( {{ orderDetails.deliveryChargeId.shipmentRiskPercentageOnBasePrice ~ '% on base price' }})</small></th>
+                                            <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCarrierRiskAddedCharge }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <th>Total</th>
+                                        <td>{{ orderDetails.orderPrice.orderPriceUnitId.currencySymbol }} {{ (orderDetails.orderPrice.orderBaseCharge + orderDetails.orderPrice.orderExtraWeightLeviedCharge + orderDetails.orderPrice.orderCodPaymentAddedCharge + orderDetails.orderPrice.orderCarrierRiskAddedCharge + orderDetails.orderPrice.orderFuelSurchargeAddedCharge + orderDetails.orderPrice.orderServiceTaxAddedCharge) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--left section-->
+    <div class="col-lg-1"><div class="row"></div></div>
+    <!--right section-->
+    <div class="col-lg-7">
+        <div class="row table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Billing Address</th>
+                        <th>Shipping Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>
+                                            {{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : ' ' ~ orderDetails.orderAddress.billingLastName) }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td>
+                                            {{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? '; ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}
+                                            <br/>
+                                            {{ orderDetails.orderAddress.billingCityId.name }}; {{ orderDetails.orderAddress.billingStateId.name }} - {{ orderDetails.orderAddress.billingZipCode }}; {{ orderDetails.orderAddress.billingCountryId.name }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact Number</th>
+                                        <td>
+                                            {{ (orderDetails.orderAddress.billingContactNumber) ? orderDetails.orderAddress.billingContactNumber : 'N/A' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>
+                                            {{ (orderDetails.orderAddress.billingEmail) ? orderDetails.orderAddress.billingEmail : 'N/A' }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>
+                                            {{ orderDetails.orderAddress.shippingFirstName ~ ((orderDetails.orderAddress.shippingMidName) ? ' ' ~ orderDetails.orderAddress.shippingMidName : ' ' ~ orderDetails.orderAddress.shippingLastName) }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address</th>
+                                        <td>
+                                            {{ orderDetails.orderAddress.shippingAddressLine1 ~ ((orderDetails.orderAddress.shippingAddressLine2) ? '; ' ~ orderDetails.orderAddress.shippingAddressLine2 : '') }}
+                                            <br/>
+                                            {{ orderDetails.orderAddress.shippingCityId.name }}; {{ orderDetails.orderAddress.shippingStateId.name }} - {{ orderDetails.orderAddress.shippingZipCode }}; {{ orderDetails.orderAddress.shippingCountryId.name }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact Number</th>
+                                        <td>
+                                            {{ (orderDetails.orderAddress.shippingContactNumber) ? orderDetails.orderAddress.shippingContactNumber : 'N/A' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>
+                                            {{ (orderDetails.orderAddress.shippingEmail) ? orderDetails.orderAddress.shippingEmail : 'N/A' }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            <div class="row table-responsive">
+                <div class="selectShip clearfix">
+                    <ul class="stylecheckbox">
+                        <li><h2>Pay By:</h2></li>
+                        <li>
+                            <input type="radio" name="payBy" value="CC" checked="checked" id="cc" onchange="renderCardDetailsForm(this)" data-card-details-form="">
+                            <label for="cc">Credit Card</label>
+                            <div class="check"><div class="inside"></div></div>
+                        </li>
+                        <li>
+                            <input type="radio" name="payBy" value="DC" id="dc" onchange="renderCardDetailsForm(this)" data-card-details-form="">
+                            <label for="dc">Debit Card</label>
+                            <div class="check"><div class="inside"></div></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--right section-->
+</div>

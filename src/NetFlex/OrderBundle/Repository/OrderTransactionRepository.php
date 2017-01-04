@@ -58,7 +58,8 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->setParameter('toDateObject', $toDateObject);
 		} elseif ($fromDateObject && $toDateObject) {
 			$qb->andWhere('O.createdOn between :fromDateObject and :toDateObject');
-			$qb->setParameters(['fromDateObject' => $fromDateObject, 'toDateObject' => $toDateObject]);
+			$qb->setParameter('fromDateObject', $fromDateObject);
+			$qb->setParameter('toDateObject', $toDateObject);
 		} else {
 			//
 		}
@@ -127,7 +128,8 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->setParameter('toDateObject', $toDateObject);
 		} elseif ($fromDateObject && $toDateObject) {
 			$qb->andWhere('O.createdOn between :fromDateObject and :toDateObject');
-			$qb->setParameters(['fromDateObject' => $fromDateObject, 'toDateObject' => $toDateObject]);
+			$qb->setParameter('fromDateObject', $fromDateObject);
+			$qb->setParameter('toDateObject', $toDateObject);
 		} else {
 			//
 		}
@@ -357,7 +359,8 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->setParameter('toDateObject', $toDateObject);
 		} elseif ($fromDateObject && $toDateObject) {
 			$qb->andWhere('O.createdOn between :fromDateObject and :toDateObject');
-			$qb->setParameters(['fromDateObject' => $fromDateObject, 'toDateObject' => $toDateObject]);
+			$qb->setParameter('fromDateObject', $fromDateObject);
+			$qb->setParameter('toDateObject', $toDateObject);
 		} else {
 			//
 		}
@@ -387,7 +390,8 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->setParameter('toDateObject', $toDateObject);
 		} elseif ($fromDateObject && $toDateObject) {
 			$qb->andWhere('O.createdOn between :fromDateObject and :toDateObject');
-			$qb->setParameters(['fromDateObject' => $fromDateObject, 'toDateObject' => $toDateObject]);
+			$qb->setParameter('fromDateObject', $fromDateObject);
+			$qb->setParameter('toDateObject', $toDateObject);
 		} else {
 			//
 		}

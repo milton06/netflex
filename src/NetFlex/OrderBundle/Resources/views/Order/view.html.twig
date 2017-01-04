@@ -185,25 +185,30 @@
             <h4 class="modal-title">Print Invoice</h4>
         </div>
         <div id="printThis" class="modal-body">
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    {% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
-                    <img src="{{ asset_url }}" alt="Netflex-logo">
-                    {% endimage %}
-                </div>
-                <div class="col-md-4"></div>
-            </div>
-            <div class="row"><div class="col-md-12">&nbsp;</div></div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="table-responsive">
-                        <table class="table table-responsive table-bordered">
-                            <tbody>
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th colspan="2" style="text-align:center;">
+                            {% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
+                                <img src="{{ asset_url }}" alt="Netflex-logo">
+                            {% endimage %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <table border="1" cellspacing="2" cellpadding="2" style="width: 100%;">
                                 <tr>
                                     <th>AWB Number</th>
                                     <td>
                                         {{ orderDetails.awbNumber }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Order Number</th>
+                                    <td>
+                                        {{ orderDetails.invoiceNumber }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -220,7 +225,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <table class="table table-responsive table-bordered">
+                                        <table border="1" cellspacing="2" cellpadding="6" style="width: 100%;">
                                             <thead>
                                                 <tr>
                                                     <th colspan="2">Parcel Weight</th>
@@ -229,15 +234,15 @@
                                             <tbody>
                                                 <tr>
                                                     <th>Base Weight</th>
-                                                    <td class="right">{{ orderDetails.orderItem.itemBaseWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                                    <td align="right">{{ orderDetails.orderItem.itemBaseWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Chargable Extra Weight</th>
-                                                    <td class="right">{{ orderDetails.orderItem.itemAccountableExtraWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                                    <td align="right">{{ orderDetails.orderItem.itemAccountableExtraWeight }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Total</th>
-                                                    <td>{{ (orderDetails.orderItem.itemBaseWeight + orderDetails.orderItem.itemAccountableExtraWeight)|number_format(2) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
+                                                    <td align="right">{{ (orderDetails.orderItem.itemBaseWeight + orderDetails.orderItem.itemAccountableExtraWeight)|number_format(2) }} {{ orderDetails.orderItem.itemWeightUnitId.symbol }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -263,7 +268,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <table class="table table-responsive table-bordered">
+                                        <table border="1" cellspacing="2" cellpadding="2" style="width: 100%;">
                                             <thead>
                                                 <tr>
                                                     <th colspan="2">Shipment Amount</th>
@@ -312,61 +317,57 @@
                                         </table>
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-6 table-responsive">
-                            <table class="table table-responsive table-bordered">
+                            </table>
+                        </td>
+                        <td valign="top">
+                            <table border="1" celspacing="2" cellpadding="2" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>From</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <th>{{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : '') ~ ' ' ~ orderDetails.orderAddress.billingLastName }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? '; ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ph: {{ orderDetails.orderAddress.billingContactNumber }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-md-6 table-responsive">
-                            <table class="table table-responsive table-bordered">
-                                <thead>
-                                    <tr>
                                         <th>To</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <th>{{ orderDetails.orderAddress.shippingFirstName ~ ((orderDetails.orderAddress.shippingMidName) ? ' ' ~ orderDetails.orderAddress.shippingMidName : '') ~ ' ' ~ orderDetails.orderAddress.shippingLastName }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ orderDetails.orderAddress.shippingAddressLine1 ~ ((orderDetails.orderAddress.shippingAddressLine2) ? '; ' ~ orderDetails.orderAddress.shippingAddressLine2 : '') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ orderDetails.orderAddress.shippingCityId.name ~ ', ' ~ orderDetails.orderAddress.shippingStateId.name ~ ' - ' ~ orderDetails.orderAddress.shippingZipCode }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ph: {{ orderDetails.orderAddress.shippingContactNumber }}</td>
+                                        <td>
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <th>{{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : '') ~ ' ' ~ orderDetails.orderAddress.billingLastName }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? '; ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ph: {{ orderDetails.orderAddress.billingContactNumber }}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <th>{{ orderDetails.orderAddress.shippingFirstName ~ ((orderDetails.orderAddress.shippingMidName) ? ' ' ~ orderDetails.orderAddress.shippingMidName : '') ~ ' ' ~ orderDetails.orderAddress.shippingLastName }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ orderDetails.orderAddress.shippingAddressLine1 ~ ((orderDetails.orderAddress.shippingAddressLine2) ? '; ' ~ orderDetails.orderAddress.shippingAddressLine2 : '') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ orderDetails.orderAddress.shippingCityId.name ~ ', ' ~ orderDetails.orderAddress.shippingStateId.name ~ ' - ' ~ orderDetails.orderAddress.shippingZipCode }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Ph: {{ orderDetails.orderAddress.shippingContactNumber }}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="modal-footer">
             <button type="button" id="print-button" class="btn btn-primary">

@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'clip-font';
-	src:url('../bundles/netflexdashboard/fonts/fonts/clip-font.eot');
-	src:url('../bundles/netflexdashboard/fonts/fonts/clip-font.eot?#iefix') format('embedded-opentype'),
-		url('../bundles/netflexdashboard/fonts/fonts/clip-font.woff') format('woff'),
-		url('../bundles/netflexdashboard/fonts/fonts/clip-font.ttf') format('truetype'),
-		url('../bundles/netflexdashboard/fonts/fonts/clip-font.svg#clip-font') format('svg');
+	src:url('../../bundles/netflexdashboard/fonts/fonts/clip-font.eot');
+	src:url('../../bundles/netflexdashboard/fonts/fonts/clip-font.eot?#iefix') format('embedded-opentype'),
+		url('../../bundles/netflexdashboard/fonts/fonts/clip-font.woff') format('woff'),
+		url('../../bundles/netflexdashboard/fonts/fonts/clip-font.ttf') format('truetype'),
+		url('../../bundles/netflexdashboard/fonts/fonts/clip-font.svg#clip-font') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

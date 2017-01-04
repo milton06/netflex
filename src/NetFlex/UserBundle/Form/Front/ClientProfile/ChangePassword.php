@@ -15,11 +15,7 @@ class ChangePassword extends UserType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('oldPassword', PasswordType::class, [
-			'mapped' => false,
-			'property_path' => null,
-		])
-		->add('password', PasswordType::class)
+		$builder->add('password', PasswordType::class)
 		->add('repeatPassword', PasswordType::class, [
 			'mapped' => false,
 		]);

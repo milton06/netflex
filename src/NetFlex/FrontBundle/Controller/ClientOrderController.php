@@ -4,6 +4,7 @@ namespace NetFlex\FrontBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -149,13 +150,15 @@ class ClientOrderController extends Controller
 	 */
 	public function renderClientViewOwnOrderPageAction($awbNumber, Request $request)
 	{
-		if (! $this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
+		/*if (! $this->get('security.authorization_checker')->isGranted('ROLE_CLIENT')) {
 			return $this->redirectToRoute('home_page');
-		}
+		}*/
 		
 		$session = $request->getSession();
 		if (! $session->has('loggedInUsername')) {
-			$session->set('loggedInUsername', $this->getUser()->getUsername());
+			if ($this->getUser()) {
+				$session->set('loggedInUsername', $this->getUser()->getUsername());
+			}
 		}
 		
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
@@ -582,6 +585,19 @@ class ClientOrderController extends Controller
 		
 		$em->flush();
 		
+		/**
+		 * Shipment has been booked, send mail.
+		 */
+		$mailerService = $this->get('mailer_service');
+		list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_BK_SUCC');
+		$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+			'mailBody' => $message,
+		]);
+		$message = str_replace(['[clientName]', '[awbNumber]', '[invoiceNumber]', '[trackUrl]'], [$order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName(), $order->getAwbNumber(), $order->getInvoiceNumber(), $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+		$message = html_entity_decode($message);
+		$mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName());
+		$mailerService->sendMail();
+		
 		$awbNumber = $order->getAwbNumber();
 		$request->getSession()->set('awbNumber', $awbNumber);
 		
@@ -785,5 +801,38 @@ class ClientOrderController extends Controller
 		}
 		
 		return $this->json(['cityList' => $cityList]);
+	}
+	
+	/**
+	 * @Route("/client/booking/email-invoice/{awbNumber}", name="client_email_invoice")
+	 *
+	 * @param  string  $awbNumber
+	 * @param  Request $request
+	 *
+	 * @return RedirectResponse
+	 */
+	public function emailInvoiceAction($awbNumber, Request $request)
+	{
+		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
+		
+		if (! $orderDetails) {
+			$this->addFlash('error', 'The AWB number is invalid');
+		} else {
+			/**
+			 * Send mail.
+			 */
+			$mailerService = $this->get('mailer_service');
+			list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('CLNT_EML_INV');
+			$message = $this->renderView('NetFlexFrontBundle:Booking:client_email_invoice.html.twig', [
+				'orderDetails' => $orderDetails,
+			]);
+			$message = html_entity_decode($message);
+			$mailerService->setMessage($fromEmail, $orderDetails->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $orderDetails->getUserId()->getFirstName() . ' ' . $orderDetails->getUserId()->getLastName());
+			$mailerService->sendMail();
+			
+			$this->addFlash('success', 'Invoice has been sent to the order billing email ID');
+		}
+		
+		return $this->redirectToRoute('client_view_own_order', ['awbNumber' => $awbNumber]);
 	}
 }

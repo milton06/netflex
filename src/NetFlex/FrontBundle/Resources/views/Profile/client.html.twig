@@ -58,7 +58,7 @@
 			
 			<div class="tracktable clearfix">
 				<!--fixed element-->
-				<div class="col-lg-3">
+				<div class="col-sm-5 col-md-4">
 					<div class="row">
 						<div id="sidebar">
 							<div class="accImg">
@@ -95,7 +95,7 @@
 				<!--fixed element-->
 				
 				<!--information-->
-				<div class="col-lg-9">
+				<div class="col-sm-7 col-md-8">
 					<div class="row">
 						<div class="infEdit">
 							<h1>{{ client.firstName ~ ' ' ~ client.lastName }}</h1>
@@ -286,24 +286,26 @@
                                                 </div>
                                             </div>
                                             <div class="editformblk2 clearfix">
-                                                <div class="col-lg-4">
+                                                {#<div class="col-lg-4">
                                                     {{ form_widget(cpForm.oldPassword, { 'id': 'oldPassword', 'attr': { 'placeholder': 'Old Password' } }) }}
-                                                </div>
-                                                <div class="col-lg-4">
+                                                </div>#}
+                                                <div class="col-lg-3">
                                                     {{ form_widget(cpForm.password, { 'id': 'password', 'attr': { 'placeholder': 'New Password' } }) }}
                                                 </div>
-                                                <div class="col-lg-4">
+                                                <div class="col-lg-3">
                                                     {{ form_widget(cpForm.repeatPassword, { 'id': 'repeatPassword', 'attr': { 'placeholder': 'Repeat Password' } }) }}
                                                 </div>
+												<div class="col-md-6">
+													<!--save and cancel button-->
+													<div class="savecancel pull-left" style="padding-top: 0px !important;">
+														<ul>
+															<li><a id="changePassButton" href="javascript:void(0);">save</a></li>
+															<li><a id="changePassCancel" href="javascript:void(0)">cancel</a></li>
+														</ul>
+													</div>
+													<!--save and cancel button-->
+												</div>
                                             </div>
-                                            <!--save and cancel button-->
-                                            <div class="savecancel">
-                                                <ul>
-                                                    <li><a id="changePassButton" href="javascript:void(0);">save</a></li>
-                                                    <li><a id="changePassCancel" href="javascript:void(0)">cancel</a></li>
-                                                </ul>
-                                            </div>
-                                            <!--save and cancel button-->
                                             {{ form_end(cpForm) }}
 										</div>
 									</div>

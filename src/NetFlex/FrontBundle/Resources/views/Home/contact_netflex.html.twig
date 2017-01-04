@@ -1,0 +1,71 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% form_theme contactForm 'NetFlexFrontBundle:FormLayout:user_registration.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    <style>
+        .help-block {
+            color: #ff3333;
+        }
+        .succMsg {
+            color: #1b7e5a;
+        }
+        #contactButton {
+            background: #ff5400 none repeat scroll 0 0;
+            border-radius: 4px;
+            color: #ffffff;
+            display: inline-block;
+            float: right;
+            font: 14px "OpenSans-ExtraBold";
+            margin-left: -14px;
+            padding: 12px 40px;
+            text-transform: uppercase;
+            transition: all 0.5s ease 0s;
+        }
+    </style>
+{% endblock %}
+{% block pageContent %}
+    <div class="container">
+        <div class="tabform clearfix">
+            <div class="shipLeft clearfix" style="min-height:300px">
+                <h2>{{ pageHeader }}</h2>
+                {% if app.session.flashbag.peek('success') %}
+                    {% for success in app.session.flashbag.get('success') %}
+                        <span class="succMsg">{{ success }}</span>
+                    {% endfor %}
+                {% endif %}
+                {{ form_start(contactForm, { 'attr': { 'id': 'contactForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                    {{ form_widget(contactForm.name, { 'id': 'contacteeName', 'attr': { 'placeholder': 'Name' } }) }}
+                    {{ form_errors(contactForm.name) }}
+                    {{ form_widget(contactForm.email, { 'id': 'contacteeEmail', 'attr': { 'placeholder': 'Email' } }) }}
+                    {{ form_errors(contactForm.name) }}
+                    {{ form_widget(contactForm.message, { 'id': 'contacteeMessage', 'attr': { 'placeholder': 'Message', 'rows': 8, 'cols': 29 } }) }}
+                    {{ form_errors(contactForm.message) }}
+                    <div class="formBlk1-1 clearfix">
+                        <div class="col-lg-12">
+                            <a id="contactButton" href="javascript:void(0);" style="float: left; margin-top:9px; margin-left:20%">Submit</a>
+                        </div>
+                    </div>
+                {{ form_end(contactForm) }}
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+    {% endblock %}
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        $("#contactButton").on("click", function(e) {
+            $("#contactForm").submit();
+        });
+        $(window).load(function() {
+            if (0 < $(".succMsg").length) {
+                setTimeout('$(".succMsg").remove();', 5000);
+            }
+        });
+    </script>
+{% endblock %}

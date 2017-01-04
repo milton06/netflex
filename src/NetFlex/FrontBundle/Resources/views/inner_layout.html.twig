@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+<head>
+    {% block pageMeta %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock %}
+    <title>
+        {% block pageTitle %}Netflex{% endblock %}
+    </title>
+    <!--STYLES-->
+    {% block pageStyles %}
+        {% stylesheets 'bundles/netflexfront/css/bootstrap.css' filter='cssrewrite' %}
+        <link href="{{ asset_url }}" rel="stylesheet">
+        {% endstylesheets %}
+        {% stylesheets 'bundles/netflexfront/css/jquery.fancybox.css' filter='cssrewrite' %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen">
+        {% endstylesheets %}
+        {% stylesheets 'bundles/netflexfront/css/font-awesome.css'
+        'bundles/netflexfront/css/style.css' filter='cssrewrite' %}
+        <link href="{{ asset_url }}" rel="stylesheet">
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body>
+<!--header-->
+<div class="container-fluid">
+    <div class="row">
+        <header class="header">
+            <div class="container">
+                <div class="row">
+                    <!--logo-->
+                    <div class="col-lg-3 col-md-3 col-sm-2">
+                        <div class="logo">
+                            <a href="{{ url('home_page') }}">
+                                {% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
+                                <img src="{{ asset_url }}" alt="NetFlex Logo">
+                                {% endimage %}
+                            </a>
+                        </div>
+                    </div>
+                    <!--logo-->
+                    <!--call and mail-->
+                    <div class="col-lg-9 col-md-9 col-sm-10 text-right">
+                        <div class="callmail">
+                            <ul>
+                                <li class="call">CALL: <span>9830448289</span></li>
+                                <li class="mail"><a href="javascript:void(0);">support@netflexlogistics.in</a></li>
+                            </ul>
+                        </div>                   
+						<!--call and mail-->
+						<!--login and register-->                  
+                        <div class="logreg">
+                            <ul>
+                                <li><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
+                                <li><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
+                                <li><a href="{{ url('contact_netflex') }}">Contact</a></li>
+                                <!--login-->
+                                {% if app.session.has('loggedInUsername') %}
+                                    {{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}
+                                {% else %}
+                                    {{ render(controller('NetFlexFrontBundle:ClientAuth:authenticateClient')) }}
+                                {% endif %}
+                                <!--login-->
+                                <!--register-->
+                                {% if app.session.has('loggedInUsername') %}
+                                {% else %}
+                                    <li class="register">
+                                        <a class="fancybox" href="#inline1">Client Register</a>
+                                        <div id="inline1" class="clearfix" style="width:370px;display: none;">
+                                            {{ render(controller('NetFlexFrontBundle:ClientRegistration:registerClient')) }}
+                                        </div>
+                                    </li>
+                                {% endif %}
+                                <!--register-->
+                            </ul>
+                        </div>
+                    </div>
+                    <!--login and register-->
+                </div>
+            </div>
+        </header>
+        <!--nav-->
+        {{ include('NetFlexFrontBundle:LayoutPartial:header_navigation_menu.html.twig') }}
+        <!--nav-->
+    </div>
+</div>
+<!--header-->
+{% if app.session.has('sf_redirect') %}
+    {% if (app.session.get('sf_redirect')['route'] in ['client_profile_page', 'client_own_order_list', 'client_book_a_shipment']) %}
+        {% set referer = app.session.get('sf_redirect')['route'] %}
+    {% endif %}
+{% endif %}
+{% block pageContent %}
+{% endblock %}
+{{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+{% block pageScripts %}
+    {% javascripts '@NetFlexFrontBundle/Resources/public/js/1.11.1/jquery.min.js'
+    '@NetFlexFrontBundle/Resources/public/js/bootstrap.min.js'
+    '@NetFlexFrontBundle/Resources/public/js/jquery.fancybox.pack.js'
+    '@NetFlexFrontBundle/Resources/public/js/Common/common.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script>
+        var loggedInUsername = "{{ app.session.get('loggedInUsername') }}";
+        var referer = "{{ (referer is defined) ? referer : null }}";
+        $(document).ready(function() {
+            if (referer) {
+                $("#targetPath").val(referer);
+            }
+        });
+        $(window).load(function() {
+            if (referer) {
+                $("#login-trigger").trigger("click");
+            }
+        });
+    </script>
+{% endblock %}
+</body>
+</html>

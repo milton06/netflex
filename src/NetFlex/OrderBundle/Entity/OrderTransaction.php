@@ -119,7 +119,7 @@ class OrderTransaction
     /**
      * @var int
      *
-     * @ORM\Column(name="created_by", type="integer")
+     * @ORM\Column(name="created_by", type="integer", nullable=true)
      */
     private $createdBy;
 
@@ -133,7 +133,7 @@ class OrderTransaction
     /**
      * @var int
      *
-     * @ORM\Column(name="last_modified_by", type="integer")
+     * @ORM\Column(name="last_modified_by", type="integer", nullable=true)
      */
     private $lastModifiedBy;
 

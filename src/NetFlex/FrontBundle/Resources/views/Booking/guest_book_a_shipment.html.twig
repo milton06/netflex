@@ -1,0 +1,303 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexfront/css/jquery.steps.css' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+    <style>
+        .tooltip.top .tooltip-inner {
+            background-color:#ff3333;
+        }
+        .tooltip.top .tooltip-arrow {
+            border-top-color: #ff3333;
+        }
+        .inactiveLink {
+            pointer-events: none;
+            cursor: default;
+        }
+        #payment {
+            padding: 0 15px 50px;
+        }
+        #payment .tracktable table td {
+            padding: 8px;
+            font: inherit;
+        }
+    </style>
+{% endblock %}
+{% block pageContent %}
+    <div class="container">
+        <div class="tabform clearfix">
+            <h1><span>Book</span> Your Shipment</h1>
+            <div class="row errorHandler global-form-error" style="display: none;">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <button data-dismiss="alert" class="close">×</button>
+                        <i class="fa fa-times-circle"></i>
+                        You have some form errors. Please check below.
+                    </div>
+                </div>
+            </div>
+            <div class="row errorHandler server-fault" style="display: none;">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <button data-dismiss="alert" class="close">×</button>
+                        <i class="fa fa-times-circle"></i>
+                        We encountered a server error.
+                    </div>
+                </div>
+            </div>
+            <div class="row errorHandler no-deliverability-error" style="display: none;">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <button data-dismiss="alert" class="close">×</button>
+                        <i class="fa fa-times-circle"></i>
+                        <strong>Sorry!</strong> Shipment is not possible between these locations presently.
+                    </div>
+                </div>
+            </div>
+            <div class="row errorHandler delivery-mode-error" style="display: none;">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">
+                        <button data-dismiss="alert" class="close">×</button>
+                        <i class="fa fa-times-circle"></i>
+                    </div>
+                </div>
+            </div>
+            {{ form_start(checkDeliverabilityForm, { 'attr': { 'id': 'check-deliverability-form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+            <div class="selectShip clearfix">
+                <ul class="stylecheckbox">
+                    <li><h2>Select Shipment Type :</h2></li>
+                    <li>
+                        {{ form_widget(checkDeliverabilityForm.deliveryModeId.2, { 'id': 'a-option', 'attr': { 'class': 'delivery-modes', 'checked': true } }) }}
+                        <label for="a-option">{{ checkDeliverabilityForm.deliveryModeId.2.vars.label }}</label>
+                        <div class="check"><div class="inside"></div></div>
+                    </li>
+                    <li>
+                        {{ form_widget(checkDeliverabilityForm.deliveryModeId.1, { 'id': 'b-option', 'attr': { 'class': 'delivery-modes' } }) }}
+                        <label for="b-option">{{ checkDeliverabilityForm.deliveryModeId.1.vars.label }}</label>
+                        <div class="check"><div class="inside"></div></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-12">
+                <div class="row">
+                    <div id="usual1" class="usual">
+                        <ul>
+                            <li id="tab-booking-options"><a href="#booking-options" class="selected"><span>1</span>Shipment Details</a></li>
+                            <li id="tab-shipment-addresses"><a href="#shipment-addresses" class="inactiveLink"><span>2</span>shipping Address</a></li>
+                            <li id="tab-payment"><a href="#payment" class="inactiveLink"><span>3</span>Payment</a></li>
+                        </ul>
+                        <div id="booking-options" class="tabgrp">
+                            <div class="formBlk1 clearfix">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <label class="dropdown">
+                                        {{ form_widget(checkDeliverabilityForm.sourceCountryId, { 'id': 'cd-source-country', 'attr': { 'class': 'cd-country-selectors', 'required': false } }) }}
+                                    </label>
+                                    <label class="dropdown">
+                                        {{ form_widget(checkDeliverabilityForm.sourceStateId, { 'id': 'cd-source-state', 'attr': { 'class': 'cd-state-selectors', 'required': false } }) }}
+                                    </label>
+                                    <label class="dropdown">
+                                        {{ form_widget(checkDeliverabilityForm.sourceCityId, { 'id': 'cd-source-city', 'attr': { 'class': 'cd-city-selectors', 'required': false } }) }}
+                                    </label>
+                                    <div class="formBlk2">
+                                        {{ form_widget(checkDeliverabilityForm.sourceZipCode, { 'id': 'cd-source-zip-code', 'attr': { 'class': 'red-tooltip', 'required': false, 'placeholder': 'Zip Code' } }) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="formBlk1 clearfix">
+                            <div class="col-lg-12">
+                                <h6>To (Destination) :</h6>
+                                <div class="row">
+                                    <label class="dropdown">
+                                        {{ form_widget(checkDeliverabilityForm.destinationCountryId, { 'id': 'cd-destination-country', 'attr': { 'class': 'cd-country-selectors', 'required': false } }) }}
+                                    </label>
+                                    <label class="dropdown">
+                                        {{ form_widget(checkDeliverabilityForm.destinationStateId, { 'id': 'cd-destination-state', 'attr': { 'class': 'cd-state-selectors', 'required': false } }) }}
+                                    </label>
+                                    <label class="dropdown">
+                                        {{ form_widget(checkDeliverabilityForm.destinationCityId, { 'id': 'cd-destination-city', 'attr': { 'class': 'cd-city-selectors', 'required': false } }) }}
+                                    </label>
+                                    <div class="formBlk2">
+                                        {{ form_widget(checkDeliverabilityForm.destinationZipCode, { 'id': 'cd-destination-zip-code', 'attr': { 'class': 'red-tooltip', 'required': false, 'placeholder': 'Zip Code' } }) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            {{ form_end(checkDeliverabilityForm) }}
+            {{ form_start(orderForm, { 'attr': { 'id': 'book-a-shipment-form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                            <div class="formBlk1 clearfix">
+                            <div class="col-lg-12">
+                                <h6 class="type">Type of Goods :</h6>
+                                <div class="row">
+                                    <label class="dropdown">
+                                        {{ form_widget(orderForm.orderItem.itemPrimaryTypeId, { 'id': 'item-primary-type' }) }}
+                                    </label>
+                                    <label class="dropdown">
+                                        {{ form_widget(orderForm.orderItem.itemSecondaryTypeId, { 'id': 'item-secondary-type' }) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="formBlk1 clearfix">
+                            <div class="col-lg-12">
+                                <h6 class="type">Parcel Weight :</h6>
+                                <div class="row">
+                                    {{ form_widget(orderForm.orderItem.itemBaseWeight, { 'id': 'item-base-weight' }) }}
+                                    <label class="dropdown">
+                                        {{ form_widget(orderForm.orderItem.itemWeightUnitId, { 'id': 'item-weight-unit', 'attr': { 'class': 'weight' } }) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                            {{ form_widget(orderForm.orderItem.itemCalculatedBaseWeight, { 'id': 'item-calculated-base-weight' }) }}
+                            {{ form_widget(orderForm.orderItem.itemCalculatedWeightUnit, { 'id': 'item-calculated-weight-unit' }) }}
+                            {{ form_widget(orderForm.orderItem.itemAccountableExtraWeight, { 'id': 'item-accountable-extra-weight' }) }}
+                            {{ form_widget(orderForm.deliveryChargeId, { 'id': 'delivery-charge-id' }) }}
+                            <div class="formBlk1 clearfix">
+                            <div class="col-lg-10">
+                                <h6 class="type">Invoice Value  :</h6>
+                                <div class="row">
+                                    {{ form_widget(orderForm.orderPrice.orderInvoicePrice, { 'id': 'item-invoice-value' }) }}
+                                    <label class="dropdown">
+                                        {{ form_widget(orderForm.orderPrice.orderPriceUnitId, { 'id': 'item-price-unit' }) }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                            <div id="risk-type-container" class="formBlk1 clearfix" style="display: none">
+                            <div class="col-lg-12">
+                                <h6 class="type1">Risk Charge  :</h6>
+                                <div class="row">
+                                    <ul class="stylecheckbox">
+                                        <li>
+                                            {{ form_widget(orderForm.orderPrice.riskType.0, {  'id': 'c-option', 'attr': { 'class': 'risk-types', 'checked': true } }) }}
+                                            <label for="c-option">{{ orderForm.orderPrice.riskType.0.vars.label }}</label>
+                                            <div class="check"><div class="inside"></div></div>
+                                        </li>
+                                        <li>
+                                            {{ form_widget(orderForm.orderPrice.riskType.1, { 'id': 'd-option', 'attr': { 'class': 'risk-types' } }) }}
+                                            <label for="d-option">{{ orderForm.orderPrice.riskType.1.vars.label }}</label>
+                                            <div class="check"><div class="inside"></div></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="formBlk1-1 clearfix">
+                                <div class="col-lg-12">
+                                    <a id="check-deliverability-button" href="javascript:void(0);">next</a>
+                                </div>
+                            </div>
+                            {{ form_widget(orderForm.orderPrice.orderBaseCharge, { 'id': 'order-base-charge' }) }}
+                            {{ form_widget(orderForm.orderPrice.orderExtraWeightLeviedCharge, { 'id': 'order-extra-weight-levied-charge' }) }}
+                            {{ form_widget(orderForm.orderPrice.orderFuelSurchargeAddedCharge, { 'id': 'order-fuel-surcharge-added-charge' }) }}
+                            {{ form_widget(orderForm.orderPrice.orderServiceTaxAddedCharge, { 'id': 'order-service-tax-added-charge' }) }}
+                            {{ form_widget(orderForm.orderPrice.orderCarrierRiskAddedCharge, { 'id': 'order-carrier-risk-added-charge' }) }}
+                        </div>
+                        <div id="shipment-addresses" class="tabgrp clearfix">
+                            <div class="shipLeft clearfix">
+                                <h2>Pickup At :</h2>
+                                {{ form_widget(orderForm.orderAddress.pickupFirstName, { 'id': 'pickup-first-name', 'attr': { 'placeholder': 'First Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupMidName, { 'id': 'pickup-mid-name', 'attr': { 'placeholder': 'Mid Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupLastName, { 'id': 'pickup-last-name', 'attr': { 'placeholder': 'Last Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupAddressLine1, { 'id': 'pickup-address-line-1', 'attr': { 'placeholder': 'Address Line 1' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupAddressLine2, { 'id': 'pickup-address-line-2', 'attr': { 'placeholder': 'Address Line 2' } }) }}
+                                <label class="dropdown weight1" style="margin-top: 9px; margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.pickupCountryId, { 'id': 'pickup-country', 'disabled': 'disabled', 'attr': { 'class': 'weight country-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.pickupStateId, { 'id': 'pickup-state', 'disabled': 'disabled', 'attr': { 'class': 'weight state-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.pickupCityId, { 'id': 'pickup-city', 'disabled': 'disabled', 'attr': { 'class': 'weight city-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                {{ form_widget(orderForm.orderAddress.pickupZipCode, { 'id': 'pickup-zip-code', 'attr': { 'placeholder': 'Zip Code' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupLandMark, { 'id': 'pickup-land-mark', 'attr': { 'placeholder': 'Landmark' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupEmail, { 'id': 'pickup-email', 'attr': { 'placeholder': 'Email' } }) }}
+                                {{ form_widget(orderForm.orderAddress.pickupContactNumber, { 'id': 'pickup-contact-number', 'attr': { 'placeholder': 'Contact Number' } }) }}
+                            </div>
+                            <div class="shipMid clearfix">
+                                <h2>Bill To :</h2>
+                                {{ form_widget(orderForm.orderAddress.billingFirstName, { 'id': 'billing-first-name', 'attr': { 'placeholder': 'First Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingMidName, { 'id': 'billing-mid-name', 'attr': { 'placeholder': 'Middle Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingLastName, { 'id': 'billing-last-name', 'attr': { 'placeholder': 'Last Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingAddressLine1, { 'id': 'billing-address-line-1', 'attr': { 'placeholder': 'Address Line 1' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingAddressLine2, { 'id': 'billing-address-line-2', 'attr': { 'placeholder': 'Address Line 2' } }) }}
+                                <label class="dropdown weight1" style="margin-top: 9px; margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.billingCountryId, { 'id': 'billing-country', 'attr': { 'class': 'weight country-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.billingStateId, { 'id': 'billing-state', 'attr': { 'class': 'weight state-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.billingCityId, { 'id': 'billing-city', 'attr': { 'class': 'weight city-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                {{ form_widget(orderForm.orderAddress.billingZipCode, { 'id': 'billing-zip-code', 'attr': { 'placeholder': 'Zip Code' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingLandMark, { 'id': 'billing-land-mark', 'attr': { 'placeholder': 'Landmark' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingEmail, { 'id': 'billing-email', 'attr': { 'placeholder': 'Email' } }) }}
+                                {{ form_widget(orderForm.orderAddress.billingContactNumber, { 'id': 'billing-contact-number', 'attr': { 'placeholder': 'Contact Number' } }) }}
+                            </div>
+                            <div class="shipRight clearfix">
+                                <h2>Ship To :</h2>
+                                {{ form_widget(orderForm.orderAddress.shippingFirstName, { 'id': 'shipping-first-name', 'attr': { 'placeholder': 'First Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingMidName, { 'id': 'shipping-mid-name', 'attr': { 'placeholder': 'Middle Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingLastName, { 'id': 'shipping-last-name', 'attr': { 'placeholder': 'Last Name' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingAddressLine1, { 'id': 'shipping-address-line-1', 'attr': { 'placeholder': 'Address Line 1' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingAddressLine2, { 'id': 'shipping-address-line-2', 'attr': { 'placeholder': 'Address Line 2' } }) }}
+                                <label class="dropdown weight1" style="margin-top: 9px; margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.shippingCountryId, { 'id': 'shipping-country', 'disabled': 'disabled', 'attr': { 'class': 'weight country-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.shippingStateId, { 'id': 'shipping-state', 'disabled': 'disabled', 'attr': { 'class': 'weight state-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                <label class="dropdown weight1" style="margin-bottom: 9px;">
+                                    {{ form_widget(orderForm.orderAddress.shippingCityId, { 'id': 'shipping-city', 'disabled': 'disabled', 'attr': { 'class': 'weight city-selectors', 'required': false, 'style': 'margin-top: -10px; margin-left: 0px;' } }) }}
+                                </label>
+                                {{ form_widget(orderForm.orderAddress.shippingZipCode, { 'id': 'shipping-zip-code', 'attr': { 'placeholder': 'Zip Code' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingLandMark, { 'id': 'shipping-land-mark', 'attr': { 'placeholder': 'Landmark' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingEmail, { 'id': 'shipping-email', 'attr': { 'placeholder': 'Email' } }) }}
+                                {{ form_widget(orderForm.orderAddress.shippingContactNumber, { 'id': 'shipping-contact-number', 'attr': { 'placeholder': 'Contact Number' } }) }}
+                            </div>
+                            <div class="formBlk1-1 clearfix">
+                                <div class="col-lg-6">
+                                    <a id="prev-button" class="bookship pull-left" href="javascript:void(0);">Previous</a>
+                                </div>
+                                <div class="col-lg-6">
+                                    <a id="book-a-shipment-button" class="bookship" href="javascript:void(0);">Next</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="payment" class="tabgrp clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(orderForm) }}
+        </div>
+    </div>
+    {% block footer %}
+        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+    {% endblock %}
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var stateListFetchUrl = "{{ url('guest_book_a_shipment_state_list') }}";
+        var cityListFetchUrl = "{{ url('guest_book_a_shipment_city_list') }}";
+        var getSecondaryItemTypeUrl = "{{ url('guest_book_a_shipment_secondary_item_type') }}";
+        var checkDeliverabilityUrl = "{{ url('guest_book_a_shipment_check_deliverability') }}";
+        var bookShipmentUrl = "{{ url('guest_book_a_shipment_place_order') }}";
+        var paymentUrl = "{{ url('guest_book_a_shipment_payment') }}";
+    </script>
+    {% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js'
+        '@NetFlexFrontBundle/Resources/public/js/Guest/book_a_shipment.js' %}
+        <script src="{{ asset_url }}"></script>
+        <script type="text/javascript">
+            $("#usual1 ul").idTabs();
+        </script>
+    {% endjavascripts %}
+{% endblock %}

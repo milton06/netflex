@@ -21,15 +21,15 @@
 		{% endstylesheets %}
 	{% endblock %}
 </head>
-<body>
+<body class="{{ ('home_page' == app.request.attributes.get('_route')) ? 'hide-scroll' : '' }}">
 <!--header-->
-<div class="container-fluid">
+<div id="less-height" class="container-fluid">
 	<div class="row">
 		<header class="header">
 			<div class="container">
 				<div class="row">
 					<!--logo-->
-					<div class="col-lg-3">
+					<div class="col-lg-3 col-md-3 col-sm-2">
 						<div class="logo">
 							<a href="{{ url('home_page') }}">
 								{% image '@NetFlexFrontBundle/Resources/public/images/netflexLogo.png' %}
@@ -38,24 +38,22 @@
 							</a>
 						</div>
 					</div>
-					<!--logo-->
-					<!--call and mail-->
-					<div class="col-lg-5">
+					<!--logo-->					
+					<div class="col-lg-9 col-md-9 col-sm-10 text-right">
+						<!--call and mail-->
 						<div class="callmail">
 							<ul>
-								<li class="call">CALL FREE: +1 <span>212</span>-<span>226</span>-<span>3126</span></li>
-								<li class="mail"><a href="javascript:void(0);">info@netflex.com</a></li>
+								<li class="call">CALL: <span>9830448289</span></li>
+								<li class="mail"><a href="javascript:void(0);">support@netflexlogistics.in</a></li>
 							</ul>
-						</div>
-					</div>
-					<!--call and mail-->
-					<!--login and register-->
-					<div class="col-lg-4">
+						</div>					
+						<!--call and mail-->
+						<!--login and register-->					
 						<div class="logreg">
 							<ul>
-								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About</a></li>
+								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
 								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
-								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'contact' }) }}">Contact</a></li>
+								<li><a href="{{ url('contact_netflex') }}">Contact</a></li>
 								<!--login-->
 								{% if app.session.has('loggedInUsername') %}
 									{{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}

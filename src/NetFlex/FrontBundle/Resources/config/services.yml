@@ -2,3 +2,11 @@ services:
 #    net_flex_front.example:
 #        class: NetFlex\FrontBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    guest_book_a_shipment:
+        class: NetFlex\FrontBundle\Service\Guest\BookAShipmentService
+        arguments: ["@doctrine.orm.entity_manager", "%order_risk_types%"]
+    app.form.type.guest_order:
+        class: NetFlex\FrontBundle\Form\Guest\Order
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type }

@@ -301,6 +301,19 @@ class BookingController extends Controller
 	    $em->persist($order);
 	    
 	    $em->flush();
+	
+	    /**
+	     * Shipment has been booked, send mail.
+	     */
+	    $mailerService = $this->get('mailer_service');
+	    list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_BK_SUCC');
+	    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+		    'mailBody' => $message,
+	    ]);
+	    $message = str_replace(['[clientName]', '[awbNumber]', '[invoiceNumber]', '[trackUrl]'], [$order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName(), $order->getAwbNumber(), $order->getInvoiceNumber(), $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+	    $message = html_entity_decode($message);
+	    $mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName());
+	    $mailerService->sendMail();
 	    
 	    $orderId = $order->getId();
 	    $awbNumber = $order->getAwbNumber();
