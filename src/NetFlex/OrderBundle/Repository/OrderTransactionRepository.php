@@ -42,7 +42,8 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->andWhere($qb->expr()->eq('O.orderStatus', ':orderStatus'));
 			$qb->setParameter('orderStatus', $orderStatus);
 		} else {
-			$qb->andWhere($qb->expr()->neq('O.orderStatus', 0));
+			//$qb->andWhere($qb->expr()->neq('O.orderStatus', 0));
+			$qb->andWhere($qb->expr()->notIn('O.orderStatus', [0, 8]));
 		}
 		
 		if ($paymentStatus) {
@@ -112,7 +113,8 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->andWhere($qb->expr()->eq('O.orderStatus', ':orderStatus'));
 			$qb->setParameter('orderStatus', $orderStatus);
 		} else {
-			$qb->andWhere($qb->expr()->neq('O.orderStatus', 0));
+			//$qb->andWhere($qb->expr()->neq('O.orderStatus', 0));
+			$qb->andWhere($qb->expr()->notIn('O.orderStatus', [0, 8]));
 		}
 		
 		if ($paymentStatus) {

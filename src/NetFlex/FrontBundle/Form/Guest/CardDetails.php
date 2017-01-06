@@ -13,7 +13,9 @@ class CardDetails extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('paymentModes', ChoiceType::class, [
+		$builder->setAction($options['url'])
+		->setMethod('POST')
+		->add('paymentModes', ChoiceType::class, [
 			'placeholder' => false,
 			'expanded' => true,
 			'choices' => $options['paymentModes'],
@@ -34,6 +36,9 @@ class CardDetails extends AbstractType
 		->add('productinfo', HiddenType::class, [
 			'data' => $options['productinfo'],
 		])
+		->add('udf1', HiddenType::class, [
+			'data' => $options['udf1'],
+		])
 		->add('firstname', HiddenType::class, [
 			'data' => $options['firstname'],
 		])
@@ -48,9 +53,6 @@ class CardDetails extends AbstractType
 		])
 		->add('furl', HiddenType::class, [
 			'data' => $options['furl'],
-		])
-		->add('curl', HiddenType::class, [
-			'data' => $options['curl'],
 		])
 		->add('HASH', HiddenType::class, [
 			'data' => $options['HASH'],
@@ -78,12 +80,14 @@ class CardDetails extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => null,
+			'url' => '',
 			'paymentModes' => [],
 			'dcTypes' => [],
 			'key' => '',
 			'txnid' => '',
 			'amount' => '',
 			'productinfo' => '',
+			'udf1' => '',
 			'firstname' => '',
 			'email' => '',
 			'phone' => '',
@@ -100,6 +104,6 @@ class CardDetails extends AbstractType
 	
 	public function getBlockPrefix()
 	{
-		return 'guest_book_shipment_payment_card_details';
+		return '';
 	}
 }

@@ -1,5 +1,3 @@
-{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
-{% block pageContent %}
 <div class="tracktable clearfix">
     <!--left section-->
     <div class="col-lg-4">
@@ -186,8 +184,10 @@
                 </tbody>
             </table>
         </div>
+
         <div class="row table-responsive">
-            {{ form_start(cardDetailsForm, { 'attr': { 'id': 'ccCardDetailsForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+            </form>
+            {{ form_start(cardDetailsForm, { 'attr': { 'id': 'cardDetailsForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
                 <div class="selectShip clearfix">
                     <ul class="stylecheckbox">
                         <li><h2>Pay By:</h2></li>
@@ -209,7 +209,7 @@
                         <h6 class="type">Debit Card Types :</h6>
                         <div class="row">
                             <label class="dropdown">
-                                {{ form_widget(cardDetailsForm.dcTypes, { 'id': 'dcType', 'required': false, 'onchange': 'selectDebitCardType(this.value)' }) }}
+                                {{ form_widget(cardDetailsForm.dcTypes, { 'id': 'dcType', 'required': false, 'attr': { 'onchange': 'selectDebitCardType(this.value)' } }) }}
                             </label>
                         </div>
                     </div>
@@ -218,12 +218,12 @@
                 {{ form_widget(cardDetailsForm.txnid) }}
                 {{ form_widget(cardDetailsForm.amount) }}
                 {{ form_widget(cardDetailsForm.productinfo) }}
+                {{ form_widget(cardDetailsForm.udf1) }}
                 {{ form_widget(cardDetailsForm.firstname) }}
                 {{ form_widget(cardDetailsForm.email) }}
                 {{ form_widget(cardDetailsForm.phone) }}
                 {{ form_widget(cardDetailsForm.surl) }}
                 {{ form_widget(cardDetailsForm.furl) }}
-                {{ form_widget(cardDetailsForm.curl) }}
                 {{ form_widget(cardDetailsForm.HASH) }}
                 {{ form_widget(cardDetailsForm.pg, { 'id': 'pg' }) }}
                 {{ form_widget(cardDetailsForm.bankcode, { 'id': 'bankcode' }) }}
@@ -248,7 +248,7 @@
                         <div class="col-lg-12">
                             <h6 class="type">CVV :</h6>
                             <div class="row">
-                                {{ form_widget(cardDetailsForm.ccvv, { 'id': 'ccvv', 'required': false }) }}
+                                {{ form_widget(cardDetailsForm.ccvv, { 'id': 'ccvv', 'required': false, 'attr': { 'maxlength': 3 } }) }}
                             </div>
                         </div>
                     </div>
@@ -269,27 +269,13 @@
                 <p id="toggleCvvAndExpieryContainerMessage" style="display:none">
                     <a href="javascript:void(0);">Click</a> if your card has CVV and Expiry date mentioned on it.
                 </p>
+                <div class="formBlk1-1 clearfix">
+                    <div class="col-lg-12">
+                        <a href="javascript:void(0);" onclick="pay()">Pay</a>
+                    </div>
+                </div>
             {{ form_end(cardDetailsForm) }}
         </div>
     </div>
     <!--right section-->
 </div>
-{% endblock %}
-{% block pageScripts %}
-    {{ parent() }}
-    <script>
-        var stateListFetchUrl = "{{ url('guest_book_a_shipment_state_list') }}";
-        var cityListFetchUrl = "{{ url('guest_book_a_shipment_city_list') }}";
-        var getSecondaryItemTypeUrl = "{{ url('guest_book_a_shipment_secondary_item_type') }}";
-        var checkDeliverabilityUrl = "{{ url('guest_book_a_shipment_check_deliverability') }}";
-        var bookShipmentUrl = "{{ url('guest_book_a_shipment_place_order') }}";
-        var paymentUrl = "{{ url('guest_book_a_shipment_payment') }}";
-    </script>
-    {% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js'
-    '@NetFlexFrontBundle/Resources/public/js/Guest/book_a_shipment.js' %}
-    <script src="{{ asset_url }}"></script>
-    <script type="text/javascript">
-        $("#usual1 ul").idTabs();
-    </script>
-    {% endjavascripts %}
-{% endblock %}

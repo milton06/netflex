@@ -15,6 +15,7 @@ use NetFlex\FrontBundle\Form\Guest\Deliverability;
 use NetFlex\OrderBundle\Entity\OrderTransaction;
 use NetFlex\FrontBundle\Form\Guest\Order;
 use NetFlex\FrontBundle\Form\Guest\CardDetails;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @Route("/guest/book-a-shipment")
@@ -277,7 +278,7 @@ class GuestOrderController extends Controller
 		 */
 		//$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById
 	($request->request->get('orderId'));
-		$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById(11);
+		$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById(1);
 		
 		/**
 		 * Payment mode and debit card type choices.
@@ -297,25 +298,27 @@ class GuestOrderController extends Controller
 		/**
 		 * PayU embedded form parameters.
 		 */
+		$url = 'https://test.payu.in/_payment';
 		$key = $this->getParameter('payu_merchant_key');
 		$txnid = bin2hex(openssl_random_pseudo_bytes(20));
 		$amount = ($orderDetails->getOrderPrice()->getOrderBaseCharge() + $orderDetails->getOrderPrice()->getOrderExtraWeightLeviedCharge() + $orderDetails->getOrderPrice()->getOrderFuelSurchargeAddedCharge() + $orderDetails->getOrderPrice()->getOrderServiceTaxAddedCharge() + $orderDetails->getOrderPrice()->getOrderCarrierRiskAddedCharge());
-		$productinfo = 'Netflex Guest Shipment: ' . $orderDetails->getOrderItem()->getItemSecondaryTypeId()->getItemTypeName() . ' ' . $orderDetails->getOrderItem()->getItemPrimaryTypeId()->getItemTypeName();
+		$amount = (float) round($amount);
+		$productinfo = 'NFGS-' . $orderDetails->getOrderItem()->getItemSecondaryTypeId()->getItemTypeName() . '-' . $orderDetails->getOrderItem()->getItemPrimaryTypeId()->getItemTypeName();
+		$udf1 = $orderDetails->getAwbNumber();
 		$firstname = $orderDetails->getOrderAddress()->getBillingFirstName() . ' ' . $orderDetails->getOrderAddress()->getBillingLastName();
 		$email = $orderDetails->getOrderAddress()->getBillingEmail();
 		$phone = $orderDetails->getOrderAddress()->getBillingContactNumber();
-		$curl = '';
-		$furl = '';
-		$surl = '';
+		$furl = $this->generateUrl('guest_book_a_shipment_payment_failure', [], UrlGeneratorInterface::ABSOLUTE_URL);
+		$surl = $this->generateUrl('guest_book_a_shipment_payment_success', [], UrlGeneratorInterface::ABSOLUTE_URL);
 		$salt = $this->getParameter('payu_merchant_salt');
-		$hashSequence = "$key|$txnid|$amount|$productinfo|$firstname|$email|||||||||||$salt";
+		$hashSequence = "$key|$txnid|$amount|$productinfo|$firstname|$email|$udf1||||||||||$salt";
 		$HASH = strtolower(hash('sha512', $hashSequence));
 		$pg = 'CC';
 		$bankcode = 'CC';
 		$months = ['JAN' => '1', 'FEB' => '2', 'MAR' => '3', 'APR' => '4', 'MAY' => '5', 'JUN' => '6', 'JUL' => '7', 'AUG' => '8', 'SEP' => '9', 'OCT' => '10', 'NOV' => '11', 'DEC' => '12'];
 		$years = $bookAShipmentService->getExpieryYears();
 		
-		$options = compact('paymentModes', 'dcTypes', 'key', 'txnid', 'amount', 'productinfo', 'firstname', 'email', 'phone', 'curl', 'furl', 'surl', 'HASH', 'pg', 'bankcode', 'months', 'years');
+		$options = compact('url', 'paymentModes', 'dcTypes', 'key', 'txnid', 'amount', 'productinfo', 'udf1', 'firstname', 'email', 'phone', 'furl', 'surl', 'HASH', 'pg', 'bankcode', 'months', 'years');
 		
 		$cardDetailsForm = $this->createForm(CardDetails::class, null, $options);
 		
@@ -323,6 +326,100 @@ class GuestOrderController extends Controller
 			'orderDetails' => $orderDetails,
 			'cardDetailsForm' => $cardDetailsForm->createView(),
 		]);
+	}
+	
+	/**
+	 * Renders payment success page.
+	 *
+	 * @Route("/payment-success", name="guest_book_a_shipment_payment_success")
+	 * @Method({"GET", "POST"})
+	 *
+	 * @param  Request                   $request A request instance
+	 *
+	 * @return RedirectResponse|Response
+	 */
+	public function guestBookAShipmentPaymentSuccessAction(Request $request)
+	{
+		if ('get' === strtolower($request->server->get('REQUEST_METHOD'))) {
+			return $this->redirectToRoute('guest_book_a_shipment');
+		} else {
+			/**
+			 * Get required services.
+			 */
+			$em = $this->getDoctrine()->getManager();
+			
+			$awbNumber = $request->request->get('udf1');
+			
+			/**
+			 * Update order and payment statuses.
+			 */
+			$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneByAwbNumber($awbNumber);
+			$orderDetails->setOrderStatus(2);
+			$orderDetails->setPaymentStatus(2);
+			
+			$em->persist($orderDetails);
+			
+			$em->flush();
+			
+			return $this->render('NetFlexFrontBundle:Booking:client_order_confirmation.html.twig', [
+				'pageTitle' => 'Order Confirmation',
+				'awbNumber' => $awbNumber,
+			]);
+		}
+	}
+	
+	/**
+	 * Renders payment failure page.
+	 *
+	 * @Route("/payment-failure", name="guest_book_a_shipment_payment_failure")
+	 * @Method({"GET", "POST"})
+	 *
+	 * @param  Request $request A request instance
+	 *
+	 * @return Response
+	 */
+	public function guestBookAShipmentPaymentFailureAction(Request $request)
+	{
+		if ('get' === strtolower($request->server->get('REQUEST_METHOD'))) {
+			/**
+			 * Cannot see this page twice.
+			 */
+			return $this->redirectToRoute('guest_book_a_shipment');
+		} else {
+			/**
+			 * Get required services.
+			 */
+			$em = $this->getDoctrine()->getManager();
+			
+			$awbNumber = $request->request->get('udf1');
+			
+			/**
+			 * Update order and payment statuses.
+			 */
+			$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneByAwbNumber($awbNumber);
+			
+			if (! $orderDetails) {
+				/**
+				 * Cannot see this page twice.
+				 */
+				return $this->redirectToRoute('guest_book_a_shipment');
+			}
+			
+			$orderAddress = $orderDetails->getOrderAddress();
+			$orderPrice = $orderDetails->getOrderPrice();
+			$orderItem = $orderDetails->getOrderItem();
+			
+			$em->remove($orderItem);
+			$em->remove($orderPrice);
+			$em->remove($orderAddress);
+			$em->remove($orderDetails);
+			
+			$em->flush();
+			
+			return $this->render('NetFlexFrontBundle:Booking:guest_payment_failure.html.twig', [
+				'pageTitle' => 'Guest Payment Failure',
+			]);
+		}
 	}
 	
 	/**

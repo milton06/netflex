@@ -2468,3 +2468,35 @@ Stack trace:
 [04-Jan-2017 08:29:58 UTC] PHP  31. ReflectionClass->__construct() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
 [04-Jan-2017 08:29:58 UTC] PHP  32. spl_autoload_call() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
 [04-Jan-2017 08:29:58 UTC] PHP  33. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[05-Jan-2017 10:23:00 UTC] PHP Fatal error:  Call to a member function getOrderAddress() on a non-object in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/GuestOrderController.php on line 400
+[05-Jan-2017 10:23:00 UTC] PHP Stack trace:
+[05-Jan-2017 10:23:00 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[05-Jan-2017 10:23:00 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[05-Jan-2017 10:23:00 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[05-Jan-2017 10:23:00 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[05-Jan-2017 10:23:00 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[05-Jan-2017 10:23:00 UTC] PHP   6. NetFlex\FrontBundle\Controller\GuestOrderController->guestBookAShipmentPaymentFailureAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[05-Jan-2017 10:23:55 UTC] PHP Fatal error:  Call to a member function getOrderPrice() on a non-object in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/GuestOrderController.php on line 304
+[05-Jan-2017 10:23:55 UTC] PHP Stack trace:
+[05-Jan-2017 10:23:55 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[05-Jan-2017 10:23:55 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[05-Jan-2017 10:23:55 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[05-Jan-2017 10:23:55 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[05-Jan-2017 10:23:55 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[05-Jan-2017 10:23:55 UTC] PHP   6. NetFlex\FrontBundle\Controller\GuestOrderController->guestBookAShipmentPaymentAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[05-Jan-2017 10:25:49 UTC] PHP Fatal error:  Call to a member function getOrderPrice() on a non-object in /var/www/html/netflex/src/NetFlex/FrontBundle/Controller/GuestOrderController.php on line 304
+[05-Jan-2017 10:25:49 UTC] PHP Stack trace:
+[05-Jan-2017 10:25:49 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[05-Jan-2017 10:25:49 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[05-Jan-2017 10:25:49 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[05-Jan-2017 10:25:49 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[05-Jan-2017 10:25:49 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[05-Jan-2017 10:25:49 UTC] PHP   6. NetFlex\FrontBundle\Controller\GuestOrderController->guestBookAShipmentPaymentAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[06-Jan-2017 08:13:25 UTC] PHP Fatal error:  Call to a member function getRoles() on a non-object in /var/www/html/netflex/src/NetFlex/OrderBundle/Controller/OrderController.php on line 345
+[06-Jan-2017 08:13:25 UTC] PHP Stack trace:
+[06-Jan-2017 08:13:25 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[06-Jan-2017 08:13:25 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[06-Jan-2017 08:13:25 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[06-Jan-2017 08:13:25 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[06-Jan-2017 08:13:25 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[06-Jan-2017 08:13:25 UTC] PHP   6. NetFlex\OrderBundle\Controller\OrderController->renderEditOrderPageAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153

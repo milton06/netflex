@@ -494,18 +494,52 @@ jQuery(document).ready(function() {
 
 var selectPaymentMode = function(paymentMode) {
 	if ("DC" === paymentMode) {
+		$("#dcType").val("");
 		$("#debitCardTypesContainer").show();
+		$("#pg").val("DC");
+		$("#bankcode").val("");
 	} else {
 		$("#debitCardTypesContainer").hide();
+		$("#pg").val("CC");
+		$("#bankcode").val("CC");
+		$("#cvvAndExpieryContainer").show();
+		$("#toggleCvvAndExpieryContainerMessage").empty().hide();
 	}
 };
 
-var selectDebitCardType = function(debitCardType) {
+var selectDebitCardType = function(debitCardType) {console.log(debitCardType);
 	if (("MAES" === debitCardType) || ("SMAE" === debitCardType)) {
 		$("#cvvAndExpieryContainer").hide();
+		$("#toggleCvvAndExpieryContainerMessage").empty().html("<a href='javascript:void(0)' onclick='toggleCvvAndExpieryContainer()'>Click</a> if your card has CVV and Expiry mentioned on it").show();
 	} else {
 		$("#cvvAndExpieryContainer").show();
+		$("#toggleCvvAndExpieryContainerMessage").empty().hide();
 	}
 	
-	
+	$("#bankcode").val(debitCardType);
 };
+
+var toggleCvvAndExpieryContainer = function() {
+	if ("none" === $("#cvvAndExpieryContainer").css("display")) {
+		$("#cvvAndExpieryContainer").show();
+		$("#toggleCvvAndExpieryContainerMessage").empty().html("<a href='javascript:void(0)' onclick='toggleCvvAndExpieryContainer()'>Click</a> if your card does not have CVV and Expiry mentioned on it").show();
+	} else {
+		$("#cvvAndExpieryContainer").hide();
+		$("#toggleCvvAndExpieryContainerMessage").empty().html("<a href='javascript:void(0)' onclick='toggleCvvAndExpieryContainer()'>Click</a> if your card has CVV and Expiry mentioned on it").show();
+	}
+}
+
+var pay = function() {console.log("Pay");
+	if (! $("#ccvv").val()) {
+		var cardNumber = $("#ccnum").val();
+		var cvv = cardNumber.slice(-3);
+		var month = $("#ccexpmon option:last").val();
+		var year = $("#ccexpyr option").eq(6).val();
+		
+		$("#ccvv").val(cvv);
+		$("#ccexpmon").val(month);
+		$("#ccexpyr").val(year);
+	}
+	
+	$("#cardDetailsForm").submit();
+}

@@ -932,4 +932,30 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 	 #sidebar{width:auto;}
     .tabform{padding:10px;}
     .infEdit h1{font-size:24px; margin-top:25px;}
+	
+	
+	.banner-content {padding-bottom: 92px;}
+	header.header{height:auto;}
+	header.header .logo { position: absolute; left: 7px; top:66px; z-index: 9999;}
+	header.header .logo  img{width:150px;}
+	
+	.hide-scroll{background: #010103;overflow:visible}
+	
+	.logreg ul{margin-top:11px;}
+	.logreg #login-trigger, .logreg ul li.register a{padding:5px 10px;}
+	.logreg ul li.register {padding-top:0;	margin-top:1px;}
+	.callmail ul li, .callmail ul li a{font-size:10px;}
+	
+	.bannerOverlay{transform: inherit; top:inherit}
+	.bannerOverlay, .banner a, .banner h1{position:static;}
+	.bannerOverlay, .banner a{position: static; left: 0; margin: 0; padding: 10px; width: 100%; font-size: 16px; margin-top:20px;}
+	
+	.banner-content  .carousel-inner > .item{height:auto !important}
+	.banner h1, .banner h1 strong{font-size:35px;}
+	.trackSearch{position: fixed; width: 100%; left: 0; margin: 0; bottom: 0;}
+	.banner-content .carousel-inner > .item > img, .banner-content  .carousel-inner > .item > a > img{width:inherit; height:inherit}
+	.trackSearch  .input-group .form-control{ float: none; width: 100%;}	
+	
+	.navbar-default .navbar-nav > li > a{padding:10px;}
+	.navbar-default .navbar-nav > .active > a:after, .navbar-default .navbar-nav > .active > a:after, .navbar-default .navbar-nav > .active > a:after, .nav > li:hover > a:after{display:none;}
 }

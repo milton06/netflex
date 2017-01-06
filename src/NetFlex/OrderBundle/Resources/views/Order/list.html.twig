@@ -303,7 +303,7 @@
 										<td>{{ thisOrder.id }}</td>
 										<td>{{ thisOrder.awbNumber }}</td>
 										<td>{{ (thisOrder.invoiceNumber) ? thisOrder.invoiceNumber : 'N/A' }}</td>
-										<td>{{ thisOrder.getUserId.firstName ~ ((thisOrder.getUserId.midName) ? ' ' ~ thisOrder.getUserId.midName : '') ~ ' ' ~ thisOrder.getUserId.lastName }}</td>
+										<td>{{ (thisOrder.getUserId) ? thisOrder.getUserId.firstName ~ ((thisOrder.getUserId.midName) ? ' ' ~ thisOrder.getUserId.midName : '') ~ ' ' ~ thisOrder.getUserId.lastName : 'Guest Customer' }}</td>
 										<td>{{ trackStatusList[thisOrder.orderStatus] }}</td>
 										<td>{{ paymentStatusList[thisOrder.paymentStatus] }}</td>
 										<td>{{ thisOrder.createdOn|date('F jS, Y') }}</td>

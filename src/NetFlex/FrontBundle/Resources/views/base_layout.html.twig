@@ -51,9 +51,9 @@
 						<!--login and register-->					
 						<div class="logreg">
 							<ul>
-								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
-								<li><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
-								<li><a href="{{ url('contact_netflex') }}">Contact</a></li>
+								<li class="hidden-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
+								<li class="hidden-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
+								<li class="hidden-xs"><a href="{{ url('contact_netflex') }}">Contact</a></li>
 								<!--login-->
 								{% if app.session.has('loggedInUsername') %}
 									{{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}

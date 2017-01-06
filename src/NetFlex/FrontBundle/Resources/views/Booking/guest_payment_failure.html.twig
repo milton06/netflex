@@ -1,0 +1,15 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageContent %}
+    <div class="container">
+        <div class="tabform clearfix">
+            <h2 class="cong">Oops!</h2>
+            <h3>Your Shipment could not be Booked as payment process Failed!</h3>
+        </div>
+    </div>
+    {% block footer %}
+        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+    {% endblock %}
+{% endblock %}

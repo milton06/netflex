@@ -1,5 +1,5 @@
 a.dp-choose-date {
-    background: rgba(0, 0, 0, 0) url("../../bundles/netflexfront/images/calanderIcon.jpg") no-repeat scroll 0 0;
+    background: rgba(0, 0, 0, 0) url("../bundles/netflexfront/images/calanderIcon.jpg") no-repeat scroll 0 0;
     display: block;
     float: right;
     height: 35px;
@@ -9,7 +9,7 @@ a.dp-choose-date {
     text-indent: -2000px;
     width: 35px;
 }
-a.dp-choose-date:hover, a.dp-choose-date:focus{background: rgba(0, 0, 0, 0) url("../../bundles/netflexfront/images/calanderIconHover.jpg") no-repeat scroll 0 0; width: 35px; height: 35px;}
+a.dp-choose-date:hover, a.dp-choose-date:focus{background: rgba(0, 0, 0, 0) url("../bundles/netflexfront/images/calanderIconHover.jpg") no-repeat scroll 0 0; width: 35px; height: 35px;}
 
 table.jCalendar {
 	border: 1px solid #000;
