@@ -91,7 +91,7 @@
                         <tr>
                             <th>Payment Option</th>
                             <td>
-                                {{ ('0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge) ? 'Non-COD' : 'COD' }}
+                                {{ ('0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge or orderDetails.orderPrice.orderCodPaymentAddedCharge is null) ? 'Non-COD' : 'COD' }}
                             </td>
                         </tr>
                         <tr>
@@ -265,13 +265,13 @@
                                 <tr>
                                     <td style="padding:5px;">Payment Option</td>
                                     <td width="1%" style="padding:5px;" valign="top">:</td>
-                                    <td>{{ (orderDetails.orderPrice.orderCodPaymentAddedCharge) ? 'COD' : 'Non-COD' }}</td>
+                                    <td>{{ ('0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge or orderDetails.orderPrice.orderCodPaymentAddedCharge is null) ? 'Non-COD' : 'COD' }}</td>
                                 </tr>
                                 {% if (orderDetails.orderPrice.orderCodPaymentAddedCharge) %}
                                     <tr>
-                                        <td style="padding:5px;">Payment Option</td>
+                                        <td style="padding:5px;">COD Amount To Be Collected</td>
                                         <td width="1%" style="padding:5px;" valign="top">:</td>
-                                        <td>{{ orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
+                                        <td>INR {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
                                     </tr>
                                 {% endif %}
                             </table>
