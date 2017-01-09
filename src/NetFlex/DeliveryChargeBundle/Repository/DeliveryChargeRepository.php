@@ -85,6 +85,30 @@ class DeliveryChargeRepository extends EntityRepository
 				}
 				
 				/**
+				 * Check if we're to deliver in Andaman&Nicobar
+				 */
+				if (1 == $destinationStateId) {
+					/**
+					 * Andaman&Nicobar.
+					 */
+					$sql = "select dc.id, dc.shipment_base_weight_upper_limit, dc.shipment_accountable_extra_weight, dc.delivery_base_price, dc.delivery_extra_price_multiplier, dc.cod_delivery_base_price, dc.cod_delivery_percentage_on_base_price, dc.fuel_surcharge_fixed_price, dc.fuel_surcharge_percentage_on_base_price, dc.service_tax_percentage_on_base_price, dc.shipment_risk_chargable_above, dc.shipment_risk_percentage_on_base_price, dmt.id delivery_mode_timeline_id, dm.id delivery_mode_id, dm.mode_name, dt.id delivery_timeline_id, dt.timeline_name, w.id shipment_weight_unit_id, w.symbol, c.id delivery_price_unit_id, c.currency_symbol from delivery_charges dc left join delivery_mode_timelines dmt on dc.delivery_mode_timeline_id = dmt.id left join delivery_modes dm on dmt.delivery_mode_id = dm.id left join delivery_timelines dt on dmt.delivery_timeline_id = dt.id left join weight_units w on dc.shipment_weight_unit_id = w.id left join currencies c on dc.delivery_price_unit_id = c.id where dc.source_country_id = dc.destination_country_id and dc.source_state_id = ? and dc.source_city_id = ? and dc.destination_state_id = 1 and dc.destination_city_id = 5753 and dc.status = 1";
+					
+					return $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $sourceStateId, 2 => $sourceCityId])->getResult();
+				}
+				
+				/**
+				 * Check if we're to deliver in Tripura
+				 */
+				if (15 == $destinationStateId) {
+					/**
+					 * Tripura.
+					 */
+					$sql = "select dc.id, dc.shipment_base_weight_upper_limit, dc.shipment_accountable_extra_weight, dc.delivery_base_price, dc.delivery_extra_price_multiplier, dc.cod_delivery_base_price, dc.cod_delivery_percentage_on_base_price, dc.fuel_surcharge_fixed_price, dc.fuel_surcharge_percentage_on_base_price, dc.service_tax_percentage_on_base_price, dc.shipment_risk_chargable_above, dc.shipment_risk_percentage_on_base_price, dmt.id delivery_mode_timeline_id, dm.id delivery_mode_id, dm.mode_name, dt.id delivery_timeline_id, dt.timeline_name, w.id shipment_weight_unit_id, w.symbol, c.id delivery_price_unit_id, c.currency_symbol from delivery_charges dc left join delivery_mode_timelines dmt on dc.delivery_mode_timeline_id = dmt.id left join delivery_modes dm on dmt.delivery_mode_id = dm.id left join delivery_timelines dt on dmt.delivery_timeline_id = dt.id left join weight_units w on dc.shipment_weight_unit_id = w.id left join currencies c on dc.delivery_price_unit_id = c.id where dc.source_country_id = dc.destination_country_id and dc.source_state_id = ? and dc.source_city_id = ? and dc.destination_state_id = 37 and dc.destination_city_id = 5754 and dc.status = 1";
+					
+					return $this->getEntityManager()->createNativeQuery($sql, $rsm)->setParameters([1 => $sourceStateId, 2 => $sourceCityId])->getResult();
+				}
+				
+				/**
 				 * Check if we're to deliver in Metros
 				 */
 				if (in_array($destinationCityId, [706, 707, 1558, 2707, 3659, 4460, 4800, 5583])) {

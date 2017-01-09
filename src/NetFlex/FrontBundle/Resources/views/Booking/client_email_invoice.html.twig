@@ -82,15 +82,8 @@
                 <tr>
                     <td style="padding:5px;">Payment Option</td>
                     <td width="1%" style="padding:5px;" valign="top">:</td>
-                    <td>{{ (orderDetails.orderPrice.orderCodPaymentAddedCharge) ? 'COD' : 'Non-COD' }}</td>
+                    <td>{{ (orderDetails.orderPrice.orderCodPaymentAddedCharge is null or '0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge) ? 'Non-COD' : 'COD' }}</td>
                 </tr>
-                {% if (orderDetails.orderPrice.orderCodPaymentAddedCharge) %}
-                    <tr>
-                        <td style="padding:5px;">Payment Option</td>
-                        <td width="1%" style="padding:5px;" valign="top">:</td>
-                        <td>{{ orderDetails.deliveryChargeId.deliveryPriceUnitId.currencySymbol }} {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
-                    </tr>
-                {% endif %}
             </table>
             <br>
             <table width="100%" cellpadding="0" cellspacing="0"  border="0" align="center"  style="border:1px solid #000;">
@@ -99,7 +92,6 @@
                     <td width="1%" style="padding:5px;" valign="top">:</td>
                     <td width="69%" valign="top"></td>
                 </tr>
-
             </table>
         </td>
     </tr>

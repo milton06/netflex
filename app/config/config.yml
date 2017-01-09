@@ -43,6 +43,8 @@ parameters:
     track_status_css_class_map: { '1': 'approve', '2': 'approve', '3': 'process', '4': 'ship', '5': 'deliver' }
     payu_merchant_key: 'gtKFFx'
     payu_merchant_salt: 'eCwWELxi'
+    customer_types: { 'Client': '1', 'Guest': 2 }
+    inversed_customer_types: { '1': 'Client', '2': 'Guest' }
 
 framework:
     #esi:             ~
@@ -84,6 +86,7 @@ twig:
         paymentStatuses: '%inversed_payment_statuses%'
         userStatuses: '%inversed_user_statuses%'
         trackStatusCssClassMap: '%track_status_css_class_map%'
+        customerTypes: '%inversed_customer_types%'
 
 # Doctrine Configuration
 doctrine:

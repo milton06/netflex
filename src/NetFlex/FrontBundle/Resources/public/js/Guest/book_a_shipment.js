@@ -73,40 +73,52 @@ jQuery(document).ready(function() {
 		
 		jQuery("#shipment-addresses input, #shipment-addresses select").each(function() {
 			var thisElementId = jQuery(this).attr("id");
-			var exclude = ["pickup-mid-name", "pickup-address-line-2", "pickup-land-mark", "pickup-email", "choose-another-billing-address", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "shipping-email", "order_for_client_from_dashboard_deliveryChargeId"];
+			var exclude = ["pickup-mid-name", "pickup-address-line-2", "pickup-land-mark", "choose-another-billing-address", "billing-mid-name", "billing-address-line-2", "billing-land-mark", "shipping-mid-name", "shipping-address-line-2", "shipping-land-mark", "order_for_client_from_dashboard_deliveryChargeId"];
+			var names = ["pickup-first-name", "pickup-mid-name", "pickup-last-name", "billing-first-name", "billing-mid-name", "billing-last-name", "shipping-first-name", "shipping-mid-name", "shipping-last-name"];
+			var emails = ["pickup-email", "billing-email", "shipping-email"];
+			var contactNumbers = ["pickup-contact-number", "billing-contact-number", "shipping-contact-number"];
+			var others = ["pickup-address-line-1", "pickup-address-line-2", "pickup-land-mark", "billing-address-line-1", "billing-address-line-2", "billing-land-mark", "shipping-address-line-1", "shipping-address-line-2", "shipping-land-mark"];
 			
-			if ((-1 === exclude.indexOf(thisElementId)) && (! jQuery(this).val())) {
-				++errorCount;
-				
-				jQuery(this).tooltip({
-					'title': 'Required field'
-				}).tooltip('show');
+			if (jQuery(this).val()) {console.log(thisElementId);
+				if ((-1 !== names.indexOf(thisElementId)) && (! /^[a-z]+$/i.test(jQuery(this).val()))) {console.log('name error');
+					++errorCount;
+					
+					jQuery(this).tooltip({
+						'title': "Name can only contain alphabets"
+					}).tooltip('show');
+				} else if ((-1 !== emails.indexOf(thisElementId)) && (! /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(jQuery(this).val()))) {
+					++errorCount;
+					
+					jQuery(this).tooltip({
+						'title': "Please enter a valid email"
+					}).tooltip('show');
+				} else if ((-1 !== contactNumbers.indexOf(thisElementId)) && (! /^[\d]+$/.test(jQuery(this).val()))) {
+					++errorCount;
+					
+					jQuery(this).tooltip({
+						'title': "Contact number can only contain digits"
+					}).tooltip('show');
+				} else if ((-1 !== others.indexOf(thisElementId)) && (! /^[a-z0-9\-_@\/ \.]+$/i.test(jQuery(this).val()))) {
+					++errorCount;
+					
+					jQuery(this).tooltip({
+						'title': "This field can only contain alphanumerics, '-'s, '_'s, '@'s, '/'s, spaces and '.'s"
+					}).tooltip('show');
+				} else {
+					jQuery(this).tooltip('destroy');
+				}
 			} else {
-				jQuery(this).tooltip('destroy');
+				if (-1 === exclude.indexOf(thisElementId)) {
+					++errorCount;
+					
+					jQuery(this).tooltip({
+						'title': 'Required field'
+					}).tooltip('show');
+				} else {
+					jQuery(this).tooltip('destroy');
+				}
 			}
 		});
-		
-		var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		
-		if ((jQuery("#shipment-addresses #billing-email").val()) && (! emailRegex.test(jQuery("#shipment-addresses #billing-email").val()))) {
-			++errorCount;
-			
-			jQuery("#shipment-addresses #billing-email").tooltip({
-				'title': 'Required field'
-			}).tooltip('show');
-		} else {
-			jQuery("#shipment-addresses #billing-email").tooltip('destroy');
-		}
-		
-		if ((jQuery("#shipment-addresses #shipping-email").val()) && (! emailRegex.test(jQuery("#shipment-addresses #shipping-email").val()))) {
-			++errorCount;
-			
-			jQuery("#shipment-addresses #shipping-email").tooltip({
-				'title': 'Required field'
-			}).tooltip('show');
-		} else {
-			jQuery("#shipment-addresses #shipping-email").tooltip('destroy');
-		}
 		
 		if (errorCount) {
 			jQuery(".global-form-error").show();
@@ -490,11 +502,14 @@ var selectPaymentMode = function(paymentMode) {
 		$("#pg").val("CC");
 		$("#bankcode").val("CC");
 		$("#cvvAndExpieryContainer").show();
+		$("#ccvv").val("");
+		$("#ccexpmon").val("");
+		$("#ccexpyr").val("");
 		$("#toggleCvvAndExpieryContainerMessage").empty().hide();
 	}
 };
 
-var selectDebitCardType = function(debitCardType) {console.log(debitCardType);
+var selectDebitCardType = function(debitCardType) {
 	if (("MAES" === debitCardType) || ("SMAE" === debitCardType)) {
 		$("#cvvAndExpieryContainer").hide();
 		$("#toggleCvvAndExpieryContainerMessage").empty().html("<a href='javascript:void(0)' onclick='toggleCvvAndExpieryContainer()'>Click</a> if your card has CVV and Expiry mentioned on it").show();
@@ -516,17 +531,66 @@ var toggleCvvAndExpieryContainer = function() {
 	}
 }
 
-var pay = function() {console.log("Pay");
-	if (! $("#ccvv").val()) {
-		var cardNumber = $("#ccnum").val();
-		var cvv = cardNumber.slice(-3);
-		var month = $("#ccexpmon option:last").val();
-		var year = $("#ccexpyr option").eq(6).val();
+var pay = function() {
+	var errorCount = 0;
+	
+	if (! $("#ccnum").val()) {
+		++errorCount;
 		
-		$("#ccvv").val(cvv);
-		$("#ccexpmon").val(month);
-		$("#ccexpyr").val(year);
+		$("#ccnum").tooltip({
+			'title': "Required field"
+		}).tooltip('show');
 	}
 	
-	$("#cardDetailsForm").submit();
+	if (! $("#ccname").val()) {
+		++errorCount;
+		
+		$("#ccname").tooltip({
+			'title': "Required field"
+		}).tooltip('show');
+	}
+	
+	if (! $("#ccvv").val()) {
+		if (("MAES" === $("#dcType").val()) || ("SMAE" === $("#dcType").val())) {
+			var cardNumber = $("#ccnum").val();
+			var cvv = cardNumber.slice(-3);
+			
+			$("#ccvv").val(cvv);
+		} else {
+			++errorCount
+			$("#ccvv").tooltip({
+				'title': "Required field"
+			}).tooltip('show');
+		}
+	}
+	
+	if (! $("#ccexpmon").val()) {
+		if (("MAES" === $("#dcType").val()) || ("SMAE" === $("#dcType").val())) {
+			var month = $("#ccexpmon option:last").val();
+			$("#ccexpmon").val(month);
+		} else {
+			++errorCount;
+			
+			$("#ccexpmon").tooltip({
+				'title': "Required field"
+			}).tooltip('show');
+		}
+	}
+	
+	if (! $("#ccexpyr").val()) {
+		if (("MAES" === $("#dcType").val()) || ("SMAE" === $("#dcType").val())) {
+			var year = $("#ccexpyr option").eq(6).val();
+			$("#ccexpyr").val(year);
+		} else {
+			++errorCount;
+			
+			$("#ccexpyr").tooltip({
+				'title': "Required field"
+			}).tooltip('show');
+		}
+	}
+	
+	if (! errorCount) {
+		$("#cardDetailsForm").submit();
+	}
 }

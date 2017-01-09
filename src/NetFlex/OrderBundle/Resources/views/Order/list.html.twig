@@ -39,22 +39,25 @@
 				<div class="col-md-12">&nbsp;</div>
 			</div>
 			<div class="row">
-				<div class="col-md-3">
+				<div class="col-md-2">
 					{{ form_widget(searchForm.name, { 'id': 'user-full-name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Full Name' } }) }}
 				</div>
-				<div class="col-md-3">
+                <div class="col-md-2">
+                    {{ form_widget(searchForm.customerType, { 'id': 'customer-type', 'required': false, 'attr': { 'class': 'form-control' } }) }}
+                </div>
+				<div class="col-md-2">
 					<div class="input-group">
 						{{ form_widget(searchForm.fromDate, { 'id': 'order-from-date', 'required': false, 'attr': { 'class': 'form-control date-picker', 'data-date-format': 'dd-mm-yyyy', 'data-date-viewmode': 'years' } }) }}
 						<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<div class="input-group">
 						{{ form_widget(searchForm.toDate, { 'id': 'order-to-date', 'required': false, 'attr': { 'class': 'form-control date-picker', 'data-date-format': 'dd-mm-yyyy', 'data-date-viewmode': 'years' } }) }}
 						<span class="input-group-addon"> <i class="fa fa-calendar"></i> </span>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-2">
 					<input type="submit" class="btn btn-sm btn-primary tooltips" value="Filter" data-placement="top" data-original-title="Filter orders">
 					{% if app.session.has('awbNumber') %}
 						&nbsp;&nbsp;&nbsp;&nbsp;
@@ -203,7 +206,7 @@
 												{% endimage %}
 											</a>
 										{% else %}
-											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by invoice number in descending order">
+											<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'name', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by name in descending order">
 												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
 												<img src="{{ asset_url }}" alt="unsorted-icon">
 												{% endimage %}
@@ -211,6 +214,7 @@
 										{% endif %}
 									{% endif %} Name
 								</th>
+								<th>Customer Type</th>
 								<th>
 									{% if 'orderstatus' != allRouteParameters.sortColumn %}
 										<a href="{{ url('order_list', { 'page': allRouteParameters.page, 'sortColumn': 'orderstatus', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by order status in ascending order">
@@ -304,6 +308,7 @@
 										<td>{{ thisOrder.awbNumber }}</td>
 										<td>{{ (thisOrder.invoiceNumber) ? thisOrder.invoiceNumber : 'N/A' }}</td>
 										<td>{{ (thisOrder.getUserId) ? thisOrder.getUserId.firstName ~ ((thisOrder.getUserId.midName) ? ' ' ~ thisOrder.getUserId.midName : '') ~ ' ' ~ thisOrder.getUserId.lastName : 'Guest Customer' }}</td>
+										<td>{{ (thisOrder.getUserId) ? (('ROLE_CLIENT' == thisOrder.userId.roles.0) ? customerTypes[1] : '') : customerTypes[2] }}</td>
 										<td>{{ trackStatusList[thisOrder.orderStatus] }}</td>
 										<td>{{ paymentStatusList[thisOrder.paymentStatus] }}</td>
 										<td>{{ thisOrder.createdOn|date('F jS, Y') }}</td>
@@ -320,9 +325,11 @@
 													<li>
 														<a href="{{ url('delete_order', { 'order_id': thisOrder.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': orders|length }) }}" class="delete-buttons" ><i class="fa fa-trash-o"></i> Delete</a>
 													</li>
-													<li>
-														<a href="{{ url('edit_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
-													</li>
+                                                    {% if thisOrder.userId %}
+                                                        <li>
+                                                            <a href="{{ url('edit_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                                        </li>
+                                                    {% endif %}
 													<li>
 														<a href="{{ url('view_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-eye"></i> View</a>
 													</li>

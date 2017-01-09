@@ -14,7 +14,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class OrderTransactionRepository extends EntityRepository
 {
 	
-	public function countOrders($sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $userId = null, $name = null)
+	public function countOrders($sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $customerType = null, $userId = null, $name = null)
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder();
 		
@@ -65,6 +65,16 @@ class OrderTransactionRepository extends EntityRepository
 			//
 		}
 		
+		if ($customerType) {
+			if (1 == $customerType) {
+				$qb->andWhere($qb->expr()->isNotNull('O.userId'));
+			} elseif (2 == $customerType) {
+				$qb->andWhere($qb->expr()->isNull('O.userId'));
+			} else {
+				//
+			}
+		}
+		
 		if ($userId) {
 			$qb->andWhere($qb->expr()->eq('O.userId', ':userId'));
 			$qb->setParameter(':userId', $userId);
@@ -77,7 +87,7 @@ class OrderTransactionRepository extends EntityRepository
 		return count($result);
 	}
 	
-	public function findOrders($offset, $limit, $sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $userId = null, $name = null)
+	public function findOrders($offset, $limit, $sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $customerType = null, $userId = null, $name = null)
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder();
 		
@@ -134,6 +144,16 @@ class OrderTransactionRepository extends EntityRepository
 			$qb->setParameter('toDateObject', $toDateObject);
 		} else {
 			//
+		}
+		
+		if ($customerType) {
+			if (1 == $customerType) {
+				$qb->andWhere($qb->expr()->isNotNull('O.userId'));
+			} elseif (2 == $customerType) {
+				$qb->andWhere($qb->expr()->isNull('O.userId'));
+			} else {
+				//
+			}
 		}
 		
 		if ($userId) {

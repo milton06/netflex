@@ -137,11 +137,11 @@ class OrderController extends Controller
 	    $fromDateObject = (! $fromDate) ? null : (\DateTime::createFromFormat('d-m-Y H:i:s', "$fromDate 00:00:00"));
 	    $toDateObject = (! $toDate) ? null : (\DateTime::createFromFormat('d-m-Y H:i:s', "$toDate 23:59:59"));
 	
-	    $orderCount = $orderRepo->countOrders($sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $client);
+	    $orderCount = $orderRepo->countOrders($sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, null, $client);
 	
 	    $totalPageCount = $paginationService->getTotalPageCount($limit, $orderCount);
 	
-	    $orders = $orderRepo->findOrders($offset, $limit, $sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $client);
+	    $orders = $orderRepo->findOrders($offset, $limit, $sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, null, $client);
 	
 	    $pageLinks = $paginationService->getPageLinks($page, $limit, $neighbor, $orderCount, $totalPageCount, 'client_order_list', $routeParameters, $routeExtraParameters);
 	    
@@ -235,6 +235,7 @@ class OrderController extends Controller
 		$paymentStatus = (true === $session->has('paymentStatus')) ? $session->get('paymentStatus') : '';
 		$fromDate = (true === $session->has('fromDate')) ? $session->get('fromDate') : '';
 		$toDate = (true === $session->has('toDate')) ? $session->get('toDate') : '';
+		$customerType = (true === $session->has('customerType')) ? $session->get('customerType') : '';
 		
 		$searchForm = $this->createFormBuilder()
 			->setAction($this->generateUrl('order_list', [], UrlGeneratorInterface::ABSOLUTE_URL))
@@ -270,6 +271,11 @@ class OrderController extends Controller
 				],
 				'data' => $toDate,
 			])
+			->add('customerType', ChoiceType::class, [
+				'placeholder' => '-All-',
+				'choices' => $this->getParameter('customer_types'),
+				'data' => $customerType,
+			])
 			->getForm();
 		
 		$searchForm->handleRequest($request);
@@ -284,6 +290,7 @@ class OrderController extends Controller
 			$session->set('paymentStatus', $searchData['paymentStatus']);
 			$session->set('fromDate', $searchData['fromDate']);
 			$session->set('toDate', $searchData['toDate']);
+			$session->set('customerType', $searchData['customerType']);
 			
 			return $this->redirectToRoute('order_list', array_merge($routeParameters, $routeExtraParameters));
 		}
@@ -291,11 +298,11 @@ class OrderController extends Controller
 		$fromDateObject = (! $fromDate) ? null : (\DateTime::createFromFormat('d-m-Y H:i:s', "$fromDate 00:00:00"));
 		$toDateObject = (! $toDate) ? null : (\DateTime::createFromFormat('d-m-Y H:i:s', "$toDate 23:59:59"));
 		
-		$orderCount = $orderRepo->countOrders($sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, null, $name);
+		$orderCount = $orderRepo->countOrders($sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $customerType, null, $name);
 		
 		$totalPageCount = $paginationService->getTotalPageCount($limit, $orderCount);
 		
-		$orders = $orderRepo->findOrders($offset, $limit, $sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, null, $name);
+		$orders = $orderRepo->findOrders($offset, $limit, $sortColumn, $sortOrder, $awbNumber, $invoiceNumber, $orderStatus, $paymentStatus, $fromDateObject, $toDateObject, $customerType, null, $name);
 		
 		$pageLinks = $paginationService->getPageLinks($page, $limit, $neighbor, $orderCount, $totalPageCount, 'order_list', $routeParameters, $routeExtraParameters);
 		
@@ -643,10 +650,18 @@ class OrderController extends Controller
 		$orderRepo = $em->getRepository('NetFlexOrderBundle:OrderTransaction');
 		
 		$thisOrder = $orderRepo->findOneById($orderId);
+		$thisOrderItem = $thisOrder->getOrderItem();
+		$thisOrderPrice = $thisOrder->getOrderPrice();
+		$thisOrderAddress = $thisOrder->getOrderAddress();
 		
-		$thisOrder->setOrderStatus(0);
+		/*$thisOrder->setOrderStatus(0);
 		$thisOrder->setLastModifiedOn(new \DateTime());
-		$thisOrder->setLastModifiedBy($this->getUser()->getId());
+		$thisOrder->setLastModifiedBy($this->getUser()->getId());*/
+		
+		$em->remove($thisOrderAddress);
+		$em->remove($thisOrderPrice);
+		$em->remove($thisOrderItem);
+		$em->remove($thisOrder);
 		
 		$em->flush();
 		
@@ -767,6 +782,7 @@ class OrderController extends Controller
 		$session->remove('paymentStatus');
 		$session->remove('fromDate');
 		$session->remove('toDate');
+		$session->remove('customerType');
 		
 		return $this->redirect($referrer);
 	}
