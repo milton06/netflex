@@ -27,7 +27,8 @@ class CountryRepository extends EntityRepository
 			->getResult();
 	}
 	
-	public function findActiveCountries($defaultCountryId = null, $defaultStateId = null, $excludedStateIds = [])
+	public function findActiveCountries($defaultCountryId = null, $defaultStateId = null, $excludedStateIds = [],
+                                        $mode = null)
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder();
 		
@@ -39,7 +40,7 @@ class CountryRepository extends EntityRepository
 				'WITH',
 				$qb->expr()->andX(
 					$qb->expr()->eq('STATE.countryId', (($defaultCountryId) ? $defaultCountryId : 1)),
-					$qb->expr()->notIn('STATE.id', (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45])),
+					$qb->expr()->notIn('STATE.id', (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45, 46, 47])),
 					$qb->expr()->eq('STATE.status', 1)
 				),
 				'STATE.id'
@@ -74,7 +75,7 @@ class CountryRepository extends EntityRepository
 				'STATE',
 				'WITH',
 				$qb->expr()->andX(
-					$qb->expr()->notIn('STATE.id', (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45])),
+					$qb->expr()->notIn('STATE.id', (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45, 46, 47])),
 					$qb->expr()->eq('STATE.status', 1)
 				),
 				'STATE.id'

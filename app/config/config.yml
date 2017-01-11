@@ -45,6 +45,7 @@ parameters:
     payu_merchant_salt: 'eCwWELxi'
     customer_types: { 'Client': '1', 'Guest': 2 }
     inversed_customer_types: { '1': 'Client', '2': 'Guest' }
+    delivery_zones: { 'Intracity': 1, 'Intrastate': 2, 'Interstate': 3 }
 
 framework:
     #esi:             ~

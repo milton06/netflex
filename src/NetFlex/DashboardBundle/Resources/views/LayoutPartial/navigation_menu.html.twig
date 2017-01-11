@@ -24,23 +24,40 @@
             </li>
         </ul>
     </li>
-    <li class="{{ (currentRoute in ['order_list', 'edit_order', 'view_order']) ? 'active open' : '' }}">
+    <li class="{{ (currentRoute in ['order_list', 'edit_order', 'view_order', 'change_order_status', 'change_order_payment_status']) ? 'active
+    open' : '' }}">
         <a href="{{ url('order_list') }}">
-            <i class="fa fa-list-ol"></i>
+            <i class="fa fa-shopping-cart"></i>
             <span class="title"> Orders </span>
         </a>
     </li>
-    <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'change_order_status']) ? 'active open' : '' }}">
-        <a href="{{ url('dashboard_shipment_track_status_list') }}">
-            <i class="clip-location"></i>
-            <span class="title"> Shipment Tracking </span>
+    <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'list_mail_templates', 'edit_mail_template']) ? 'active open' :
+    '' }}">
+        <a href="javascript:void(0);">
+            <i class="clip-settings"></i>
+            <span class="title"> Settings </span>
+            <i class="icon-arrow"></i>
         </a>
-    </li>
-    <li class="{{ (currentRoute in ['dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'change_order_payment_status']) ? 'active open' : '' }}">
-        <a href="{{ url('dashboard_payment_status_list') }}">
-            <i class="fa fa-rupee"></i>
-            <span class="title"> Payment </span>
-        </a>
+        <ul class="sub-menu">
+            <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'change_order_status']) ? 'active open' : '' }}">
+                <a href="{{ url('dashboard_shipment_track_status_list') }}">
+                    <i class="clip-location"></i>
+                    <span class="title"> Track Statuses </span>
+                </a>
+            </li>
+            <li class="{{ (currentRoute in ['dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'change_order_payment_status']) ? 'active open' : '' }}">
+                <a href="{{ url('dashboard_payment_status_list') }}">
+                    <i class="fa fa-rupee"></i>
+                    <span class="title"> Payment Statuses </span>
+                </a>
+            </li>
+            <li class="{{ (currentRoute in ['list_mail_templates', 'edit_mail_template']) ? 'active open' : '' }}">
+                <a href="{{ url('list_mail_templates') }}">
+                    <i class="fa fa-envelope"></i>
+                    <span class="title"> Mail Templates </span>
+                </a>
+            </li>
+        </ul>
     </li>
     {#<li class="{{ (currentRoute in ['media_list', 'multi_media_upload']) ? 'active open' : '' }}">
         <a href="javascript:void(0);">

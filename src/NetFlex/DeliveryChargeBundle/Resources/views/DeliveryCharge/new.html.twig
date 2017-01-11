@@ -1,0 +1,42 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme deliveryZoneTypeForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+        'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(deliveryZoneTypeForm, { 'attr': { 'id': 'deliveryZoneTypeForm', 'novalidate': 'novalidate',
+           'autocomplete': 'off' } }) }}
+                <div class="row form-group">
+                    {{ form_label(deliveryZoneTypeForm.deliveryZone, 'Delivery Zone', { 'for': 'deliveryZone',
+                        'label_attr': { 'class': 'col-md-2' } }) }}
+                    <div class="col-md-4">
+                        {{ form_widget(deliveryZoneTypeForm.deliveryZone, { 'id': 'deliveryZone', 'required': false, 'attr': { 'class': 'form-control', 'onchange': 'renderDeliveryChargeNewForm(event, this,
+"#deliveryChargeNewFormContainer")' } }) }}
+                    </div>
+                </div>
+            {{ form_end(deliveryZoneTypeForm) }}
+        </div>
+    </div>
+    <hr/>
+    <div class="row"><div id="deliveryChargeNewFormContainer" class="col-md-12"></div></div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+        '@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+        '@NetFlexDeliveryChargeBundle/Resources/public/js/DeliveryCharge/new.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

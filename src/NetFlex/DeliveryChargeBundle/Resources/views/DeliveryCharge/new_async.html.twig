@@ -1,0 +1,76 @@
+{% if deliveryChargeForm is null %}
+{% else %}
+    {% form_theme deliveryChargeForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+    {{ form_start(deliveryChargeForm, { 'attr': { 'id': 'deliveryChargeForm', 'role': 'form', 'novalidate':
+        'novalidate', 'autocomplete': 'off' } }) }}
+        <div class="row">
+            <div class="col-md-12">
+                <strong>Source Location</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_widget(deliveryChargeForm.sourceCountryId, { 'id': 'sourceCountryId', 'required': false,
+                    'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(deliveryChargeForm.sourceStateId, { 'id': 'sourceStateId', 'required': false,
+                    'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(deliveryChargeForm.sourceCityId, { 'id': 'sourceCityId', 'required': false,
+                    'attr': { 'class': 'form-control' } }) }}
+            </div>
+            {% if 1 == deliveryZone %}
+                <div class="col-md-3">
+                    {{ form_widget(deliveryChargeForm.sourceZipCodeRange, { 'id': 'sourceZipCodeRange', 'required': false,
+                        'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
+                </div>
+            {% else %}
+                <div class="col-md-3">&nbsp;</div>
+            {% endif %}
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-md-12">
+                <strong>Destination Location</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_widget(deliveryChargeForm.destinationCountryId, { 'id': 'destinationCountryId', 'required': false,
+                    'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(deliveryChargeForm.destinationStateId, { 'id': 'destinationStateId', 'required': false,
+                    'attr': { 'class': 'form-control' } }) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_widget(deliveryChargeForm.destinationCityId, { 'id': 'destinationCityId', 'required': false,
+                    'attr': { 'class': 'form-control' } }) }}
+            </div>
+            {% if 1 == deliveryZone %}
+                <div class="col-md-3">
+                    {{ form_widget(deliveryChargeForm.destinationZipCodeRange, { 'id': 'destinationZipCodeRange', 'required': false,
+                        'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
+                </div>
+            {% else %}
+                <div class="col-md-3">&nbsp;</div>
+            {% endif %}
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-md-2">
+                <strong>Delivery Mode</strong>
+            </div>
+            <div class="col-md-10">
+                <label class="radio-inline">
+                    {{ form_widget(deliveryChargeForm.deliveryModeId.2, { 'attr': { 'class': 'flat-grey delivery-modes' } }) }} {{ deliveryChargeForm.deliveryModeId.2.vars.label }}
+                </label>
+                <label class="radio-inline">
+                    {{ form_widget(deliveryChargeForm.deliveryModeId.1, { 'attr': { 'class': 'flat-grey delivery-modes' } }) }} {{ deliveryChargeForm.deliveryModeId.1.vars.label }}
+                </label>
+            </div>
+        </div>
+    {{ form_end(deliveryChargeForm) }}
+{% endif %}

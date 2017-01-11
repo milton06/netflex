@@ -35,7 +35,7 @@ class BookAShipmentService
 		$defaultCountryId = ($defaultCountryId) ? $defaultCountryId : 1;
 		$defaultStateId = ($defaultStateId) ? $defaultStateId : 41;
 		$defaultCityId = ($defaultCityId) ? $defaultCityId : 5583;
-		$excludedStateIds = ($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45];
+		$excludedStateIds = ($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45, 46, 47];
 		
 		/**
 		 * Get all active countries and set a country as default.
@@ -187,7 +187,7 @@ class BookAShipmentService
 		/**
 		 * Fetch the selected country, its states and cities for each states.
 		 */
-		$country = $this->em->getRepository('NetFlexLocationBundle:Country')->findStatesAndCitiesByCountryId($countryId, (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45]));
+		$country = $this->em->getRepository('NetFlexLocationBundle:Country')->findStatesAndCitiesByCountryId($countryId, (($excludedStateIds) ? $excludedStateIds : [42, 43, 44, 45, 46, 47]));
 		
 		/**
 		 * No such country active in the DB, so state and city lists will be empty.

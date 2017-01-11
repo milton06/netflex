@@ -267,11 +267,11 @@
                                     <td width="1%" style="padding:5px;" valign="top">:</td>
                                     <td>{{ ('0.00' == orderDetails.orderPrice.orderCodPaymentAddedCharge or orderDetails.orderPrice.orderCodPaymentAddedCharge is null) ? 'Non-COD' : 'COD' }}</td>
                                 </tr>
-                                {% if (orderDetails.orderPrice.orderCodPaymentAddedCharge) %}
+                                {% if ('0.00' != orderDetails.orderPrice.orderCodPaymentAddedCharge) %}
                                     <tr>
                                         <td style="padding:5px;">COD Amount To Be Collected</td>
                                         <td width="1%" style="padding:5px;" valign="top">:</td>
-                                        <td>INR {{ orderDetails.orderPrice.orderCodPaymentAddedCharge }}</td>
+                                        <td>&nbsp;</td>
                                     </tr>
                                 {% endif %}
                             </table>

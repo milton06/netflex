@@ -6,8 +6,8 @@
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../bundles/netflexfront/font/awesome/fontawesome-webfont.eot?v=4.3.0');
-  src: url('../bundles/netflexfront/font/awesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../bundles/netflexfront/font/awesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../bundles/netflexfront/font/awesome/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../bundles/netflexfront/font/awesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../bundles/netflexfront/font/awesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+  src: url('../../bundles/netflexfront/font/awesome/fontawesome-webfont.eot?v=4.3.0');
+  src: url('../../bundles/netflexfront/font/awesome/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('../../bundles/netflexfront/font/awesome/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('../../bundles/netflexfront/font/awesome/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('../../bundles/netflexfront/font/awesome/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('../../bundles/netflexfront/font/awesome/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -1802,12 +1802,12 @@
 
 @font-face {
     font-family: 'open_sansbold';
-    src: url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.eot');
-    src: url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.woff2') format('woff2'),
-         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.woff') format('woff'),
-         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.ttf') format('truetype'),
-         url('../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.svg#open_sansbold') format('svg');
+    src: url('../../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.eot');
+    src: url('../../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.woff2') format('woff2'),
+         url('../../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.woff') format('woff'),
+         url('../../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.ttf') format('truetype'),
+         url('../../bundles/netflexfront/font/opensansbold/opensans-bold-webfont.svg#open_sansbold') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -1815,12 +1815,12 @@
 
 @font-face {
     font-family: 'open_sansregular';
-    src: url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.eot');
-    src: url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.woff2') format('woff2'),
-         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.woff') format('woff'),
-         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.ttf') format('truetype'),
-         url('../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.svg#open_sansregular') format('svg');
+    src: url('../../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.eot');
+    src: url('../../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.woff2') format('woff2'),
+         url('../../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.woff') format('woff'),
+         url('../../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.ttf') format('truetype'),
+         url('../../bundles/netflexfront/font/opensansregular/opensans-regular-webfont.svg#open_sansregular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -1828,12 +1828,12 @@
 
 @font-face {
     font-family: 'OpenSans-ExtraBold';
-    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot');
-    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.woff2') format('woff2'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.woff') format('woff'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.ttf') format('truetype'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
+    src: url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot');
+    src: url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.woff2') format('woff2'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.woff') format('woff'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.ttf') format('truetype'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -1841,12 +1841,12 @@
 
 @font-face {
     font-family: 'OpenSans-ExtraBold';
-    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot');
-    src: url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.woff2') format('woff2'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.woff') format('woff'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.ttf') format('truetype'),
-         url('../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
+    src: url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot');
+    src: url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.eot?#iefix') format('embedded-opentype'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-ExtraBold.woff2') format('woff2'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.woff') format('woff'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.ttf') format('truetype'),
+         url('../../bundles/netflexfront/font/opensansxtrabold/OpenSans-Extrabold.svg#OpenSans-Extrabold') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -1854,12 +1854,12 @@
 
 @font-face {
   font-family: 'OpenSans-Light';
-  src: url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.eot');
-  src: url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.woff2') format('woff2'),
-       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.woff') format('woff'),
-       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.ttf') format('truetype'),
-       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.svg#OpenSans-Light') format('svg'),
-       url('../bundles/netflexfront/font/opensanslight/OpenSans-Light.eot?#iefix') format('embedded-opentype');
+  src: url('../../bundles/netflexfront/font/opensanslight/OpenSans-Light.eot');
+  src: url('../../bundles/netflexfront/font/opensanslight/OpenSans-Light.woff2') format('woff2'),
+       url('../../bundles/netflexfront/font/opensanslight/OpenSans-Light.woff') format('woff'),
+       url('../../bundles/netflexfront/font/opensanslight/OpenSans-Light.ttf') format('truetype'),
+       url('../../bundles/netflexfront/font/opensanslight/OpenSans-Light.svg#OpenSans-Light') format('svg'),
+       url('../../bundles/netflexfront/font/opensanslight/OpenSans-Light.eot?#iefix') format('embedded-opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -1874,7 +1874,7 @@ body{ background: #f4efdb;}
 img{max-width:100%;}
 /*==============HEADER=============*/
 
-header.header{ background: url(../bundles/netflexfront/images/headerbg.jpg) repeat-x; width: 100%; height: 31px;}
+header.header{ background: url(../../bundles/netflexfront/images/headerbg.jpg) repeat-x; width: 100%; height: 31px;}
 
 header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
 .callmail{ /* float: right; */display:inline-block; vertical-align:top;}
@@ -1882,12 +1882,12 @@ header.header .logo{ position: absolute; left: -28px; top: 0px; z-index: 9999;}
 .callmail ul li{ padding: 0px; margin: 0px; float: left; font: normal 12px 'open_sansbold'; color: #d4d4d4;}
 .callmail ul li a{font: normal 12px 'open_sansbold'; color: #d4d4d4; transition: all 0.5s ease;}
 .callmail ul li a:hover{ color: #ffffff; text-decoration: none;}
-.callmail ul li.call{ background: url(../bundles/netflexfront/images/phIcon.png) no-repeat left center; padding-left: 20px;}
-.callmail ul li.mail{ background: url(../bundles/netflexfront/images/mailIcon.png) no-repeat left center; padding-left: 20px;}
+.callmail ul li.call{ background: url(../../bundles/netflexfront/images/phIcon.png) no-repeat left center; padding-left: 20px;}
+.callmail ul li.mail{ background: url(../../bundles/netflexfront/images/mailIcon.png) no-repeat left center; padding-left: 20px;}
 .callmail ul li:first-child{ margin-right: 17px;}
 .logreg{display:inline-block; margin-left:30px;}
 .logreg ul{ padding: 0px 0 0 0; margin: 0px; }
-.logreg ul li{ padding: 5px 8px 0; margin: 0px; float: left;background: url(../bundles/netflexfront/images/dividerIcon.png) no-repeat left 12px;}
+.logreg ul li{ padding: 5px 8px 0; margin: 0px; float: left;background: url(../../bundles/netflexfront/images/dividerIcon.png) no-repeat left 12px;}
 .logreg ul li a{font: normal 10px 'open_sansbold'; color: #d4d4d4; text-transform: uppercase; transition: all 0.5s ease;}
 .logreg ul li a:hover{ color: #ffffff; text-decoration: none;}
 .logreg ul li.login{ background: none;  padding: 0px; padding-top: 0px; position: relative;}
@@ -2156,7 +2156,7 @@ div.navigation{ background: #ffffff; margin-bottom: 0px;}
 .tabgrp label.dropdown { position: relative; }
 .tabgrp label.dropdown:after {
     color: #444;
-    content: url(../bundles/netflexfront/images/ddIcon.png);
+    content: url(../../bundles/netflexfront/images/ddIcon.png);
     font: 16px Consolas,monospace;
     margin-top: 15px;
     padding: 0;
@@ -2280,7 +2280,7 @@ ul.stylecheckbox-tab2 li label{ padding-left: 30px;}
 
 /*==============FOOTER=================*/
 
-footer .foot{ font: normal 14px/64px 'open_sansregular'; color: #000000; background: url(../bundles/netflexfront/images/footLogo.png) no-repeat left center; padding-left: 63px; height: 64px; margin: 24px 0;}
+footer .foot{ font: normal 14px/64px 'open_sansregular'; color: #000000; background: url(../../bundles/netflexfront/images/footLogo.png) no-repeat left center; padding-left: 63px; height: 64px; margin: 24px 0;}
 
 /*===========BOOKING AWB==============*/
 
@@ -2326,10 +2326,10 @@ ul.trackHeadline li.approve{ text-align: left; width: 23%;}*/
 ul.trackbar{ padding: 35px 0; margin: 0px}
 ul.trackbar li{ position: relative; float: left;}
 /*ul.trackbar li.approveLine{ text-align: left; width: 23%; background: url(../images/trackLine.jpg) repeat-x; height: 1px;}*/
-ul.trackbar li.processLine{ text-align:  left; width: 23%; background: url(../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
-ul.trackbar li.shipLine{ text-align: left; width: 23%; background: url(../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
+ul.trackbar li.processLine{ text-align:  left; width: 23%; background: url(../../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
+ul.trackbar li.shipLine{ text-align: left; width: 23%; background: url(../../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
 ul.trackbar li.deliverLine{ text-align: right; width: 31%; background: none;}
-ul.trackbar li.approveLine{ text-align: left; width: 20%; background: url(../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
+ul.trackbar li.approveLine{ text-align: left; width: 20%; background: url(../../bundles/netflexfront/images/trackLine.jpg) repeat-x; height: 1px;}
 
 ul.trackbar li.approveLine a#redDotOne{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 25px;}
 ul.trackbar li.processLine a#redDotTwo{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 30px;}
@@ -2475,8 +2475,8 @@ ul.myaccBtn li a:hover{ background: #ff5400; border: 1px solid #ff5400; text-dec
 .editHeading ul li h2{ padding: 0px; margin: 0px; font: normal 14px 'open_sansbold'; color: #000000;} 
 .editHeading ul li:first-child{ float: left;}
 .editHeading ul li:last-child{ float: right;}
-.editHeading ul li.edit a{ background: url(../bundles/netflexfront/images/myaccount/editIcon.png) no-repeat left center; padding-left: 25px; font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
-.editHeading ul li.edit a:hover{ background: url(../bundles/netflexfront/images/myaccount/editIconHover.png) no-repeat left center; color: #ff5400; text-decoration: none;}
+.editHeading ul li.edit a{ background: url(../../bundles/netflexfront/images/myaccount/editIcon.png) no-repeat left center; padding-left: 25px; font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
+.editHeading ul li.edit a:hover{ background: url(../../bundles/netflexfront/images/myaccount/editIconHover.png) no-repeat left center; color: #ff5400; text-decoration: none;}
 .editformblk{ padding: 10px 0; border-bottom: 1px solid #dedede;}
 .editformblk label{ color: #646464; font: normal 14px 'open_sansbold'; padding-top: 5px;}
 .editformblk input{ padding: 5px; font: normal 14px 'open_sansbold'; color: #000000; background: none; border: none; width: 315px}
@@ -2507,10 +2507,10 @@ ul.myaccBtn li a:hover{ background: #ff5400; border: 1px solid #ff5400; text-dec
 .editHeading-1 ul{ padding: 0px; margin: 0px;}
 .editHeading-1 ul li{ padding: 0px; margin: 0px;}
 .editHeading-1 ul li h2{ padding: 0px; margin: 0px; font: normal 14px 'open_sansbold'; color: #000000;} 
-.edit a{ background: url(../bundles/netflexfront/images/myaccount/editIcon.png) no-repeat left center; padding-left: 25px; font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
-.edit a:hover{ background: url(../bundles/netflexfront/images/myaccount/editIconHover.png) no-repeat left center; color: #ff5400; text-decoration: none;}
+.edit a{ background: url(../../bundles/netflexfront/images/myaccount/editIcon.png) no-repeat left center; padding-left: 25px; font: normal 16px 'open_sansregular'; color: #1277ba; transition: all 0.5s ease;}
+.edit a:hover{ background: url(../../bundles/netflexfront/images/myaccount/editIconHover.png) no-repeat left center; color: #ff5400; text-decoration: none;}
 
-.default{ font: normal 14px 'open_sansregular'; color: #ff5400; padding-left: 24px; background: url(../bundles/netflexfront/images/myaccount/defaultTick.png) no-repeat left center; margin-top: 5px;}
+.default{ font: normal 14px 'open_sansregular'; color: #ff5400; padding-left: 24px; background: url(../../bundles/netflexfront/images/myaccount/defaultTick.png) no-repeat left center; margin-top: 5px;}
 .editBillingContent{ display: none;}
 
 .billingAddForm {
@@ -2592,7 +2592,7 @@ ul.myaccBtn li a:hover{ background: #ff5400; border: 1px solid #ff5400; text-dec
 
 /*==STYLISH CHECKBOX==*/
 .delAdd{ float: right; padding-top: 17px;}
-.delAdd a{ font: normal 14px 'open_sansregular'; color: #646464; background: url(../bundles/netflexfront/images/myaccount/delAddIcon.png) no-repeat left center; padding-left: 22px;}
+.delAdd a{ font: normal 14px 'open_sansregular'; color: #646464; background: url(../../bundles/netflexfront/images/myaccount/delAddIcon.png) no-repeat left center; padding-left: 22px;}
 .billAddMore { padding-top: 15px;}
 .billAddMore a{
     background: #eff3f6 none repeat scroll 0 0;
@@ -2675,7 +2675,7 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 .vison-txt{ background: rgba(0,0,0,.7); padding:60px; font-size:16px; color:#fff; line-height:24px; margin-top:45px;}
 
 
-.misson-container{background:url(../bundles/netflexfront/images/mission-bg.png) center bottom #fff; background-attachment:fixed; padding:124px 0;}
+.misson-container{background:url(../../bundles/netflexfront/images/mission-bg.png) center bottom #fff; background-attachment:fixed; padding:124px 0;}
 
 .misson-container{position:relative}
 .misson-container .container{/* position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); */}
