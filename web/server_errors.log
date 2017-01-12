@@ -2667,3 +2667,19 @@ Stack trace:
 [11-Jan-2017 10:55:21 UTC] PHP  31. ReflectionClass->__construct() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
 [11-Jan-2017 10:55:21 UTC] PHP  32. spl_autoload_call() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
 [11-Jan-2017 10:55:21 UTC] PHP  33. Symfony\Component\Debug\DebugClassLoader->loadClass() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Routing/Loader/AnnotationDirectoryLoader.php:52
+[12-Jan-2017 07:29:04 UTC] PHP Fatal error:  Class 'NetFlex\DeliveryChargeBundle\Form\EventSubscriber\DeliveryCharge\NumberToLocalizedStringTransformer' not found in /var/www/html/netflex/src/NetFlex/DeliveryChargeBundle/Form/EventSubscriber/DeliveryCharge/DeliveryChargeNewTypeEventSubscriber.php on line 31
+[12-Jan-2017 07:29:05 UTC] PHP Stack trace:
+[12-Jan-2017 07:29:05 UTC] PHP   1. {main}() /var/www/html/netflex/web/app_dev.php:0
+[12-Jan-2017 07:29:05 UTC] PHP   2. Symfony\Component\HttpKernel\Kernel->handle() /var/www/html/netflex/web/app_dev.php:28
+[12-Jan-2017 07:29:05 UTC] PHP   3. Symfony\Component\HttpKernel\HttpKernel->handle() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php:169
+[12-Jan-2017 07:29:05 UTC] PHP   4. Symfony\Component\HttpKernel\HttpKernel->handleRaw() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:68
+[12-Jan-2017 07:29:05 UTC] PHP   5. call_user_func_array:{/var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153}() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[12-Jan-2017 07:29:05 UTC] PHP   6. NetFlex\DeliveryChargeBundle\Controller\DeliveryChargeController->dashboardDeliveryChargeAddAction() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php:153
+[12-Jan-2017 07:29:05 UTC] PHP   7. Symfony\Component\Form\Form->handleRequest() /var/www/html/netflex/src/NetFlex/DeliveryChargeBundle/Controller/DeliveryChargeController.php:96
+[12-Jan-2017 07:29:05 UTC] PHP   8. Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler->handleRequest() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:488
+[12-Jan-2017 07:29:05 UTC] PHP   9. Symfony\Component\Form\Form->submit() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Extension/HttpFoundation/HttpFoundationRequestHandler.php:113
+[12-Jan-2017 07:29:05 UTC] PHP  10. Symfony\Component\EventDispatcher\ImmutableEventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/Form/Form.php:541
+[12-Jan-2017 07:29:05 UTC] PHP  11. Symfony\Component\EventDispatcher\EventDispatcher->dispatch() /var/www/html/netflex/vendor/symfony/symfony/src/Symfony/Component/EventDispatcher/ImmutableEventDispatcher.php:43
+[12-Jan-2017 07:29:05 UTC] PHP  12. Symfony\Component\EventDispatcher\EventDispatcher->doDispatch() /var/www/html/netflex/var/cache/dev/classes.php:2082
+[12-Jan-2017 07:29:05 UTC] PHP  13. call_user_func:{/var/www/html/netflex/var/cache/dev/classes.php:2167}() /var/www/html/netflex/var/cache/dev/classes.php:2167
+[12-Jan-2017 07:29:05 UTC] PHP  14. NetFlex\DeliveryChargeBundle\Form\EventSubscriber\DeliveryCharge\DeliveryChargeNewTypeEventSubscriber->preSubmit() /var/www/html/netflex/var/cache/dev/classes.php:2167

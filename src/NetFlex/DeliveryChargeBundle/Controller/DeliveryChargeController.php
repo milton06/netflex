@@ -2,15 +2,18 @@
 
 namespace NetFlex\DeliveryChargeBundle\Controller;
 
-use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryMode;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryTimeline;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryModeTimeline;
+use NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge;
 use NetFlex\DeliveryChargeBundle\Form\DeliveryCharge\DeliveryZoneType;
 use NetFlex\DeliveryChargeBundle\Form\DeliveryCharge\DeliveryChargeNewType;
 
@@ -31,14 +34,8 @@ class DeliveryChargeController extends Controller
 	 */
 	public function dashboardDeliveryChargeNewAction(Request $request)
 	{
-        /**
-         * Get predefined delivery zones.
-         */
         $deliveryZones = $this->getParameter('delivery_zones');
         
-        /**
-         * Create the delivery zone selection form.
-         */
         $deliveryZoneTypeForm = $this->createForm(DeliveryZoneType::class, null, [
 			'actionUrl' => $this->generateUrl('dashboard_delivery_charge_new'),
 			'deliveryZones' => $deliveryZones,
@@ -78,6 +75,147 @@ class DeliveryChargeController extends Controller
 			'deliveryZoneTypeForm' => $deliveryZoneTypeForm->createView(),
 		]);
 	}
+    
+    /**
+     * Adds new delivery charge.
+     *
+     * @Route("/{deliveryZoneId}/add/", name="dashboard_delivery_charge_add")
+     * @Method({"POST"})
+     *
+     * @param  Request $request
+     *
+     * @return JsonResponse
+     */
+	public function dashboardDeliveryChargeAddAction($deliveryZoneId, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $deliveryChargeForm = $this->getDeliveryChargeForm($deliveryZoneId);
+            
+            $deliveryChargeForm->handleRequest($request);
+            
+            if ($deliveryChargeForm->isSubmitted()) {
+                $validationErrors = $this->get('validator')->validate($deliveryChargeForm);
+                
+                if (0 < count($validationErrors)) {
+                    $validationErrorList = [];
+                    
+                    foreach ($validationErrors as $thisValidationError) {
+                        $validationErrorList[str_replace(['children[', '].data'], '',
+                            $thisValidationError->getPropertyPath())] = $thisValidationError->getMessage();
+                    }
+                    
+                    return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                    $validationErrorList]);
+                } else {
+                    $formData = $deliveryChargeForm->getData();
+                    
+                    if (1 == $deliveryZoneId) {
+                        if ($formData['sourceZipCodeRange'] == $formData['destinationZipCodeRange']) {
+                            return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                                ['destinationZipCodeRange' => 'Cannot match source zip code range']]);
+                        }
+                    } elseif (2 == $deliveryZoneId) {
+                        if ($formData['sourceCityId'] == $formData['destinationCityId']) {
+                            return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                                ['destinationCityId' => 'Cannot match source city']]);
+                        }
+                    } else {
+                        //
+                    }
+    
+                    $deliveryModeTimeline = new DeliveryModeTimeline();
+                    $deliveryCharge = new DeliveryCharge();
+    
+                    $currentDateTime = new \DateTime();
+                    $currentUser = $this->getUser()->getId();
+    
+                    $deliveryModeTimeline->setSourceCountryId((isset($formData['sourceCountryId']) && ! empty
+                        ($formData['sourceCountryId'])) ? $formData['sourceCountryId'] : null);
+                    $deliveryModeTimeline->setSourceStateId((isset($formData['sourceStateId']) && ! empty
+                        ($formData['sourceStateId'])) ? $formData['sourceStateId'] : null);
+                    $deliveryModeTimeline->setSourceCityId((isset($formData['sourceCityId']) && ! empty
+                        ($formData['sourceCityId'])) ? $formData['sourceCityId'] : null);
+                    $deliveryModeTimeline->setSourceZipCode((isset($formData['sourceZipCodeRange']) && ! empty
+                        ($formData['sourceZipCodeRange'])) ? $formData['sourceZipCodeRange'] : null);
+                    $deliveryModeTimeline->setDestinationCountryId((isset($formData['destinationCountryId']) && ! empty
+                        ($formData['destinationCountryId'])) ? $formData['destinationCountryId'] : null);
+                    $deliveryModeTimeline->setDestinationStateId((isset($formData['destinationStateId']) && ! empty
+                        ($formData['destinationStateId'])) ? $formData['destinationStateId'] : null);
+                    $deliveryModeTimeline->setDestinationCityId((isset($formData['destinationCityId']) && ! empty
+                        ($formData['destinationCityId'])) ? $formData['destinationCityId'] : null);
+                    $deliveryModeTimeline->setDestinationZipCode((isset($formData['destinationZipCodeRange']) && ! empty
+                        ($formData['destinationZipCodeRange'])) ? $formData['destinationZipCodeRange'] : null);
+                    $deliveryModeTimeline->setDeliveryModeId((isset($formData['deliveryModeId']) && ! empty
+                        ($formData['deliveryModeId'])) ? $formData['deliveryModeId'] : null);
+                    $deliveryModeTimeline->setDeliveryTimelineId((isset($formData['deliveryTimelineId']) && ! empty
+                        ($formData['deliveryTimelineId'])) ? $formData['deliveryTimelineId'] : null);
+                    $deliveryModeTimeline->setStatus(1);
+                    $deliveryModeTimeline->setCreatedOn($currentDateTime);
+                    $deliveryModeTimeline->setCreatedBy($currentUser);
+                    $deliveryModeTimeline->setLastModifiedOn($currentDateTime);
+                    $deliveryModeTimeline->setLastModifiedBy($currentUser);
+    
+                    $deliveryCharge->setSourceCountryId((isset($formData['sourceCountryId']) && ! empty
+                        ($formData['sourceCountryId'])) ? $formData['sourceCountryId'] : null);
+                    $deliveryCharge->setSourceStateId((isset($formData['sourceStateId']) && ! empty
+                        ($formData['sourceStateId'])) ? $formData['sourceStateId'] : null);
+                    $deliveryCharge->setSourceCityId((isset($formData['sourceCityId']) && ! empty
+                        ($formData['sourceCityId'])) ? $formData['sourceCityId'] : null);
+                    $deliveryCharge->setSourceZipCode((isset($formData['sourceZipCode']) && ! empty
+                        ($formData['sourceZipCode'])) ? $formData['sourceZipCode'] : null);
+                    $deliveryCharge->setDestinationCountryId((isset($formData['destinationCountryId']) && ! empty
+                        ($formData['destinationCountryId'])) ? $formData['destinationCountryId'] : null);
+                    $deliveryCharge->setDestinationStateId((isset($formData['destinationStateId']) && ! empty
+                        ($formData['destinationStateId'])) ? $formData['destinationStateId'] : null);
+                    $deliveryCharge->setDestinationCityId((isset($formData['destinationCityId']) && ! empty
+                        ($formData['destinationCityId'])) ? $formData['destinationCityId'] : null);
+                    $deliveryCharge->setDestinationZipCode((isset($formData['destinationZipCode']) && ! empty
+                        ($formData['destinationZipCode'])) ? $formData['destinationZipCode'] : null);
+                    $deliveryCharge->setDeliveryModeTimelineId($deliveryModeTimeline);
+                    $deliveryCharge->setShipmentBaseWeightUpperLimit((isset($formData['baseWeight']) && ! empty
+                        ($formData['baseWeight'])) ? $formData['baseWeight'] : null);
+                    $deliveryCharge->setShipmentAccountableExtraWeight((isset($formData['extraWeight']) && ! empty
+                        ($formData['extraWeight'])) ? $formData['extraWeight'] : null);
+                    $deliveryCharge->setShipmentWeightUnitId((isset($formData['weightUnitId']) && ! empty
+                        ($formData['weightUnitId'])) ? $formData['weightUnitId'] : null);
+                    $deliveryCharge->setDeliveryBasePrice((isset($formData['basePrice']) && ! empty
+                        ($formData['basePrice'])) ? $formData['basePrice'] : null);
+                    $deliveryCharge->setDeliveryExtraPriceMultiplier((isset($formData['extraPriceMultiplier']) && ! empty
+                        ($formData['extraPriceMultiplier'])) ? $formData['extraPriceMultiplier'] : null);
+                    $deliveryCharge->setCodDeliveryBasePrice((isset($formData['codBasePrice']) && ! empty
+                        ($formData['codBasePrice'])) ? $formData['codBasePrice'] : null);
+                    $deliveryCharge->setFuelSurchargePercentageOnBasePrice((isset($formData['fuelSurchargePercentageOnBasePrice']) && ! empty
+                        ($formData['fuelSurchargePercentageOnBasePrice'])) ? $formData['fuelSurchargePercentageOnBasePrice'] : null);
+                    $deliveryCharge->setServiceTaxPercentageOnBasePrice((isset($formData['serviceTaxPercentageOnBasePrice']) && ! empty
+                        ($formData['serviceTaxPercentageOnBasePrice'])) ? $formData['serviceTaxPercentageOnBasePrice'] : null);
+                    $deliveryCharge->setShipmentRiskPercentageOnBasePrice((isset($formData['carrierRiskPercentageOnBasePrice']) && ! empty
+                        ($formData['carrierRiskPercentageOnBasePrice'])) ? $formData['carrierRiskPercentageOnBasePrice'] : null);
+                    $deliveryCharge->setDeliveryPriceUnitId((isset($formData['currencyUnitId']) && ! empty
+                        ($formData['currencyUnitId'])) ? $formData['currencyUnitId'] : null);
+                    $deliveryCharge->setStatus(1);
+                    $deliveryCharge->setCreatedOn($currentDateTime);
+                    $deliveryCharge->setCreatedBy($currentUser);
+                    $deliveryCharge->setLastModifiedOn($currentDateTime);
+                    $deliveryCharge->setLastModifiedBy($currentUser);
+                    
+                    $validationErrors = $this->get('validator')->validate($deliveryCharge);
+                    
+                    if (0 < count($validationErrors)) {
+                        return $this->json(['status' => 'failure', 'reason' => 'redundancyError', 'redundancyError' => $validationErrors[0]->getMessage()]);
+                    } else {
+                        $em = $this->getDoctrine()->getManager();
+                        
+                        $em->persist($deliveryModeTimeline);
+                        $em->persist($deliveryCharge);
+    
+                        $em->flush();
+    
+                        return $this->json(['status' => 'success', 'id' => $deliveryCharge->getId()]);
+                    }
+                }
+            }
+        }
+    }
     
     /**
      * Creates and returns delivery charge form.
@@ -131,6 +269,8 @@ class DeliveryChargeController extends Controller
              * Construct delivery charge form options.
              */
             $deliveryChargeFormOptions = [
+                'actionUrl' => $this->generateUrl('dashboard_delivery_charge_add', ['deliveryZoneId' => $deliveryZone],
+                    UrlGeneratorInterface::ABSOLUTE_URL),
                 'sourceCountries' => $sourceCountries,
                 'defaultSourceCountry' => $defaultSourceCountry,
                 'sourceStates' => $sourceStates,
