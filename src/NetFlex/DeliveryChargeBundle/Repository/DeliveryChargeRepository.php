@@ -181,4 +181,27 @@ delivery_mode_id, dm.mode_name, dt.id delivery_timeline_id, dt.timeline_name, w.
 			}
 		}
 	}
+	
+	public function findDeliveryChargeById($deliveryChargeId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('DC')
+        ->from('NetFlexDeliveryChargeBundle:DeliveryCharge', 'DC')
+        ->leftJoin(
+            'DC.deliveryModeTimelineId',
+            'DMT',
+            'WITH',
+            $qb->expr()->eq('DMT.status', 1)
+        )
+        ->where(
+            $qb->expr()->andX(
+                $qb->expr()->eq('DC.id', ':deliveryChargeId'),
+                $qb->expr()->eq('DC.status', 1)
+            )
+        )
+        ->setParameter('deliveryChargeId', $deliveryChargeId);
+        
+        return $qb->getQuery()->getOneOrNullResult();
+    }
 }

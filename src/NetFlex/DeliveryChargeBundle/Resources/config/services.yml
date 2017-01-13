@@ -12,3 +12,8 @@ services:
         arguments: ['@doctrine.orm.default_entity_manager']
         tags:
             - { name: form.type }
+    app.form.type.delivery_charge_edit:
+        class: NetFlex\DeliveryChargeBundle\Form\DeliveryCharge\DeliveryChargeEditType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }

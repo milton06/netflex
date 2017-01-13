@@ -16,6 +16,15 @@
 {% block pageContent %}
     <div class="row">
         <div class="col-md-12">
+            <div class="alert alert-danger serverMessage" style="display: none;">
+                <button data-dismiss="alert" class="close">×</button>
+                <i class="fa fa-times-circle"></i>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             {{ form_start(deliveryZoneTypeForm, { 'attr': { 'id': 'deliveryZoneTypeForm', 'novalidate': 'novalidate',
            'autocomplete': 'off' } }) }}
                 <div class="row form-group">

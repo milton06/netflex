@@ -1,0 +1,327 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme deliveryChargeForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+        'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger serverMessage" style="display: none;">
+                <button data-dismiss="alert" class="close">×</button>
+                <i class="fa fa-times-circle"></i>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(deliveryChargeForm, { 'attr': { 'id': 'deliveryChargeForm', 'role': 'form', 'novalidate':
+                'novalidate', 'autocomplete': 'off' } }) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.deliveryZones, 'Delivery Zone', { 'label_attr': { 'for':
+                           'deliveryZone', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.deliveryZones, { 'id': 'deliveryZone', 'required':
+                                    false, 'class': 'form-control' }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.sourceCountryId, 'Source Country', { 'label_attr': { 'for':
+                                'sourceCountryId', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.sourceCountryId, { 'id': 'sourceCountryId', 'required': false,
+                                    'attr': { 'class': 'countrySelectors form-control' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.sourceStateId, 'Source State', { 'label_attr': { 'for':
+                                'sourceStateId', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.sourceStateId, { 'id': 'sourceStateId', 'required': false,
+                                    'attr': { 'class': 'stateSelectors form-control' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.sourceCityId, 'Source City', { 'label_attr': { 'for':
+                                'sourceCityId', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.sourceCityId, { 'id': 'sourceCityId', 'required': false,
+                                    'attr': { 'class': 'citySelectors form-control' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                    {% if 1 == deliveryZone %}
+                        <div class="col-md-3">
+                            <div class="row form-group">
+                                {{ form_label(deliveryChargeForm.sourceZipCodeRange, 'Source Zip Code', { 'label_attr': { 'for':
+                                    'sourceZipCodeRange', 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(deliveryChargeForm.sourceZipCodeRange, { 'id': 'sourceZipCodeRange', 'required': false,
+                                        'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-3">&nbsp;</div>
+                    {% endif %}
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.destinationCountryId, 'Destination Country', { 'label_attr': {
+                                'for':
+                                'destinationCountryId', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {% set destinationCountrySelectorClass = (3 == deliveryZone) ? '' : 'countrySelectors ' %}
+                                {{ form_widget(deliveryChargeForm.destinationCountryId, { 'id': 'destinationCountryId', 'required': false,
+                                    'attr': { 'class': destinationCountrySelectorClass ~ 'form-control' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.destinationStateId, 'Destination State', { 'label_attr': { 'for':
+                                'destinationStateId', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.destinationStateId, { 'id': 'destinationStateId', 'required': false,
+                                    'attr': { 'class': 'stateSelectors form-control' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.destinationCityId, 'Destination City', { 'label_attr': { 'for':
+                                'destinationCityId', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.destinationCityId, { 'id': 'destinationCityId', 'required': false,
+                                    'attr': { 'class': 'citySelectors form-control' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                    {% if 1 == deliveryZone %}
+                        <div class="col-md-3">
+                            <div class="row form-group">
+                                {{ form_label(deliveryChargeForm.destinationZipCodeRange, 'Destination Zip Code', {
+                                    'label_attr': { 'for':
+                                        'destinationZipCodeRange', 'class': 'col-md-4' } }) }}
+                                <div class="col-md-8">
+                                    {{ form_widget(deliveryChargeForm.destinationZipCodeRange, { 'id': 'destinationZipCodeRange', 'required': false,
+                                        'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-3">&nbsp;</div>
+                    {% endif %}
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-2">
+                        Delivery Mode
+                    </div>
+                    <div class="col-md-10">
+                        <label class="radio-inline">
+                            {{ form_widget(deliveryChargeForm.deliveryModeId.2, { 'attr': { 'class': 'flat-grey delivery-modes', 'checked': true } }) }} {{ deliveryChargeForm.deliveryModeId.2.vars.label }}
+                        </label>
+                        <label class="radio-inline">
+                            {{ form_widget(deliveryChargeForm.deliveryModeId.1, { 'attr': { 'class': 'flat-grey delivery-modes' } }) }} {{ deliveryChargeForm.deliveryModeId.1.vars.label }}
+                        </label>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row form-group">
+                    {{ form_label(deliveryChargeForm.deliveryTimelineId, 'Delivery Timeline', { 'label_attr': { 'for':
+                        'deliveryTimelineId', 'class': 'col-md-2' } }) }}
+                    <div class="col-md-4">
+                        {{ form_widget(deliveryChargeForm.deliveryTimelineId, { 'id': 'deliveryTimelineId', 'attr': {
+                            'class': 'form-control' } }) }}
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.baseWeight, 'Base Weight', { 'label_attr': { 'for': 'baseWeight',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.baseWeight, { 'id': 'baseWeight', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.extraWeight, 'Extra Weight', { 'label_attr': { 'for': 'extraWeight',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.extraWeight, { 'id': 'extraWeight', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.weightUnitId, 'Unit', { 'label_attr': { 'for': 'weightUnitId',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.weightUnitId, { 'id': 'weightUnitId', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.basePrice, 'Base Price', { 'label_attr': { 'for': 'basePrice',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.basePrice, { 'id': 'basePrice', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.extraPriceMultiplier, 'Extra Price', { 'label_attr': { 'for':
+                                'extraPriceMultiplier',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.extraPriceMultiplier, { 'id': 'extraPriceMultiplier', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {{ form_label(deliveryChargeForm.currencyUnitId, 'Unit', { 'label_attr': { 'for': 'currencyUnitId',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.currencyUnitId, { 'id': 'currencyUnitId', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.codBasePrice, 'COD Charge', { 'label_attr': { 'for': 'codBasePrice',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.codBasePrice, { 'id': 'codBasePrice', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.fuelSurchargePercentageOnBasePrice, 'Fuel Surcharge (%)', {
+                                'label_attr': { 'for':
+                                    'fuelSurchargePercentageOnBasePrice',
+                                    'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.fuelSurchargePercentageOnBasePrice, { 'id': 'fuelSurchargePercentageOnBasePrice', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">&nbsp;</div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.serviceTaxPercentageOnBasePrice, 'Service Tax (%)', { 'label_attr': { 'for': 'serviceTaxPercentageOnBasePrice',
+                                'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.serviceTaxPercentageOnBasePrice, { 'id': 'serviceTaxPercentageOnBasePrice', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.carrierRiskPercentageOnBasePrice, 'Carrier Risk Charge (%)', {
+                                'label_attr': { 'for':
+                                    'carrierRiskPercentageOnBasePrice',
+                                    'class': 'col-md-4' }
+                            }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.carrierRiskPercentageOnBasePrice, { 'id': 'carrierRiskPercentageOnBasePrice', 'attr': { 'class':
+                                    'form-control' }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">&nbsp;</div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <button type="submit" id="deliveryChargeNewButton" class="btn btn-primary pull-right"
+                                onclick="saveNewDeliveryCharge(event, this)">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                    </div>
+                </div>
+                <br/>
+            {{ form_end(deliveryChargeForm) }}
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var stateListFetchUrl = "{{ url('list_states_of_a_country') }}";
+        var cityListFetchUrl = "{{ url('list_cities_of_a_state') }}";
+    </script>
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+        '@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+        '@NetFlexDeliveryChargeBundle/Resources/public/js/DeliveryCharge/edit.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

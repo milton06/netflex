@@ -39,6 +39,7 @@ class DeliveryChargeNewTypeEventSubscriber implements EventSubscriberInterface
                 if ($formData['sourceCountryId']) {
                     return $er->createQueryBuilder('STATE')
                         ->where('STATE.countryId = ' . $formData['sourceCountryId'])
+                        ->andWhere('STATE.id not in (42, 43, 44, 45, 46, 47)')
                         ->andWhere('STATE.status = 1');
                 } else {
                     return null;

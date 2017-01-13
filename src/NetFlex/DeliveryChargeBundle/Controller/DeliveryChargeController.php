@@ -16,6 +16,7 @@ use NetFlex\DeliveryChargeBundle\Entity\DeliveryModeTimeline;
 use NetFlex\DeliveryChargeBundle\Entity\DeliveryCharge;
 use NetFlex\DeliveryChargeBundle\Form\DeliveryCharge\DeliveryZoneType;
 use NetFlex\DeliveryChargeBundle\Form\DeliveryCharge\DeliveryChargeNewType;
+use NetFlex\DeliveryChargeBundle\Form\DeliveryCharge\DeliveryChargeEditType;
 
 /**
  * @Route("/dashboard/delivery-charge")
@@ -46,7 +47,7 @@ class DeliveryChargeController extends Controller
 		if ($deliveryZoneTypeForm->isSubmitted()) {
 			$deliveryZoneData = $deliveryZoneTypeForm->getData();
             
-            $deliveryChargeForm = $this->getDeliveryChargeForm((isset($deliveryZoneData['deliveryZone']) &&
+            $deliveryChargeForm = $this->getDeliveryChargeNewTypeForm((isset($deliveryZoneData['deliveryZone']) &&
                 $deliveryZoneData['deliveryZone']) ? $deliveryZoneData['deliveryZone'] : null);
             
             return $this->render('NetFlexDeliveryChargeBundle:DeliveryCharge:new_async.html.twig', [
@@ -89,7 +90,7 @@ class DeliveryChargeController extends Controller
 	public function dashboardDeliveryChargeAddAction($deliveryZoneId, Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            $deliveryChargeForm = $this->getDeliveryChargeForm($deliveryZoneId);
+            $deliveryChargeForm = $this->getDeliveryChargeNewTypeForm($deliveryZoneId);
             
             $deliveryChargeForm->handleRequest($request);
             
@@ -112,12 +113,12 @@ class DeliveryChargeController extends Controller
                     if (1 == $deliveryZoneId) {
                         if ($formData['sourceZipCodeRange'] == $formData['destinationZipCodeRange']) {
                             return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
-                                ['destinationZipCodeRange' => 'Cannot match source zip code range']]);
+                                ['destinationZipCodeRange' => 'Cannot be identical to source zip code range']]);
                         }
                     } elseif (2 == $deliveryZoneId) {
                         if ($formData['sourceCityId'] == $formData['destinationCityId']) {
                             return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
-                                ['destinationCityId' => 'Cannot match source city']]);
+                                ['destinationCityId' => 'Cannot be identical to source city']]);
                         }
                     } else {
                         //
@@ -210,7 +211,10 @@ class DeliveryChargeController extends Controller
     
                         $em->flush();
     
-                        return $this->json(['status' => 'success', 'id' => $deliveryCharge->getId()]);
+                        return $this->json(['status' => 'success', 'deliveryZoneId' => $deliveryZoneId,
+                            'deliveryChargeId' =>
+                            $deliveryCharge->getId
+                        ()]);
                     }
                 }
             }
@@ -218,13 +222,13 @@ class DeliveryChargeController extends Controller
     }
     
     /**
-     * Creates and returns delivery charge form.
+     * Creates and returns delivery charge new type form.
      *
      * @param  int                        $deliveryZone
      *
      * @return null|DeliveryChargeNewType
      */
-	public function getDeliveryChargeForm($deliveryZone)
+	public function getDeliveryChargeNewTypeForm($deliveryZone)
     {
         if (! $deliveryZone) {
             return null;
@@ -348,6 +352,232 @@ class DeliveryChargeController extends Controller
              */
             return $this->createForm(DeliveryChargeNewType::class, null, $deliveryChargeFormOptions);
         }
+    }
+    
+    /**
+     * Renders edit delivery charge page.
+     *
+     * @Route("/edit/{deliveryZoneId}/{deliveryChargeId}", name="dashboard_delivery_charge_edit",
+     *     requirements={"deliveryZoneId": "\d+", "deliveryChargeId": "\d+"})
+     * @Method({"GET", "POST"})
+     *
+     * @param  int     $deliveryZoneId
+     * @param  int     $deliveryChargeId
+     * @param  Request $request
+     *
+     * @return Response
+     */
+    public function dashboardDeliveryChargeEditAction($deliveryZoneId, $deliveryChargeId, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        $deliveryCharge = $em->getRepository('NetFlexDeliveryChargeBundle:DeliveryCharge')->findDeliveryChargeById
+        ($deliveryChargeId);
+        
+        if (! $deliveryCharge) {
+            throw $this->createNotFoundException('Delivery charge not found');
+        } else {
+            $deliveryModeTimeline = $deliveryCharge->getDeliveryModeTimelineId();
+    
+            $deliveryChargeForm = $this->getDeliveryChargeEditTypeForm($deliveryZoneId, $deliveryCharge, $deliveryModeTimeline);
+    
+            return $this->render('NetFlexDeliveryChargeBundle:DeliveryCharge:edit.html.twig', [
+                'pageTitle' => 'Edit Delivery Charge',
+                'breadCrumbs' => [
+                    [
+                        'title' => 'Dashboard Home',
+                        'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                    ],
+                    [
+                        'title' => 'Delivery Charges',
+                        'link' => 'javascript:void(0)',
+                    ],
+                    [
+                        'title' => 'Edit Delivery Charge',
+                        'link' => $this->generateUrl('dashboard_delivery_charge_edit', ['deliveryZoneId' => $deliveryZoneId, 'deliveryChargeId' => $deliveryChargeId], UrlGeneratorInterface::ABSOLUTE_URL),
+                    ],
+                ],
+                'pageHeader' => '<h1>Edit <small>delivery charge</small></h1>',
+                'deliveryZone' => $deliveryZoneId,
+                'deliveryChargeForm' => $deliveryChargeForm->createView(),
+            ]);
+        }
+    }
+    
+    /**
+     * Updates a delivery charge.
+     *
+     * @Route("/{deliveryZoneId}/update/", name="dashboard_delivery_charge_update")
+     * @Method({"POST"})
+     *
+     * @param  Request $request
+     *
+     * @return JsonResponse
+     */
+    public function dashboardDeliveryChargeUpdateAction($deliveryZoneId, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            //
+        }
+    }
+    
+    /**
+     * Creates and returns delivery charge edit form.
+     *
+     * @param  int                        $deliveryZone
+     * @param  DeliveryCharge             $deliveryCharge
+     * @param  DeliveryModeTimeleine      $deliveryModeTimeline
+     *
+     * @return null|DeliveryChargeNewType
+     */
+    public function getDeliveryChargeEditTypeForm($deliveryZone, $deliveryCharge, $deliveryModeTimeline)
+    {
+        $em = $this->getDoctrine()->getManager();
+    
+        /**
+         * Get delivery zones.
+         */
+        $deliveryZones = $this->getParameter('delivery_zones');
+    
+        /**
+         * Get source location parameters.
+         */
+        $sourceCountries = $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')
+        ->findActiveCountries(1,
+            $deliveryModeTimeline->getSourceStateId()->getId(), [42,
+            43, 44, 45, 46, 47]);
+        $defaultSourceCountry = $deliveryModeTimeline->getSourceCountryId();
+        $defaultDestinationCountry = $deliveryModeTimeline->getDestinationCountryId();
+        $sourceStates = ($defaultSourceCountry) ? (! empty($defaultSourceCountry->getStates()) ? $defaultSourceCountry->getStates()->getValues() : []) : [];
+        $destinationStates = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getStates()) ? $defaultDestinationCountry->getStates()->getValues() : []) : [];
+        $defaultSourceState = $deliveryModeTimeline->getSourceStateId();
+        $defaultDestinationState = $deliveryModeTimeline->getDestinationStateId();
+        $sourceCities = ($defaultSourceCountry) ? (! empty($defaultSourceCountry->getCities()) ? $defaultSourceCountry->getCities()->getValues() : []) : [];
+        $destinationCities = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getCities()) ? $defaultDestinationCountry->getCities()->getValues() : []) : [];
+        $defaultSourceCity = $deliveryModeTimeline->getSourceCityId();
+        $defaultDestinationCity = $deliveryModeTimeline->getDestinationCityId();
+    
+        /**
+         * Get delivery modes.
+         */
+        $deliveryModes = $em->getRepository('NetFlexDeliveryChargeBundle:DeliveryMode')->findBy(['status' => 1]);
+        $defaultDeliveryMode = $deliveryModeTimeline->getDeliveryModeId();
+    
+        /**
+         * Get delivery timelines.
+         */
+        $deliveryTimelines = $em->getRepository('NetFlexDeliveryChargeBundle:DeliveryTimeline')->findBy(['status'
+        => 1]);
+        $defaultDeliveryTimeline = $deliveryModeTimeline->getDeliveryTimelineId();
+    
+        /**
+         * Get weight units.
+         */
+        $weightUnits = $em->getRepository('NetFlexDeliveryChargeBundle:WeightUnit')->findBy(['status' => 1]);
+        $defaultWeightUnit = $deliveryCharge->getShipmentWeightUnitId();
+    
+        /**
+         * Get currency units.
+         */
+        $currencyUnits = $em->getRepository('NetFlexDeliveryChargeBundle:Currency')->findBy(['status' => 1]);
+        $defaultCurrencyUnit = $deliveryCharge->getDeliveryPriceUnitId();
+    
+        /**
+         * Construct delivery charge form options.
+         */
+        $deliveryChargeFormOptions = [
+            'actionUrl' => $this->generateUrl('dashboard_delivery_charge_update', ['deliveryZoneId' => $deliveryZone],
+                UrlGeneratorInterface::ABSOLUTE_URL),
+            'deliveryZones' => $deliveryZones,
+            'sourceCountries' => $sourceCountries,
+            'defaultSourceCountry' => $defaultSourceCountry,
+            'sourceStates' => $sourceStates,
+            'defaultSourceState' => $defaultSourceState,
+            'sourceCities' => $sourceCities,
+            'defaultSourceCity' => $defaultSourceCity,
+            'destinationCountries' => $destinationCountries,
+            'defaultDestinationCountry' => $defaultDestinationCountry,
+            'destinationStates' => $destinationStates,
+            'defaultDestinationState' => $defaultDestinationState,
+            'destinationCities' => $destinationCities,
+            'defaultDestinationCity' => $defaultDestinationCity,
+            'deliveryModes' => $deliveryModes,
+            'defaultDeliveryMode' => $defaultDeliveryMode,
+            'deliveryTimelines' => $deliveryTimelines,
+            'defaultDeliveryTimeline' => $defaultDeliveryTimeline,
+            'weightUnits' => $weightUnits,
+            'defaultWeightUnit' => $defaultWeightUnit,
+            'currencyUnits' => $currencyUnits,
+            'defaultCurrencyUnit' => $defaultCurrencyUnit,
+            'baseWeight' => $deliveryCharge->getShipmentBaseWeightUpperLimit(),
+            'extraWeight' => $deliveryCharge->getShipmentAccountableExtraWeight(),
+            'basePrice' => $deliveryCharge->getDeliveryBasePrice(),
+            'extraPriceMultiplier' => $deliveryCharge->getDeliveryExtraPriceMultiplier(),
+            'codBasePrice' => $deliveryCharge->getCodDeliveryBasePrice(),
+            'fuelSurchargePercentageOnBasePrice' => $deliveryCharge->getFuelSurchargePercentageOnBasePrice(),
+            'serviceTaxPercentageOnBasePrice' => $deliveryCharge->getServiceTaxPercentageOnBasePrice(),
+            'carrierRiskPercentageOnBasePrice' => $deliveryCharge->getShipmentRiskPercentageOnBasePrice(),
+        ];
+        
+        switch ($deliveryZone) {
+            case 3:
+                /**
+                 * Get destination location parameters.
+                 */
+                $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findBy(['status' =>
+                    1]);
+                $defaultDestinationCountry = $deliveryModeTimeline->getDestinationCountryId();
+                $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' =>
+                    $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
+                $defaultDestinationState = $deliveryModeTimeline->getDestinationStateId();
+                $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
+                $defaultDestinationCity = $deliveryModeTimeline->getDestinationCityId();
+    
+                /**
+                 * Modify delivery charge form options.
+                 */
+                $deliveryChargeFormOptions = array_merge($deliveryChargeFormOptions, [
+                    'deliveryZone' => 3,
+                    'destinationCountries' => $destinationCountries,
+                    'defaultDestinationCountry' => $defaultDestinationCountry,
+                    'destinationStates' => $destinationStates,
+                    'defaultDestinationState' => $defaultDestinationState,
+                    'destinationCities' => $destinationCities,
+                    'defaultDestinationCity' => $defaultDestinationCity,
+                ]);
+                
+                break;
+            
+            case 2:
+                /**
+                 * Modifiy delivery charge form options.
+                 */
+                $deliveryChargeFormOptions = array_merge(['deliveryZone' => 2], $deliveryChargeFormOptions);
+                
+                break;
+            
+            case 1:
+            default:
+                /**
+                 * Get source and destination zip code range.
+                 */
+                $sourceZipCodeRange = $deliveryCharge->getSourceZipCode();
+                $destinationZipCodeRange = $deliveryCharge->getDestinationZipCode();
+                
+                /**
+                 * Modifiy delivery charge form options.
+                 */
+                $deliveryChargeFormOptions = array_merge(['deliveryZone' => 1, 'sourceZipCodeRange' => $sourceZipCodeRange,
+                    'destinationZipCodeRange' => $destinationZipCodeRange],
+                    $deliveryChargeFormOptions);
+            
+                break;
+        }
+    
+        /**
+         * Create and return the delivery charge form.
+         */
+        return $this->createForm(DeliveryChargeEditType::class, null, $deliveryChargeFormOptions);
     }
     
     /**

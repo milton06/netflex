@@ -1,3 +1,52 @@
+/**
+ *
+ * @param string displayMode OFF/ON
+ * @param dtring messageType ERROR/SUCCESS
+ */
+var toggleServerMessage = function(displayMode, messageType, message, messageContainer) {
+    if ("OFF" === displayMode) {
+        $(messageContainer + ">span").empty();
+        $(messageContainer).hide();
+    } else if ("ON" === displayMode) {
+        if ("ERROR" === messageType) {
+            if ($(messageContainer).hasClass("alert-success")) {
+                $(messageContainer).removeClass("alert-success");
+            } else {
+                //
+            }
+            
+            $(messageContainer).addClass("alert-danger");
+        } else if ("SUCCESS" === messageType) {
+            if ($(messageContainer).hasClass("alert-danger")) {
+                $(messageContainer).removeClass("alert-danger");
+            } else {
+                //
+            }
+            
+            $(messageContainer).addClass("alert-success");
+        }
+        
+        $(messageContainer + ">span").html(message);
+        
+        $("html, body").animate({
+            scrollTop: $(messageContainer).offset().top
+        }, 2000);
+    } else {
+        //
+    }
+};
+
+var toggleErrorMessage = function(displayMode, targetElementId, errorMessage) {
+    if ("OFF" === displayMode) {
+        $(".form-group").hasClass("has-error");
+        $(".form-group").removeClass("has-error");
+        $(".validationError").remove();
+    } else if ("ON" === displayMode) {
+        $("#" + targetElementId).after("<span class='help-block validationError'>" + errorMessage + "</span>");
+        $("#" + targetElementId).closest(".form-group").addClass("has-error");
+    }
+}
+
 var renderDeliveryChargeNewForm = function(event, element, targetContainer) {
     event.preventDefault();
     
@@ -34,14 +83,23 @@ var saveNewDeliveryCharge = function(event, element) {
         data: $(deliveryChargeForm).serialize(),
         dataType: "json",
         beforeSend: function (jqXHR, settings) {
-            //
+            toggleServerMessage("OFF");
+            toggleErrorMessage("OFF");
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            //
+            toggleServerMessage("ON", "ERROR", "Server error occurred", ".serverMessage");
         },
         success: function(data, textStatus, jqXHR) {
-            if ('failure' === data.status) {
-                
+            if ("failure" === data.status) {
+                if ("redundancyError" === data.reason) {
+                    toggleServerMessage("ON", "ERROR", data.redundancyError, ".serverMessage");
+                } else if ("validationError" === data.reason) {
+                    $.each(data.validationErrorList, function(key, value) {
+                        toggleErrorMessage("ON", key, value);
+                    });
+                    
+                    toggleServerMessage("ON", "ERROR", "You have some form errors. Please check below.", ".serverMessage");
+                }
             } else if ('success' === data.status) {
                 
             } else {
