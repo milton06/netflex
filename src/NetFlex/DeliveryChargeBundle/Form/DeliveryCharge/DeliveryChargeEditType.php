@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
-use NetFlex\DeliveryChargeBundle\Form\EventSubscriber\DeliveryCharge\DeliveryChargeNewTypeEventSubscriber;
+use NetFlex\DeliveryChargeBundle\Form\EventSubscriber\DeliveryCharge\DeliveryChargeEditTypeEventSubscriber;
 
 class DeliveryChargeEditType extends AbstractType
 {
@@ -226,18 +226,35 @@ class DeliveryChargeEditType extends AbstractType
                     'message' => 'Currency unit is required',
                 ]),
             ],
+        ])
+        ->add('sourceZipCodeRange', null, [
+            'data' => ($options['sourceZipCodeRange']) ? $options['sourceZipCodeRange'] : '',
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Zip code range is required'
+                ]),
+                new Regex([
+                    'pattern' => '/^[\d]+\-[\d]+$/',
+                    'htmlPattern' => false,
+                    'message' => "Two zip codes, separated by '-'"
+                ]),
+            ],
+        ])
+        ->add('destinationZipCodeRange', null, [
+            'data' => ($options['destinationZipCodeRange']) ? $options['destinationZipCodeRange'] : '',
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Zip code range is required',
+                ]),
+                new Regex([
+                    'pattern' => '/^[\d]+\-[\d]+$/',
+                    'htmlPattern' => false,
+                    'message' => "Two zip codes, separated by '-'",
+                ]),
+            ],
         ]);
         
-        if (1 == $options['deliveryZone']) {
-            $builder->add('sourceZipCodeRange', null, [
-                'data' => $options['sourceZipCodeRange'],
-            ])
-            ->add('destinationZipCodeRange', null, [
-                'data' => $options['destinationZipCodeRange'],
-            ]);
-        }
-        
-        $builder->addEventSubscriber(new DeliveryChargeNewTypeEventSubscriber($this->em));
+        $builder->addEventSubscriber(new DeliveryChargeEditTypeEventSubscriber($this->em, $options['deliveryZone']));
     }
     
     public function configureOptions(OptionsResolver $resolver)

@@ -34,7 +34,7 @@
                            'deliveryZone', 'class': 'col-md-4' } }) }}
                             <div class="col-md-8">
                                 {{ form_widget(deliveryChargeForm.deliveryZones, { 'id': 'deliveryZone', 'required':
-                                    false, 'class': 'form-control' }) }}
+                                    false, 'attr': { 'class': 'form-control', 'onchange': 'changeDeliveryZone(event, this)' } }) }}
                             </div>
                         </div>
                     </div>
@@ -71,20 +71,16 @@
                             </div>
                         </div>
                     </div>
-                    {% if 1 == deliveryZone %}
-                        <div class="col-md-3">
-                            <div class="row form-group">
-                                {{ form_label(deliveryChargeForm.sourceZipCodeRange, 'Source Zip Code', { 'label_attr': { 'for':
-                                    'sourceZipCodeRange', 'class': 'col-md-4' } }) }}
-                                <div class="col-md-8">
-                                    {{ form_widget(deliveryChargeForm.sourceZipCodeRange, { 'id': 'sourceZipCodeRange', 'required': false,
-                                        'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
-                                </div>
+                    <div class="col-md-3" style="{{ (1 == deliveryZone) ? 'display: block;' : 'display: none;' }}">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.sourceZipCodeRange, 'Source Zip Code', { 'label_attr': { 'for':
+                                'sourceZipCodeRange', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.sourceZipCodeRange, { 'id': 'sourceZipCodeRange', 'required': false,
+                                    'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
                             </div>
                         </div>
-                    {% else %}
-                        <div class="col-md-3">&nbsp;</div>
-                    {% endif %}
+                    </div>
                 </div>
                 <hr/>
                 <div class="row">
@@ -120,21 +116,17 @@
                             </div>
                         </div>
                     </div>
-                    {% if 1 == deliveryZone %}
-                        <div class="col-md-3">
-                            <div class="row form-group">
-                                {{ form_label(deliveryChargeForm.destinationZipCodeRange, 'Destination Zip Code', {
-                                    'label_attr': { 'for':
-                                        'destinationZipCodeRange', 'class': 'col-md-4' } }) }}
-                                <div class="col-md-8">
-                                    {{ form_widget(deliveryChargeForm.destinationZipCodeRange, { 'id': 'destinationZipCodeRange', 'required': false,
-                                        'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
-                                </div>
+                    <div class="col-md-3" style="{{ (1 == deliveryZone) ? 'display: block;' : 'display: none;' }}">
+                        <div class="row form-group">
+                            {{ form_label(deliveryChargeForm.destinationZipCodeRange, 'Destination Zip Code', {
+                                'label_attr': { 'for':
+                                    'destinationZipCodeRange', 'class': 'col-md-4' } }) }}
+                            <div class="col-md-8">
+                                {{ form_widget(deliveryChargeForm.destinationZipCodeRange, { 'id': 'destinationZipCodeRange', 'required': false,
+                                    'attr': { 'class': 'form-control', 'placeholder': 'Zip code range' } }) }}
                             </div>
                         </div>
-                    {% else %}
-                        <div class="col-md-3">&nbsp;</div>
-                    {% endif %}
+                    </div>
                 </div>
                 <hr/>
                 <div class="row">
@@ -303,7 +295,7 @@
                     <div class="col-md-8"></div>
                     <div class="col-md-4">
                         <button type="submit" id="deliveryChargeNewButton" class="btn btn-primary pull-right"
-                                onclick="saveNewDeliveryCharge(event, this)">
+                                onclick="updateDeliveryCharge(event, this)">
                             <i class="fa fa-save"></i> Save
                         </button>
                     </div>
@@ -316,6 +308,7 @@
 {% block pageScripts %}
     {{ parent() }}
     <script>
+        var deliveryZoneChangeUrl = "{{ url('dashboard_delivery_charge_change_zone') }}";
         var stateListFetchUrl = "{{ url('list_states_of_a_country') }}";
         var cityListFetchUrl = "{{ url('list_cities_of_a_state') }}";
     </script>

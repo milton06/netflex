@@ -1,8 +1,3 @@
-/**
- *
- * @param string displayMode OFF/ON
- * @param dtring messageType ERROR/SUCCESS
- */
 var toggleServerMessage = function(displayMode, messageType, message, messageContainer) {
     if ("OFF" === displayMode) {
         $(messageContainer + ">span").empty();
@@ -27,9 +22,10 @@ var toggleServerMessage = function(displayMode, messageType, message, messageCon
         }
         
         $(messageContainer + ">span").html(message);
+        $(messageContainer).show();
         
         $("html, body").animate({
-            scrollTop: $(messageContainer).offset().top
+            scrollTop: $(".main-content").offset().top
         }, 2000);
     } else {
         //
@@ -47,24 +43,83 @@ var toggleErrorMessage = function(displayMode, targetElementId, errorMessage) {
     }
 }
 
-var renderDeliveryChargeNewForm = function(event, element, targetContainer) {
+var changeDeliveryZone = function(event, element) {
     event.preventDefault();
     
-    var deliveryZoneForm = $(element).closest("form");
+    var selectedDeliveryZoneId = $(element).val();
     
     $.ajax({
-        url: $(deliveryZoneForm).attr("action"),
+        url: deliveryZoneChangeUrl,
         type: "POST",
-        data: $(deliveryZoneForm).serialize(),
-        dataType: "html",
+        data: {
+            "selectedDeliveryZoneId": selectedDeliveryZoneId,
+        },
+        dataType: "json",
         beforeSend: function (jqXHR, settings) {
-            //
+            toggleServerMessage("OFF", null, null, ".serverMessage");
         },
         error: function(jqXHR, textStatus, errorThrown) {
             //
         },
         success: function(data, textStatus, jqXHR) {
-            $(targetContainer).empty().html(data);
+            "use strict";
+            
+            if ("success" === data.status) {
+                var countryList = data.destinationCountryList;
+                var defaultDestinationCountry = data.defaultDestinationCountry;
+                var stateList = data.destinationStateList;
+                var defaultDestinationState = data.defaultDestinationState;
+                var cityList = data.destinationCityList;
+                var defaultDestinationCity = data.defaultDestinationCity;
+                
+                var countryOptions = "<option value=''>-Select A Destination Country-</option>";
+                var stateOptions = "<option value=''>-Select A Destination State-</option>";
+                var cityOptions = "<option value=''>-Select A Destination City-</option>";
+    
+                $.each(countryList, function(key, value) {
+                    countryOptions += "<option value='" + key + "' " + ((key == defaultDestinationCountry) ? "selected='selected'" : "") + ">" + value + "</option>";
+                });
+                $.each(stateList, function(key, value) {
+                    stateOptions += "<option value='" + key + "' " + ((key == defaultDestinationState) ? "selected='selected'" : "") + ">" + value + "</option>";
+                });
+                $.each(cityList, function(key, value) {
+                    cityOptions += "<option value='" + key + "' " + ((key == defaultDestinationCity) ? "selected='selected'" : "") + ">" + value + "</option>";
+                });
+    
+                $("#destinationCountryId").empty().html(countryOptions);
+                $("#destinationStateId").empty().html(stateOptions);
+                $("#destinationCityId").empty().html(cityOptions);
+                
+                if (1 == selectedDeliveryZoneId) {
+                    if ("none" == $("#sourceZipCodeRange").parent().parent().parent().css("display")) {
+                        $("#sourceZipCodeRange").val("");
+                        $("#sourceZipCodeRange").parent().parent().parent().show();
+                    }
+                    if ("none" == $("#destinationZipCodeRange").parent().parent().parent().css("display")) {
+                        $("#destinationZipCodeRange").val("");
+                        $("#destinationZipCodeRange").parent().parent().parent().show();
+                    }
+                } else {
+                    if ("block" == $("#sourceZipCodeRange").parent().parent().parent().css("display")) {
+                        $("#sourceZipCodeRange").val("");
+                        $("#sourceZipCodeRange").parent().parent().parent().hide();
+                    }
+                    if ("block" == $("#destinationZipCodeRange").parent().parent().parent().css("display")) {
+                        $("#destinationZipCodeRange").val("");
+                        $("#destinationZipCodeRange").parent().parent().parent().hide();
+                    }
+                }
+                
+                if (1 == selectedDeliveryZoneId || 2 == selectedDeliveryZoneId) {
+                    if (! $("#destinationCountryId").hasClass("countrySelectors")) {
+                        $("#destinationCountryId").addClass("countrySelectors");
+                    }
+                } else {
+                    if ($("#destinationCountryId").hasClass("countrySelectors")) {
+                        $("#destinationCountryId").removeClass("countrySelectors");
+                    }
+                }
+            }
         },
         complete: function(jqXHR, textStatus) {
             //
@@ -72,18 +127,20 @@ var renderDeliveryChargeNewForm = function(event, element, targetContainer) {
     });
 };
 
-var saveNewDeliveryCharge = function(event, element) {
+var updateDeliveryCharge = function(event, element) {
     event.preventDefault();
     
     var deliveryChargeForm = $(element).closest("form");
+    var deliveryChargeUpdateUrl = $(deliveryChargeForm).attr("action");
+    deliveryChargeUpdateUrl = deliveryChargeUpdateUrl.replace(9999999999, $("#deliveryZone").val());
     
     $.ajax({
-        url: $(deliveryChargeForm).attr("action"),
+        url: deliveryChargeUpdateUrl,
         type: "POST",
         data: $(deliveryChargeForm).serialize(),
         dataType: "json",
         beforeSend: function (jqXHR, settings) {
-            toggleServerMessage("OFF");
+            toggleServerMessage("OFF", null, null, ".serverMessage");
             toggleErrorMessage("OFF");
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -119,7 +176,7 @@ $(document).ready(function() {
         increaseArea: '10%' // optional
     });
     
-    $(".countrySelectors").on("change", function(e) {
+    $(".main-content").on("change", ".countrySelectors", function(e) {
         var element = $(this);
         var countryId = $(this).val();
         
@@ -145,14 +202,14 @@ $(document).ready(function() {
                 $.each(cityList, function(key, value) {
                     cityOptions += "<option value='" + key + "' " + ((0 === i++) ? "selected='selected'" : "") + ">" + value + "</option>";
                 });
-    
+                
                 $(element).parent().parent().parent().next(".col-md-3").find(".stateSelectors").empty().html(stateOptions);
                 $(element).parent().parent().parent().next(".col-md-3").next(".col-md-3").find(".citySelectors").empty().html(cityOptions);
             }
         });
     });
     
-    $(".stateSelectors").on("change", function(e) {
+    $(".main-content").on("change", ".stateSelectors", function(e) {
         var element = $(this);
         var stateId = $(this).val();
         

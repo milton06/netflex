@@ -120,6 +120,11 @@ class DeliveryChargeController extends Controller
                             return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
                                 ['destinationCityId' => 'Cannot be identical to source city']]);
                         }
+                    } elseif (3 == $deliveryZoneId) {
+                        if ($formData['sourceStateId'] == $formData['destinationStateId']) {
+                            return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                                ['destinationStateId' => 'Cannot be identical to source state']]);
+                        }
                     } else {
                         //
                     }
@@ -405,19 +410,248 @@ class DeliveryChargeController extends Controller
     }
     
     /**
-     * Updates a delivery charge.
+     * Changes delivery zone.
      *
-     * @Route("/{deliveryZoneId}/update/", name="dashboard_delivery_charge_update")
+     * @Route("/change-delivery-zone", name="dashboard_delivery_charge_change_zone")
      * @Method({"POST"})
      *
      * @param  Request $request
      *
      * @return JsonResponse
      */
-    public function dashboardDeliveryChargeUpdateAction($deliveryZoneId, Request $request)
+    public function dashboardDeliveryChargeChangeZoneAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {
-            //
+            $em = $this->getDoctrine()->getManager();
+            
+            $selectedDeliveryZoneId = $request->request->get('selectedDeliveryZoneId');
+            
+            switch ($selectedDeliveryZoneId) {
+                case 3:
+                    $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findBy(['status' =>
+                        1]);
+                    $defaultDestinationCountry = $this->getDefaultLocation(1, $destinationCountries);
+                    $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' =>
+                        $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
+                    $defaultDestinationState = $this->getDefaultLocation(45, $destinationStates);
+                    $defaultDestinationState = array_shift($defaultDestinationState);
+                    $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
+                    $defaultDestinationCity = $this->getDefaultLocation(5742, $destinationCities);
+                    
+                    return $this->json([
+                        'status' => 'success',
+                        'destinationCountryList' => $this->getLocationList($destinationCountries),
+                        'defaultDestinationCountry' => $defaultDestinationCountry->getId(),
+                        'destinationStateList' => $this->getLocationList($destinationStates),
+                        'defaultDestinationState' => $defaultDestinationState->getId(),
+                        'destinationCityList' => $this->getLocationList($destinationCities),
+                        'defaultDestinationCity' => $defaultDestinationCity->getId(),
+                    ]);
+                    
+                    break;
+                
+                case 2:
+                    $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findActiveCountries(1, 41, [42, 43, 44, 45, 46, 47]);
+                    $defaultDestinationCountry = $this->getDefaultLocation(1, $destinationCountries);
+                    $destinationStates = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getStates()) ? $defaultDestinationCountry->getStates()->getValues() : []) : [];
+                    $defaultDestinationState = $this->getDefaultLocation(41, $destinationStates);
+                    $defaultDestinationState = array_shift($defaultDestinationState);
+                    $destinationCities = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getCities()) ? $defaultDestinationCountry->getCities()->getValues() : []) : [];
+                    $defaultDestinationCity = $this->getDefaultLocation(5583, $destinationCities);
+                    $defaultDestinationCity = array_shift($defaultDestinationCity);
+    
+                    return $this->json([
+                        'status' => 'success',
+                        'destinationCountryList' => $this->getLocationList($destinationCountries),
+                        'defaultDestinationCountry' => $defaultDestinationCountry->getId(),
+                        'destinationStateList' => $this->getLocationList($destinationStates),
+                        'defaultDestinationState' => $defaultDestinationState->getId(),
+                        'destinationCityList' => $this->getLocationList($destinationCities),
+                        'defaultDestinationCity' => $defaultDestinationCity->getId(),
+                    ]);
+                    
+                    break;
+                    
+                case 1:
+                default:
+                    $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findActiveCountries(1, 41, [42, 43, 44, 45, 46, 47]);
+                    $defaultDestinationCountry = $this->getDefaultLocation(1, $destinationCountries);
+                    $destinationStates = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getStates()) ? $defaultDestinationCountry->getStates()->getValues() : []) : [];
+                    $defaultDestinationState = $this->getDefaultLocation(41, $destinationStates);
+                    $defaultDestinationState = array_shift($defaultDestinationState);
+                    $destinationCities = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getCities()) ? $defaultDestinationCountry->getCities()->getValues() : []) : [];
+                    $defaultDestinationCity = $this->getDefaultLocation(5583, $destinationCities);
+                    $defaultDestinationCity = array_shift($defaultDestinationCity);
+        
+                    return $this->json([
+                        'status' => 'success',
+                        'destinationCountryList' => $this->getLocationList($destinationCountries),
+                        'defaultDestinationCountry' => $defaultDestinationCountry->getId(),
+                        'destinationStateList' => $this->getLocationList($destinationStates),
+                        'defaultDestinationState' => $defaultDestinationState->getId(),
+                        'destinationCityList' => $this->getLocationList($destinationCities),
+                        'defaultDestinationCity' => $defaultDestinationCity->getId(),
+                    ]);
+                
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * Updates a delivery charge.
+     *
+     * @Route("/update/{deliveryZoneId}/{deliveryChargeId}", name="dashboard_delivery_charge_update")
+     * @Method({"POST"})
+     *
+     * @param  Request $request
+     *
+     * @return JsonResponse
+     */
+    public function dashboardDeliveryChargeUpdateAction($deliveryZoneId, $deliveryChargeId, Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+    
+            $deliveryCharge = $em->getRepository('NetFlexDeliveryChargeBundle:DeliveryCharge')->findDeliveryChargeById
+            ($deliveryChargeId);
+    
+            if (! $deliveryCharge) {
+                throw $this->createNotFoundException('Delivery charge not found');
+            } else {
+                $deliveryModeTimeline = $deliveryCharge->getDeliveryModeTimelineId();
+    
+                $deliveryChargeForm = $this->getDeliveryChargeEditTypeForm($deliveryZoneId, $deliveryCharge, $deliveryModeTimeline);
+    
+                $deliveryChargeForm->handleRequest($request);
+    
+                if ($deliveryChargeForm->isSubmitted()) {
+                    $validationErrors = $this->get('validator')->validate($deliveryChargeForm);
+        
+                    if (0 < count($validationErrors)) {
+                        $validationErrorList = [];
+            
+                        foreach ($validationErrors as $thisValidationError) {
+                            $validationErrorList[str_replace(['children[', '].data'], '',
+                                $thisValidationError->getPropertyPath())] = $thisValidationError->getMessage();
+                        }
+            
+                        return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                            $validationErrorList]);
+                    } else {
+                        $formData = $deliveryChargeForm->getData();
+            
+                        if (1 == $formData['deliveryZones']) {
+                            if ($formData['sourceZipCodeRange'] == $formData['destinationZipCodeRange']) {
+                                return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                                    ['destinationZipCodeRange' => 'Cannot be identical to source zip code range']]);
+                            }
+                        } elseif (2 == $formData['deliveryZones']) {
+                            if ($formData['sourceCityId'] == $formData['destinationCityId']) {
+                                return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                                    ['destinationCityId' => 'Cannot be identical to source city']]);
+                            }
+                        } elseif (3 == $formData['deliveryZones']) {
+                            if ($formData['sourceStateId'] == $formData['destinationStateId']) {
+                                return $this->json(['status' => 'failure', 'reason' => 'validationError', 'validationErrorList' =>
+                                    ['destinationStateId' => 'Cannot be identical to source state']]);
+                            }
+                        } else {
+                            //
+                        }
+            
+                        $currentDateTime = new \DateTime();
+                        $currentUser = $this->getUser()->getId();
+            
+                        $deliveryModeTimeline->setSourceCountryId((isset($formData['sourceCountryId']) && ! empty
+                            ($formData['sourceCountryId'])) ? $formData['sourceCountryId'] : null);
+                        $deliveryModeTimeline->setSourceStateId((isset($formData['sourceStateId']) && ! empty
+                            ($formData['sourceStateId'])) ? $formData['sourceStateId'] : null);
+                        $deliveryModeTimeline->setSourceCityId((isset($formData['sourceCityId']) && ! empty
+                            ($formData['sourceCityId'])) ? $formData['sourceCityId'] : null);
+                        $deliveryModeTimeline->setSourceZipCode((isset($formData['sourceZipCodeRange']) && ! empty
+                            ($formData['sourceZipCodeRange'])) ? $formData['sourceZipCodeRange'] : null);
+                        $deliveryModeTimeline->setDestinationCountryId((isset($formData['destinationCountryId']) && ! empty
+                            ($formData['destinationCountryId'])) ? $formData['destinationCountryId'] : null);
+                        $deliveryModeTimeline->setDestinationStateId((isset($formData['destinationStateId']) && ! empty
+                            ($formData['destinationStateId'])) ? $formData['destinationStateId'] : null);
+                        $deliveryModeTimeline->setDestinationCityId((isset($formData['destinationCityId']) && ! empty
+                            ($formData['destinationCityId'])) ? $formData['destinationCityId'] : null);
+                        $deliveryModeTimeline->setDestinationZipCode((isset($formData['destinationZipCodeRange']) && ! empty
+                            ($formData['destinationZipCodeRange'])) ? $formData['destinationZipCodeRange'] : null);
+                        $deliveryModeTimeline->setDeliveryModeId((isset($formData['deliveryModeId']) && ! empty
+                            ($formData['deliveryModeId'])) ? $formData['deliveryModeId'] : null);
+                        $deliveryModeTimeline->setDeliveryTimelineId((isset($formData['deliveryTimelineId']) && ! empty
+                            ($formData['deliveryTimelineId'])) ? $formData['deliveryTimelineId'] : null);
+                        $deliveryModeTimeline->setStatus(1);
+                        $deliveryModeTimeline->setCreatedOn($currentDateTime);
+                        $deliveryModeTimeline->setCreatedBy($currentUser);
+                        $deliveryModeTimeline->setLastModifiedOn($currentDateTime);
+                        $deliveryModeTimeline->setLastModifiedBy($currentUser);
+            
+                        $deliveryCharge->setSourceCountryId((isset($formData['sourceCountryId']) && ! empty
+                            ($formData['sourceCountryId'])) ? $formData['sourceCountryId'] : null);
+                        $deliveryCharge->setSourceStateId((isset($formData['sourceStateId']) && ! empty
+                            ($formData['sourceStateId'])) ? $formData['sourceStateId'] : null);
+                        $deliveryCharge->setSourceCityId((isset($formData['sourceCityId']) && ! empty
+                            ($formData['sourceCityId'])) ? $formData['sourceCityId'] : null);
+                        $deliveryCharge->setSourceZipCode((isset($formData['sourceZipCodeRange']) && ! empty
+                            ($formData['sourceZipCodeRange'])) ? $formData['sourceZipCodeRange'] : null);
+                        $deliveryCharge->setDestinationCountryId((isset($formData['destinationCountryId']) && ! empty
+                            ($formData['destinationCountryId'])) ? $formData['destinationCountryId'] : null);
+                        $deliveryCharge->setDestinationStateId((isset($formData['destinationStateId']) && ! empty
+                            ($formData['destinationStateId'])) ? $formData['destinationStateId'] : null);
+                        $deliveryCharge->setDestinationCityId((isset($formData['destinationCityId']) && ! empty
+                            ($formData['destinationCityId'])) ? $formData['destinationCityId'] : null);
+                        $deliveryCharge->setDestinationZipCode((isset($formData['destinationZipCodeRange']) && ! empty
+                            ($formData['destinationZipCodeRange'])) ? $formData['destinationZipCodeRange'] : null);
+                        $deliveryCharge->setDeliveryModeTimelineId($deliveryModeTimeline);
+                        $deliveryCharge->setShipmentBaseWeightUpperLimit((isset($formData['baseWeight']) && ! empty
+                            ($formData['baseWeight'])) ? $formData['baseWeight'] : null);
+                        $deliveryCharge->setShipmentAccountableExtraWeight((isset($formData['extraWeight']) && ! empty
+                            ($formData['extraWeight'])) ? $formData['extraWeight'] : null);
+                        $deliveryCharge->setShipmentWeightUnitId((isset($formData['weightUnitId']) && ! empty
+                            ($formData['weightUnitId'])) ? $formData['weightUnitId'] : null);
+                        $deliveryCharge->setDeliveryBasePrice((isset($formData['basePrice']) && ! empty
+                            ($formData['basePrice'])) ? $formData['basePrice'] : null);
+                        $deliveryCharge->setDeliveryExtraPriceMultiplier((isset($formData['extraPriceMultiplier']) && ! empty
+                            ($formData['extraPriceMultiplier'])) ? $formData['extraPriceMultiplier'] : null);
+                        $deliveryCharge->setCodDeliveryBasePrice((isset($formData['codBasePrice']) && ! empty
+                            ($formData['codBasePrice'])) ? $formData['codBasePrice'] : null);
+                        $deliveryCharge->setFuelSurchargePercentageOnBasePrice((isset($formData['fuelSurchargePercentageOnBasePrice']) && ! empty
+                            ($formData['fuelSurchargePercentageOnBasePrice'])) ? $formData['fuelSurchargePercentageOnBasePrice'] : null);
+                        $deliveryCharge->setServiceTaxPercentageOnBasePrice((isset($formData['serviceTaxPercentageOnBasePrice']) && ! empty
+                            ($formData['serviceTaxPercentageOnBasePrice'])) ? $formData['serviceTaxPercentageOnBasePrice'] : null);
+                        $deliveryCharge->setShipmentRiskPercentageOnBasePrice((isset($formData['carrierRiskPercentageOnBasePrice']) && ! empty
+                            ($formData['carrierRiskPercentageOnBasePrice'])) ? $formData['carrierRiskPercentageOnBasePrice'] : null);
+                        $deliveryCharge->setDeliveryPriceUnitId((isset($formData['currencyUnitId']) && ! empty
+                            ($formData['currencyUnitId'])) ? $formData['currencyUnitId'] : null);
+                        $deliveryCharge->setStatus(1);
+                        $deliveryCharge->setCreatedOn($currentDateTime);
+                        $deliveryCharge->setCreatedBy($currentUser);
+                        $deliveryCharge->setLastModifiedOn($currentDateTime);
+                        $deliveryCharge->setLastModifiedBy($currentUser);
+            
+                        $validationErrors = $this->get('validator')->validate($deliveryCharge);
+            
+                        if (0 < count($validationErrors)) {
+                            return $this->json(['status' => 'failure', 'reason' => 'redundancyError', 'redundancyError' => $validationErrors[0]->getMessage()]);
+                        } else {
+                            $em = $this->getDoctrine()->getManager();
+                
+                            $em->persist($deliveryModeTimeline);
+                            $em->persist($deliveryCharge);
+                
+                            $em->flush();
+                
+                            return $this->json(['status' => 'success', 'deliveryZoneId' => $deliveryZoneId,
+                                'deliveryChargeId' =>
+                                    $deliveryCharge->getId
+                                    ()]);
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -442,20 +676,15 @@ class DeliveryChargeController extends Controller
         /**
          * Get source location parameters.
          */
-        $sourceCountries = $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')
+        $sourceCountries = $em->getRepository('NetFlexLocationBundle:Country')
         ->findActiveCountries(1,
             $deliveryModeTimeline->getSourceStateId()->getId(), [42,
             43, 44, 45, 46, 47]);
         $defaultSourceCountry = $deliveryModeTimeline->getSourceCountryId();
-        $defaultDestinationCountry = $deliveryModeTimeline->getDestinationCountryId();
         $sourceStates = ($defaultSourceCountry) ? (! empty($defaultSourceCountry->getStates()) ? $defaultSourceCountry->getStates()->getValues() : []) : [];
-        $destinationStates = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getStates()) ? $defaultDestinationCountry->getStates()->getValues() : []) : [];
         $defaultSourceState = $deliveryModeTimeline->getSourceStateId();
-        $defaultDestinationState = $deliveryModeTimeline->getDestinationStateId();
         $sourceCities = ($defaultSourceCountry) ? (! empty($defaultSourceCountry->getCities()) ? $defaultSourceCountry->getCities()->getValues() : []) : [];
-        $destinationCities = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getCities()) ? $defaultDestinationCountry->getCities()->getValues() : []) : [];
         $defaultSourceCity = $deliveryModeTimeline->getSourceCityId();
-        $defaultDestinationCity = $deliveryModeTimeline->getDestinationCityId();
     
         /**
          * Get delivery modes.
@@ -486,7 +715,7 @@ class DeliveryChargeController extends Controller
          * Construct delivery charge form options.
          */
         $deliveryChargeFormOptions = [
-            'actionUrl' => $this->generateUrl('dashboard_delivery_charge_update', ['deliveryZoneId' => $deliveryZone],
+            'actionUrl' => $this->generateUrl('dashboard_delivery_charge_update', ['deliveryZoneId' => 9999999999, 'deliveryChargeId' => $deliveryCharge->getId()],
                 UrlGeneratorInterface::ABSOLUTE_URL),
             'deliveryZones' => $deliveryZones,
             'sourceCountries' => $sourceCountries,
@@ -495,12 +724,6 @@ class DeliveryChargeController extends Controller
             'defaultSourceState' => $defaultSourceState,
             'sourceCities' => $sourceCities,
             'defaultSourceCity' => $defaultSourceCity,
-            'destinationCountries' => $destinationCountries,
-            'defaultDestinationCountry' => $defaultDestinationCountry,
-            'destinationStates' => $destinationStates,
-            'defaultDestinationState' => $defaultDestinationState,
-            'destinationCities' => $destinationCities,
-            'defaultDestinationCity' => $defaultDestinationCity,
             'deliveryModes' => $deliveryModes,
             'defaultDeliveryMode' => $defaultDeliveryMode,
             'deliveryTimelines' => $deliveryTimelines,
@@ -550,26 +773,74 @@ class DeliveryChargeController extends Controller
             
             case 2:
                 /**
-                 * Modifiy delivery charge form options.
+                 * Get destination location parameters.
                  */
-                $deliveryChargeFormOptions = array_merge(['deliveryZone' => 2], $deliveryChargeFormOptions);
+                $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findBy(['status' =>
+                    1]);
+                $defaultDestinationCountry = $deliveryModeTimeline->getDestinationCountryId();
+                $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' => $defaultDestinationCountry->getId(), 'status' => 1]) : [];
+                foreach ($destinationStates as $key => $thisDestinationState) {
+                    if (in_array($thisDestinationState->getId(), [42, 43, 44, 45, 46, 47])) {
+                        unset($destinationStates[$key]);
+                    }
+                }
+                $defaultDestinationState = $deliveryModeTimeline->getDestinationStateId();
+                $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
+                $defaultDestinationCity = $deliveryModeTimeline->getDestinationCityId();
+                
+                /**
+                 * Modify delivery charge form options.
+                 */
+                $deliveryChargeFormOptions = array_merge($deliveryChargeFormOptions, [
+                    'deliveryZone' => 2,
+                    'destinationCountries' => $destinationCountries,
+                    'defaultDestinationCountry' => $defaultDestinationCountry,
+                    'destinationStates' => $destinationStates,
+                    'defaultDestinationState' => $defaultDestinationState,
+                    'destinationCities' => $destinationCities,
+                    'defaultDestinationCity' => $defaultDestinationCity,
+                ]);
                 
                 break;
             
             case 1:
             default:
                 /**
+                 * Get destination location parameters.
+                 */
+                $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findBy(['status' =>
+                    1]);
+                $defaultDestinationCountry = $deliveryModeTimeline->getDestinationCountryId();
+                $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' => $defaultDestinationCountry->getId(), 'status' => 1]) : [];
+                foreach ($destinationStates as $key => $thisDestinationState) {
+                    if (in_array($thisDestinationState->getId(), [42, 43, 44, 45, 46, 47])) {
+                        unset($destinationStates[$key]);
+                    }
+                }
+                $defaultDestinationState = $deliveryModeTimeline->getDestinationStateId();
+                $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
+                $defaultDestinationCity = $deliveryModeTimeline->getDestinationCityId();
+                
+                /**
                  * Get source and destination zip code range.
                  */
                 $sourceZipCodeRange = $deliveryCharge->getSourceZipCode();
                 $destinationZipCodeRange = $deliveryCharge->getDestinationZipCode();
-                
+    
                 /**
-                 * Modifiy delivery charge form options.
+                 * Modify delivery charge form options.
                  */
-                $deliveryChargeFormOptions = array_merge(['deliveryZone' => 1, 'sourceZipCodeRange' => $sourceZipCodeRange,
-                    'destinationZipCodeRange' => $destinationZipCodeRange],
-                    $deliveryChargeFormOptions);
+                $deliveryChargeFormOptions = array_merge($deliveryChargeFormOptions, [
+                    'deliveryZone' => 1,
+                    'sourceZipCodeRange' => $sourceZipCodeRange,
+                    'destinationCountries' => $destinationCountries,
+                    'defaultDestinationCountry' => $defaultDestinationCountry,
+                    'destinationStates' => $destinationStates,
+                    'defaultDestinationState' => $defaultDestinationState,
+                    'destinationCities' => $destinationCities,
+                    'defaultDestinationCity' => $defaultDestinationCity,
+                    'destinationZipCodeRange' => $destinationZipCodeRange,
+                ]);
             
                 break;
         }
@@ -629,5 +900,23 @@ class DeliveryChargeController extends Controller
                 return $thisUnit;
             }
         });
+    }
+    
+    /**
+     * Gets location list.
+     *
+     * @param  array $locations
+     *
+     * @return array
+     */
+    private function getLocationList($locations)
+    {
+        $locationList = [];
+        
+        foreach ($locations as $thisLocation) {
+            $locationList[$thisLocation->getId()] = $thisLocation->getName();
+        }
+        
+        return $locationList;
     }
 }

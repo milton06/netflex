@@ -9,14 +9,17 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
-class DeliveryChargeNewTypeEventSubscriber implements EventSubscriberInterface
+class DeliveryChargeEditTypeEventSubscriber implements EventSubscriberInterface
 {
 	private $em;
+    private $deliveryZone;
     
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, $deliveryZone)
     {
         $this->em = $em;
+        $this->deliveryZone = $deliveryZone;
     }
     
     public static function getSubscribedEvents()
@@ -69,6 +72,24 @@ class DeliveryChargeNewTypeEventSubscriber implements EventSubscriberInterface
             'constraints' => [
                 new NotBlank([
                     'message' => 'Source city is required',
+                ]),
+            ],
+        ])
+        ->add('destinationCountryId', EntityType::class, [
+            'placeholder' => '-Select A Destination City-',
+            'class' => 'NetFlexLocationBundle:Country',
+            'query_builder' => function(EntityRepository $er) use($formData) {
+                if ($formData['destinationCountryId']) {
+                    return $er->createQueryBuilder('COUNTRY')
+                        ->where('COUNTRY.status = 1');
+                } else {
+                    return null;
+                }
+            },
+            'data' => ($formData['destinationCountryId']) ? $this->em->getReference('NetFlexLocationBundle:Country', [ 'id' => $formData['destinationCountryId'], 'status' => 1]) : null,
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'Destination country is required',
                 ]),
             ],
         ])

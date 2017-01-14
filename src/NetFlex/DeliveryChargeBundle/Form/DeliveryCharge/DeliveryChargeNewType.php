@@ -216,8 +216,30 @@ class DeliveryChargeNewType extends AbstractType
         ]);
         
         if (1 == $options['deliveryZone']) {
-            $builder->add('sourceZipCodeRange')
-            ->add('destinationZipCodeRange');
+            $builder->add('sourceZipCodeRange', null, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Zip code range is required'
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[\d]+\-[\d]+$/',
+                        'htmlPattern' => false,
+                        'message' => "Two zip codes, separated by '-'"
+                    ]),
+                ],
+            ])
+            ->add('destinationZipCodeRange', null, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Zip code range is required',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[\d]+\-[\d]+$/',
+                        'htmlPattern' => false,
+                        'message' => "Two zip codes, separated by '-'",
+                    ]),
+                ],
+            ]);
         }
         
         $builder->addEventSubscriber(new DeliveryChargeNewTypeEventSubscriber($this->em));

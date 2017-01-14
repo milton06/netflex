@@ -1,8 +1,3 @@
-/**
- *
- * @param string displayMode OFF/ON
- * @param dtring messageType ERROR/SUCCESS
- */
 var toggleServerMessage = function(displayMode, messageType, message, messageContainer) {
     if ("OFF" === displayMode) {
         $(messageContainer + ">span").empty();
@@ -27,9 +22,10 @@ var toggleServerMessage = function(displayMode, messageType, message, messageCon
         }
         
         $(messageContainer + ">span").html(message);
+        $(messageContainer).show();
         
         $("html, body").animate({
-            scrollTop: $(messageContainer).offset().top
+            scrollTop: $(".main-content").offset().top
         }, 2000);
     } else {
         //
@@ -58,7 +54,7 @@ var renderDeliveryChargeNewForm = function(event, element, targetContainer) {
         data: $(deliveryZoneForm).serialize(),
         dataType: "html",
         beforeSend: function (jqXHR, settings) {
-            //
+            toggleServerMessage("OFF", null, null, ".serverMessage");
         },
         error: function(jqXHR, textStatus, errorThrown) {
             //
@@ -83,7 +79,7 @@ var saveNewDeliveryCharge = function(event, element) {
         data: $(deliveryChargeForm).serialize(),
         dataType: "json",
         beforeSend: function (jqXHR, settings) {
-            toggleServerMessage("OFF");
+            toggleServerMessage("OFF", null, null, ".serverMessage");
             toggleErrorMessage("OFF");
         },
         error: function(jqXHR, textStatus, errorThrown) {
