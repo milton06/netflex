@@ -30,4 +30,55 @@ class CityRepository extends EntityRepository
 			->getQuery()
 			->getResult();
 	}
+	
+	public function findCityCount($cityName, $sortColumnFormatted, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('CITY')
+        ->from('NetFlexLocationBundle:City', 'CITY')
+        ->innerJoin('CITY.countryId', 'COUNTRY', 'WITH', $qb->expr()->eq('COUNTRY.status', 1))
+        ->innerJoin('CITY.stateId', 'STATE', 'WITH', $qb->expr()->andX(
+            $qb->expr()->notIn('STATE.id', [42, 43, 44, 45, 46, 47]),
+            $qb->expr()->eq('STATE.status', 1)
+        ));
+        
+        if ($cityName) {
+            $qb->andWhere($qb->expr()->like('CITY.name', ':cityName'))
+            ->setParameter('cityName', "%$cityName%");
+        }
+        
+        $qb->orderBy("CITY.$sortColumnFormatted", $sortOrderFormatted);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return count($resultSet);
+    }
+    
+    public function findCity($offset, $limit, $cityName, $sortColumnFormatted, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+    
+        $qb->select('CITY')
+        ->from('NetFlexLocationBundle:City', 'CITY')
+        ->innerJoin('CITY.countryId', 'COUNTRY', 'WITH', $qb->expr()->eq('COUNTRY.status', 1))
+        ->innerJoin('CITY.stateId', 'STATE', 'WITH', $qb->expr()->andX(
+            $qb->expr()->notIn('STATE.id', [42, 43, 44, 45, 46, 47]),
+            $qb->expr()->eq('STATE.status', 1)
+        ));
+    
+        if ($cityName) {
+            $qb->andWhere($qb->expr()->like('CITY.name', ':cityName'))
+            ->setParameter('cityName', "%$cityName%");
+        }
+    
+        $qb->orderBy("CITY.$sortColumnFormatted", $sortOrderFormatted);
+        
+        $qb->setFirstResult($offset)
+        ->setMaxResults($limit);
+    
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return $resultSet;
+    }
 }

@@ -3,6 +3,8 @@
 namespace NetFlex\LocationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use NetFlex\LocationBundle\Entity\Country;
 use NetFlex\LocationBundle\Entity\State;
 
@@ -11,6 +13,12 @@ use NetFlex\LocationBundle\Entity\State;
  *
  * @ORM\Table(name="cities")
  * @ORM\Entity(repositoryClass="NetFlex\LocationBundle\Repository\CityRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"countryId", "stateId", "name"},
+ *     message="An identical city already exists",
+ *     errorPath="name"
+ * )
  */
 class City
 {
@@ -26,12 +34,20 @@ class City
 	/**
 	 * @ORM\ManyToOne(targetEntity="Country", inversedBy="cities", cascade={"persist"})
 	 * @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     *
+     * @Assert\NotBlank(
+     *     message="Country is required"
+     * )
 	 */
 	private $countryId;
 	
 	/**
 	 * @ORM\ManyToOne(targetEntity="State", inversedBy="cities", cascade={"persist"})
 	 * @ORM\JoinColumn(name="state_id", referencedColumnName="id")
+     *
+     * @Assert\NotBlank(
+     *     message="State is required"
+     * )
 	 */
 	private $stateId;
 
@@ -39,6 +55,10 @@ class City
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Name is required"
+     * )
      */
     private $name;
 

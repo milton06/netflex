@@ -2,3 +2,13 @@ services:
 #    net_flex_location.example:
 #        class: NetFlex\LocationBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    app.form.type.city_edit:
+        class: NetFlex\LocationBundle\Form\City\CityEditType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }
+    app.form.type.city_new:
+        class: NetFlex\LocationBundle\Form\City\CityNewType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }

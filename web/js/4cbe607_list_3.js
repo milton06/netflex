@@ -172,4 +172,6 @@ $(window).load(function() {
     if (0 < $(".serverMessage").length) {
         setTimeout("$('.serverMessage').remove()", 3000);
     }
+    
+    $("#bulkRecordSelector, .singleRecordSelector").iCheck("uncheck");
 });
