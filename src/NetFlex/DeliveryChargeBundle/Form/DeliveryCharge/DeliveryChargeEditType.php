@@ -261,7 +261,7 @@ class DeliveryChargeEditType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'allow_extra_data' => true,
+            'allow_extra_fields' => true,
             'actionUrl' => null,
             'deliveryZones' => [],
             'deliveryZone' => null,
@@ -300,6 +300,6 @@ class DeliveryChargeEditType extends AbstractType
     
     public function getBlockPrefix()
     {
-        return 'delivery_charge_new';
+        return 'delivery_charge_edit';
     }
 }

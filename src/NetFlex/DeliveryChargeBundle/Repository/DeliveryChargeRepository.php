@@ -204,4 +204,113 @@ delivery_mode_id, dm.mode_name, dt.id delivery_timeline_id, dt.timeline_name, w.
         
         return $qb->getQuery()->getOneOrNullResult();
     }
+    
+    public function countDeliveryCharges($sourceCountryId, $sourceStateId, $sourceCityId, $destinationCountryId, $destinationStateId, $destinationCityId, $sortColumn, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('DC, DMT, DM, DT, SC, SS, SCT, DC1, DS, DCT')
+        ->from('NetFlexDeliveryChargeBundle:DeliveryCharge', 'DC')
+        ->innerJoin('DC.deliveryModeTimelineId', 'DMT')
+        ->leftJoin('DMT.sourceCountryId', 'SC', 'WITH', $qb->expr()->eq('SC.status', 1))
+        ->leftJoin('DMT.sourceStateId', 'SS', 'WITH', $qb->expr()->eq('SS.status', 1))
+        ->leftJoin('DMT.sourceCityId', 'SCT', 'WITH', $qb->expr()->eq('SCT.status', 1))
+        ->leftJoin('DMT.destinationCountryId', 'DC1', 'WITH', $qb->expr()->eq('DC1.status', 1))
+        ->leftJoin('DMT.destinationStateId', 'DS', 'WITH', $qb->expr()->eq('DS.status', 1))
+        ->leftJoin('DMT.destinationCityId', 'DCT', 'WITH', $qb->expr()->eq('DCT.status', 1))
+        ->leftJoin('DMT.deliveryModeId', 'DM', 'WITH', $qb->expr()->eq('DM.status', 1))
+        ->leftJoin('DMT.deliveryTimelineId', 'DT', 'WITH', $qb->expr()->eq('DT.status', 1));
+        
+        if ($sourceCountryId) {
+            $qb->andWhere($qb->expr()->eq('DMT.sourceCountryId', ':sourceCountryId'))
+            ->setParameter('sourceCountryId', $sourceCountryId);
+        }
+    
+        if ($sourceStateId) {
+            $qb->andWhere($qb->expr()->eq('DMT.sourceStateId', ':sourceStateId'))
+            ->setParameter('sourceStateId', $sourceStateId);
+        }
+    
+        if ($sourceCityId) {
+            $qb->andWhere($qb->expr()->eq('DMT.sourceCityId', ':sourceCityId'))
+            ->setParameter('sourceCityId', $sourceCityId);
+        }
+    
+        if ($destinationCountryId) {
+            $qb->andWhere($qb->expr()->eq('DMT.destinationCountryId', ':destinationCountryId'))
+            ->setParameter('destinationCountryId', $destinationCountryId);
+        }
+    
+        if ($destinationStateId) {
+            $qb->andWhere($qb->expr()->eq('DMT.destinationStateId', ':destinationStateId'))
+            ->setParameter('destinationStateId', $destinationStateId);
+        }
+    
+        if ($destinationCityId) {
+            $qb->andWhere($qb->expr()->eq('DMT.destinationCityId', ':destinationCityId'))
+            ->setParameter('destinationCityId', $destinationCityId);
+        }
+    
+        $qb->orderBy("DC.$sortColumn", $sortOrderFormatted);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return count($resultSet);
+    }
+    
+    public function findDeliveryCharges($offset, $limit, $sourceCountryId, $sourceStateId, $sourceCityId, $destinationCountryId, $destinationStateId, $destinationCityId, $sortColumn, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+    
+        $qb->select('DC, DMT, DM, DT, SC, SS, SCT, DC1, DS, DCT')
+            ->from('NetFlexDeliveryChargeBundle:DeliveryCharge', 'DC')
+            ->innerJoin('DC.deliveryModeTimelineId', 'DMT')
+            ->leftJoin('DMT.sourceCountryId', 'SC', 'WITH', $qb->expr()->eq('SC.status', 1))
+            ->leftJoin('DMT.sourceStateId', 'SS', 'WITH', $qb->expr()->eq('SS.status', 1))
+            ->leftJoin('DMT.sourceCityId', 'SCT', 'WITH', $qb->expr()->eq('SCT.status', 1))
+            ->leftJoin('DMT.destinationCountryId', 'DC1', 'WITH', $qb->expr()->eq('DC1.status', 1))
+            ->leftJoin('DMT.destinationStateId', 'DS', 'WITH', $qb->expr()->eq('DS.status', 1))
+            ->leftJoin('DMT.destinationCityId', 'DCT', 'WITH', $qb->expr()->eq('DCT.status', 1))
+            ->leftJoin('DMT.deliveryModeId', 'DM', 'WITH', $qb->expr()->eq('DM.status', 1))
+            ->leftJoin('DMT.deliveryTimelineId', 'DT', 'WITH', $qb->expr()->eq('DT.status', 1));
+    
+        if ($sourceCountryId) {
+            $qb->andWhere($qb->expr()->eq('DMT.sourceCountryId', ':sourceCountryId'))
+                ->setParameter('sourceCountryId', $sourceCountryId);
+        }
+    
+        if ($sourceStateId) {
+            $qb->andWhere($qb->expr()->eq('DMT.sourceStateId', ':sourceStateId'))
+                ->setParameter('sourceStateId', $sourceStateId);
+        }
+    
+        if ($sourceCityId) {
+            $qb->andWhere($qb->expr()->eq('DMT.sourceCityId', ':sourceCityId'))
+                ->setParameter('sourceCityId', $sourceCityId);
+        }
+    
+        if ($destinationCountryId) {
+            $qb->andWhere($qb->expr()->eq('DMT.destinationCountryId', ':destinationCountryId'))
+                ->setParameter('destinationCountryId', $destinationCountryId);
+        }
+    
+        if ($destinationStateId) {
+            $qb->andWhere($qb->expr()->eq('DMT.destinationStateId', ':destinationStateId'))
+                ->setParameter('destinationStateId', $destinationStateId);
+        }
+    
+        if ($destinationCityId) {
+            $qb->andWhere($qb->expr()->eq('DMT.destinationCityId', ':destinationCityId'))
+                ->setParameter('destinationCityId', $destinationCityId);
+        }
+        
+        $qb->orderBy("DC.$sortColumn", $sortOrderFormatted);
+        
+        $qb->setFirstResult($offset)
+        ->setMaxResults($limit);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return $resultSet;
+    }
 }

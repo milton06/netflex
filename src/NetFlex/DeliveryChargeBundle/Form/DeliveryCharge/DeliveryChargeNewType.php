@@ -249,7 +249,6 @@ class DeliveryChargeNewType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'allow_extra_data' => true,
             'actionUrl' => null,
             'deliveryZone' => null,
             'sourceCountries' => [],

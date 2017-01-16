@@ -3,7 +3,6 @@
 namespace NetFlex\DeliveryChargeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use NetFlex\LocationBundle\Entity\Country;
 use NetFlex\LocationBundle\Entity\State;
 use NetFlex\LocationBundle\Entity\City;
@@ -16,12 +15,6 @@ use NetFlex\DeliveryChargeBundle\Entity\Currency;
  *
  * @ORM\Table(name="delivery_charges")
  * @ORM\Entity(repositoryClass="NetFlex\DeliveryChargeBundle\Repository\DeliveryChargeRepository")
- *
- * @UniqueEntity(
- *     fields={"sourceCountryId", "sourceStateId", "sourceCityId", "destinationCountryId", "destinationStateId",
- *     "destinationCityId"},
- *     message="An identical delivery charge already exists"
- * )
  */
 class DeliveryCharge
 {

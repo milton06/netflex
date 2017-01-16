@@ -132,5 +132,15 @@ class DeliveryChargeEditTypeEventSubscriber implements EventSubscriberInterface
                 ]),
             ],
         ]);
+        
+        if (1 != $this->deliveryZone) {
+            if ($form->has('sourceZipCodeRange')) {
+                $form->remove('sourceZipCodeRange');
+            }
+            
+            if ($form->has('destinationZipCodeRange')) {
+                $form->remove('destinationZipCodeRange');
+            }
+        }
 	}
 }

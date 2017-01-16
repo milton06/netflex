@@ -1,0 +1,247 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% block pageTitle %}
+	{{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+	{{ parent() }}
+	{% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+		'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+		<link rel="stylesheet" href="{{ asset_url }}">
+	{% endstylesheets %}
+{% endblock %}
+{% block pageHeader %}
+	{{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(deliveryChargeSearchForm, { 'attr': { 'class': 'form-horizontal', 'role': 'form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_widget(deliveryChargeSearchForm.sourceCountryId, { 'id': 'sourceCountryId', 'required': false, 'attr': { 'class': 'form-control countrySelectors' } }) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(deliveryChargeSearchForm.sourceStateId, { 'id': 'sourceStateId', 'required': false, 'attr': { 'class': 'form-control stateSelectors' } }) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(deliveryChargeSearchForm.sourceCityId, { 'id': 'sourceCityId', 'required': false, 'attr': { 'class': 'form-control' } }) }}
+                    </div>
+					<div class="col-md-3">
+                        <a href="{{ url('dashboard_delivery_charge_new', { 'referer': referer }) }}" class="btn btn-sm btn-primary"><i class="clip-plus-circle-2"></i> Add New Delivery Charge</a>
+                    </div>
+                </div>
+                <div class="row"><div class="col-md-12">&nbsp;</div></div>
+                <div class="row">
+                    <div class="col-md-3">
+                        {{ form_widget(deliveryChargeSearchForm.destinationCountryId, { 'id': 'destinationCountryId', 'required': false, 'attr': { 'class': 'form-control countrySelectors' } }) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(deliveryChargeSearchForm.destinationStateId, { 'id': 'destinationStateId', 'required': false, 'attr': { 'class': 'form-control stateSelectors' } }) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_widget(deliveryChargeSearchForm.destinationCityId, { 'id': 'destinationCityId', 'required': false, 'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-filter"></i> Search</button>
+                        {% if app.session.has('sourceCountryId') %}
+                            <a href="{{ url('dashboard_delivery_charge_exit_search') }}" class="btn btn-sm btn-primary">Clear</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {{ form_end(deliveryChargeSearchForm) }}
+        </div>
+    </div>
+    <hr/>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-external-link-square"></i>
+					{{ listHeader }}
+				</div>
+				<div class="panel-body">
+                    {% if app.session.flashbag.peek('warning') %}
+                        <div class="alert alert-warning serverMessage">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {% for warning in app.session.flashbag.get('warning') %}
+                                <strong>Warning!</strong> {{ warning }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('error') %}
+                        <div class="alert alert-danger serverMessage">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-times-circle"></i>
+                            {% for error in app.session.flashbag.get('error') %}
+                                <strong>Oh snap!</strong> {{ error }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('success') %}
+                        <div class="alert alert-success serverMessage">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-check-circle"></i>
+                            {% for success in app.session.flashbag.get('success') %}
+                                <strong>Well done!</strong> {{ success }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th class="center">
+										<div class="checkbox-table">
+											<label>
+												<input type="checkbox" id="bulkRecordSelector" class="flat-grey">
+											</label>
+										</div>
+									</th>
+									<th>
+										{% if 'desc' == routeParameters.sortOrder %}
+											<a href="{{ url('dashboard_delivery_charge_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by delivery charge ID in ascending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+													<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% else %}
+											<a href="{{ url('dashboard_delivery_charge_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by delivery charge ID in descending order">
+												{% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+													<img src="{{ asset_url }}" alt="unsorted-icon">
+												{% endimage %}
+											</a>
+										{% endif %} ID
+									</th>
+									<th>Delivery Zone</th>
+									<th>Deliver From</th>
+									<th>Deliver To</th>
+                                    <th>Delivery Mode</th>
+                                    <th>Delivery Timeline</th>
+                                    <th>Status</th>
+									<th class="center">
+										Operations
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+							{% if deliveryCharges is empty %}
+								<tr>
+									<td colspan="9" class="center">{{ noRecordFoundText }}</td>
+								</tr>
+							{% else %}
+								{% for thisDeliveryCharge in deliveryCharges %}
+                                    {% set deliveryZone = '' %}
+                                    {% set deliveryZoneId = 0 %}
+                                    {% if ((thisDeliveryCharge.deliveryModeTimelineId.sourceCountryId == thisDeliveryCharge.deliveryModeTimelineId.destinationCountryId) and (thisDeliveryCharge.deliveryModeTimelineId.sourceStateId == thisDeliveryCharge.deliveryModeTimelineId.destinationStateId) and (thisDeliveryCharge.deliveryModeTimelineId.sourceCityId == thisDeliveryCharge.deliveryModeTimelineId.destinationCityId)) %}
+                                        {% set deliveryZone = 'Intracity' %}
+                                        {% set deliveryZoneId = 1 %}
+                                    {% elseif ((thisDeliveryCharge.deliveryModeTimelineId.sourceCountryId == thisDeliveryCharge.deliveryModeTimelineId.destinationCountryId) and (thisDeliveryCharge.deliveryModeTimelineId.sourceStateId == thisDeliveryCharge.deliveryModeTimelineId.destinationStateId) and (thisDeliveryCharge.deliveryModeTimelineId.sourceCityId != thisDeliveryCharge.deliveryModeTimelineId.destinationCityId)) %}
+                                        {% set deliveryZone = 'Intrastate' %}
+                                        {% set deliveryZoneId = 2 %}
+                                    {% elseif ((thisDeliveryCharge.deliveryModeTimelineId.sourceCountryId == thisDeliveryCharge.deliveryModeTimelineId.destinationCountryId) and (thisDeliveryCharge.deliveryModeTimelineId.sourceStateId != thisDeliveryCharge.deliveryModeTimelineId.destinationStateId) and (thisDeliveryCharge.deliveryModeTimelineId.sourceCityId != thisDeliveryCharge.deliveryModeTimelineId.destinationCityId)) %}
+                                        {% set deliveryZone = 'Interstate' %}
+                                        {% set deliveryZoneId = 3 %}
+                                    {% else %}
+                                        {% set deliveryZone = 'None' %}
+                                        {% set deliveryZoneId = 0 %}
+                                    {% endif %}
+									<tr>
+										<td class="center">
+											<div class="checkbox-table">
+												<label>
+													<input type="checkbox" value="{{ thisDeliveryCharge.id }}" class="flat-grey singleRecordSelector">
+												</label>
+											</div>
+										</td>
+										<td>{{ thisDeliveryCharge.id }}</td>
+										<td>{{ deliveryZone }}</td>
+										<td>
+                                            {% if ('Intracity' == deliveryZone) %}
+                                                {{ thisDeliveryCharge.deliveryModeTimelineId.sourceCityId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.sourceStateId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.sourceZipCode ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.sourceCountryId.name }}
+                                            {% elseif ('Intrastate' == deliveryZone) %}
+                                                {{ thisDeliveryCharge.deliveryModeTimelineId.sourceCityId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.sourceStateId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.sourceCountryId.name }}
+                                            {% elseif ('Interstate' == deliveryZone) %}
+                                                {{ thisDeliveryCharge.deliveryModeTimelineId.sourceCityId.name ~ ', ' ~  thisDeliveryCharge.deliveryModeTimelineId.sourceStateId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.sourceCountryId.name }}
+                                            {% else %}
+                                            {% endif %}
+                                        </td>
+										<td>
+                                            {% if ('Intracity' == deliveryZone) %}
+                                                {{ thisDeliveryCharge.deliveryModeTimelineId.destinationCityId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.destinationStateId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.destinationZipCode ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.destinationCountryId.name }}
+                                            {% elseif ('Intrastate' == deliveryZone) %}
+                                                {{ thisDeliveryCharge.deliveryModeTimelineId.destinationCityId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.destinationStateId.name ~ ', ' ~ thisDeliveryCharge.deliveryModeTimelineId.destinationCountryId.name }}
+                                            {% elseif ('Interstate' == deliveryZone) %}
+                                                {{ thisDeliveryCharge.deliveryModeTimelineId.destinationStateId.name ~ ', ' ~  thisDeliveryCharge.deliveryModeTimelineId.destinationCountryId.name }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ thisDeliveryCharge.deliveryModeTimelineId.deliveryModeId.modeName }}</td>
+                                        <td>{{ thisDeliveryCharge.deliveryModeTimelineId.deliveryTimelineId.timelineName }}</td>
+                                        <td>{{ (1 == thisDeliveryCharge.status) ? 'Active': 'Inactive' }}</td>
+										<td class="center">
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary">
+													<i class="fa fa-wrench"></i>
+													Operations
+												</button>
+												<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li>
+														<a href="{{ url('dashboard_delivery_charge_edit', { 'deliveryZoneId': deliveryZoneId, 'deliveryChargeId': thisDeliveryCharge.id, 'referer': referer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+													</li>
+                                                    {% if 1 == thisDeliveryCharge.status %}
+                                                        <li>
+                                                            <a href="{{ url('dashboard_delivery_charge_status_change', { 'changeStatusTo': 'deactivate', 'deliveryChargeId': thisDeliveryCharge.id, 'referer': referer }) }}"><i class="clip-cancel-circle-2"></i> Deactivate</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li>
+                                                            <a href="{{ url('dashboard_delivery_charge_status_change', { 'changeStatusTo': 'activate', 'deliveryChargeId': thisDeliveryCharge.id, 'referer': referer }) }}"><i class="	clip-checkmark-circle-2"></i> Activate</a>
+                                                        </li>
+                                                    {% endif %}
+												</ul>
+											</div>
+										</td>
+									</tr>
+								{% endfor %}
+							{% endif %}
+							</tbody>
+							<tfoot>
+							<tr>
+								<td colspan="3">
+									{% if deliveryCharges %}
+										<select name="bulkOperationSelector" id="bulkOperationSelector" class="form-control">
+                                            <option value="">-Select An Operation-</option>
+                                            <option value="1">Activate</option>
+                                            <option value="0">Deactivate</option>
+                                        </select>
+									{% endif %}
+								</td>
+								<td colspan="5" class="center">
+									{{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
+								</td>
+							</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block pageScripts %}
+	{{ parent() }}
+    <script>
+        var stateListFetchUrl = "{{ url('dashboard_delivery_charge_state_list') }}";
+        var cityListFetchUrl = "{{ url('dashboard_delivery_charge_city_list') }}";
+        var bulkStatusChangeUrl = "{{ url('dashboard_delivery_charge_bulk_status_change') }}";
+    </script>
+	{% javascripts
+		'@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+		'@NetFlexDashboardBundle/Resources/public/js/sweetalert.min.js'
+		'@NetFlexDeliveryChargeBundle/Resources/public/js/DeliveryCharge/list.js' %}
+		<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+

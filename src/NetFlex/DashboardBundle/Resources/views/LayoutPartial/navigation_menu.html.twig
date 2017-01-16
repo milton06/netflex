@@ -31,6 +31,25 @@
             <span class="title"> Orders </span>
         </a>
     </li>
+    <li class="{{ (currentRoute in ['dashboard_delivery_charge_list', 'dashboard_delivery_charge_new', 'dashboard_delivery_charge_edit']) ? 'active open' : '' }}">
+        <a href="javascript:void(0);">
+            <i class="clip-note"></i>
+            <span class="title"> Delivery Charge </span>
+            <i class="icon-arrow"></i>
+        </a>
+        <ul class="sub-menu">
+            <li class="{{ ('dashboard_delivery_charge_list' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('dashboard_delivery_charge_list') }}">
+                    Delivery Charge List
+                </a>
+            </li>
+            <li class="{{ ('dashboard_delivery_charge_new' == currentRoute) ? 'active open' : '' }}">
+                <a href="{{ url('dashboard_delivery_charge_new') }}">
+                    Add New Delivery Charge
+                </a>
+            </li>
+        </ul>
+    </li>
     <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'list_mail_templates', 'edit_mail_template']) ? 'active open' :
     '' }}">
         <a href="javascript:void(0);">

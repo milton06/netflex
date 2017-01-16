@@ -97,7 +97,9 @@ var saveNewDeliveryCharge = function(event, element) {
                     toggleServerMessage("ON", "ERROR", "You have some form errors. Please check below.", ".serverMessage");
                 }
             } else if ('success' === data.status) {
+                var editUrl = data.redirectTo;
                 
+                self.location.href = editUrl;
             } else {
                 //
             }

@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-10">
             {{ form_start(deliveryZoneTypeForm, { 'attr': { 'id': 'deliveryZoneTypeForm', 'novalidate': 'novalidate',
            'autocomplete': 'off' } }) }}
                 <div class="row form-group">
@@ -36,6 +36,11 @@
                     </div>
                 </div>
             {{ form_end(deliveryZoneTypeForm) }}
+        </div>
+        <div class="col-md-2">
+            <a href="{{ referer }}" class="btn btn-primary">
+                <i class="clip-arrow-left-2 "></i> Back
+            </a>
         </div>
     </div>
     <hr/>

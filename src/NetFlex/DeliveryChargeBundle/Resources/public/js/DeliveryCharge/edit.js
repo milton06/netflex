@@ -48,125 +48,133 @@ var changeDeliveryZone = function(event, element) {
     
     var selectedDeliveryZoneId = $(element).val();
     
-    $.ajax({
-        url: deliveryZoneChangeUrl,
-        type: "POST",
-        data: {
-            "selectedDeliveryZoneId": selectedDeliveryZoneId,
-        },
-        dataType: "json",
-        beforeSend: function (jqXHR, settings) {
-            toggleServerMessage("OFF", null, null, ".serverMessage");
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            //
-        },
-        success: function(data, textStatus, jqXHR) {
-            "use strict";
+    if (selectedDeliveryZoneId) {
+        $.ajax({
+            url: deliveryZoneChangeUrl,
+            type: "POST",
+            data: {
+                "selectedDeliveryZoneId": selectedDeliveryZoneId,
+            },
+            dataType: "json",
+            beforeSend: function (jqXHR, settings) {
+                toggleServerMessage("OFF", null, null, ".serverMessage");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+            success: function(data, textStatus, jqXHR) {
+                "use strict";
             
-            if ("success" === data.status) {
-                var countryList = data.destinationCountryList;
-                var defaultDestinationCountry = data.defaultDestinationCountry;
-                var stateList = data.destinationStateList;
-                var defaultDestinationState = data.defaultDestinationState;
-                var cityList = data.destinationCityList;
-                var defaultDestinationCity = data.defaultDestinationCity;
+                if ("success" === data.status) {
+                    var countryList = data.destinationCountryList;
+                    var defaultDestinationCountry = data.defaultDestinationCountry;
+                    var stateList = data.destinationStateList;
+                    var defaultDestinationState = data.defaultDestinationState;
+                    var cityList = data.destinationCityList;
+                    var defaultDestinationCity = data.defaultDestinationCity;
                 
-                var countryOptions = "<option value=''>-Select A Destination Country-</option>";
-                var stateOptions = "<option value=''>-Select A Destination State-</option>";
-                var cityOptions = "<option value=''>-Select A Destination City-</option>";
-    
-                $.each(countryList, function(key, value) {
-                    countryOptions += "<option value='" + key + "' " + ((key == defaultDestinationCountry) ? "selected='selected'" : "") + ">" + value + "</option>";
-                });
-                $.each(stateList, function(key, value) {
-                    stateOptions += "<option value='" + key + "' " + ((key == defaultDestinationState) ? "selected='selected'" : "") + ">" + value + "</option>";
-                });
-                $.each(cityList, function(key, value) {
-                    cityOptions += "<option value='" + key + "' " + ((key == defaultDestinationCity) ? "selected='selected'" : "") + ">" + value + "</option>";
-                });
-    
-                $("#destinationCountryId").empty().html(countryOptions);
-                $("#destinationStateId").empty().html(stateOptions);
-                $("#destinationCityId").empty().html(cityOptions);
+                    var countryOptions = "<option value=''>-Select A Destination Country-</option>";
+                    var stateOptions = "<option value=''>-Select A Destination State-</option>";
+                    var cityOptions = "<option value=''>-Select A Destination City-</option>";
                 
-                if (1 == selectedDeliveryZoneId) {
-                    if ("none" == $("#sourceZipCodeRange").parent().parent().parent().css("display")) {
-                        $("#sourceZipCodeRange").val("");
-                        $("#sourceZipCodeRange").parent().parent().parent().show();
+                    $.each(countryList, function(key, value) {
+                        countryOptions += "<option value='" + key + "' " + ((key == defaultDestinationCountry) ? "selected='selected'" : "") + ">" + value + "</option>";
+                    });
+                    $.each(stateList, function(key, value) {
+                        stateOptions += "<option value='" + key + "' " + ((key == defaultDestinationState) ? "selected='selected'" : "") + ">" + value + "</option>";
+                    });
+                    $.each(cityList, function(key, value) {
+                        cityOptions += "<option value='" + key + "' " + ((key == defaultDestinationCity) ? "selected='selected'" : "") + ">" + value + "</option>";
+                    });
+                
+                    $("#destinationCountryId").empty().html(countryOptions);
+                    $("#destinationStateId").empty().html(stateOptions);
+                    $("#destinationCityId").empty().html(cityOptions);
+                
+                    if (1 == selectedDeliveryZoneId) {
+                        if ("none" == $("#sourceZipCodeRange").parent().parent().parent().css("display")) {
+                            $("#sourceZipCodeRange").val("");
+                            $("#sourceZipCodeRange").parent().parent().parent().show();
+                        }
+                        if ("none" == $("#destinationZipCodeRange").parent().parent().parent().css("display")) {
+                            $("#destinationZipCodeRange").val("");
+                            $("#destinationZipCodeRange").parent().parent().parent().show();
+                        }
+                    } else {
+                        if ("block" == $("#sourceZipCodeRange").parent().parent().parent().css("display")) {
+                            $("#sourceZipCodeRange").val("");
+                            $("#sourceZipCodeRange").parent().parent().parent().hide();
+                        }
+                        if ("block" == $("#destinationZipCodeRange").parent().parent().parent().css("display")) {
+                            $("#destinationZipCodeRange").val("");
+                            $("#destinationZipCodeRange").parent().parent().parent().hide();
+                        }
                     }
-                    if ("none" == $("#destinationZipCodeRange").parent().parent().parent().css("display")) {
-                        $("#destinationZipCodeRange").val("");
-                        $("#destinationZipCodeRange").parent().parent().parent().show();
-                    }
-                } else {
-                    if ("block" == $("#sourceZipCodeRange").parent().parent().parent().css("display")) {
-                        $("#sourceZipCodeRange").val("");
-                        $("#sourceZipCodeRange").parent().parent().parent().hide();
-                    }
-                    if ("block" == $("#destinationZipCodeRange").parent().parent().parent().css("display")) {
-                        $("#destinationZipCodeRange").val("");
-                        $("#destinationZipCodeRange").parent().parent().parent().hide();
+                
+                    if (1 == selectedDeliveryZoneId || 2 == selectedDeliveryZoneId) {
+                        if (! $("#destinationCountryId").hasClass("countrySelectors")) {
+                            $("#destinationCountryId").addClass("countrySelectors");
+                        }
+                    } else {
+                        if ($("#destinationCountryId").hasClass("countrySelectors")) {
+                            $("#destinationCountryId").removeClass("countrySelectors");
+                        }
                     }
                 }
-                
-                if (1 == selectedDeliveryZoneId || 2 == selectedDeliveryZoneId) {
-                    if (! $("#destinationCountryId").hasClass("countrySelectors")) {
-                        $("#destinationCountryId").addClass("countrySelectors");
-                    }
-                } else {
-                    if ($("#destinationCountryId").hasClass("countrySelectors")) {
-                        $("#destinationCountryId").removeClass("countrySelectors");
-                    }
-                }
+            },
+            complete: function(jqXHR, textStatus) {
+                //
             }
-        },
-        complete: function(jqXHR, textStatus) {
-            //
-        }
-    });
+        });
+    }
 };
 
 var updateDeliveryCharge = function(event, element) {
     event.preventDefault();
     
-    var deliveryChargeForm = $(element).closest("form");
-    var deliveryChargeUpdateUrl = $(deliveryChargeForm).attr("action");
-    deliveryChargeUpdateUrl = deliveryChargeUpdateUrl.replace(9999999999, $("#deliveryZone").val());
+    if ($("#deliveryZone").val()) {
+        var deliveryChargeForm = $(element).closest("form");
+        var deliveryChargeUpdateUrl = $(deliveryChargeForm).attr("action");
+        deliveryChargeUpdateUrl = deliveryChargeUpdateUrl.replace(9999999999, $("#deliveryZone").val());
     
-    $.ajax({
-        url: deliveryChargeUpdateUrl,
-        type: "POST",
-        data: $(deliveryChargeForm).serialize(),
-        dataType: "json",
-        beforeSend: function (jqXHR, settings) {
-            toggleServerMessage("OFF", null, null, ".serverMessage");
-            toggleErrorMessage("OFF");
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            toggleServerMessage("ON", "ERROR", "Server error occurred", ".serverMessage");
-        },
-        success: function(data, textStatus, jqXHR) {
-            if ("failure" === data.status) {
-                if ("redundancyError" === data.reason) {
-                    toggleServerMessage("ON", "ERROR", data.redundancyError, ".serverMessage");
-                } else if ("validationError" === data.reason) {
-                    $.each(data.validationErrorList, function(key, value) {
-                        toggleErrorMessage("ON", key, value);
-                    });
+        $.ajax({
+            url: deliveryChargeUpdateUrl,
+            type: "POST",
+            data: $(deliveryChargeForm).serialize(),
+            dataType: "json",
+            beforeSend: function (jqXHR, settings) {
+                toggleServerMessage("OFF", null, null, ".serverMessage");
+                toggleErrorMessage("OFF");
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                toggleServerMessage("ON", "ERROR", "Server error occurred", ".serverMessage");
+            },
+            success: function(data, textStatus, jqXHR) {
+                if ("failure" === data.status) {
+                    if ("redundancyError" === data.reason) {
+                        toggleServerMessage("ON", "ERROR", data.redundancyError, ".serverMessage");
+                    } else if ("validationError" === data.reason) {
+                        $.each(data.validationErrorList, function(key, value) {
+                            toggleErrorMessage("ON", key, value);
+                        });
                     
-                    toggleServerMessage("ON", "ERROR", "You have some form errors. Please check below.", ".serverMessage");
-                }
-            } else if ('success' === data.status) {
+                        toggleServerMessage("ON", "ERROR", "You have some form errors. Please check below.", ".serverMessage");
+                    }
+                } else if ('success' === data.status) {
+                    var editUrl = data.redirectTo;
                 
-            } else {
+                    toggleServerMessage("ON", "SUCCESS", "Delivery charge has been updated successfully.", ".serverMessage");
+                
+                    setTimeout("self.location.href = '" + editUrl + "'", 3000);
+                } else {
+                    //
+                }
+            },
+            complete: function(jqXHR, textStatus) {
                 //
             }
-        },
-        complete: function(jqXHR, textStatus) {
-            //
-        }
-    });
+        });
+    }
 };
 
 $(document).ready(function() {
