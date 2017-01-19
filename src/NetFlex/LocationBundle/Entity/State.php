@@ -3,6 +3,8 @@
 namespace NetFlex\LocationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use NetFlex\LocationBundle\Entity\Country;
 use NetFlex\LocationBundle\Entity\City;
@@ -12,6 +14,12 @@ use NetFlex\LocationBundle\Entity\City;
  *
  * @ORM\Table(name="states")
  * @ORM\Entity(repositoryClass="NetFlex\LocationBundle\Repository\StateRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"countryId", "name"},
+ *     errorPath="name",
+ *     message="An identical state already exists"
+ * )
  */
 class State
 {
@@ -27,6 +35,10 @@ class State
 	/**
 	 * @ORM\ManyToOne(targetEntity="Country", inversedBy="states", cascade={"persist"})
 	 * @ORM\JoinColumn(name="country_id", referencedColumnName="id")
+     *
+     * @assert\NotBlank(
+     *     message="Country is required"
+     * )
 	 */
 	private $countryId;
 	
@@ -39,6 +51,10 @@ class State
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="State name is required"
+     * )
      */
     private $name;
 
@@ -207,27 +223,27 @@ class State
     }
 
     /**
-     * Set cratedOn
+     * Set createdOn
      *
-     * @param \DateTime $cratedOn
+     * @param \DateTime $createdOn
      *
      * @return State
      */
-    public function setCratedOn($cratedOn)
+    public function setCreatedOn($createdOn)
     {
-        $this->cratedOn = $cratedOn;
+        $this->createdOn = $createdOn;
 
         return $this;
     }
 
     /**
-     * Get cratedOn
+     * Get createdOn
      *
      * @return \DateTime
      */
-    public function getCratedOn()
+    public function getCreatedOn()
     {
-        return $this->cratedOn;
+        return $this->createdOn;
     }
 
     /**

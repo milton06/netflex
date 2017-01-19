@@ -1,0 +1,271 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme searchForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-8">
+            {{ form_start(searchForm) }}
+                <div class="row form-group">
+                    {{ form_label(searchForm.stateName, 'Search By State Name', { 'label_attr': { 'for': 'stateName',
+                        'class': 'col-md-4' } }) }}
+                    <div class="col-md-4">
+                        {{ form_widget(searchForm.stateName, { 'id': 'stateName', 'attr': { 'class': 'form-control' } }) }}
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="fa fa-filter"></i> Search
+                        </button>
+                        {% if app.session.has('stateName') %}
+                            &nbsp;&nbsp;&nbsp;
+                            <a href="{{ url('dashboard_state_exit_search') }}" class="btn btn-sm btn-primary">
+                                <i class="clip-close-4"></i> Clear
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {{ form_end(searchForm) }}
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url('dashboard_state_new', { 'referer': referer }) }}" class="btn btn-sm btn-primary">
+                <i class="clip-plus-circle-2"></i> Add New State
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-external-link-square"></i>
+                    {{ listHeader }}
+                </div>
+                <div class="panel-body">
+                    {% if app.session.flashbag.peek('warning') %}
+                        <div class="alert alert-warning serverMessage">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-exclamation-triangle"></i>
+                            {% for warning in app.session.flashbag.get('warning') %}
+                                <strong>Warning!</strong> {{ warning }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('error') %}
+                        <div class="alert alert-danger serverMessage">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-times-circle"></i>
+                            {% for error in app.session.flashbag.get('error') %}
+                                <strong>Oh snap!</strong> {{ error }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if app.session.flashbag.peek('success') %}
+                        <div class="alert alert-success serverMessage">
+                            <button data-dismiss="alert" class="close">×</button>
+                            <i class="fa fa-check-circle"></i>
+                            {% for success in app.session.flashbag.get('success') %}
+                                <strong>Well done!</strong> {{ success }}.
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="center">
+                                        <div class="checkbox-table">
+                                            <label>
+                                                <input type="checkbox" id="bulkRecordSelector" class="flat-grey">
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        {% if 'id' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by state ID in descending
+                                             order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by state ID in
+                                                ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by state ID in
+                                                descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} ID
+                                    </th>
+                                    <th>
+                                        {% if 'country' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'country', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by country in descending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'country', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by country in ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'country', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by country in descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} Country
+                                    </th>
+                                    <th>
+                                        {% if 'name' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'name', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by name in descending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'name', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by name in ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'name', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by name in descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} Name
+                                    </th>
+                                    <th>
+                                        {% if 'status' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'status', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by status in descending order">
+                                                {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                    <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                {% endimage %}
+                                            </a>
+                                        {% else %}
+                                            {% if 'desc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'status', 'sortOrder': 'asc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by status in ascending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_asc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_state_list', { 'page': routeParameters.page, 'sortColumn': 'status', 'sortOrder': 'desc' }) }}" class="tooltips" data-placement="top" data-original-title="Sort by status in descending order">
+                                                    {% image '@NetFlexDashboardBundle/Resources/public/images/sort_desc.png' %}
+                                                        <img src="{{ asset_url }}" alt="unsorted-icon">
+                                                    {% endimage %}
+                                                </a>
+                                            {% endif %}
+                                        {% endif %} Status
+                                    </th>
+                                    <th class="center">
+                                        Operations
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% if states is empty %}
+                                <tr>
+                                    <td colspan="6" class="center">{{ noRecordFoundText }}</td>
+                                </tr>
+                            {% else %}
+                                {% for state in states %}
+                                    <tr>
+                                        <td class="center">
+                                            <div class="checkbox-table">
+                                                <label>
+                                                    <input type="checkbox" value="{{ state.id }}" class="flat-grey singleRecordSelector">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>{{ state.id }}</td>
+                                        <td>{{ state.countryId.name }}</td>
+                                        <td>{{ state.name }}</td>
+                                        <td>{{ (0 == state.status) ? 'Inactive': 'Active' }}</td>
+                                        <td class="center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary">
+                                                    <i class="fa fa-wrench"></i>
+                                                    Operations
+                                                </button>
+                                                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="{{ url('dashboard_state_edit', { 'stateId': state.id, 'referer': referer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+                                                    </li>
+                                                    {% if 1 == state.status %}
+                                                        <li>
+                                                            <a href="{{ url('dashboard_state_change_status', { 'changeStatusTo': 'deactivate', 'stateId': state.id, 'referer': referer }) }}"><i class="clip-cancel-circle-2"></i> Deactivate</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li>
+                                                            <a href="{{ url('dashboard_state_change_status', { 'changeStatusTo': 'activate', 'stateId': state.id, 'referer': referer }) }}"><i class="	clip-checkmark-circle-2"></i> Activate</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        {% if states %}
+                                            <select name="bulkOperationSelector" id="bulkOperationSelector" class="form-control">
+                                                <option value="">-Select An Operation-</option>
+                                                <option value="1">Activate</option>
+                                                <option value="0">Deactivate</option>
+                                            </select>
+                                        {% endif %}
+                                    </td>
+                                    <td colspan="3" class="center">
+                                        {{ include('NetFlexDashboardBundle:LayoutPartial:pagination.html.twig') }}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var bulkStatusChangeUrl = "{{ url('dashboard_state_bulk_status_change') }}";
+    </script>
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+        '@NetFlexLocationBundle/Resources/public/js/State/list.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

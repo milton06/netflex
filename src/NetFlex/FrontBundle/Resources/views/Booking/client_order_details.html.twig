@@ -145,7 +145,7 @@
 	                                <ul class="trackbar clearfix">
 		                                {% for i in 1..orderDetails.orderStatus %}
 			                                <li class="approveLine">
-				                                <a href="javascript:void(0);" class="redDotOne" data-toggle="tooltip" data-placement="bottom"  title="{{ trackStatusList[i] }}"></a>
+				                                <a href="javascript:void(0);" class="redDotOne{{ (loop.last) ? ' sucess': '' }}" data-toggle="tooltip" data-placement="bottom"  title="{{ trackStatusList[i] }}"></a>
 			                                </li>
 		                                {% endfor %}
 	                                </ul>

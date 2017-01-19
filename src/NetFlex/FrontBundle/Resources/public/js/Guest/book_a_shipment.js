@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
 			var contactNumbers = ["pickup-contact-number", "billing-contact-number", "shipping-contact-number"];
 			var others = ["pickup-address-line-1", "pickup-address-line-2", "pickup-land-mark", "billing-address-line-1", "billing-address-line-2", "billing-land-mark", "shipping-address-line-1", "shipping-address-line-2", "shipping-land-mark"];
 			
-			if (jQuery(this).val()) {console.log(thisElementId);
+			if (jQuery(this).val()) {
 				if ((-1 !== names.indexOf(thisElementId)) && (! /^[a-z]+$/i.test(jQuery(this).val()))) {console.log('name error');
 					++errorCount;
 					
@@ -335,6 +335,8 @@ jQuery(document).ready(function() {
 			var itemPriceUnit = jQuery("#item-price-unit").val();
 			
 			var riskType = (jQuery(".risk-types:checked").val()) ? jQuery(".risk-types:checked").val() : 'own';
+
+            var codChoice = jQuery(".cod-choice:checked").val();
 			
 			jQuery.ajax({
 				url: checkDeliverabilityUrl,
@@ -357,6 +359,7 @@ jQuery(document).ready(function() {
 					"itemInvoiceValue": itemInvoiceValue,
 					"itemPriceUnit": itemPriceUnit,
 					"riskType": riskType,
+                    "codChoice": codChoice
 				},
 				beforeSend: function() {
 					jQuery(".delivery-mode-error").find("span").remove();
@@ -379,7 +382,7 @@ jQuery(document).ready(function() {
 						jQuery("#item-accountable-extra-weight").val(deliveryParams.itemAccountableExtraWeight);
 						jQuery("#order-base-charge").val(deliveryParams.orderBaseCharge);
 						jQuery("#order-extra-weight-levied-charge").val(deliveryParams.orderExtraWeightLeviedCharge);
-						jQuery("#order-cod-payment-added-charge").val(deliveryParams.orderCodPaymentAddedCharge);
+                        jQuery("#order-cod-payment-added-charge").val(deliveryParams.orderCodPaymentAddedCharge);
 						jQuery("#order-fuel-surcharge-added-charge").val(deliveryParams.orderFuelSurchargeAddedCharge);
 						jQuery("#order-service-tax-added-charge").val(deliveryParams.orderServiceTaxAddedCharge);
 						jQuery("#order-carrier-risk-added-charge").val(deliveryParams.orderCarrierRiskAddedCharge);
@@ -447,34 +450,40 @@ jQuery(document).ready(function() {
 								}).tooltip('show');
 							});
 						} else if ('success' === response.status) {
-							var orderId = response.orderId;
-							
-							jQuery.ajax({
-								url: paymentUrl,
-								type: "post",
-								dataType: "html",
-								data: {
-									'orderId': orderId
-								},
-								beforeSend: function() {
-									jQuery("#book-a-shipment-button").addClass("disabled");
-								},
-								error: function() {
-									jQuery(".server-fault").show();
-								},
-								success: function(response) {
-									jQuery("#payment").empty().html(response);
-									
-									jQuery("#tab-shipment-addresses > a").removeClass("selected");
-									jQuery("#tab-shipment-addresses > a").addClass("inactiveLink");
-									jQuery("#tab-payment > a").removeClass("inactiveLink");
-									jQuery("#tab-payment > a").addClass("selected");
-									jQuery("#usual1 ul").idTabs("tab-payment");
-								},
-								complete: function() {
-									jQuery("#book-a-shipment-button").removeClass("disabled");
-								}
-							});
+						    if ('cod' === response.paymentType) {
+                                self.location.href = orderConfirmationUrl;
+                            } else if ('online' === response.paymentType) {
+                                var orderId = response.orderId;
+
+                                jQuery.ajax({
+                                    url: paymentUrl,
+                                    type: "post",
+                                    dataType: "html",
+                                    data: {
+                                        'orderId': orderId
+                                    },
+                                    beforeSend: function() {
+                                        jQuery("#book-a-shipment-button").addClass("disabled");
+                                    },
+                                    error: function() {
+                                        jQuery(".server-fault").show();
+                                    },
+                                    success: function(response) {
+                                        jQuery("#payment").empty().html(response);
+
+                                        jQuery("#tab-shipment-addresses > a").removeClass("selected");
+                                        jQuery("#tab-shipment-addresses > a").addClass("inactiveLink");
+                                        jQuery("#tab-payment > a").removeClass("inactiveLink");
+                                        jQuery("#tab-payment > a").addClass("selected");
+                                        jQuery("#usual1 ul").idTabs("tab-payment");
+                                    },
+                                    complete: function() {
+                                        jQuery("#book-a-shipment-button").removeClass("disabled");
+                                    }
+                                });
+                            } else {
+						        //
+                            }
 						} else {
 							//
 						}

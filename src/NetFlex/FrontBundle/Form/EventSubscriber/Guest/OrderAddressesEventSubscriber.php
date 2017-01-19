@@ -19,5 +19,9 @@ class OrderAddressesEventSubscriber implements EventSubscriberInterface
 	{
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();
+        
+        $form->add('shippingCityId', null, [
+            'data' => $formData['shippingCityId'],
+        ]);
 	}
 }

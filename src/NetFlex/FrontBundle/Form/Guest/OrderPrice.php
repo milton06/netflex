@@ -19,6 +19,17 @@ class OrderPrice extends AbstractType
 				'choices' => $options['currencyUnits'],
 				'data' => $options['defaultCurrencyUnit'],
 			])
+            ->add('codCoice', ChoiceType::class, [
+                'placeholder' => false,
+                'choices' => [
+                    'No' => '0',
+                    'Yes' => '1',
+                ],
+                'data' => 1,
+                'expanded' => true,
+                'multiple' => false,
+                'mapped' => false,
+            ])
 			->add('riskType', ChoiceType::class, [
 				'expanded' => true,
 				'choices' => $options['riskTypes'],
@@ -27,6 +38,7 @@ class OrderPrice extends AbstractType
 			])
 			->add('orderBaseCharge', HiddenType::class)
 			->add('orderExtraWeightLeviedCharge', HiddenType::class)
+            ->add('orderCodPaymentAddedCharge', HiddenType::class)
 			->add('orderFuelSurchargeAddedCharge', HiddenType::class)
 			->add('orderServiceTaxAddedCharge', HiddenType::class)
 			->add('orderCarrierRiskAddedCharge', HiddenType::class);

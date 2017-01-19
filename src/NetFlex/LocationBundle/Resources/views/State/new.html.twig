@@ -1,0 +1,83 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme form 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} :: {{ pageTitle }}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    {% if app.session.flashbag.peek('warning') %}
+        <div class="alert alert-warning serverMessage">
+            <button data-dismiss="alert" class="close">×</button>
+            <i class="fa fa-exclamation-triangle"></i>
+            {% for warning in app.session.flashbag.get('warning') %}
+                <strong>Warning!</strong> {{ warning }}.
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if app.session.flashbag.peek('error') %}
+        <div class="alert alert-danger serverMessage">
+            <button data-dismiss="alert" class="close">×</button>
+            <i class="fa fa-times-circle"></i>
+            {% for error in app.session.flashbag.get('error') %}
+                <strong>Oh snap!</strong> {{ error }}.
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if app.session.flashbag.peek('success') %}
+        <div class="alert alert-success serverMessage">
+            <button data-dismiss="alert" class="close">×</button>
+            <i class="fa fa-check-circle"></i>
+            {% for success in app.session.flashbag.get('success') %}
+                <strong>Well done!</strong> {{ success }}.
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form, { 'attr': { 'id': 'stateEditForm', 'role': 'form', 'novalidate': 'novalidate',
+                'autocomplete': 'off' }
+            }) }}
+                <div class="row form-group{{ (0 < form.countryId.vars.errors|length) ? ' has-error': '' }}">
+                    {{ form_label(form.countryId, 'Country', { 'label_attr': { 'for': 'countryId', 'class':
+                        'col-md-4' } }) }}
+                    <div class="col-md-8">
+                        {{ form_widget(form.countryId, { 'id': 'countryId', 'required': false, 'attr': { 'class':
+                            'form-control' }
+                        }) }}
+                        {{ form_errors(form.countryId) }}
+                    </div>
+                </div>
+                <div class="row form-group{{ (0 < form.name.vars.errors|length) ? ' has-error': '' }}">
+                    {{ form_label(form.name, 'Name', { 'label_attr': { 'for': 'name', 'class':
+                        'col-md-4' } }) }}
+                    <div class="col-md-8">
+                        {{ form_widget(form.name, { 'id': 'name', 'required': false, 'attr': { 'class':
+                            'form-control' }
+                        }) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">&nbsp;</div>
+                    <div class="col-md-8">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="{{ referer }}" class="btn btn-primary">
+                            <i class="clip-arrow-left-2 "></i> Back
+                        </a>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    {% javascripts '@NetFlexLocationBundle/Resources/public/js/State/new.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

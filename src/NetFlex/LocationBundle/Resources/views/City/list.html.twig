@@ -5,8 +5,7 @@
 {% endblock %}
 {% block pageStyles %}
     {{ parent() }}
-    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
-        'bundles/netflexdashboard/css/sweetalert.css' filter='cssrewrite' %}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css' filter='cssrewrite' %}
         <link rel="stylesheet" href="{{ asset_url }}">
     {% endstylesheets %}
 {% endblock %}

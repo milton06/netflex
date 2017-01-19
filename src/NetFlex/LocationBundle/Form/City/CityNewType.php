@@ -32,7 +32,7 @@ class CityNewType extends AbstractType
                 return $er->createQueryBuilder('COUNTRY')
                 ->where('COUNTRY.status = 1');
             },
-            'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1]),
+            'data' => $this->em->getReference('NetFlexLocationBundle:Country', ['id' => 1, 'status' => 1]),
         ])
         ->add('stateId', EntityType::class, [
             'placeholder' => '-Select A State-',
@@ -43,7 +43,8 @@ class CityNewType extends AbstractType
                 ->andWhere('STATE.id not in (42, 43, 44, 45, 46, 47)')
                 ->andWhere('STATE.status = 1');
             },
-            'data' => $this->em->getReference('NetFlexLocationBundle:State', ['countryId' => 1, 'id' => 41]),
+            'data' => $this->em->getReference('NetFlexLocationBundle:State', ['countryId' => 1, 'id' => 41, 'status'
+                => 1]),
         ])
         ->add('name');
         

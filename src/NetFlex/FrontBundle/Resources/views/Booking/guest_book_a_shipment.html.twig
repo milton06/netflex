@@ -158,7 +158,7 @@
                             {{ form_widget(orderForm.orderItem.itemCalculatedWeightUnit, { 'id': 'item-calculated-weight-unit' }) }}
                             {{ form_widget(orderForm.orderItem.itemAccountableExtraWeight, { 'id': 'item-accountable-extra-weight' }) }}
                             {{ form_widget(orderForm.deliveryChargeId, { 'id': 'delivery-charge-id' }) }}
-                            <div class="formBlk1 clearfix">
+                        <div class="formBlk1 clearfix">
                             <div class="col-lg-10">
                                 <h6 class="type">Invoice Value  :</h6>
                                 <div class="row">
@@ -169,7 +169,26 @@
                                 </div>
                             </div>
                         </div>
-                            <div id="risk-type-container" class="formBlk1 clearfix" style="display: none">
+                        <div class="formBlk1 clearfix" >
+                            <div class="col-lg-12">
+                                <h6 class="type1">COD  :</h6>
+                                <div class="row">
+                                    <ul class="stylecheckbox">
+                                        <li>
+                                            {{ form_widget(orderForm.orderPrice.codCoice.0, { 'id': 'e-option', 'attr': { 'class': 'cod-choice' } }) }}
+                                            <label for="e-option">{{ orderForm.orderPrice.codCoice.0.vars.label }}</label>
+                                            <div class="check"><div class="inside"></div></div>
+                                        </li>
+                                        <li>
+                                            {{ form_widget(orderForm.orderPrice.codCoice.1, { 'id': 'f-option', 'attr': { 'class': 'cod-choice' } }) }}
+                                            <label for="f-option">{{ orderForm.orderPrice.codCoice.1.vars.label }}</label>
+                                            <div class="check"><div class="inside"></div></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="risk-type-container" class="formBlk1 clearfix" style="display: none">
                             <div class="col-lg-12">
                                 <h6 class="type1">Risk Charge  :</h6>
                                 <div class="row">
@@ -195,6 +214,7 @@
                             </div>
                             {{ form_widget(orderForm.orderPrice.orderBaseCharge, { 'id': 'order-base-charge' }) }}
                             {{ form_widget(orderForm.orderPrice.orderExtraWeightLeviedCharge, { 'id': 'order-extra-weight-levied-charge' }) }}
+                            {{ form_widget(orderForm.orderPrice.orderCodPaymentAddedCharge, { 'id': 'order-cod-payment-added-charge' }) }}
                             {{ form_widget(orderForm.orderPrice.orderFuelSurchargeAddedCharge, { 'id': 'order-fuel-surcharge-added-charge' }) }}
                             {{ form_widget(orderForm.orderPrice.orderServiceTaxAddedCharge, { 'id': 'order-service-tax-added-charge' }) }}
                             {{ form_widget(orderForm.orderPrice.orderCarrierRiskAddedCharge, { 'id': 'order-carrier-risk-added-charge' }) }}
@@ -292,6 +312,7 @@
         var checkDeliverabilityUrl = "{{ url('guest_book_a_shipment_check_deliverability') }}";
         var bookShipmentUrl = "{{ url('guest_book_a_shipment_place_order') }}";
         var paymentUrl = "{{ url('guest_book_a_shipment_payment') }}";
+        var orderConfirmationUrl = "{{ url('guest_order_confirmation') }}";
     </script>
     {% javascripts '@NetFlexFrontBundle/Resources/public/js/idTabs.js'
         '@NetFlexFrontBundle/Resources/public/js/Guest/book_a_shipment.js' %}

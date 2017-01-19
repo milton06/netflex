@@ -50,4 +50,49 @@ class StateRepository extends EntityRepository
 			->getQuery()
 			->getOneOrNullResult();
 	}
+    
+    public function findStateCount($stateName, $sortColumnFormatted, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('STATE')
+        ->from('NetFlexLocationBundle:State', 'STATE')
+        ->innerJoin('STATE.countryId', 'COUNTRY', 'WITH', $qb->expr()->eq('COUNTRY.status', 1))
+        ->where( $qb->expr()->notIn('STATE.id', [42, 43, 44, 45, 46, 47]));
+        
+        if ($stateName) {
+            $qb->andWhere($qb->expr()->like('STATE.name', ':stateName'))
+            ->setParameter('stateName', "%$stateName%");
+        }
+        
+        $qb->orderBy("STATE.$sortColumnFormatted", $sortOrderFormatted);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return count($resultSet);
+    }
+    
+    public function findState($offset, $limit, $stateName, $sortColumnFormatted, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+    
+        $qb->select('STATE')
+            ->from('NetFlexLocationBundle:State', 'STATE')
+            ->innerJoin('STATE.countryId', 'COUNTRY', 'WITH', $qb->expr()->eq('COUNTRY.status', 1))
+            ->where( $qb->expr()->notIn('STATE.id', [42, 43, 44, 45, 46, 47]));
+    
+        if ($stateName) {
+            $qb->andWhere($qb->expr()->like('STATE.name', ':stateName'))
+                ->setParameter('stateName', "%$stateName%");
+        }
+    
+        $qb->orderBy("STATE.$sortColumnFormatted", $sortOrderFormatted);
+        
+        $qb->setFirstResult($offset)
+        ->setMaxResults($limit);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return $resultSet;
+    }
 }

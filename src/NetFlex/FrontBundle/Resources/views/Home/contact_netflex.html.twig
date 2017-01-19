@@ -29,27 +29,48 @@
 {% block pageContent %}
     <div class="container">
         <div class="tabform clearfix">
-            <div class="shipLeft clearfix" style="min-height:300px">
-                <h2>{{ pageHeader }}</h2>
-                {% if app.session.flashbag.peek('success') %}
-                    {% for success in app.session.flashbag.get('success') %}
-                        <span class="succMsg">{{ success }}</span>
-                    {% endfor %}
-                {% endif %}
-                {{ form_start(contactForm, { 'attr': { 'id': 'contactForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
-                    {{ form_widget(contactForm.name, { 'id': 'contacteeName', 'attr': { 'placeholder': 'Name' } }) }}
-                    {{ form_errors(contactForm.name) }}
-                    {{ form_widget(contactForm.email, { 'id': 'contacteeEmail', 'attr': { 'placeholder': 'Email' } }) }}
-                    {{ form_errors(contactForm.name) }}
-                    {{ form_widget(contactForm.message, { 'id': 'contacteeMessage', 'attr': { 'placeholder': 'Message', 'rows': 8, 'cols': 29 } }) }}
-                    {{ form_errors(contactForm.message) }}
-                    <div class="formBlk1-1 clearfix">
-                        <div class="col-lg-12">
-                            <a id="contactButton" href="javascript:void(0);" style="float: left; margin-top:9px; margin-left:20%">Submit</a>
-                        </div>
-                    </div>
-                {{ form_end(contactForm) }}
-            </div>
+           <div class="row clearfix">
+               <div class="col-md-6">
+                   <div class="shipLeft clearfix contact-forms">
+                       <h2>{{ pageHeader }}</h2>
+                       {% if app.session.flashbag.peek('success') %}
+                           {% for success in app.session.flashbag.get('success') %}
+                               <span class="succMsg">{{ success }}</span>
+                           {% endfor %}
+                       {% endif %}
+                       {{ form_start(contactForm, { 'attr': { 'id': 'contactForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                       {{ form_widget(contactForm.name, { 'id': 'contacteeName', 'attr': { 'placeholder': 'Name' } }) }}
+                       {{ form_errors(contactForm.name) }}
+                       {{ form_widget(contactForm.email, { 'id': 'contacteeEmail', 'attr': { 'placeholder': 'Email' } }) }}
+                       {{ form_errors(contactForm.name) }}
+                       {{ form_widget(contactForm.message, { 'id': 'contacteeMessage', 'attr': { 'placeholder': 'Message', 'rows': 8, 'cols': 29 } }) }}
+                       {{ form_errors(contactForm.message) }}
+                       <div class="formBlk1-1 clearfix">
+                           <div class="col-lg-12">
+                               <a id="contactButton" href="javascript:void(0);" style="float: left; margin-top:9px; margin-left:20%">Submit</a>
+                           </div>
+                       </div>
+                       {{ form_end(contactForm) }}
+                   </div>
+               </div>
+               <div class="col-md-6">
+                   <div class="g-map-area">
+                       <div class="address-info">
+                           <h3>Netflex Logistics Pvt Ltd</h3>
+                           <h4>Block-GPE2/4, Sector-5, Salt Lake, Kolkata, 700091   </h4>
+                           <div class="callmail">
+                               <ul>
+                                   <li class="call">CALL: <span>9830448289</span></li>
+                                   <li class="mail"><a href="javascript:void(0);">support@netflexlogistics.in</a></li>
+                               </ul>
+                           </div>
+                       </div>
+                       <div class="location-area">
+                           
+                       </div>
+                   </div>
+               </div>
+           </div>
         </div>
     </div>
     {% block footer %}

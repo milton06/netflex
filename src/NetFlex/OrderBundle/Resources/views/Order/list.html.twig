@@ -325,11 +325,14 @@
 													<li>
 														<a href="{{ url('delete_order', { 'order_id': thisOrder.id, 'allRouteParameters': allRouteParameters, 'selectedRecordCount': 1, 'totalRecordOnPage': orders|length }) }}" class="delete-buttons" ><i class="fa fa-trash-o"></i> Delete</a>
 													</li>
-                                                    {% if thisOrder.userId %}
+                                                    {#{% if thisOrder.userId %}
                                                         <li>
                                                             <a href="{{ url('edit_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
                                                         </li>
-                                                    {% endif %}
+                                                    {% endif %}#}
+													<li>
+														<a href="{{ url('edit_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-pencil"></i> Edit</a>
+													</li>
 													<li>
 														<a href="{{ url('view_order', { 'id': thisOrder.id, 'ref': referrer }) }}"><i class="fa fa-eye"></i> View</a>
 													</li>

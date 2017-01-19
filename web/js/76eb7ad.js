@@ -258,13 +258,13 @@ jQuery(document).ready(function() {
 					cityOptions += "<option value='" + key + "' " + ((0 === i++) ? "selected='selected'" : "") + ">" + value + "</option>";
 				});
 				
-				jQuery("#pickup-country").val(countryId);
-				
 				jQuery(element).parent().parent().parent().next(".col-md-3").find(".cd-state-selectors").empty().html(stateOptions);
 				if ('cd-source-country' == jQuery(element).attr("id")) {
+                    jQuery("#pickup-country").val(countryId);
 					jQuery("#pickup-state").empty().html(stateOptions);
 				}
 				if ('cd-destination-country' == jQuery(element).attr("id")) {
+                    jQuery("#shipping-country").val(countryId);
 					jQuery("#shipping-state").empty().html(stateOptions);
 				}
 				
@@ -301,14 +301,23 @@ jQuery(document).ready(function() {
 				
 				jQuery(element).parent().parent().parent().next(".col-md-3").find(".cd-city-selectors").empty().html(cityOptions);
 				if ('cd-source-state' == jQuery(element).attr("id")) {
+                    jQuery("#pickup-state").val(stateId);
 					jQuery("#pickup-city").empty().html(cityOptions);
 				}
 				if ('cd-destination-state' == jQuery(element).attr("id")) {
+                    jQuery("#shipping-state").val(stateId);
 					jQuery("#shipping-city").empty().html(cityOptions);
 				}
 			}
 		});
 	});
+
+    jQuery("#cd-source-city").on("change", function() {
+        jQuery("#pickup-city").val($(this).val());
+    });
+    jQuery("#cd-destination-city").on("change", function() {
+        jQuery("#shipping-city").val($(this).val());
+    });
 	
 	jQuery("#item-invoice-value").on("input", function() {
 		var itemInvoiceValue = jQuery(this).val();

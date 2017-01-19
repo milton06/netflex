@@ -290,14 +290,23 @@ jQuery(document).ready(function() {
 				
 				jQuery(element).parent().parent().parent().next(".col-md-3").find(".cd-city-selectors").empty().html(cityOptions);
 				if ('cd-source-state' == jQuery(element).attr("id")) {
+                    jQuery("#pickup-state").val(stateId);
 					jQuery("#pickup-city").empty().html(cityOptions);
 				}
 				if ('cd-destination-state' == jQuery(element).attr("id")) {
-					jQuery("#shipping-city").empty().html(cityOptions);
+                    jQuery("#shipping-state").val(stateId);
+				    jQuery("#shipping-city").empty().html(cityOptions);
 				}
 			}
 		});
 	});
+
+	jQuery("#cd-source-city").on("change", function() {
+        jQuery("#pickup-city").val($(this).val());
+    });
+    jQuery("#cd-destination-city").on("change", function() {
+        jQuery("#shipping-city").val($(this).val());
+    });
 	
 	jQuery("#item-invoice-value").on("input", function() {
 		var itemInvoiceValue = jQuery(this).val();

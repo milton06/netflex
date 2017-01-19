@@ -18,7 +18,7 @@ use NetFlex\DeliveryChargeBundle\Entity\DeliveryTimeline;
  *
  * @UniqueEntity(
  *     fields={"sourceCountryId", "sourceStateId", "sourceCityId", "destinationCountryId", "destinationStateId",
- *     "destinationCityId, deliveryModeId, deliveryTimelineId"},
+ *     "destinationCityId", "deliveryModeId", "deliveryTimelineId"},
  *     message="An identical delivery charge already exists"
  * )
  */

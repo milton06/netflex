@@ -12,3 +12,13 @@ services:
         arguments: ['@doctrine.orm.default_entity_manager']
         tags:
             - { name: form.type }
+    app.form.type.state_edit:
+        class: NetFlex\LocationBundle\Form\State\StateEditType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }
+    app.form.type.state_new:
+        class: NetFlex\LocationBundle\Form\State\StateNewType
+        arguments: ['@doctrine.orm.default_entity_manager']
+        tags:
+            - { name: form.type }

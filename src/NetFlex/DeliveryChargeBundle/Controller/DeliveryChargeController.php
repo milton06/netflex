@@ -481,8 +481,7 @@ class DeliveryChargeController extends Controller
             /**
              * Get source location parameters.
              */
-            $sourceCountries = $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findActiveCountries(1, 41, [42,
-                43, 44, 45, 46, 47]);
+            $sourceCountries = $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findActiveCountries(1, 41, [42, 43, 44, 45, 46, 47]);
             $defaultSourceCountry = $defaultDestinationCountry = $this->getDefaultLocation(1, $sourceCountries);
             $sourceStates = $destinationStates = ($defaultSourceCountry) ? (! empty($defaultSourceCountry->getStates()) ? $defaultSourceCountry->getStates()->getValues() : []) : [];
             $defaultSourceState = $defaultDestinationState = $this->getDefaultLocation(41, $sourceStates);
@@ -521,21 +520,21 @@ class DeliveryChargeController extends Controller
                 'sourceCountries' => $sourceCountries,
                 'defaultSourceCountry' => $defaultSourceCountry,
                 'sourceStates' => $sourceStates,
-                'defaultSourceState' => array_shift($defaultSourceState),
+                'defaultSourceState' => (is_array($defaultSourceState)) ? array_shift($defaultSourceState) : $defaultSourceState,
                 'sourceCities' => $sourceCities,
-                'defaultSourceCity' => array_shift($defaultSourceCity),
+                'defaultSourceCity' => (is_array($defaultSourceCity)) ? array_shift($defaultSourceCity) : $defaultSourceCity,
                 'destinationCountries' => $destinationCountries,
                 'defaultDestinationCountry' => $defaultDestinationCountry,
                 'destinationStates' => $destinationStates,
-                'defaultDestinationState' => array_shift($defaultDestinationState),
+                'defaultDestinationState' => (is_array($defaultDestinationState)) ? array_shift($defaultDestinationState) : $defaultDestinationState,
                 'destinationCities' => $destinationCities,
-                'defaultDestinationCity' => array_shift($defaultDestinationCity),
+                'defaultDestinationCity' => (is_array($defaultDestinationCity)) ? array_shift($defaultDestinationCity) : $defaultDestinationCity,
                 'deliveryModes' => $deliveryModes,
                 'deliveryTimelines' => $deliveryTimelines,
                 'weightUnits' => $weightUnits,
-                'defaultWeightUnit' => array_shift($defaultWeightUnit),
+                'defaultWeightUnit' => (is_array($defaultWeightUnit)) ? array_shift($defaultWeightUnit) : $defaultWeightUnit,
                 'currencyUnits' => $currencyUnits,
-                'defaultCurrencyUnit' => array_shift($defaultCurrencyUnit),
+                'defaultCurrencyUnit' => (is_array($defaultCurrencyUnit)) ? array_shift($defaultCurrencyUnit) : $defaultCurrencyUnit,
             ];
             
             switch($deliveryZone) {
@@ -547,12 +546,11 @@ class DeliveryChargeController extends Controller
                         1]);
                     $defaultDestinationCountry = ($destinationCountries) ? $this->getDefaultLocation(1,
                     $destinationCountries) : null;
-                    $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' =>
-                        $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
+                    $defaultDestinationCountry = (is_array($defaultDestinationCountry)) ? array_shift($defaultDestinationCountry) : $defaultDestinationCountry;
+                    $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' => $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
                     $defaultDestinationState = ($destinationStates) ? $this->getDefaultLocation(45,
                         $destinationStates) : null;
-                    $defaultDestinationState = ($defaultDestinationState) ? array_shift($defaultDestinationState) :
-                        null;
+                    $defaultDestinationState = ($defaultDestinationState) ? ((is_array($defaultDestinationState)) ? array_shift($defaultDestinationState) : $defaultDestinationState) : null;
                     $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
                     $defaultDestinationCity = ($destinationCities) ? $this->getDefaultLocation(5745,
                         $destinationCities) : null;
@@ -670,10 +668,11 @@ class DeliveryChargeController extends Controller
                     $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findBy(['status' =>
                         1]);
                     $defaultDestinationCountry = $this->getDefaultLocation(1, $destinationCountries);
+                    $defaultDestinationCountry = (is_array($defaultDestinationCountry)) ? array_shift($defaultDestinationCountry) : $defaultDestinationCountry;
                     $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' =>
                         $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
                     $defaultDestinationState = $this->getDefaultLocation(45, $destinationStates);
-                    $defaultDestinationState = array_shift($defaultDestinationState);
+                    $defaultDestinationState = (is_array($defaultDestinationState)) ? array_shift($defaultDestinationState) : $defaultDestinationState;
                     $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
                     $defaultDestinationCity = $this->getDefaultLocation(5742, $destinationCities);
                     
@@ -694,10 +693,10 @@ class DeliveryChargeController extends Controller
                     $defaultDestinationCountry = $this->getDefaultLocation(1, $destinationCountries);
                     $destinationStates = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getStates()) ? $defaultDestinationCountry->getStates()->getValues() : []) : [];
                     $defaultDestinationState = $this->getDefaultLocation(41, $destinationStates);
-                    $defaultDestinationState = array_shift($defaultDestinationState);
+                    $defaultDestinationState = (is_array($defaultDestinationState)) ? array_shift($defaultDestinationState) : $defaultDestinationState;
                     $destinationCities = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getCities()) ? $defaultDestinationCountry->getCities()->getValues() : []) : [];
                     $defaultDestinationCity = $this->getDefaultLocation(5583, $destinationCities);
-                    $defaultDestinationCity = array_shift($defaultDestinationCity);
+                    $defaultDestinationCity = (is_array($defaultDestinationCity)) ? array_shift($defaultDestinationCity) : $defaultDestinationCity;
     
                     return $this->json([
                         'status' => 'success',
@@ -717,10 +716,10 @@ class DeliveryChargeController extends Controller
                     $defaultDestinationCountry = $this->getDefaultLocation(1, $destinationCountries);
                     $destinationStates = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getStates()) ? $defaultDestinationCountry->getStates()->getValues() : []) : [];
                     $defaultDestinationState = $this->getDefaultLocation(41, $destinationStates);
-                    $defaultDestinationState = array_shift($defaultDestinationState);
+                    $defaultDestinationState = (is_array($defaultDestinationState)) ? array_shift($defaultDestinationState) : $defaultDestinationState;
                     $destinationCities = ($defaultDestinationCountry) ? (! empty($defaultDestinationCountry->getCities()) ? $defaultDestinationCountry->getCities()->getValues() : []) : [];
                     $defaultDestinationCity = $this->getDefaultLocation(5583, $destinationCities);
-                    $defaultDestinationCity = array_shift($defaultDestinationCity);
+                    $defaultDestinationCity = (is_array($defaultDestinationCity)) ? array_shift($defaultDestinationCity) : $defaultDestinationCity;
         
                     return $this->json([
                         'status' => 'success',
@@ -1013,8 +1012,7 @@ class DeliveryChargeController extends Controller
                 $destinationCountries = $em->getRepository('NetFlexLocationBundle:Country')->findBy(['status' =>
                     1]);
                 $defaultDestinationCountry = $deliveryModeTimeline->getDestinationCountryId();
-                $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' =>
-                    $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
+                $destinationStates = ($defaultDestinationCountry) ? $em->getRepository('NetFlexLocationBundle:State')->findBy(['countryId' => $defaultDestinationCountry->getId(), 'id' => [42, 43, 44, 45, 46, 47], 'status' => 1]) : [];
                 $defaultDestinationState = $deliveryModeTimeline->getDestinationStateId();
                 $destinationCities = ($defaultDestinationState) ? $em->getRepository('NetFlexLocationBundle:City')->findBy(['stateId' => $defaultDestinationState->getId(), 'status' => 1]) : [];
                 $defaultDestinationCity = $deliveryModeTimeline->getDestinationCityId();

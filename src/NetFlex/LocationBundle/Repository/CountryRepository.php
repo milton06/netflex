@@ -34,7 +34,7 @@ class CountryRepository extends EntityRepository
 		
 		return $qb->select('COUNTRY, STATE, CITY')
 			->from('NetFlexLocationBundle:Country', 'COUNTRY')
-			->leftJoin(
+			->innerJoin(
 				'COUNTRY.states',
 				'STATE',
 				'WITH',
@@ -45,7 +45,7 @@ class CountryRepository extends EntityRepository
 				),
 				'STATE.id'
 			)
-			->leftJoin(
+			->innerJoin(
 				'COUNTRY.cities',
 				'CITY',
 				'WITH',
@@ -96,4 +96,45 @@ class CountryRepository extends EntityRepository
 			->getQuery()
 			->getOneOrNullResult();
 	}
+    
+    public function findCountryCount($countryName, $sortColumnFormatted, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        
+        $qb->select('COUNTRY')
+            ->from('NetFlexLocationBundle:Country', 'COUNTRY');
+        
+        if ($countryName) {
+            $qb->andWhere($qb->expr()->like('COUNTRY.name', ':countryName'))
+            ->setParameter('countryName', "%$countryName%");
+        }
+        
+        $qb->orderBy("COUNTRY.$sortColumnFormatted", $sortOrderFormatted);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return count($resultSet);
+    }
+    
+    public function findCountry($offset, $limit, $countryName, $sortColumnFormatted, $sortOrderFormatted)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+    
+        $qb->select('COUNTRY')
+        ->from('NetFlexLocationBundle:Country', 'COUNTRY');
+    
+        if ($countryName) {
+            $qb->andWhere($qb->expr()->like('COUNTRY.name', ':countryName'))
+            ->setParameter('countryName', "%$countryName%");
+        }
+    
+        $qb->orderBy("COUNTRY.$sortColumnFormatted", $sortOrderFormatted);
+        
+        $qb->setFirstResult($offset)
+        ->setMaxResults($limit);
+        
+        $resultSet = $qb->getQuery()->getResult();
+        
+        return $resultSet;
+    }
 }

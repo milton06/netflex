@@ -4,6 +4,8 @@ namespace NetFlex\LocationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use NetFlex\LocationBundle\Entity\State;
 use NetFlex\LocationBundle\Entity\City;
 
@@ -12,6 +14,15 @@ use NetFlex\LocationBundle\Entity\City;
  *
  * @ORM\Table(name="countries")
  * @ORM\Entity(repositoryClass="NetFlex\LocationBundle\Repository\CountryRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"code"},
+ *     message="A country with the same code already exists"
+ * ) *
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="A country with the same name already exists"
+ * )
  */
 class Country
 {
@@ -38,6 +49,16 @@ class Country
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Country code is required"
+     * )
+     * @Assert\Length(
+     *     min=2,
+     *     max=3,
+     *     minMessage="Country code must be of atleast 2 characters",
+     *     maxMessage="Country code cannot exceed 3 characters"
+     * )
      */
     private $code;
 
@@ -45,6 +66,10 @@ class Country
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     message="Country name is required"
+     * )
      */
     private $name;
 

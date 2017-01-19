@@ -42,20 +42,23 @@ class BookAShipmentService
 		 */
 		$countries = $this->em->getRepository('NetFlexLocationBundle:Country')->findActiveCountries($defaultCountryId, $defaultStateId, $excludedStateIds);
 		$defaultCountry = $this->getDefaultLocation($defaultCountryId, $countries);
+		$defaultCountry = (is_array($defaultCountry)) ? array_shift($defaultCountry) : $defaultCountry;
 		
 		/**
 		 * Get all active states of the default country and set a state as default.
 		 */
 		$states = ($defaultCountry) ? (! empty($defaultCountry->getStates()) ? $defaultCountry->getStates()->getValues() : []) : [];
 		$defaultState = $this->getDefaultLocation($defaultStateId, $states);
+		$defaultState = (is_array($defaultState)) ? array_shift($defaultState) : $defaultState;
 		
 		/**
 		 * Get all active cities of the default state and set a city as default.
 		 */
 		$cities = ($defaultCountry) ? (! empty($defaultCountry->getCities()) ? $defaultCountry->getCities()->getValues() : []) : [];
 		$defaultCity = $this->getDefaultLocation($defaultCityId, $cities);
+		$defaultCity = (is_array($defaultCity)) ? array_shift($defaultCity) : $defaultCity;
 		
-		return [$countries, $defaultCountry, $states, array_shift($defaultState), $cities, array_shift($defaultCity)];
+		return [$countries, $defaultCountry, $states, $defaultState, $cities, $defaultCity];
 	}
 	
 	/**
@@ -336,8 +339,9 @@ class BookAShipmentService
 		$itemInvoiceValue = (isset($requestParameters['itemInvoiceValue'])) ? $requestParameters['itemInvoiceValue'] : null;
 		$itemPriceUnit = (isset($requestParameters['itemPriceUnit'])) ? $requestParameters['itemPriceUnit'] : null;
 		$riskType = (isset($requestParameters['riskType'])) ? $requestParameters['riskType'] : null;
+        $codChoice = (isset($requestParameters['codChoice'])) ? $requestParameters['codChoice'] : null;
 		
-		return [$deliveryModeId, $sourceCountryId, $sourceStateId, $sourceCityId, $sourceZipCode, $destinationCountryId, $destinationStateId, $destinationCityId, $destinationZipCode, $itemPrimaryType, $itemSecondaryType, $itemBaseWeight, $itemWeightUnit, $itemInvoiceValue, $itemPriceUnit, $riskType];
+		return [$deliveryModeId, $sourceCountryId, $sourceStateId, $sourceCityId, $sourceZipCode, $destinationCountryId, $destinationStateId, $destinationCityId, $destinationZipCode, $itemPrimaryType, $itemSecondaryType, $itemBaseWeight, $itemWeightUnit, $itemInvoiceValue, $itemPriceUnit, $riskType, $codChoice];
 	}
 	
 	/**
@@ -402,10 +406,11 @@ class BookAShipmentService
 	 * @param float          $itemBaseWeight
 	 * @param int            $itemWeightUnit
 	 * @param string         $riskType
+     * @param int            $codChoice
 	 *
 	 * @return array
 	 */
-	public function getDeliveryChargeParameters(DeliveryCharge $actualDeliveryCharge, $itemBaseWeight, $itemWeightUnit, $riskType)
+	public function getDeliveryChargeParameters(DeliveryCharge $actualDeliveryCharge, $itemBaseWeight, $itemWeightUnit, $riskType, $codChoice)
 	{
 		// Weight.
 		$shipmentBaseWeightUpperLimit = $actualDeliveryCharge->getShipmentBaseWeightUpperLimit();
@@ -439,6 +444,8 @@ class BookAShipmentService
 		// Charge.
 		$deliveryBasePrice = $actualDeliveryCharge->getDeliveryBasePrice();
 		$deliveryExtraPriceMultiplier = $actualDeliveryCharge->getDeliveryExtraPriceMultiplier();
+        $codDeliveryBasePrice = $actualDeliveryCharge->getCodDeliveryBasePrice();
+        $codeDeliveryPercentageOnBasePrice = $actualDeliveryCharge->getCodDeliveryPercentageOnBasePrice();
 		$fuelSurchargeFixedPrice = $actualDeliveryCharge->getFuelSurchargeFixedPrice();
 		$fuelSurchargePercentageOnBasePrice = $actualDeliveryCharge->getFuelSurchargePercentageOnBasePrice();
 		$serviceTaxPercentageOnBasePrice = $actualDeliveryCharge->getServiceTaxPercentageOnBasePrice();
@@ -450,6 +457,14 @@ class BookAShipmentService
 		$orderBaseCharge = $deliveryBasePrice;
 		$orderExtraWeightLeviedCharge = (ceil($itemAccountableExtraWeight / $shipmentAccountableExtraWeight) * $deliveryExtraPriceMultiplier);
 		$orderTotalCharge = ($orderBaseCharge + $orderExtraWeightLeviedCharge);
+        
+        $orderCodPaymentAddedCharge = 0;
+        if ($codChoice) {
+            /**
+             * COD applied.
+             */
+            $orderCodPaymentAddedCharge = ($codDeliveryBasePrice) ? $codDeliveryBasePrice : (($orderTotalCharge * $codeDeliveryPercentageOnBasePrice) / 100);
+        }
 		
 		/**
 		 * Added fuel surcharge.
@@ -476,6 +491,7 @@ class BookAShipmentService
 			'itemAccountableExtraWeight' => $itemAccountableExtraWeight,
 			'orderBaseCharge' => $orderBaseCharge,
 			'orderExtraWeightLeviedCharge' => $orderExtraWeightLeviedCharge,
+            'orderCodPaymentAddedCharge' => $orderCodPaymentAddedCharge,
 			'orderFuelSurchargeAddedCharge' => $orderFuelSurchargeAddedCharge,
 			'orderServiceTaxAddedCharge' => $orderServiceTaxAddedCharge,
 			'orderCarrierRiskAddedCharge' => $orderCarrierRiskAddedCharge,

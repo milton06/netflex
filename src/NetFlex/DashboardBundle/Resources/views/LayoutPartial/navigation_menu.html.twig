@@ -50,6 +50,73 @@
             </li>
         </ul>
     </li>
+    <li class="{{ (currentRoute in ['dashboard_country_list', 'dashboard_country_new', 'dashboard_country_edit', 'dashboard_state_list', 'dashboard_state_new', 'dashboard_state_edit', 'dashboard_city_list', 'dashboard_city_new', 'dashboard_city_edit']) ? 'active open' :
+    '' }}">
+        <a href="javascript:void(0);">
+            <i class="clip-location"></i>
+            <span class="title"> Locations </span>
+            <i class="icon-arrow"></i>
+        </a>
+        <ul class="sub-menu">
+            <li class="{{ (currentRoute in ['dashboard_country_list', 'dashboard_country_new', 'dashboard_country_edit']) ? 'active open' : '' }}">
+                <a href="javascript:void(0)">
+                    <i class="clip-tree-2"></i>
+                    <span class="title"> Countries </span>
+                    <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li class="{{ ('dashboard_country_list' == currentRoute) ? 'active open' : '' }}">
+                        <a href="{{ url('dashboard_country_list') }}">
+                            Country List
+                        </a>
+                    </li>
+                    <li class="{{ ('dashboard_country_new' == currentRoute) ? 'active open' : '' }}">
+                        <a href="{{ url('dashboard_country_new') }}">
+                            Add New Country
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{{ (currentRoute in ['dashboard_state_list', 'dashboard_state_new', 'dashboard_state_edit']) ? 'active open' : '' }}">
+                <a href="javascript:void(0)">
+                    <i class="clip-truck"></i>
+                    <span class="title"> States </span>
+                    <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li class="{{ ('dashboard_state_list' == currentRoute) ? 'active open' : '' }}">
+                        <a href="{{ url('dashboard_state_list') }}">
+                            State List
+                        </a>
+                    </li>
+                    <li class="{{ ('dashboard_state_new' == currentRoute) ? 'active open' : '' }}">
+                        <a href="{{ url('dashboard_state_new') }}">
+                            Add New State
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="{{ (currentRoute in ['dashboard_city_list', 'dashboard_city_new', 'dashboard_city_edit']) ? 'active open' : '' }}">
+                <a href="javascript:void(0)">
+                    <i class="clip-paperplane"></i>
+                    <span class="title"> Cities </span>
+                    <i class="icon-arrow"></i>
+                </a>
+                <ul class="sub-menu">
+                    <li class="{{ ('dashboard_city_list' == currentRoute) ? 'active open' : '' }}">
+                        <a href="{{ url('dashboard_city_list') }}">
+                            City List
+                        </a>
+                    </li>
+                    <li class="{{ ('dashboard_city_new' == currentRoute) ? 'active open' : '' }}">
+                        <a href="{{ url('dashboard_city_new') }}">
+                            Add New City
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
     <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'list_mail_templates', 'edit_mail_template']) ? 'active open' :
     '' }}">
         <a href="javascript:void(0);">

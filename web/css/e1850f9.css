@@ -2317,7 +2317,7 @@ footer .foot{ font: normal 14px/64px 'open_sansregular'; color: #000000; backgro
 .trackstatus{ position: relative;}
 ul.trackHeadline { padding: 80px 0 0 0; margin: 0px; border-bottom: 1px solid #e2e2e2; width: 100%; padding-bottom: 5px;}
 ul.trackHeadline li{ padding: 0px; margin: 0px; font: normal 11px 'open_sansbold'; color: #000000; float: left; text-transform: uppercase;}
-ul.trackHeadline li.approve{ text-align: left; width: 20%;}
+ul.trackHeadline li.approve{ text-align: center; width: 20%;}
 /*ul.trackHeadline li.process{ text-align:  left; width: 23%;}
 ul.trackHeadline li.ship{ text-align: left; width: 23%;}
 ul.trackHeadline li.deliver{ text-align: right; width: 31%;}
@@ -2334,8 +2334,8 @@ ul.trackbar li.approveLine{ text-align: left; width: 20%; background: url(../../
 ul.trackbar li.approveLine a#redDotOne{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 25px;}
 ul.trackbar li.processLine a#redDotTwo{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 30px;}
 ul.trackbar li.shipLine a#redDotThree{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 22px;}
-ul.trackbar li.approveLine a.redDotOne{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px;}
-
+ul.trackbar li.approveLine a.redDotOne{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: 0px; left: 50%; transform: translateY(-50%)}
+ul.trackbar li.approveLine a.sucess{background: #148a1d;}
 
 .arrow_box {
 	position: absolute;
@@ -2682,6 +2682,17 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 .misson-txt{ background: #3177cd; padding:60px; font-size:16px; color:#fff; line-height:24px; margin-top:45px;}
 .carousel-inner > .item > img, .carousel-inner > .item > a > img{width:100%; height:100%;}
 
+.contact-forms{min-height:inherit; float:none; width:auto;}
+.contact-forms textarea{width: 100%; resize: none;}
+
+.address-info{text-align:left; }
+.address-info h3{text-align: left;}
+.address-info h4{text-align: left;}
+
+.address-info .callmail ul li, .address-info .callmail ul li a{color: #232323 !important;}
+
+.other-banner {left:0; transform:inherit; bottom:1px;}
+
 /*=====================CONSIGMENTS======================*/
 @media only screen and (min-width: 1280px) and (max-width: 1366px) {
 	.callmail ul li a, .callmail ul li{font-size:11px;}
@@ -2718,6 +2729,7 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 	 .navbar{min-height:inherit;}
 	 .navbar-default .navbar-nav > li > a{padding:8px 12px; font-size:11px;}
 	 .tabform{padding:10px;}
+     .vison-container .container{position:static; transform:inherit}
 }
 
 

@@ -596,11 +596,14 @@
 										<div class="col-md-4">
 											<a href="{{ url('edit_order', { 'id': '%9999%' }) }}" id="edit_link" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit This Order</a>
 										</div>
+										{% if userId is not null %}
+                                            <div class="col-md-4">
+                                                <a href="{{ url('book_a_client_shipment_from_dashboard', { 'clientId': userId }) }}" class="btn btn-primary"><i class="fa fa-plus"></i> Book New Shipment</a>
+                                            </div>
+                                        {% else %}
+                                        {% endif %}
 										<div class="col-md-4">
-											<a href="{{ url('book_a_client_shipment_from_dashboard', { 'clientId': userId }) }}" class="btn btn-primary"><i class="fa fa-plus"></i> Book New Shipment</a>
-										</div>
-										<div class="col-md-4">
-											<a href="{{ (referrer) ? referrer : url('client_list') }}" class="btn btn-primary"><i class="fa fa-arrow-circle-left"></i> Client List</a>
+											<a href="{{ (referrer) ? referrer : url('order_list') }}" class="btn btn-primary"><i class="fa fa-arrow-circle-left"></i> Order List</a>
 										</div>
 									</div>
 								</div>

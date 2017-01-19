@@ -114,7 +114,7 @@ class GuestOrderController extends Controller
 		 */
 		$bookAShipmentService = $this->get('guest_book_a_shipment');
 		
-		list($deliveryModeId, $sourceCountryId, $sourceStateId, $sourceCityId, $sourceZipCode, $destinationCountryId, $destinationStateId, $destinationCityId, $destinationZipCode, $itemPrimaryType, $itemSecondaryType, $itemBaseWeight, $itemWeightUnit, $itemInvoiceValue, $itemPriceUnit, $riskType) = $bookAShipmentService->getDeliverabilityCheckAndChargeCalculationParameters($request->request->all());
+		list($deliveryModeId, $sourceCountryId, $sourceStateId, $sourceCityId, $sourceZipCode, $destinationCountryId, $destinationStateId, $destinationCityId, $destinationZipCode, $itemPrimaryType, $itemSecondaryType, $itemBaseWeight, $itemWeightUnit, $itemInvoiceValue, $itemPriceUnit, $riskType, $codChoice) = $bookAShipmentService->getDeliverabilityCheckAndChargeCalculationParameters($request->request->all());
 		
 		/**
 		 * Check order deliverability.
@@ -133,7 +133,7 @@ class GuestOrderController extends Controller
 		/**
 		 * Calculate delivery charge parameters.
 		 */
-		$deliveryParams = $bookAShipmentService->getDeliveryChargeParameters($actualDeliveryCharge, $itemBaseWeight, $itemWeightUnit, $riskType);
+		$deliveryParams = $bookAShipmentService->getDeliveryChargeParameters($actualDeliveryCharge, $itemBaseWeight, $itemWeightUnit, $riskType, $codChoice);
 		
 		return $this->json(['delivery_params' => $deliveryParams]);
 	}
@@ -213,7 +213,7 @@ class GuestOrderController extends Controller
 		/**
 		 * Validate.
 		 */
-		$errors = $this->get('validator')->validate($orderForm);
+		$errors = $this->get('validator')->validate($order);
 		if (0 < count($errors)) {
 			$errorMessages = [];
 			foreach($errors as $error) {
@@ -225,6 +225,11 @@ class GuestOrderController extends Controller
 			}
 			return $this->json(['status' => 'validationErrors', 'errorMessages' => $errorMessages]);
 		}
+        
+        /**
+         * Is a COD order
+         */
+        $isACodOrder = (bool) $order->getOrderPrice()->getOrderCodPaymentAddedCharge();
 		
 		/**
 		 * Set additional fields.
@@ -237,7 +242,13 @@ class GuestOrderController extends Controller
 		$order->getOrderPrice()->setOrderUserExtraWeightLeviedCharge($order->getOrderPrice()->getOrderExtraWeightLeviedCharge());
 		$order->setAwbNumber('nfcs-' . time());
 		$order->setInvoiceNumber('nfon-' . time());
-		$order->setOrderStatus(8);
+		
+		if ($isACodOrder) {
+            $order->setOrderStatus(1);
+        } else {
+            $order->setOrderStatus(8);
+        }
+		
 		$order->setPaymentStatus(1);
 		$order->setCreatedOn($currentDateTime);
 		$order->setLastModifiedOn($currentDateTime);
@@ -252,14 +263,34 @@ class GuestOrderController extends Controller
 		$em->persist($order);
 		$em->flush();
 		
-		return $this->json(['status' => 'success', 'orderId' => $order->getId()]);
+		if ($isACodOrder) {
+            /**
+             * Shipment has been booked, send mail.
+             */
+            $mailerService = $this->get('mailer_service');
+            list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_BK_SUCC');
+            $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+                'mailBody' => $message,
+            ]);
+            $message = str_replace(['[clientName]', '[awbNumber]', '[invoiceNumber]', '[trackUrl]'], ['Guest Customer', $order->getAwbNumber(), $order->getInvoiceNumber(), $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+            $message = html_entity_decode($message);
+            $mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, 'Guest Customer');
+            $mailerService->sendMail();
+            
+            $awbNumber = $order->getAwbNumber();
+            $request->getSession()->set('awbNumber', $awbNumber);
+            
+            return $this->json(['status' => 'success', 'paymentType' => 'cod']);
+        } else {
+            return $this->json(['status' => 'success', 'paymentType' => 'online', 'orderId' => $order->getId()]);
+        }
 	}
 	
 	/**
 	 * Gets order details for guest.
 	 *
 	 * @Route("/payment", name="guest_book_a_shipment_payment")
-	 * @Method({"GET", "POST"})
+	 * @Method({"POST"})
 	 *
 	 * @param  Request $request A request instance
 	 *
@@ -276,9 +307,9 @@ class GuestOrderController extends Controller
 		/**
 		 * Fetch the current order details.
 		 */
-		//$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById
+		$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById
 	($request->request->get('orderId'));
-		$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById(1);
+		//$orderDetails = $em->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneById(1);
 		
 		/**
 		 * Payment mode and debit card type choices.
@@ -360,13 +391,53 @@ class GuestOrderController extends Controller
 			$em->persist($orderDetails);
 			
 			$em->flush();
+            
+            /**
+             * Shipment has been booked, send mail.
+             */
+            $mailerService = $this->get('mailer_service');
+            list($fromEmail, $fromName, $subject, $message) = $mailerService->getMailTemplateData('SHPMNT_BK_SUCC');
+            $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+            'mailBody' => $message,
+            ]);
+            $message = str_replace(['[clientName]', '[awbNumber]', '[invoiceNumber]', '[trackUrl]'], ['Guest Customer', $orderDetails->getAwbNumber(), $orderDetails->getInvoiceNumber(), $this->generateUrl('client_view_own_order', ['awbNumber' => $orderDetails->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+            $message = html_entity_decode($message);
+            $mailerService->setMessage($fromEmail, $orderDetails->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, 'Guest Customer');
+            $mailerService->sendMail();
 			
-			return $this->render('NetFlexFrontBundle:Booking:client_order_confirmation.html.twig', [
+			return $this->render('NetFlexFrontBundle:Booking:guest_order_confirmation.html.twig', [
 				'pageTitle' => 'Order Confirmation',
 				'awbNumber' => $awbNumber,
 			]);
 		}
 	}
+    
+    /**
+     * Renders the booking confirmation page.
+     *
+     * @Route("/order-confirmation", name="guest_order_confirmation")
+     * @Method({"GET"})
+     *
+     * @param Request $request A request instance
+     *
+     * @return Response
+     */
+    public function renderGuestOrderConfirmationPageAction(Request $request)
+    {
+        $session = $request->getSession();
+        
+        if (! $session->has('awbNumber')) {
+            return $this->redirectToRoute('home_page');
+        }
+        
+        $awbNumber = $session->get('awbNumber');
+        $session->remove('awbNumber');
+        
+        return $this->render('NetFlexFrontBundle:Booking:guest_order_confirmation.html.twig', [
+            'pageTitle' => 'Order Confirmation',
+            'awbNumber' => $awbNumber,
+        ]);
+    }
 	
 	/**
 	 * Renders payment failure page.

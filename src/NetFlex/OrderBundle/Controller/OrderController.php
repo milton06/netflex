@@ -96,7 +96,7 @@ class OrderController extends Controller
 			    'data' => $invoiceNumber,
 		    ])
 		    ->add('orderStatus', ChoiceType::class, [
-			    'placeholder' => '-All-',
+			    'placeholder' => '-All Order Statuses-',
 			    'choices' => $inversedTrackStatusList,
 			    'data' => $orderStatus,
 		    ])
@@ -250,12 +250,12 @@ class OrderController extends Controller
 				'data' => $name,
 			])
 			->add('orderStatus', ChoiceType::class, [
-				'placeholder' => '-All-',
+				'placeholder' => '-All Order Statuses-',
 				'choices' => $inversedTrackStatusList,
 				'data' => $orderStatus,
 			])
 			->add('paymentStatus', ChoiceType::class, [
-				'placeholder' => '-All-',
+				'placeholder' => '-All Payment Statuses-',
 				'choices' => $inversedPaymentStatusList,
 				'data' => $paymentStatus,
 			])
@@ -272,7 +272,7 @@ class OrderController extends Controller
 				'data' => $toDate,
 			])
 			->add('customerType', ChoiceType::class, [
-				'placeholder' => '-All-',
+				'placeholder' => '-All Customers Types-',
 				'choices' => $this->getParameter('customer_types'),
 				'data' => $customerType,
 			])
@@ -349,7 +349,7 @@ class OrderController extends Controller
 	{
 		$em = $this->getDoctrine()->getManager();
 		
-		$associatedCustomerRoles = $order->getUserId()->getRoles();
+		$associatedCustomerRoles = ($order->getUserId()) ? $order->getUserId()->getRoles() : [];
 		if (in_array('ROLE_CLIENT', $associatedCustomerRoles)) {
 			/**
 			 * Repositories.
@@ -416,9 +416,11 @@ class OrderController extends Controller
 			if (! $order->getOrderAddress()->getPickupFirstName()) {
 				$order->getOrderAddress()->setPickupFirstName($order->getUserId()->getFirstName());
 			}
-			if (! $order->getOrderAddress()->getPickupMidName()) {
-				$order->getOrderAddress()->getPickupMidName($order->getUserId()->getMidName());
-			}
+			/*if (! $order->getOrderAddress()->getPickupMidName()) {
+			    if ($order->getUserId()) {
+                    $order->getOrderAddress()->getPickupMidName($order->getUserId()->getMidName());
+                }
+			}*/
 			if (! $order->getOrderAddress()->getPickupLastName()) {
 				$order->getOrderAddress()->setPickupLastName($order->getUserId()->getLastName());
 			}
@@ -453,7 +455,7 @@ class OrderController extends Controller
 				return $this->json(['status' => 'validationErrors', 'errorMessages' => $errorMessages]);
 			}
 			
-			$associatedCustomerRoles = $order->getUserId()->getRoles();
+			$associatedCustomerRoles = ($order->getUserId()) ? $order->getUserId()->getRoles() : [];
 			if (in_array('ROLE_CLIENT', $associatedCustomerRoles)) {
 				if (1 == $order->getOrderStatus()) {
 					$order->setOrderStatus(2);
@@ -477,9 +479,10 @@ class OrderController extends Controller
 				$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
 					'mailBody' => $message,
 				]);
-				$message = str_replace(['[clientName]', '[trackUrl]'], [$order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName(), $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
+				$clientName = ($order->getUserId()) ? ($order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName()) : 'Guest Customer';
+				$message = str_replace(['[clientName]', '[trackUrl]'], [$clientName, $this->generateUrl('client_view_own_order', ['awbNumber' => $order->getAwbNumber()], UrlGeneratorInterface::ABSOLUTE_URL)], $message);
 				$message = html_entity_decode($message);
-				$mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $order->getUserId()->getFirstName() . ' ' . $order->getUserId()->getLastName());
+				$mailerService->setMessage($fromEmail, $order->getOrderAddress()->getBillingEmail(), $subject, $message, 1, $fromName, $clientName);
 				$mailerService->sendMail();
 			}
 			
@@ -512,7 +515,7 @@ class OrderController extends Controller
 			'referrer' => $referrer,
 			'pageHeader' => '<h1>Edit <small>order</small></h1>',
 			'order' => $order,
-			'userId' => $order->getUserId()->getId(),
+			'userId' => ($order->getUserId()) ? $order->getUserId()->getId() : null,
 			'checkDeliverabilityForm' => $checkDeliverabilityForm->createView(),
 			'orderForm' => $orderForm->createView(),
 		]);

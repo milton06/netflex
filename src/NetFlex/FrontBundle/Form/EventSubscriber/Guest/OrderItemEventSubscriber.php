@@ -19,5 +19,9 @@ class OrderItemEventSubscriber implements EventSubscriberInterface
 	{
 		$form = $formEvent->getForm();
 		$formData = $formEvent->getData();
+		
+		$form->add('itemSecondaryTypeId', null, [
+            'data' => $formData['itemSecondaryTypeId'],
+        ]);
 	}
 }
