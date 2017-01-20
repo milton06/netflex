@@ -624,6 +624,7 @@
                             $("#basicInfoUpdate .message").hide();
                             $("#gdForm .validationError").remove();
                             $("#basicInfoUpdate").addClass("disabled");
+                            $("#ajaxLoader").show();
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             $("#gdServerFault").show();
@@ -639,6 +640,7 @@
                         },
                         complete: function(jqXHR, textStatus) {
                             $("#basicInfoUpdate").removeClass("disabled");
+                            $("#ajaxLoader").hide();
                         }
                     });
                 }
@@ -659,6 +661,7 @@
                             $("#cpForm .message").hide();
                             $("#cpForm .validationError").remove();
                             $("#changePassButton").addClass("disabled");
+                            $("#ajaxLoader").show();
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             $("#cpServerFault").show();
@@ -674,6 +677,7 @@
                         },
                         complete: function(jqXHR, textStatus) {
                             $("#changePassButton").removeClass("disabled");
+                            $("#ajaxLoader").hide();
                         }
                     });
                 }
@@ -705,6 +709,7 @@
 				            $(element).addClass('disabled');
 				            $(element).closest(".billingAddForm").find(".aServerFault").hide();
 				            $(element).closest(".billingAddForm").find(".aValidationError").remove();
+                            $("#ajaxLoader").show();
 			            },
 			            error: function(jqXHR, textStatus, errorThrown) {
 				            $(element).closest(".billingAddForm").find(".aServerFault").show();
@@ -724,6 +729,7 @@
 			            },
 			            complete: function(jqXHR, textStatus) {
 				            $(element).removeClass('disabled');
+                            $("#ajaxLoader").hide();
 			            }
 		            });
 	            }
@@ -742,6 +748,7 @@
 						beforeSend: function(jqXHR, settings) {
 							$(this).addClass('disabled');
 							$(this).closest(".billingAddForm").find(".aServerFault").hide();
+                            $("#ajaxLoader").show();
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
 							$(this).closest(".billingAddForm").find(".aServerFault").show();
@@ -751,6 +758,7 @@
 						},
 						complete: function(jqXHR, textStatus) {
 							$(this).removeClass('disabled');
+                            $("#ajaxLoader").hide();
 						}
 					});
 				}
@@ -786,6 +794,7 @@
 							$(element).addClass('disabled');
 							$(element).closest(".billingAddForm").find(".aServerFault").hide();
 							$(element).closest(".billingAddForm").find(".aValidationError").remove();
+                            $("#ajaxLoader").show();
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
 							$(this).closest(".billingAddForm").find(".aServerFault").show();
@@ -805,6 +814,7 @@
 						},
 						complete: function(jqXHR, textStatus) {
 							$(element).removeClass('disabled');
+                            $("#ajaxLoader").hide();
 						}
 					});
 				}
@@ -845,6 +855,7 @@
 							$(element).addClass('disabled');
 							$(element).closest(".billingAddForm").find(".aServerFault").hide();
 							$(element).closest(".billingAddForm").find(".aValidationError").remove();
+                            $("#ajaxLoader").show();
 						},
 						error: function(jqXHR, textStatus, errorThrown) {
 							$(element).closest(".billingAddForm").find(".aServerFault").show();
@@ -864,6 +875,7 @@
 						},
 						complete: function(jqXHR, textStatus) {
 							$(element).removeClass('disabled');
+                            $("#ajaxLoader").hide();
 						}
 					});
 				}

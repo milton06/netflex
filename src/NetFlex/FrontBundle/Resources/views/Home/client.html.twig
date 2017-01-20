@@ -1,0 +1,80 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageContent %}
+    <!--TAB FORM-->
+    <div class="inner-banner">
+        {% image '@NetFlexFrontBundle/Resources/public/images/client-banner.jpg' %}
+        <img src="{{ asset_url }}" alt="Client_Banner" />
+        {% endimage %}
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="about-txt other-banner">
+                        <h2 class="inner-title">Cleint</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--TAB FORM-->
+    <div class="why-franchisee text-center careers-container">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="heading text-center">
+                        <h2><span>Our</span> Client?</h2>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <ul class="client-list">
+                        <li>
+                            <div>
+                                <figure>
+                                    {% image '@NetFlexFrontBundle/Resources/public/images/c1.jpg' %}
+                                    <img src="{{ asset_url }}" alt="Balaram_And_Radharaman_Mallik_Logo" />
+                                    {% endimage %}
+                                </figure>
+                                <h5>Balaram Mullick & Radharaman Mullick</h5>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <figure>
+                                    {% image '@NetFlexFrontBundle/Resources/public/images/c2.jpg' %}
+                                    <img src="{{ asset_url }}" alt="Anumits_Boutique_Logo" />
+                                    {% endimage %}
+                                </figure>
+                                <h5>Anumits Boutique</h5>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <figure>
+                                    {% image '@NetFlexFrontBundle/Resources/public/images/c3.jpg' %}
+                                    <img src="{{ asset_url }}" alt="Roodra_Boutique_Logo" />
+                                    {% endimage %}
+                                </figure>
+                                <h5>Roodra Boutique</h5>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <figure>
+                                    {% image '@NetFlexFrontBundle/Resources/public/images/c4.jpg' %}
+                                    <img src="{{ asset_url }}" alt="Adi_Dhakeswari_Logo" />
+                                    {% endimage %}
+                                </figure>
+                                <h5>Adi Dhakeswari</h5>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+    {% endblock %}
+{% endblock %}

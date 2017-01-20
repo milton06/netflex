@@ -29,7 +29,16 @@ $(document).ready(function() {
                 'countryId': countryId,
                 'excludeStates': true,
             },
-            success: function(response) {
+            beforeSend: function (jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+            success: function(response, textStatus, jqXHR) {
                 var stateList = response.stateList;
                 var cityList = response.cityList;
                 var stateOptions = "<option value=''>-All Source States-</option>";
@@ -47,6 +56,12 @@ $(document).ready(function() {
             
                 $(element).parent().next(".col-md-3").find("#sourceStateId").empty().html(stateOptions);
                 $(element).parent().next(".col-md-3").next(".col-md-3").find("#sourceCityId").empty().html(cityOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });
@@ -62,7 +77,16 @@ $(document).ready(function() {
             data: {
                 'stateId': stateId
             },
-            success: function(response) {
+            beforeSend: function (jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+            success: function(response, textStatus, jqXHR) {
                 var cityList = response.cityList;
                 var cityOptions = "<option value=''>-All Source Cities-</option>";
                 var i = 0;
@@ -72,6 +96,12 @@ $(document).ready(function() {
                 });
                 
                 $(element).parent().next(".col-md-3").find("#sourceCityId").empty().html(cityOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });
@@ -87,7 +117,16 @@ $(document).ready(function() {
             data: {
                 'countryId': countryId
             },
-            success: function(response) {
+            beforeSend: function (jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+            success: function(response, textStatus, jqXHR) {
                 var stateList = response.stateList;
                 var cityList = response.cityList;
                 var stateOptions = "<option value=''>-All Destination States-</option>";
@@ -105,6 +144,12 @@ $(document).ready(function() {
                 
                 $(element).parent().next(".col-md-3").find("#destinationStateId").empty().html(stateOptions);
                 $(element).parent().next(".col-md-3").next(".col-md-3").find("#destinationCityId").empty().html(cityOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });
@@ -120,7 +165,16 @@ $(document).ready(function() {
             data: {
                 'stateId': stateId
             },
-            success: function(response) {
+            beforeSend: function (jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+            success: function(response, textStatus, jqXHR) {
                 var cityList = response.cityList;
                 var cityOptions = "<option value=''>-All Destination Cities-</option>";
                 var i = 0;
@@ -130,6 +184,12 @@ $(document).ready(function() {
                 });
                 
                 $(element).parent().next(".col-md-3").find("#destinationCityId").empty().html(cityOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });
@@ -166,11 +226,25 @@ $(document).ready(function() {
                         "deliveryChargeIds": deliveryChargeIds,
                         "changeStatusTo": selectedOption
                     },
-                    beforeSend: function() {
+                    beforeSend: function(jqXHR, settings) {
                         $(".serverMessage").remove();
+
+                        /**
+                         * Show the loader as page overlay.
+                         */
+                        $("#ajaxLoader").show();
                     },
-                    success: function(data) {
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //
+                    },
+                    success: function(data, textStatus, jqXHR) {
                         location.reload();
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        /**
+                         * Hide the page overlay loader.
+                         */
+                        $("#ajaxLoader").hide();
                     }
                 });
             }

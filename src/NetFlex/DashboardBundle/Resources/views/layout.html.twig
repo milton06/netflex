@@ -38,7 +38,8 @@
             'bundles/netflexdashboard/fonts/style.css'
             'bundles/netflexdashboard/css/main.css'
             'bundles/netflexdashboard/css/main-responsive.css'
-            'bundles/netflexdashboard/plugins/perfect-scrollbar/src/perfect-scrollbar.css' filter='cssrewrite' %}
+            'bundles/netflexdashboard/plugins/perfect-scrollbar/src/perfect-scrollbar.css'
+            'bundles/netflexdashboard/css/ajax_loader.css' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}">
         {% endstylesheets %}
         {% stylesheets 'bundles/netflexdashboard/css/theme_light.css' filter='cssrewrite' %}
@@ -51,6 +52,7 @@
 </head>
 <!-- end: HEAD -->
 <!-- start: BODY -->
+<div id="ajaxLoader" class="loading" style="display: none;">Loading&#8230;</div>
 <body>
 {% set adminFullName = app.user.getFirstName() ~ ((app.user.getMidName()) ? ' ' ~ app.user.getMidName() : ' ') ~ app.user.getLastName() %}
 <!-- start: HEADER -->

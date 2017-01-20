@@ -141,7 +141,16 @@ jQuery(document).ready(function() {
 			data: {
 				'countryId': countryId
 			},
-			success: function(response) {
+            beforeSend: function(jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+			success: function(response, textStatus, jqXHR) {
 				var stateList = response.stateList;
 				var cityList = response.cityList;
 				var stateOptions = "<option value=''>-Select A State-</option>";
@@ -160,7 +169,13 @@ jQuery(document).ready(function() {
 				jQuery(element).parent().parent().next(".form-group").find(".state").empty().html(stateOptions);
 				
 				jQuery(element).parent().parent().next(".form-group").next(".form-group").find(".city").empty().html(cityOptions);
-			}
+			},
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
+            }
 		});
 	});
 	
@@ -175,7 +190,16 @@ jQuery(document).ready(function() {
 			data: {
 				'stateId': stateId
 			},
-			success: function(response) {
+            beforeSend: function(jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+			success: function(response, textStatus, jqXHR) {
 				var cityList = response.cityList;
 				var cityOptions = "<option value=''>-Select A City-</option>";
 				var i = 0;
@@ -185,7 +209,13 @@ jQuery(document).ready(function() {
 				});
 				
 				jQuery(element).parent().parent().next(".form-group").find(".city").empty().html(cityOptions);
-			}
+			},
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
+            }
 		});
 	});
 	

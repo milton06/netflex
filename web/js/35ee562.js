@@ -70,6 +70,11 @@ var changeDeliveryZone = function(event, element) {
             dataType: "json",
             beforeSend: function (jqXHR, settings) {
                 toggleServerMessage("OFF", null, null, ".serverMessage");
+
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 //
@@ -135,7 +140,10 @@ var changeDeliveryZone = function(event, element) {
                 }
             },
             complete: function(jqXHR, textStatus) {
-                //
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     }
@@ -157,6 +165,11 @@ var updateDeliveryCharge = function(event, element) {
             beforeSend: function (jqXHR, settings) {
                 toggleServerMessage("OFF", null, null, ".serverMessage");
                 toggleErrorMessage("OFF");
+
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 toggleServerMessage("ON", "ERROR", "Server error occurred", ".serverMessage");
@@ -183,7 +196,10 @@ var updateDeliveryCharge = function(event, element) {
                 }
             },
             complete: function(jqXHR, textStatus) {
-                //
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     }
@@ -207,7 +223,16 @@ $(document).ready(function() {
             data: {
                 'countryId': countryId
             },
-            success: function(response) {
+            beforeSend: function (jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                toggleServerMessage("ON", "ERROR", "Server error occurred", ".serverMessage");
+            },
+            success: function(response, textStatus, jqXHR) {
                 var stateList = response.stateList;
                 var cityList = response.cityList;
                 var stateOptions = "<option value=''>-Select A State-</option>";
@@ -225,6 +250,12 @@ $(document).ready(function() {
                 
                 $(element).parent().parent().parent().next(".col-md-3").find(".stateSelectors").empty().html(stateOptions);
                 $(element).parent().parent().parent().next(".col-md-3").next(".col-md-3").find(".citySelectors").empty().html(cityOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });
@@ -240,7 +271,16 @@ $(document).ready(function() {
             data: {
                 'stateId': stateId
             },
-            success: function(response) {
+            beforeSend: function (jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                toggleServerMessage("ON", "ERROR", "Server error occurred", ".serverMessage");
+            },
+            success: function(response, textStatus, jqXHR) {
                 var cityList = response.cityList;
                 var cityOptions = "<option value=''>-Select A City-</option>";
                 var i = 0;
@@ -250,6 +290,12 @@ $(document).ready(function() {
                 });
                 
                 $(element).parent().parent().parent().next(".col-md-3").find(".citySelectors").empty().html(cityOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });

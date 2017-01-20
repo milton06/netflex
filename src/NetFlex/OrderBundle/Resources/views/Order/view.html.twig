@@ -115,16 +115,16 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th>{{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : '') ~ ' ' ~ orderDetails.orderAddress.billingLastName }}</th>
+                                <th>{{ orderDetails.orderAddress.pickupFirstName ~ ((orderDetails.orderAddress.pickupMidName) ? ' ' ~ orderDetails.orderAddress.pickupMidName : '') ~ ' ' ~ orderDetails.orderAddress.pickupLastName }}</th>
                             </tr>
                             <tr>
-                                <td>{{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? '; ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}</td>
+                                <td>{{ orderDetails.orderAddress.pickupAddressLine1 ~ ((orderDetails.orderAddress.pickupAddressLine2) ? '; ' ~ orderDetails.orderAddress.pickupAddressLine2 : '') }}</td>
                             </tr>
                             <tr>
-                                <td>{{ orderDetails.orderAddress.billingCityId.name ~ ', ' ~ orderDetails.orderAddress.billingStateId.name ~ ' - ' ~ orderDetails.orderAddress.billingZipCode }}</td>
+                                <td>{{ orderDetails.orderAddress.pickupCityId.name ~ ', ' ~ orderDetails.orderAddress.pickupStateId.name ~ ' - ' ~ orderDetails.orderAddress.pickupZipCode }}</td>
                             </tr>
                             <tr>
-                                <td>Ph: {{ orderDetails.orderAddress.billingContactNumber }}</td>
+                                <td>Ph: {{ orderDetails.orderAddress.pickupContactNumber }}</td>
                             </tr>
                         </tbody>
                     </table>

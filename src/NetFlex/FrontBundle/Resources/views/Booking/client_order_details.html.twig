@@ -111,11 +111,11 @@
 							<div class="row">
 								<div class="tblfrom">
 									<h2>From</h2>
-									<h3>{{ orderDetails.orderAddress.billingFirstName ~ ((orderDetails.orderAddress.billingMidName) ? ' ' ~ orderDetails.orderAddress.billingMidName : ' ' ~ orderDetails.orderAddress.billingLastName) }}</h3>
+									<h3>{{ orderDetails.orderAddress.pickupFirstName ~ ((orderDetails.orderAddress.pickupMidName) ? ' ' ~ orderDetails.orderAddress.pickupMidName : '') ~ ' ' ~ orderDetails.orderAddress.pickupLastName }}</h3>
 									<p>
-										{{ orderDetails.orderAddress.billingAddressLine1 ~ ((orderDetails.orderAddress.billingAddressLine2) ? ' ' ~ orderDetails.orderAddress.billingAddressLine2 : '') }}<br/>
-										{{ orderDetails.orderAddress.billingCityId.name }}, {{ orderDetails.orderAddress.billingStateId.name }} - {{ orderDetails.orderAddress.billingZipCode }}<br/>
-										Ph : {{ (orderDetails.orderAddress.billingContactNumber) ? orderDetails.orderAddress.billingContactNumber : 'N/A' }}
+                                        {{ orderDetails.orderAddress.pickupAddressLine1 ~ ((orderDetails.orderAddress.pickupAddressLine2) ? '; ' ~ orderDetails.orderAddress.pickupAddressLine2 : '') }}<br/>
+                                        {{ orderDetails.orderAddress.pickupCityId.name ~ ', ' ~ orderDetails.orderAddress.pickupStateId.name ~ ' - ' ~ orderDetails.orderAddress.pickupZipCode }}<br/>
+										Ph : {{ (orderDetails.orderAddress.pickupContactNumber) ? orderDetails.orderAddress.pickupContactNumber : 'N/A' }}
 									</p>
 								</div>
 							</div>
@@ -145,7 +145,16 @@
 	                                <ul class="trackbar clearfix">
 		                                {% for i in 1..orderDetails.orderStatus %}
 			                                <li class="approveLine">
-				                                <a href="javascript:void(0);" class="redDotOne{{ (loop.last) ? ' sucess': '' }}" data-toggle="tooltip" data-placement="bottom"  title="{{ trackStatusList[i] }}"></a>
+				                                <a href="javascript:void(0);" class="redDotOne{{ (5 == i) ? ' sucess': '' }}" data-toggle="tooltip" data-placement="bottom"  title="{{ trackStatusList[i] }}"></a>
+												{% if 5 == i %}
+                                                    <span class="item-del">
+                                                        Received For
+                                                        &nbsp;
+                                                        <small>
+                                                            {{ orderDetails.orderAddress.shippingFirstName ~ ((orderDetails.orderAddress.shippingMidName) ? ' ' ~ orderDetails.orderAddress.shippingMidName : ' ' ~ orderDetails.orderAddress.shippingLastName) }}
+                                                        </small>
+                                                    </span>
+                                                {% endif %}
 			                                </li>
 		                                {% endfor %}
 	                                </ul>

@@ -891,6 +891,38 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 
 .other-banner {left:0; transform:inherit; bottom:1px;}
 
+
+
+.careers-container .heading{ padding-bottom:40px; margin-bottom:30px;}
+
+.job-list-inner{border-top:1px solid #d3d3d3; padding-top:25px;}
+.job-list{border-bottom:1px solid #d3d3d3; padding-bottom:25px; margin-bottom:30px;}
+.job-list h4{font-family: 'open_sansbold'; font-size:18px; color:#000;}
+
+.job-list ul{padding:0; margin:0; list-style-type:none;}
+.job-list ul li{font-size:14px; color:#464646;font-family: 'open_sansbold'; position:relative; padding-right:15px; float:left;}
+.job-list ul li:after{content:''; position:absolute; right:6px; top:2px; height:15px; width:1px; background:#c5c5c5;}
+.job-list ul li span{color:#ff5400;}
+.job-list h5{color:#464646; font-size:16px;font-family: 'open_sansbold'; text-decoration:underline; margin-top:20px;}
+.job-list p{font-size:16px; line-height:23px;color:#464646;}
+.custom-upload {cursor: pointer; color: #ff5400;  text-decoration:underline; margin-top:25px;}
+.custom-upload input { left: -9999px; position: absolute;}
+.custom-btn-field .btn-apply{background:#ff5400; padding:15px 40px; color:#fff; text-transform:uppercase; font-size:14px; font-weight:600; border:0; border-radius:5px;}
+
+.resume-upload{text-decoration:underline; color:#000; font-size:14px; font-style:italic; margin:15px 0 25px 0; font-weight:600;}
+
+.career-field .form-group{margin-bottom:35px;}
+.career-field .form-control{border-radius:0; height:40px; padding:5px 10px}
+.career-field  textarea.form-control{height:150px; resize:none;}
+
+.client-list{margin:0; padding:0;}
+.client-list li{float:left;padding-right:15px;width:25%; text-align:center; margin-bottom:30px;}
+.client-list li  img{max-height:120px;}
+.client-list li div{border:1px solid #d3d3d3;}
+
+.item-del{display: block; font-size: 12px; margin-top: 14px; text-align: center; width: 100%;}
+.item-del small{color: #ff5400; display: block; font-size: 12px;}
+
 /*=====================CONSIGMENTS======================*/
 @media only screen and (min-width: 1280px) and (max-width: 1366px) {
 	.callmail ul li a, .callmail ul li{font-size:11px;}
@@ -970,4 +1002,8 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 	
 	.navbar-default .navbar-nav > li > a{padding:10px;}
 	.navbar-default .navbar-nav > .active > a:after, .navbar-default .navbar-nav > .active > a:after, .navbar-default .navbar-nav > .active > a:after, .nav > li:hover > a:after{display:none;}
+	
+	.career-field .form-group{margin-bottom:0;}
+	.career-field .form-group .col-md-6{margin-bottom:30px;}
+	.client-list li{float:none; width:100%}
 }

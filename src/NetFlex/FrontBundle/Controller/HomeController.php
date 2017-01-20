@@ -8,7 +8,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -137,6 +140,8 @@ class HomeController extends Controller
 	public function renderCMSPageAction($cmsPageSlug, Request $request)
 	{
 		$cmsPageSlug = trim($cmsPageSlug);
+		$extraData = [];
+		$viewFile = 'NetFlexFrontBundle:Home:page.html.twig';
 		
 		$pageSlugDataMap = [
 			'career' => [
@@ -161,10 +166,92 @@ class HomeController extends Controller
 			throw $this->createNotFoundException('Page Not Found');
 		}
 		
-		return $this->render('NetFlexFrontBundle:Home:page.html.twig', [
-			'pageTitle' => $pageSlugDataMap[$cmsPageSlug]['title'],
-			'pageHeader' => $pageSlugDataMap[$cmsPageSlug]['pageHeader'],
-		]);
+		switch ($cmsPageSlug) {
+            case 'career':
+                $viewFile = 'NetFlexFrontBundle:Home:career.html.twig';
+                
+                $careerForm = $this->createFormBuilder()
+                ->setAction($this->generateUrl('cms_page', ['cmsPageSlug' => $cmsPageSlug], UrlGeneratorInterface::ABSOLUTE_URL))
+                ->setMethod('POST')
+                ->add('name', TextType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Name is required'
+                        ]),
+                    ],
+                ])
+                ->add('email', EmailType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Email is required',
+                        ]),
+                        new Email([
+                            'message' => 'Enter a valid email',
+                        ]),
+                    ],
+                ])
+                ->add('contact', TextType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Contact number is required',
+                        ]),
+                    ],
+                ])
+                ->add('position', TextType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Applied position is required',
+                        ]),
+                    ],
+                ])
+                ->add('brief', TextareaType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Brief is required',
+                        ]),
+                    ],
+                ])
+                ->add('cv', FileType::class, [
+                    'mapped' => false,
+                    'constraints' => [
+                        new File([
+                            'mimeTypes' => [
+                                'application/msword',
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                            ],
+                            'mimeTypesMessage' => '{{ types }} files are only allowed',
+                        ]),
+                    ],
+                ])
+                ->getForm();
+                
+                $extraData = [
+                    'careerForm' => $careerForm->createView(),
+                ];
+                
+                break;
+                
+            case 'client':
+                $viewFile = 'NetFlexFrontBundle:Home:client.html.twig';
+                
+                break;
+                
+            default:
+                break;
+        }
+		
+		return $this->render($viewFile, array_merge(
+            [
+                'pageTitle' => $pageSlugDataMap[$cmsPageSlug]['title'],
+                'pageHeader' => $pageSlugDataMap[$cmsPageSlug]['pageHeader'],
+            ],
+            $extraData
+        ));
 	}
 	
 	/**

@@ -46,11 +46,24 @@ $(document).ready(function() {
                         "countryIds": countryIds,
                         "changeStatusTo": selectedOption
                     },
-                    beforeSend: function() {
+                    beforeSend: function(jqXHR, settings) {
                         $(".serverMessage").remove();
+                        /**
+                         * Show the loader as page overlay.
+                         */
+                        $("#ajaxLoader").show();
                     },
-                    success: function(data) {
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //
+                    },
+                    success: function(data, textStatus, jqXHR) {
                         location.reload();
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        /**
+                         * Hide the page overlay loader.
+                         */
+                        $("#ajaxLoader").hide();
                     }
                 });
             }

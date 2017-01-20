@@ -16,11 +16,13 @@
 			<link href="{{ asset_url }}" rel="stylesheet" media="screen">
 		{% endstylesheets %}
 		{% stylesheets 'bundles/netflexfront/css/font-awesome.css'
-			'bundles/netflexfront/css/style.css' filter='cssrewrite' %}
+			'bundles/netflexfront/css/style.css'
+            'bundles/netflexdashboard/css/ajax_loader.css' filter='cssrewrite' %}
 			<link href="{{ asset_url }}" rel="stylesheet">
 		{% endstylesheets %}
 	{% endblock %}
 </head>
+<div id="ajaxLoader" class="loading" style="display: none;">Loading&#8230;</div>
 <body class="{{ ('home_page' == app.request.attributes.get('_route')) ? 'hide-scroll' : '' }}">
 <!--header-->
 <div id="less-height" class="container-fluid">

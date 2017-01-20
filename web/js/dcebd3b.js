@@ -46,11 +46,18 @@ $(document).ready(function() {
                         "cityIds": cityIds,
                         "changeStatusTo": selectedOption
                     },
-                    beforeSend: function() {
+                    beforeSend: function(jqXHR, settings) {
                         $(".serverMessage").remove();
+                        $("#ajaxLoader").show();
                     },
-                    success: function(data) {
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //
+                    },
+                    success: function(data, textStatus, jqXHR) {
                         location.reload();
+                    },
+                    complete: function(jqXHR, textStatus) {
+                        $("#ajaxLoader").hide();
                     }
                 });
             }

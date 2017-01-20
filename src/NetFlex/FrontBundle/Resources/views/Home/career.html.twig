@@ -1,0 +1,120 @@
+{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageContent %}
+    <!--TAB FORM-->
+    <div class="inner-banner">
+        {% image '@NetFlexFrontBundle/Resources/public/images/career-banner.jpg' %}
+        <img src="{{ asset_url }}" alt="Career_Banner" />
+        {% endimage %}
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    <div class="about-txt other-banner">
+                        <h2 class="inner-title">careers</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--TAB FORM-->
+    <div class="why-franchisee text-center careers-container">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="heading text-center">
+                        <h2><span>Current</span> openings?</h2>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="job-list-inner">
+                        <div class="job-list text-left">
+                            <h4>Marketing Executive</h4>
+                            <ul class="clearfix">
+                                <li>Date Posted: <span>Jan1, 2017</span> </li>
+                                <li>No. of Vacancies: <span>5</span></li>
+                                <li>Application Deadline: <span>Jan 29, 2017</span></li>
+                                <li>Location: <span>Kolkata</span></li>
+                                <li>Qualification: <span>BSc/BCottm/BA</span></li>
+                                <li>Experience: <span>2yrs</span></li>
+                            </ul>
+                            <h5>Job Description / Responsibility</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet ullamcorper nunc laoreet tempor. Mauris lobortis eleifend auctor. Duis velit urna, sodales at sem sit amet, elementum malesuada sapien. Sed maximus justo et tellus sagittis, vitae gravida diam bibendum.</p>
+                        </div>
+                        <div class="job-list text-left">
+                            <h4>Marketing Executive</h4>
+                            <ul class="clearfix">
+                                <li>Date Posted: <span>Jan1, 2017</span> </li>
+                                <li>No. of Vacancies: <span>5</span></li>
+                                <li>Application Deadline: <span>Jan 29, 2017</span></li>
+                                <li>Location: <span>Kolkata</span></li>
+                                <li>Qualification: <span>BSc/BCottm/BA</span></li>
+                                <li>Experience: <span>2yrs</span></li>
+                            </ul>
+                            <h5>Job Description / Responsibility</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet ullamcorper nunc laoreet tempor. Mauris lobortis eleifend auctor. Duis velit urna, sodales at sem sit amet, elementum malesuada sapien. Sed maximus justo et tellus sagittis, vitae gravida diam bibendum.</p>
+                        </div>
+                    </div>
+                    <div class="career-form">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="heading text-center">
+                                <h2><span>apply</span> here?</h2>
+                                <p>All fields are Mandatory. Application without a proper CV will not be considered</p>
+                            </div>
+                            <div class="career-field">
+                                {{ form_start(careerForm, { 'attr': { 'id': 'careerForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                                    <div class="form-group {{ (0 < careerForm.name.vars.error|length or careerForm.email.vars.error|length) ? 'has-error ': '' }}clearfix">
+                                        <div class="col-md-6 col-sm-6">
+                                            {{ form_widget(careerForm.name, { 'id': 'name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Full Name' } }) }}
+                                            {% if 0 < careerForm.name.vars.error|length %}
+                                                <span class="pull-left help-block">{{ form_errors(careerForm.name) }}</span>
+                                            {% end %}
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                                {{ form_widget(careerForm.email, { 'id': 'email', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Email' } }) }}
+                                                {% if 0 < careerForm.email.vars.error|length %}
+                                                    <span class="pull-left help-block">{{ form_errors(careerForm.email) }}</span>
+                                                {% end %}
+                                        </div>
+                                    </div>
+                                {{ form_end(careerForm) }}
+                                <div class="form-group clearfix">
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" id="Fname" placeholder="Full Name">
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" id="Femail" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" id="Fcontact" placeholder="Contact Number">
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <input type="text" class="form-control" id="Fpost" placeholder="Position Applied for">
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" rows="3" placeholder="A brief about you and your experience"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-md-12 custom-btn-field">
+                                        <label class="custom-upload"><input type="file" name="upload_file" />Upload your CV</label>
+                                        <p class="resume-upload">Saptarshi_CV_updated.docx</p>
+                                        <button type="submit" class="btn-apply">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
+    {% endblock %}
+{% endblock %}

@@ -26,7 +26,16 @@ $(document).ready(function() {
             data: {
                 "countryId": countryId
             },
-            success: function(data) {
+            beforeSend: function(jqXHR, settings) {
+                /**
+                 * Show the loader as page overlay.
+                 */
+                $("#ajaxLoader").show();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                //
+            },
+            success: function(data, textStatus, jqXHR) {
                 var stateList = data.stateList;
                 var stateOptions = "<option value=''>-Select A State-</option>";
                 
@@ -35,6 +44,12 @@ $(document).ready(function() {
                 });
                 
                 $("#stateId").empty().html(stateOptions);
+            },
+            complete: function(jqXHR, textStatus) {
+                /**
+                 * Hide the page overlay loader.
+                 */
+                $("#ajaxLoader").hide();
             }
         });
     });

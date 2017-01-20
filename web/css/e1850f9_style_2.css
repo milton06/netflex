@@ -891,6 +891,9 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
 
 .other-banner {left:0; transform:inherit; bottom:1px;}
 
+.item-del{display: block; font-size: 12px; margin-top: 14px; text-align: center; width: 100%;}
+.item-del small{color: #ff5400; display: block; font-size: 12px;}
+
 /*=====================CONSIGMENTS======================*/
 @media only screen and (min-width: 1280px) and (max-width: 1366px) {
 	.callmail ul li a, .callmail ul li{font-size:11px;}
