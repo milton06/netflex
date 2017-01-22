@@ -46,6 +46,7 @@ parameters:
     customer_types: { 'Client': '1', 'Guest': 2 }
     inversed_customer_types: { '1': 'Client', '2': 'Guest' }
     delivery_zones: { 'Intracity': 1, 'Intrastate': 2, 'Interstate': 3 }
+    applicant_cv_upload_directory_path: '%kernel.root_dir%/../public_html/uploads/applicant_cvs'
 
 framework:
     #esi:             ~

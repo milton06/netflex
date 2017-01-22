@@ -130,7 +130,7 @@ class HomeController extends Controller
 	 * Renders a NetFlex CMS page.
 	 *
 	 * @Route("/{cmsPageSlug}", name="cms_page", requirements={"cmsPageSlug": "[a-zA-z0-9_\-]+"})
-	 * @Method({"GET"})
+	 * @Method({"GET", "POST"})
 	 *
 	 * @param  string  $cmsPageSlug
 	 * @param  Request $request A Request instance
@@ -174,7 +174,6 @@ class HomeController extends Controller
                 ->setAction($this->generateUrl('cms_page', ['cmsPageSlug' => $cmsPageSlug], UrlGeneratorInterface::ABSOLUTE_URL))
                 ->setMethod('POST')
                 ->add('name', TextType::class, [
-                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Name is required'
@@ -182,7 +181,6 @@ class HomeController extends Controller
                     ],
                 ])
                 ->add('email', EmailType::class, [
-                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Email is required',
@@ -193,7 +191,6 @@ class HomeController extends Controller
                     ],
                 ])
                 ->add('contact', TextType::class, [
-                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Contact number is required',
@@ -201,7 +198,6 @@ class HomeController extends Controller
                     ],
                 ])
                 ->add('position', TextType::class, [
-                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Applied position is required',
@@ -209,7 +205,6 @@ class HomeController extends Controller
                     ],
                 ])
                 ->add('brief', TextareaType::class, [
-                    'mapped' => false,
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Brief is required',
@@ -217,18 +212,44 @@ class HomeController extends Controller
                     ],
                 ])
                 ->add('cv', FileType::class, [
-                    'mapped' => false,
                     'constraints' => [
+                        new NotBlank([
+                            'message' => 'Please upload a CV',
+                        ]),
                         new File([
                             'mimeTypes' => [
                                 'application/msword',
                                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                             ],
                             'mimeTypesMessage' => '{{ types }} files are only allowed',
+                            'maxSize' => '5Mi',
+                            'maxSizeMessage' => 'Allowed maximum size is {{ limit }} {{ suffix }}',
                         ]),
                     ],
                 ])
                 ->getForm();
+                
+                $careerForm->handleRequest($request);
+                
+                if ($careerForm->isSubmitted() && $careerForm->isValid()) {
+                    $formData = $careerForm->getData();
+                    
+                    $name = $formData['name'];
+                    $email = $formData['email'];
+                    $contact = $formData['contact'];
+                    $position = $formData['position'];
+                    $brief = $formData['brief'];
+                    $file = $formData['cv'];
+                    
+                    $cvName = 'applicant_cv_' . md5(uniqid()) . '.' . $file->guessExtension();
+                    
+                    $file->move(
+                        $this->getParameter('applicant_cv_upload_directory_path'),
+                        $cvName
+                    );
+                    
+                    var_dump($formData);
+                }
                 
                 $extraData = [
                     'careerForm' => $careerForm->createView(),

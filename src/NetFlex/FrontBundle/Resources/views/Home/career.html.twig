@@ -1,6 +1,22 @@
 {% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% form_theme careerForm 'NetFlexFrontBundle:FormLayout:user_registration.html.twig' %}
 {% block pageTitle %}
     {{ parent() }} : {{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    <style>
+        .help-block {
+            text-align: left;
+            color: #ff3333;
+        }
+        .cvError {
+            color: #ff3333;
+        }
+        .succMsg {
+            color: #1b7e5a;
+        }
+    </style>
 {% endblock %}
 {% block pageContent %}
     <!--TAB FORM-->
@@ -64,49 +80,52 @@
                             </div>
                             <div class="career-field">
                                 {{ form_start(careerForm, { 'attr': { 'id': 'careerForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
-                                    <div class="form-group {{ (0 < careerForm.name.vars.error|length or careerForm.email.vars.error|length) ? 'has-error ': '' }}clearfix">
+                                    <div class="form-group clearfix">
                                         <div class="col-md-6 col-sm-6">
-                                            {{ form_widget(careerForm.name, { 'id': 'name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Full Name' } }) }}
-                                            {% if 0 < careerForm.name.vars.error|length %}
-                                                <span class="pull-left help-block">{{ form_errors(careerForm.name) }}</span>
-                                            {% end %}
+                                            {{ form_widget(careerForm.name, { 'id': 'name', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Full Name', 'oninput': 'validateEmpty(this, "clientError")', 'onblur': 'validateEmpty(this, "clientError")' } }) }}
+                                            {{ form_errors(careerForm.name) }}
+                                            <span class="help-block clientError" style="display: none;">Name is required</span>
                                         </div>
                                         <div class="col-md-6 col-sm-6">
-                                                {{ form_widget(careerForm.email, { 'id': 'email', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Email' } }) }}
-                                                {% if 0 < careerForm.email.vars.error|length %}
-                                                    <span class="pull-left help-block">{{ form_errors(careerForm.email) }}</span>
-                                                {% end %}
+                                            {{ form_widget(careerForm.email, { 'id': 'applicantEmail', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Email', 'oninput': 'validateEmail(this, "clientError")', 'onblur': 'validateEmail(this, "clientError")' } }) }}
+                                            {{ form_errors(careerForm.email) }}
+                                            <span class="help-block clientError" style="display: none;">Email is required</span>
+                                            <span class="help-block clientError" style="display: none;">Enter a valid email</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <div class="col-md-6 col-sm-6">
+                                            {{ form_widget(careerForm.contact, { 'id': 'contact', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Contact Number', 'oninput': 'validateEmpty(this, "clientError")', 'onblur': 'validateEmpty(this, "clientError")' } }) }}
+                                            {{ form_errors(careerForm.contact) }}
+                                            <span class="help-block clientError" style="display: none;">Contact number is required</span>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            {{ form_widget(careerForm.position, { 'id': 'position', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Position Applied For', 'oninput': 'validateEmpty(this, "clientError")', 'onblur': 'validateEmpty(this, "clientError")' } }) }}
+                                            {{ form_errors(careerForm.position) }}
+                                            <span class="help-block clientError" style="display: none;">Applied position is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <div class="col-md-12">
+                                            {{ form_widget(careerForm.brief, { 'id': 'brief', 'required': false, 'attr': { 'rows': 3, 'class': 'form-control', 'placeholder': 'A brief about you and your experience', 'oninput': 'validateEmpty(this, "clientError")', 'onblur': 'validateEmpty(this, "clientError")' } }) }}
+                                            {{ form_errors(careerForm.brief) }}
+                                            <span class="help-block clientError" style="display: none;">Brief is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <div class="col-md-12 custom-btn-field">
+                                            <label class="custom-upload">{{ form_widget(careerForm.cv, { 'id': 'cv', 'required': false, 'attr': { 'onchange': 'validateFileUpload(this, "cvError")' } }) }}Upload your CV</label>
+                                            {% if careerForm.cv.vars.errors|length %}
+                                                <span class="clearfix cvError">{{ careerForm.cv.vars.errors.0.message }}</span>
+                                            {% endif %}
+                                            <span class="cvError" style="display: none;">Please upload a CV</span>
+                                            <span class="cvError" style="display: none;">.doc and .docx files are only allowed</span>
+                                            <span class="cvError" style="display: none;">File size cannot exceed 5 Mib</span>
+                                            <p class="resume-upload">Saptarshi_CV_updated.docx</p>
+                                            <button type="submit" class="btn-apply" onclick="apply(event, this)">Apply</button>
                                         </div>
                                     </div>
                                 {{ form_end(careerForm) }}
-                                <div class="form-group clearfix">
-                                    <div class="col-md-6 col-sm-6">
-                                        <input type="text" class="form-control" id="Fname" placeholder="Full Name">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <input type="text" class="form-control" id="Femail" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <div class="col-md-6 col-sm-6">
-                                        <input type="text" class="form-control" id="Fcontact" placeholder="Contact Number">
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <input type="text" class="form-control" id="Fpost" placeholder="Position Applied for">
-                                    </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <div class="col-md-12">
-                                        <textarea class="form-control" rows="3" placeholder="A brief about you and your experience"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <div class="col-md-12 custom-btn-field">
-                                        <label class="custom-upload"><input type="file" name="upload_file" />Upload your CV</label>
-                                        <p class="resume-upload">Saptarshi_CV_updated.docx</p>
-                                        <button type="submit" class="btn-apply">Apply</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,4 +136,122 @@
     {% block footer %}
         {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
     {% endblock %}
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var validateEmail = function(element, messageContainer) {
+            var elementValue = element.value;
+            var parentElement = element.parentNode;
+            var messagesToDisplay = parentElement.getElementsByClassName(messageContainer);
+
+            if (! elementValue) {
+                messagesToDisplay[1].style.display = "none";
+                messagesToDisplay[0].style.display = "block";
+
+                return false;
+            } else {
+                messagesToDisplay[0].style.display = "none";
+
+                var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+                if (! emailRegex.test(elementValue)) {
+                    messagesToDisplay[1].style.display = "block";
+
+                    return false;
+                } else {
+                    messagesToDisplay[1].style.display = "none";
+
+                    return true;
+                }
+            }
+        };
+        var validateEmpty = function(element, messageContainer) {
+            var elementValue = element.value;
+            var parentElement = element.parentNode;
+            var messagesToDisplay = parentElement.getElementsByClassName(messageContainer);
+
+            if (! elementValue) {
+                messagesToDisplay[0].style.display = "block";
+
+                return false;
+            } else {
+                messagesToDisplay[0].style.display = "none";
+
+                return true;
+            }
+        };
+        var validateFileUpload = function(element, messageContainer) {
+            var file = (element.files) ? element.files[0] : null;
+            var parentElement = element.parentNode.parentNode;
+            var messagesToDisplay = parentElement.getElementsByClassName(messageContainer);
+
+            if (! file) {
+                messagesToDisplay[2].style.display = "none";
+                messagesToDisplay[1].style.display = "none";
+                messagesToDisplay[0].style.display = "block";
+
+                return false;
+            } else {
+                messagesToDisplay[0].style.display = "none";
+
+                if (("application/msword" !== file.type) && ("application/vnd.openxmlformats-officedocument.wordprocessingml.document" !== file.type)) {
+                    messagesToDisplay[2].style.display = "none";
+                    messagesToDisplay[1].style.display = "block";
+
+                    return false;
+                } else {
+                    messagesToDisplay[1].style.display = "none";
+
+                    if (5242880 < file.size) {
+                        messagesToDisplay[2].style.display = "block";
+
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        };
+        var apply = function(event, element) {
+            event.preventDefault();
+
+            var form = document.getElementById("careerForm");
+            var name = document.getElementById("name");
+            var email = document.getElementById("applicantEmail");
+            var contact = document.getElementById("contact");
+            var position = document.getElementById("position");
+            var brief = document.getElementById("brief");
+            var cv = document.getElementById("cv");
+            var formError = false;
+
+            if (! validateEmpty(name, "clientError")) {
+                formError = true;
+            }
+
+            if (! validateEmail(email, "clientError")) {
+                formError = true;
+            }
+
+            if (! validateEmpty(contact, "clientError")) {
+                formError = true;
+            }
+
+            if (! validateEmpty(position, "clientError")) {
+                formError = true;
+            }
+
+            if (! validateEmpty(brief, "clientError")) {
+                formError = true;
+            }
+
+            if (! validateFileUpload(cv, "cvError")) {
+                formError = true;
+            }
+
+            if (! formError) {
+                form.submit();
+            }
+        };
+    </script>
 {% endblock %}
