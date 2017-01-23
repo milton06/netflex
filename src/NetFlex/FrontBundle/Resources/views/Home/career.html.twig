@@ -38,14 +38,14 @@
     <div class="why-franchisee text-center careers-container">
         <div class="container">
             <div class="row clearfix">
-                <div class="col-md-10 col-md-offset-1">
+                {#<div class="col-md-10 col-md-offset-1">
                     <div class="heading text-center">
                         <h2><span>Current</span> openings?</h2>
                     </div>
-                </div>
+                </div>#}
                 <div class="col-md-12">
                     <div class="job-list-inner">
-                        <div class="job-list text-left">
+                        {#<div class="job-list text-left">
                             <h4>Marketing Executive</h4>
                             <ul class="clearfix">
                                 <li>Date Posted: <span>Jan1, 2017</span> </li>
@@ -70,7 +70,7 @@
                             </ul>
                             <h5>Job Description / Responsibility</h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet ullamcorper nunc laoreet tempor. Mauris lobortis eleifend auctor. Duis velit urna, sodales at sem sit amet, elementum malesuada sapien. Sed maximus justo et tellus sagittis, vitae gravida diam bibendum.</p>
-                        </div>
+                        </div>#}
                     </div>
                     <div class="career-form">
                         <div class="col-md-8 col-md-offset-2">
@@ -78,6 +78,30 @@
                                 <h2><span>apply</span> here?</h2>
                                 <p>All fields are Mandatory. Application without a proper CV will not be considered</p>
                             </div>
+
+                            {% if app.session.flashbag.peek('success') %}
+                                <div class="alert alert-success">
+                                    <button data-dismiss="alert" class="close">
+                                        ×
+                                    </button>
+                                    <i class="fa fa-check-circle"></i>
+                                    <strong>That's Great!</strong>
+                                    {% for success in app.session.flashbag.get('success') %}
+                                        {{ success }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            {% if 0 < careerForm.vars.errors|length %}
+                                <div class="alert alert-success">
+                                    <button data-dismiss="alert" class="close">
+                                        ×
+                                    </button>
+                                    <i class="fa fa-times-circle"></i>
+                                    <strong>Oh Snap!</strong> There are errors in the form. Please check below.
+                                </div>
+                            {% endif %}
+
                             <div class="career-field">
                                 {{ form_start(careerForm, { 'attr': { 'id': 'careerForm', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
                                     <div class="form-group clearfix">
@@ -121,7 +145,7 @@
                                             <span class="cvError" style="display: none;">Please upload a CV</span>
                                             <span class="cvError" style="display: none;">.doc and .docx files are only allowed</span>
                                             <span class="cvError" style="display: none;">File size cannot exceed 5 Mib</span>
-                                            <p class="resume-upload">Saptarshi_CV_updated.docx</p>
+                                            <p class="resume-upload"></p>
                                             <button type="submit" class="btn-apply" onclick="apply(event, this)">Apply</button>
                                         </div>
                                     </div>
@@ -140,6 +164,10 @@
 {% block pageScripts %}
     {{ parent() }}
     <script>
+        var displaySelectedFileName = function(fileName) {
+            var container = document.getElementsByClassName("resume-upload")[0];
+            container.innerHTML = fileName;
+        };
         var validateEmail = function(element, messageContainer) {
             var elementValue = element.value;
             var parentElement = element.parentNode;
@@ -193,6 +221,8 @@
 
                 return false;
             } else {
+                displaySelectedFileName(file.name);
+
                 messagesToDisplay[0].style.display = "none";
 
                 if (("application/msword" !== file.type) && ("application/vnd.openxmlformats-officedocument.wordprocessingml.document" !== file.type)) {

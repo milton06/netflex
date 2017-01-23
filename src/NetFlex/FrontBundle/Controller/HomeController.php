@@ -232,23 +232,36 @@ class HomeController extends Controller
                 $careerForm->handleRequest($request);
                 
                 if ($careerForm->isSubmitted() && $careerForm->isValid()) {
-                    $formData = $careerForm->getData();
+                    $applicationData = $careerForm->getData();
                     
-                    $name = $formData['name'];
-                    $email = $formData['email'];
-                    $contact = $formData['contact'];
-                    $position = $formData['position'];
-                    $brief = $formData['brief'];
-                    $file = $formData['cv'];
+                    $name = $applicationData['name'];
+                    $email = $applicationData['email'];
+                    $contact = $applicationData['contact'];
+                    $position = $applicationData['position'];
+                    $brief = $applicationData['brief'];
+                    $file = $applicationData['cv'];
                     
                     $cvName = 'applicant_cv_' . md5(uniqid()) . '.' . $file->guessExtension();
+                    $cvAttachmentPath = $this->getParameter('applicant_cv_upload_directory_path') . '/' . $cvName;
                     
                     $file->move(
                         $this->getParameter('applicant_cv_upload_directory_path'),
                         $cvName
                     );
-                    
-                    var_dump($formData);
+    
+                    $mailerService = $this->get('mailer_service');
+                    list($toEmail, $toName, $subject, $message) = $mailerService->getMailTemplateData('CR_APLCTN');
+                    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+                        'mailBody' => $message,
+                    ]);
+                    $message = str_replace(['[name]', '[email]', '[contact]', '[post]', '[brief]'], [$applicationData['name'], $applicationData['email'], $applicationData['contact'], $applicationData['position'], $applicationData['brief']], $message);
+                    $message = html_entity_decode($message);
+                    $mailerService->setMessageWithAttachment($email, $toEmail, $subject, $cvAttachmentPath, $message, 1, $name, $toName);
+                    $mailerService->sendMail();
+    
+                    $this->addFlash('success', 'Your application has been submitted successfully.');
+    
+                    return $this->redirectToRoute('cms_page', ['cmsPageSlug' => 'career']);
                 }
                 
                 $extraData = [

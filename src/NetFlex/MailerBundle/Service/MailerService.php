@@ -39,6 +39,17 @@ class MailerService
 			->setSubject($subject)
 			->setBody($message, 'text/html');
 	}
+    
+    public function setMessageWithAttachment($fromEmail, $toEmail, $subject, $attachment, $message, $priority = 1, $fromName = null, $toName = null)
+    {
+        $this->message = \Swift_Message::newInstance()
+        ->setFrom($fromEmail, $fromName)
+        ->setTo($toEmail, $toName)
+        ->setPriority($priority)
+        ->setSubject($subject)
+        ->attach(\Swift_Attachment::fromPath($attachment))
+        ->setBody($message, 'text/html');
+    }
 	
 	public function sendMail()
 	{
