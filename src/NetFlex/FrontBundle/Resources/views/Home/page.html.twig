@@ -1,4 +1,4 @@
-{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% extends 'NetFlexFrontBundle::inner_layout.html.twig' %}
 {% block pageTitle %}
     {{ parent() }} : {{ pageTitle }}
 {% endblock %}
@@ -6,15 +6,7 @@
     <div class="container">
         <div class="tabform clearfix">
             <h2 class="cong">{{ pageHeader }}</h2>
-            <h3>This Page Is Under Construction</h3>
-            <div class="awbPanel clearfix">
-                {% image '@NetFlexFrontBundle/Resources/public/images/webUnderConstruction.jpeg' %}
-                    <img src="{{ asset_url }}" alt="netflex-webpage-under-construction">
-                {% endimage %}
-            </div>
+            {{ contents.0.content|raw }}
         </div>
     </div>
-    {% block footer %}
-        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
-    {% endblock %}
 {% endblock %}

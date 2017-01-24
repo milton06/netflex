@@ -1,0 +1,129 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }}{{ pageTitle }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{ referer }}" class="btn btn-dark-grey pull-right"><i class="clip-arrow-left-2"></i>&nbsp;&nbsp;&nbsp;&nbsp;Back To Listing</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-quote-left"></i>
+                    {{ panelHeader }}
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="tabbable tabs-left">
+                                <ul class="nav nav-tabs tab-green">
+                                    <li class="active">
+                                        <a href="#generalDetails" data-toggle="tab">
+                                            <i class="pink fa fa-info-circle"></i> General
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#metaData" data-toggle="tab">
+                                            <i class="blue fa fa-code"></i> Meta Data
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="#content" data-toggle="tab">
+                                            <i class="fa fa-file-text"></i> Content
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="generalDetails">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Title:</th>
+                                                        <td>{{ staticPage.title }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Slug:</th>
+                                                        <td>{{ staticPage.slug }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Status:</th>
+                                                        <td>{{ staticPageStatuses[staticPage.status] }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Created On:</th>
+                                                        <td>{{ staticPage.createdOn|date('F j, Y g:i a') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Last Modified On:</th>
+                                                        <td>{{ staticPage.lastModifiedOn|date('F j, Y g:i a') }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="metaData">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Meta Keywords:</th>
+                                                        <td>{{ (staticPage.metaKeyword) ? staticPage.metaKeyword :
+                                                            'Not Given'
+                                                            }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Meta Description:</th>
+                                                        <td>{{ (staticPage.metaDescription) ? staticPage
+                                                            .metaDescription : 'Not Given'
+                                                            }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="content">
+                                        {% if staticPage.staticPageSections %}
+                                            <div class="tabbable tabs-left">
+                                                <ul class="nav nav-tabs tab-green">
+                                                    {% for thisStaticPage in staticPage.staticPageSections %}
+                                                        <li class="{{ (loop.first) ? 'active' : '' }}">
+                                                            <a href="#staticPageContent{{ loop.index }}" data-toggle="tab">
+                                                                <i class="fa fa-file-text-o"></i> Content {{ loop.index }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                                <div class="tab-content">
+                                                    {% for thisStaticPage in staticPage.staticPageSections %}
+                                                        <div class="tab-pane {{ (loop.first) ? 'active' : '' }}" id="staticPageContent{{ loop.index }}">
+                                                            {{ thisStaticPage.content|raw }}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-striped">
+                                                    <tbody>
+                                                    <tr>
+                                                        <th>You have not added any content to this page yet!</th>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

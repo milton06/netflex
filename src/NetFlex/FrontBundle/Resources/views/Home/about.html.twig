@@ -12,16 +12,6 @@
                 <div class="col-md-12">
                     <div class="about-txt">
                         <h2 class="inner-title">{{ pageHeader }}</h2>
-                        {#<div class="trackSearch">
-                            <div class="input-group stylish-input-group">
-                                <input type="text" id="trackingCode" class="form-control" placeholder="Search or Tracking Number" style="color: rgb(160, 160, 160);">
-                                <span class="input-group-addon">
-                                    <button id="trackingButton" type="submit">
-                                        <span class="fa fa-search"></span>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>#}
                     </div>
                 </div>
             </div>
@@ -31,10 +21,7 @@
         <div class="container">
             <div class="row clearfix">
                 <div class="col-md-12">
-                    <div class="heading">
-                        {#<h2><span>why</span> franchisee?</h2>#}
-                        <p>We are proud to announce the commencement of our logistics company, <strong>Netflex</strong> , that is going to make a mark in the world of logistics not only in our country but throughout the world. <br><br>We are guided by principles, lofty and great and we are determined to fulfil our mission based on honesty, integrity and result- oriented performance.  We are also dedicated to serve our clients through our smart and timely execution and hassle-free operation. </p>
-                    </div>
+                    {{ contents.0.content|raw }}
                 </div>
             </div>
         </div>
@@ -46,15 +33,7 @@
         <div class="container">
             <div class="row clearfix">
                 <div class="col-md-6 col-md-offset-6">
-                    <div class="vison-inner">
-                        <div class="heading">
-                            <h2><span>OUR</span> VISION</h2>
-                            <h3>“Customer’s requirement is our prime concern and customer’s satisfaction is our sole objective”</h3>
-                        </div>
-                        <div class="vison-txt">
-                            Our goal-oriented vision will explicitly define our objectives. There will be clear-cut guidelines to define the steps that will be adopted to achieve our goal and the methods of execution that will be implemented to satisfy our valued customers. With an aspiration to emerge as the country’s leading logistics provider, we are armed with a confidence to make a foray into the global market. In that segment too, we are determined to leave a strong and indelible mark through our performance.
-                        </div>
-                    </div>
+                    {{ contents.1.content|raw }}
                 </div>
             </div>
         </div>
@@ -63,15 +42,7 @@
         <div class="container">
             <div class="row clearfix">
                 <div class="col-md-8 col-md-offset-2">
-                    <div class="vison-inner">
-                        <div class="heading text-center">
-                            <h2><span>OUR</span> mission</h2>
-                            <h3>“Freedom with responsibility”</h3>
-                        </div>
-                        <div class="misson-txt">
-                            At Netflex, we have an ambitious aim to bind the earth with our logistics chain. We focus on possibilities and we have the power to look beyond the hurdles and obstacles that might fetter our activities.  Our ability to think creatively and find an alternative answer to each and every impediment will make us successful. We strive to be dynamic and are ready to adapt ourselves to diverse circumstances. Thus, we can face innumerable challenges and emerge as the leader in our sphere.
-                        </div>
-                    </div>
+                    {{ contents.2.content|raw }}
                 </div>
             </div>
         </div>

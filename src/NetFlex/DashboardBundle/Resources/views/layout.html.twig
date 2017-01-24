@@ -103,7 +103,7 @@
     </div>
     <!-- start: PAGE -->
     <div class="main-content">
-        <div class="container">
+        <div id="pageContentContainer" class="container">
             <!-- start: PAGE HEADER -->
             <div class="row">
                 <div class="col-sm-12">
@@ -146,7 +146,8 @@
         '@NetFlexDashboardBundle/Resources/public/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js'
         '@NetFlexDashboardBundle/Resources/public/plugins/bootstrap/js/bootstrap.min.js'
         '@NetFlexDashboardBundle/Resources/public/plugins/perfect-scrollbar/src/perfect-scrollbar.js'
-        '@NetFlexDashboardBundle/Resources/public/js/main.js' %}
+        '@NetFlexDashboardBundle/Resources/public/js/main.js'
+        '@NetFlexDashboardBundle/Resources/public/js/common.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

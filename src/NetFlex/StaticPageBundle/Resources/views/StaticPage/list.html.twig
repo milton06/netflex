@@ -1,0 +1,315 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme staticPageSearchForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }}{{ pageTitle }}
+{% endblock %}
+{% block pageStyles %}
+    {{ parent() }}
+    {% stylesheets 'bundles/netflexdashboard/plugins/iCheck/skins/all.css'
+        'bundles/netflexdashboard/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css'
+        'bundles/netflexdashboard/plugins/autocomplete/jquery.auto-complete.css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{ url('dashboard_static_page_new', { 'referer': referer }) }}" class="btn btn-dark-grey pull-right"><i class="clip-plus-circle-2"></i> Add New</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-quote-left"></i>
+                    {{ panelHeader }}
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-danger serverError" style="display: none;">
+                        <button data-dismiss="alert" class="close">
+                            ×
+                        </button>
+                        <i class="fa fa-times-circle"></i>
+                        <strong>Oh snap!</strong>
+                        <span class="message"></span>
+                    </div>
+                    <div class="alert alert-warning serverWarning" style="display: none;">
+                        <button data-dismiss="alert" class="close">
+                            ×
+                        </button>
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <strong>Warning!</strong>
+                        <span class="message"></span>
+                    </div>
+                    <div class="alert alert-success serverSuccess" style="display: none;">
+                        <button data-dismiss="alert" class="close">
+                            ×
+                        </button>
+                        <i class="fa fa-check-circle"></i>
+                        <strong>That's great!</strong>
+                        <span class="message"></span>
+                    </div>
+                    <div class="panel-group accordion-custom accordion-teal" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle {{ (app.session.has('searchTitle')) ? '' : 'collapsed' }}" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        <i class="fa fa-search-plus"></i> <strong>Search Filters</strong>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse {{ (app.session.has('searchTitle')) ? 'in' : 'collapse' }}">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            {{ form_start(staticPageSearchForm, { 'attr': { 'id': 'staticPageSearchForm', 'role': 'form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    {{ form_widget(staticPageSearchForm.searchTitle, { 'id': 'searchTitle', 'attr': { 'class': 'form-control', 'placeholder': 'Title' } }) }}
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    {{ form_widget(staticPageSearchForm.searchSlug, { 'id': 'searchSlug', 'attr': { 'class': 'form-control', 'placeholder': 'Slug' } }) }}
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    {{ form_widget(staticPageSearchForm.searchStatus, { 'attr': { 'class': 'form-control' } }) }}
+                                                </div>
+                                            </div>
+                                            <div class="row"><div class="col-sm-4">&nbsp;</div></div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="input-group">
+                                                        {{ form_widget(staticPageSearchForm.searchFromDate, { 'id': 'searchFromDate', 'attr': { 'class': 'form-control' } }) }}
+                                                        <div class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-th"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group">
+                                                        {{ form_widget(staticPageSearchForm.searchToDate, { 'id': 'searchToDate', 'attr': { 'class': 'form-control' } }) }}
+                                                        <div class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-th"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <button type="submit" class="btn btn-dark-grey" onclick="search(event, '#staticPageSearchForm')"><i class="fa fa-filter"></i> Filter</button>
+                                                    {% if app.session.has('searchTitle') %}
+                                                        <a href="{{ url('dashboard_static_page_exit_search') }}" class="btn btn-dark-grey" onclick="exitSearch(event, this)"><i class="fa fa-times-circle"></i> Clear</a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            {{ form_end(staticPageSearchForm) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="center">
+                                        <div class="checkbox-table">
+                                            <label>
+                                                <input type="checkbox" id="bulkRecordSelector" class="square-black">
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        {% if 'id' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}"><i class="fa fa-unsorted"></i></a>
+                                        {% else %}
+                                            {% if 'asc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'desc' }) }}"><i class="fa fa-sort-desc"></i></a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'id', 'sortOrder': 'asc' }) }}"><i class="fa fa-sort-asc"></i></a>
+                                            {% endif %}
+                                        {% endif %} ID
+                                    </th>
+                                    <th>
+                                        {% if 'title' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'title', 'sortOrder': 'asc' }) }}"><i class="fa fa-unsorted"></i></a>
+                                        {% else %}
+                                            {% if 'asc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'title', 'sortOrder': 'desc' }) }}"><i class="fa fa-sort-desc"></i></a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'title', 'sortOrder': 'asc' }) }}"><i class="fa fa-sort-asc"></i></a>
+                                            {% endif %}
+                                        {% endif %} Title
+                                    </th>
+                                    <th>
+                                        {% if 'slug' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'slug', 'sortOrder': 'asc' }) }}"><i class="fa fa-unsorted"></i></a>
+                                        {% else %}
+                                            {% if 'asc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'slug', 'sortOrder': 'desc' }) }}"><i class="fa fa-sort-desc"></i></a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'slug', 'sortOrder': 'asc' }) }}"><i class="fa fa-sort-asc"></i></a>
+                                            {% endif %}
+                                        {% endif %} Slug
+                                    </th>
+                                    <th>
+                                        {% if 'status' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'status', 'sortOrder': 'asc' }) }}"><i class="fa fa-unsorted"></i></a>
+                                        {% else %}
+                                            {% if 'asc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'status', 'sortOrder': 'desc' }) }}"><i class="fa fa-sort-desc"></i></a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'status', 'sortOrder': 'asc' }) }}"><i class="fa fa-sort-asc"></i></a>
+                                            {% endif %}
+                                        {% endif %} Status
+                                    </th>
+                                    <th>
+                                        {% if 'created' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'created', 'sortOrder': 'asc' }) }}"><i class="fa fa-unsorted"></i></a>
+                                        {% else %}
+                                            {% if 'asc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'created', 'sortOrder': 'desc' }) }}"><i class="fa fa-sort-desc"></i></a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'created', 'sortOrder': 'asc' }) }}"><i class="fa fa-sort-asc"></i></a>
+                                            {% endif %}
+                                        {% endif %} Created On
+                                    </th>
+                                    <th>
+                                        {% if 'modified' != routeParameters.sortColumn %}
+                                            <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'modified', 'sortOrder': 'asc' }) }}"><i class="fa fa-unsorted"></i></a>
+                                        {% else %}
+                                            {% if 'asc' == routeParameters.sortOrder %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'modified', 'sortOrder': 'desc' }) }}"><i class="fa fa-sort-desc"></i></a>
+                                            {% else %}
+                                                <a href="{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': 'modified', 'sortOrder': 'asc' }) }}"><i class="fa fa-sort-asc"></i></a>
+                                            {% endif %}
+                                        {% endif %} Modified On
+                                    </th>
+                                    <th>Operations</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if 0 == staticPages|length %}
+                                    <tr>
+                                        <td class="center" colspan="8">No Static Pages Found!</td>
+                                    </tr>
+                                {% else %}
+                                    {% for thisStaticPage in staticPages %}
+                                        <tr>
+                                            <td class="center">
+                                                <div class="checkbox-table">
+                                                    <label>
+                                                        <input type="checkbox" value="{{ thisStaticPage.id }}" class="square-black recordSelectors">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{{ thisStaticPage.id }}</td>
+                                            <td>{{ thisStaticPage.title }}</td>
+                                            <td>{{ thisStaticPage.slug }}</td>
+                                            <td>{{ staticPageStatuses[thisStaticPage.status] }}</td>
+                                            <td>{{ thisStaticPage.createdOn|date('F j, Y g:i a') }}</td>
+                                            <td>{{ thisStaticPage.lastModifiedOn|date('F j, Y g:i a') }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-sm btn-dark-grey">Operations</button>
+                                                    <button type="button" class="btn btn-sm btn-dark-grey dropdown-toggle" data-toggle="dropdown">
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li>
+                                                            <a href="{{ url('dashboard_static_page_view', { 'id': thisStaticPage.id, 'referer': referer }) }}"><i class="clip-eye"></i> View</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ url('dashboard_static_page_edit', { 'id': thisStaticPage.id, 'referer': referer }) }}"><i class="clip-pencil"></i> Edit</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        {% if 1 == thisStaticPage.status %}
+                                                            <li>
+                                                                <a href="{{ url('dashboard_static_page_publish', { 'id': thisStaticPage.id }) }}" onclick="publishRecord(event, this)"><i class="fa fa-share"></i> Publish</a>
+                                                            </li>
+                                                        {% endif %}
+                                                        {% if 2 == thisStaticPage.status %}
+                                                            <li>
+                                                                <a href="{{ url('dashboard_static_page_trash', { 'id': thisStaticPage.id }) }}" onclick="trashRecord(event, this)"><i class="clip-remove"></i> Trash</a>
+                                                            </li>
+                                                        {% endif %}
+                                                        <li>
+                                                            <a href="{{ url('dashboard_static_page_delete', { 'id': thisStaticPage.id, 'selectedRecordCount': 1, 'recordOnPage': staticPages|length, 'currentPage': routeParameters.page }) }}" onclick="deleteRecord(event, this, '{{ url('dashboard_static_page_list', { 'page': 9999999999, 'sortColumn': routeParameters.sortColumn, 'sortOrder': routeParameters.sortOrder }) }}')"><i class="fa fa-eraser"></i> Delete</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        {% if 0 < staticPages|length %}
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-dark-grey">Bulk Operations</button>
+                                                <button type="button" class="btn btn-sm btn-dark-grey dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="{{ url('dashboard_static_page_bulk_publish', { 'ids': '0-0' }) }}" onclick="bulkPublishRecords(event, this, '{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': routeParameters.sortColumn, 'sortOrder': routeParameters.sortOrder }) }}', '.recordSelectors')"><i class="fa fa-share"></i> Publish</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ url('dashboard_static_page_bulk_trash', { 'ids': '0-0' }) }}" onclick="bulkTrashRecords(event, this, '{{ url('dashboard_static_page_list', { 'page': routeParameters.page, 'sortColumn': routeParameters.sortColumn, 'sortOrder': routeParameters.sortOrder }) }}', '.recordSelectors')"><i class="clip-remove"></i> Trash</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ url('dashboard_static_page_bulk_delete', { 'ids': '0-0', 'selectedRecordCount': 9999999999, 'recordOnPage': staticPages|length, 'currentPage': routeParameters.page }) }}" onclick="bulkDeleteRecords(event, this, '{{ url('dashboard_static_page_list', { 'page': 9999999999, 'sortColumn': routeParameters.sortColumn, 'sortOrder': routeParameters.sortOrder }) }}', '.recordSelectors')"><i class="fa fa-eraser"></i> Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td colspan="5">
+                                        {% if 0 < staticPages|length %}
+                                            <ul class="pagination pagination-teal" style="margin: 0 !important;">
+                                                <li class="{{ (1 == routeParameters.page) ? 'disabled' : '' }}">
+                                                    <a href="{{ pageLinks.first }}"><i class="fa fa-angle-double-left"></i></a>
+                                                </li>
+                                                <li class="{{ (1 == routeParameters.page) ? 'disabled' : '' }}">
+                                                    <a href="{{ pageLinks.previous }}"><i class="fa fa-angle-left"></i></a>
+                                                </li>
+                                                {% for key, thisPageLink in pageLinks.links %}
+                                                <li class="{{ (key == routeParameters.page) ? 'active' : '' }}">
+                                                    <a href="{{ (key == routeParameters.page)? 'javascript:void(0)' : thisPageLink }}">{{ key }}</a>
+                                                </li>
+                                                {% endfor %}
+                                                <li class="{{ (totalPageCount == routeParameters.page) ? 'disabled' : '' }}">
+                                                    <a href="{{ pageLinks.next }}"><i class="fa fa-angle-right"></i></a>
+                                                </li>
+                                                <li class="{{ (totalPageCount == routeParameters.page) ? 'disabled' : '' }}">
+                                                    <a href="{{ pageLinks.last }}"><i class="fa fa-angle-double-right"></i></a>
+                                                </li>
+                                            </ul>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var autocompleteUrl = "{{ url('dashboard_static_page_autocomplete') }}";
+    </script>
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/iCheck/jquery.icheck.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/bootstrap-datetimepicker/js/moment.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'
+        '@NetFlexDashboardBundle/Resources/public/plugins/autocomplete/jquery.auto-complete.min.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@NetFlexStaticPageBundle/Resources/public/js/common.js'
+        '@NetFlexStaticPageBundle/Resources/public/js/StaticPage/list.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

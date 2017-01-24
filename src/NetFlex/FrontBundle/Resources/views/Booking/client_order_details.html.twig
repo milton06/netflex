@@ -143,9 +143,9 @@
                                         {% endfor %}
                                     </ul>
 	                                <ul class="trackbar clearfix">
-		                                {% for i in 1..orderDetails.orderStatus %}
+		                                {% for i, status in trackStatusList %}
 			                                <li class="approveLine">
-				                                <a href="javascript:void(0);" class="redDotOne{{ (5 == i) ? ' sucess': '' }}" data-toggle="tooltip" data-placement="bottom"  title="{{ trackStatusList[i] }}"></a>
+				                                <a href="javascript:void(0);" class="redDotOne{{ (5 == i) ? ' sucess' : ((5 < i) ? ' returned' : '') }}" data-toggle="tooltip" data-placement="bottom"  title="{{ status }}"></a>
 												{% if 5 == i %}
                                                     <span class="item-del">
                                                         Received For

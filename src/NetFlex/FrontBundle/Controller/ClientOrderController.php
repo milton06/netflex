@@ -162,7 +162,8 @@ class ClientOrderController extends Controller
 		}
 		
 		$orderDetails = $this->getDoctrine()->getManager()->getRepository('NetFlexOrderBundle:OrderTransaction')->findOneBy(['awbNumber' => $awbNumber]);
-		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy(['id' => [1, 2, 3, 4, 5]], ['id' => 'ASC']);
+		$latestOrderStatusId = (5 < $orderDetails->getOrderStatus()) ? $orderDetails->getOrderStatus() : 5;
+		$orderTrackStatuses = $this->getDoctrine()->getManager()->getRepository('NetFlexShipmentTrackBundle:TrackStatus')->findBy(['id' => [1, 2, 3, 4, $latestOrderStatusId]], ['id' => 'ASC']);
 		$trackStatusList = [];
 		foreach ($orderTrackStatuses as $trackStatus) {
 			$trackStatusList[$trackStatus->getId()] = $trackStatus->getDescription();

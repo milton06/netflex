@@ -1,0 +1,22 @@
+<div class="pageSections">
+    <hr/>
+    <div class="form-group">
+        {{ form_label(thisStaticPageSection.content, 'Content <span class="symbol required"></span>', { 'label_attr': { 'class': 'col-sm-3' } }) }}
+        <div class="col-sm-7">
+            {{ form_widget(thisStaticPageSection.content, { 'required': false, 'attr': { 'rows': 10, 'class': 'editor', 'placeholder': 'Enter Content' } }) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(thisStaticPageSection.position, 'Position <span class="symbol required"></span>', { 'label_attr': { 'class': 'col-sm-3' } }) }}
+        <div class="col-sm-7">
+            {{ form_widget(thisStaticPageSection.position, { 'required': false, 'attr': { 'min': 0, 'class': 'contentPosition' } }) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-2 col-sm-offset-5">
+            <button class="btn btn-dark-grey btn-sm" onclick="removePageSection(event, this)">
+                <i class="fa fa-trash-o"></i> Remove
+            </button>
+        </div>
+    </div>
+</div>

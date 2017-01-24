@@ -1,3 +1,8 @@
+net_flex_static_page:
+    resource: "@NetFlexStaticPageBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 net_flex_mailer:
     resource: "@NetFlexMailerBundle/Controller/"
     type:     annotation

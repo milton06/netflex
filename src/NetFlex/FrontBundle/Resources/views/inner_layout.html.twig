@@ -3,6 +3,8 @@
 <head>
     {% block pageMeta %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="{{ metaKeyword }}">
+        <meta name="description" content="{{ metaDescription }}">
     {% endblock %}
     <title>
         {% block pageTitle %}Netflex{% endblock %}
@@ -16,9 +18,9 @@
         <link href="{{ asset_url }}" rel="stylesheet" media="screen">
         {% endstylesheets %}
         {% stylesheets 'bundles/netflexfront/css/font-awesome.css'
-        'bundles/netflexfront/css/style.css'
-        'bundles/netflexdashboard/css/ajax_loader.css' filter='cssrewrite' %}
-        <link href="{{ asset_url }}" rel="stylesheet">
+            'bundles/netflexfront/css/style.css'
+            'bundles/netflexdashboard/css/ajax_loader.css' filter='cssrewrite' %}
+            <link href="{{ asset_url }}" rel="stylesheet">
         {% endstylesheets %}
     {% endblock %}
 </head>
@@ -53,9 +55,9 @@
 						<!--login and register-->                  
                         <div class="logreg">
                             <ul>
-                                <li><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
-                                <li><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
-                                <li><a href="{{ url('contact_netflex') }}">Contact</a></li>
+                                <li class="hidden-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
+                                <li class="hidden-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
+                                <li class="hidden-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'contact' }) }}">Contact</a></li>
                                 <!--login-->
                                 {% if app.session.has('loggedInUsername') %}
                                     {{ include('NetFlexFrontBundle:LayoutPartial:client_account_menu.html.twig') }}

@@ -6575,3 +6575,8 @@ td.column-right{
         transform: rotate(360deg);
     }
 }
+
+/* Bootstrap datetimepicker inside accordian fix */
+.panel-group .panel {
+    overflow: inherit;
+}

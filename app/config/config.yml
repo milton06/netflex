@@ -12,6 +12,7 @@ imports:
     - { resource: "@NetFlexLocationBundle/Resources/config/services.yml" }
     - { resource: "@NetFlexFrontBundle/Resources/config/services.yml" }
     - { resource: "@NetFlexMailerBundle/Resources/config/services.yml" }
+    - { resource: "@NetFlexStaticPageBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -89,6 +90,7 @@ twig:
         userStatuses: '%inversed_user_statuses%'
         trackStatusCssClassMap: '%track_status_css_class_map%'
         customerTypes: '%inversed_customer_types%'
+        staticPageStatuses: "%static_page_statuses%"
 
 # Doctrine Configuration
 doctrine:

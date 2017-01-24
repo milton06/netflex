@@ -1,4 +1,4 @@
-{% extends 'NetFlexFrontBundle::base_layout.html.twig' %}
+{% extends 'NetFlexFrontBundle::inner_layout.html.twig' %}
 {% form_theme contactForm 'NetFlexFrontBundle:FormLayout:user_registration.html.twig' %}
 {% block pageTitle %}
     {{ parent() }} : {{ pageTitle }}
@@ -56,14 +56,7 @@
                <div class="col-md-6">
                    <div class="g-map-area">
                        <div class="address-info">
-                           <h3>Netflex Logistics Pvt Ltd</h3>
-                           <h4>Block-GPE2/4, Sector-5, Salt Lake, Kolkata, 700091   </h4>
-                           <div class="callmail">
-                               <ul>
-                                   <li class="call">CALL: <span>9830448289</span></li>
-                                   <li class="mail"><a href="javascript:void(0);">support@netflexlogistics.in</a></li>
-                               </ul>
-                           </div>
+                           {{ contents.0.content|raw }}
                        </div>
                        <div class="location-area">
                            
@@ -73,9 +66,6 @@
            </div>
         </div>
     </div>
-    {% block footer %}
-        {{ include('NetFlexFrontBundle:LayoutPartial:footer.html.twig') }}
-    {% endblock %}
 {% endblock %}
 {% block pageScripts %}
     {{ parent() }}

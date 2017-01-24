@@ -117,6 +117,27 @@
             </li>
         </ul>
     </li>
+    <li{{ (currentRoute in ['dashboard_static_page_new', 'dashboard_static_page_edit', 'dashboard_static_page_list']) ? ' class="active open"' : '' }}>
+        <a href="javascript:void(0);">
+            <i class="clip-file-word"></i>
+            <span class="title"> Static Page </span>
+            <i class="icon-arrow"></i>
+        </a>
+        <ul class="sub-menu">
+            <li{{ ('dashboard_static_page_new' == currentRoute) ? ' class="active open"' : '' }}>
+                <a href="{{ url('dashboard_static_page_new') }}">
+                    <i class="clip-plus-circle-2"></i>
+                    Add New
+                </a>
+            </li>
+            <li{{ ('dashboard_static_page_list' == currentRoute) ? ' class="active open"' : '' }}>
+                <a href="{{ url('dashboard_static_page_list') }}">
+                    <i class="clip-list-4"></i>
+                    List
+                </a>
+            </li>
+        </ul>
+    </li>
     <li class="{{ (currentRoute in ['dashboard_shipment_track_status_list', 'dashboard_shipment_track_status_edit', 'dashboard_payment_status_list', 'dashboard_payment_status_edit', 'change_payment_status', 'list_mail_templates', 'edit_mail_template']) ? 'active open' :
     '' }}">
         <a href="javascript:void(0);">

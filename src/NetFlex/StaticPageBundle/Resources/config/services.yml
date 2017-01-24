@@ -1,0 +1,7 @@
+parameters:
+    static_page_statuses: { 1: 'Trashed', 2: 'Published' }
+    inversed_static_page_statuses: { 'Trashed': 1, 'Published': 2 }
+services:
+#    blog_static_page.example:
+#        class: Blog\StaticPageBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

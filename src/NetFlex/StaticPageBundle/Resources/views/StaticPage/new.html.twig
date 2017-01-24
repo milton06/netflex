@@ -1,0 +1,198 @@
+{% extends 'NetFlexDashboardBundle::layout.html.twig' %}
+{% form_theme staticPageNewForm 'NetFlexDashboardBundle::form_layout.html.twig' %}
+{% block pageTitle %}
+    {{ parent() }}{{ pageTitle }}
+{% endblock %}
+{% block pageHeader %}
+    {{ pageHeader|raw }}
+{% endblock %}
+{% block pageContent %}
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{{ referer }}" class="btn btn-dark-grey pull-right"><i class="clip-arrow-left-2"></i>&nbsp;&nbsp;&nbsp;&nbsp;Back To Listing</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-quote-left"></i>
+                    {{ panelHeader }}
+                </div>
+                <div class="panel-body">
+                    {{ form_start(staticPageNewForm, { 'attr': { 'id': 'staticPageNewForm', 'class': 'smart-wizard form-horizontal', 'role': 'form', 'novalidate': 'novalidate', 'autocomplete': 'off' } }) }}
+                        <div class="alert alert-danger serverError" style="display: none;">
+                            <button data-dismiss="alert" class="close">
+                                ×
+                            </button>
+                            <i class="fa fa-times-circle"></i>
+                            <strong>Oh snap!</strong>
+                            <span class="message"></span>
+                        </div>
+                        <div id="wizard" class="swMain">
+                            <ul>
+                                <li>
+                                    <a href="#step-1">
+                                        <div class="stepNumber">
+                                            1
+                                        </div>
+                                        <span class="stepDesc">
+                                            General
+                                            <br />
+                                            <small>Title & Slug</small>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#step-2">
+                                        <div class="stepNumber">
+                                            2
+                                        </div>
+                                        <span class="stepDesc">
+                                            Meta Data
+                                            <br />
+                                            <small>Keywords & Description</small>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#step-3">
+                                        <div class="stepNumber">
+                                            3
+                                        </div>
+                                        <span class="stepDesc">
+                                            Content
+                                            <br />
+                                            <small>Page Sections</small>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="progress progress-striped active progress-sm">
+                                <div aria-valuemax="100" aria-valuemin="0" role="progressbar" class="progress-bar progress-bar-success step-bar">
+                                    <span class="sr-only"> 0% Complete (success)</span>
+                                </div>
+                            </div>
+                            <div id="step-1">
+                                <h2 class="StepTitle">Title & Slug</h2>
+                                <div class="form-group">
+                                    {{ form_label(staticPageNewForm.title, 'Title <span class="symbol required"></span>', { 'label_attr': { 'class': 'col-sm-3', 'for': 'title' } }) }}
+                                    <div class="col-sm-7">
+                                        {{ form_widget(staticPageNewForm.title, { 'id': 'title', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Enter Page Title' } }) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(staticPageNewForm.slug, 'Slug <span class="symbol required"></span>', { 'label_attr': { 'class': 'col-sm-3', 'for': 'slug' } }) }}
+                                    <div class="col-sm-7">
+                                        {{ form_widget(staticPageNewForm.slug, { 'id': 'slug', 'required': false, 'attr': { 'class': 'form-control', 'placeholder': 'Enter Page Slug' } }) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2 col-sm-offset-8">
+                                        <button class="btn btn-dark-grey next-step btn-block">
+                                            Next <i class="fa fa-arrow-circle-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="step-2">
+                                <h2 class="StepTitle">Keywords & Description</h2>
+                                <div class="form-group">
+                                    {{ form_label(staticPageNewForm.metaKeyword, 'Meta Keywords', { 'label_attr': { 'class': 'col-sm-3', 'for': 'metaKeyword' } }) }}
+                                    <div class="col-sm-7">
+                                        {{ form_widget(staticPageNewForm.metaKeyword, { 'id': 'metaKeyword', 'required': false, 'attr': { 'rows': 5, 'class': 'form-control', 'placeholder': 'Enter Meta Keywords' } }) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(staticPageNewForm.metaDescription, 'Meta Description'|raw, { 'label_attr': { 'class': 'col-sm-3', 'for': 'metaDescription' } }) }}
+                                    <div class="col-sm-7">
+                                        {{ form_widget(staticPageNewForm.metaDescription, { 'id': 'metaDescription', 'required': false, 'attr': { 'rows': 10, 'class': 'form-control', 'placeholder': 'Enter Meta Description' } }) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-2 col-sm-offset-3">
+                                        <button class="btn btn-dark-grey back-step btn-block">
+                                            <i class="fa fa-circle-arrow-left"></i> Back
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-2 col-sm-offset-3">
+                                        <button class="btn btn-dark-grey next-step btn-block">
+                                            Next <i class="fa fa-arrow-circle-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="step-3">
+                                <h2 class="StepTitle">Page Sections</h2>
+                                <div id="pageSectionsContainer" data-prototype="{{ include('NetFlexStaticPageBundle:StaticPageSection:new_prototype.html.twig', { 'thisStaticPageSection': staticPageNewForm.staticPageSections.vars.prototype })|e }}">
+                                    {% for thisStaticPageSection in staticPageNewForm.staticPageSections %}
+                                        <div class="pageSections">
+                                            <div class="form-group">
+                                                {{ form_label(thisStaticPageSection.content, 'Content <span class="symbol required"></span>', { 'label_attr': { 'class': 'col-sm-3' } }) }}
+                                                <div class="col-sm-7">
+                                                    {{ form_widget(thisStaticPageSection.content, { 'required': false, 'attr': { 'rows': 10, 'class': 'editor', 'placeholder': 'Enter Content' } }) }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_label(thisStaticPageSection.position, 'Position <span class="symbol required"></span>', { 'label_attr': { 'class': 'col-sm-3' } }) }}
+                                                <div class="col-sm-7">
+                                                    {{ form_widget(thisStaticPageSection.position, { 'required': false, 'attr': { 'min': 0, 'class': 'contentPosition' } }) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                {#<div class="form-group">
+                                    <div class="col-sm-2 col-sm-offset-5">
+                                        <button class="btn btn-dark-grey btn-sm" onclick="addAnotherPageSection(event, '#pageSectionsContainer')">
+                                            Add Another <i class="fa fa-plus-circle "></i>
+                                        </button>
+                                    </div>
+                                </div>#}
+                                <div class="form-group">
+                                    <div class="col-sm-2 col-sm-offset-3">
+                                        <button class="btn btn-dark-grey back-step btn-block">
+                                            <i class="fa fa-circle-arrow-left"></i> Back
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-2 col-sm-offset-3">
+                                        <button class="btn btn-dark-grey finish-step btn-block">
+                                            Finish <i class="fa fa-save"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {{ form_end(staticPageNewForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block pageScripts %}
+    {{ parent() }}
+    <script>
+        var staticPageNewUrl = "{{ url('dashboard_static_page_new') }}";
+        var staticPageEditUrl = "{{ url('dashboard_static_page_edit', { 'id': 9999999999 }) }}";
+        var existingPageSectionCount = "{{ staticPageNewForm.staticPageSections|length }}";
+    </script>
+    {% javascripts '@NetFlexDashboardBundle/Resources/public/plugins/jQuery-Smart-Wizard/js/jquery.smartWizard.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script src="{{ absolute_url(asset('bundles/netflexdashboard/plugins/ckeditor/ckeditor.js')) }}"></script>
+    <script src="{{ absolute_url(asset('bundles/netflexdashboard/plugins/ckeditor/adapters/jquery.js')) }}"></script>
+    <script src="{{ absolute_url(asset('bundles/netflexdashboard/plugins/ckfinder/ckfinder.js')) }}"></script>
+    {% javascripts '@NetFlexStaticPageBundle/Resources/public/js/common.js'
+        '@NetFlexStaticPageBundle/Resources/public/js/StaticPage/new.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block initPageScripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            StaticPageNew.init();
+        });
+    </script>
+{% endblock %}

@@ -38,140 +38,46 @@ class HomeController extends Controller
     }
 	
 	/**
-	 * @Route("/contact", name="contact_netflex")
-	 * @Method({"GET", "POST"})
-	 *
-	 * @param  Request $request
-	 *
-	 * @return Response|RedirectResponse
-	 */
-	public function renderContactNetflexFormAction(Request $request)
-	{
-		$contactForm = $this->createFormBuilder()
-			->add('name', TextType::class, [
-				'constraints' => [
-					new NotBlank([
-						'message' => 'Please provide your name',
-					]),
-				],
-			])
-			->add('email', EmailType::class, [
-				'constraints' => [
-					new NotBlank([
-						'message' => 'Please provide your email',
-					]),
-					new Email([
-						'message' => 'Please provide a valid email',
-					]),
-				],
-			])
-			->add('message', TextareaType::class, [
-				'constraints' => [
-					new NotBlank([
-						'message' => 'Please provide a message',
-					]),
-					new Length([
-						'min' => 20,
-						'minMessage' => 'Message should atleast be 20 characters long',
-					]),
-				],
-			])
-			->getForm();
-		
-		$contactForm->handleRequest($request);
-		
-		if ($contactForm->isSubmitted() && $contactForm->isValid()) {
-			$contactData = $contactForm->getData();
-			
-			/**
-			 * Send mail.
-			 */
-			$mailerService = $this->get('mailer_service');
-			list($toEmail, $toName, $subject, $message) = $mailerService->getMailTemplateData('CNTCT_NF');
-			$message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
-				'mailBody' => $message,
-			]);
-			$message = str_replace(['[name]', '[email]', '[message]'], [$contactData['name'], $contactData['email'], $contactData['message']], $message);
-			$message = html_entity_decode($message);
-			$mailerService->setMessage($contactData['email'], $toEmail, $subject, $message, 1, $contactData['name'], $toName);
-			$mailerService->sendMail();
-			
-			$this->addFlash('success', 'Your mail has been sent');
-			
-			return $this->redirectToRoute('contact_netflex');
-		}
-		
-		return $this->render('NetFlexFrontBundle:Home:contact_netflex.html.twig', [
-			'pageTitle' => 'Contact',
-			'pageHeader' => 'Contact Team Netflex',
-			'contactForm' => $contactForm->createView(),
-		]);
-	}
-	
-	/**
-	 * Renders NetFlex about page.
-	 *
-	 * @Route("/about-us", name="about_us")
-	 * @Method({"GET"})
-	 *
-	 * @param  Request $request A Request instance
-	 *
-	 * @return Response         A Response instance
-	 */
-	public function aboutUsAction(Request $request)
-	{
-		return $this->render('NetFlexFrontBundle:Home:about.html.twig', [
-			'pageTitle' => 'About Netflex',
-			'pageHeader' => 'About Netflex',
-		]);
-	}
-	
-	/**
 	 * Renders a NetFlex CMS page.
 	 *
 	 * @Route("/{cmsPageSlug}", name="cms_page", requirements={"cmsPageSlug": "[a-zA-z0-9_\-]+"})
 	 * @Method({"GET", "POST"})
 	 *
 	 * @param  string  $cmsPageSlug
-	 * @param  Request $request A Request instance
+	 * @param  Request $request  A Request instance
 	 *
 	 * @return Response          A Response instance
 	 */
 	public function renderCMSPageAction($cmsPageSlug, Request $request)
 	{
 		$cmsPageSlug = trim($cmsPageSlug);
+		
+		$cmsPage = $this->getDoctrine()->getManager()->getRepository('NetFlexStaticPageBundle:StaticPage')->findStaticPageForFrontBySlug($cmsPageSlug);
+		
+		if (! $cmsPage) {
+		    throw $this->createNotFoundException('Static page was not found');
+        }
+		
 		$extraData = [];
 		$viewFile = 'NetFlexFrontBundle:Home:page.html.twig';
 		
-		$pageSlugDataMap = [
-			'career' => [
-				'title' => 'Career With Netflex',
-				'pageHeader' => 'Career With Netflex',
-			],
-			'customer-enquiry' => [
-				'title' => 'Customer Enquiry',
-				'pageHeader' => 'Customer Enquiry',
-			],
-			'client' => [
-				'title' => 'Netflex Clientele',
-				'pageHeader' => 'Netflex Clientele',
-			],
-			'franchisee' => [
-				'title' => 'Netflex Franchisee',
-				'pageHeader' => 'Netflex Franchisee',
-			],
-		];
-		
-		if (false === array_key_exists($cmsPageSlug, $pageSlugDataMap)) {
-			throw $this->createNotFoundException('Page Not Found');
-		}
-		
 		switch ($cmsPageSlug) {
+            case 'franchisee':
+                break;
+            
+            case 'customer-enquiry':
+                break;
+		    
+		    case 'about-us':
+                $viewFile = 'NetFlexFrontBundle:Home:about.html.twig';
+                
+                break;
+                
             case 'career':
                 $viewFile = 'NetFlexFrontBundle:Home:career.html.twig';
                 
                 $careerForm = $this->createFormBuilder()
-                ->setAction($this->generateUrl('cms_page', ['cmsPageSlug' => $cmsPageSlug], UrlGeneratorInterface::ABSOLUTE_URL))
+                ->setAction($this->generateUrl('cms_page', ['cmsPageSlug' => 'career'], UrlGeneratorInterface::ABSOLUTE_URL))
                 ->setMethod('POST')
                 ->add('name', TextType::class, [
                     'constraints' => [
@@ -269,9 +175,74 @@ class HomeController extends Controller
                 ];
                 
                 break;
-                
+            
             case 'client':
                 $viewFile = 'NetFlexFrontBundle:Home:client.html.twig';
+                
+                break;
+                
+            case 'contact':
+                $viewFile = 'NetFlexFrontBundle:Home:contact_netflex.html.twig';
+    
+                $contactForm = $this->createFormBuilder()
+                ->setAction($this->generateUrl('cms_page', ['cmsPageSlug' => 'contact'], UrlGeneratorInterface::ABSOLUTE_URL))
+                ->setMethod('POST')
+                ->add('name', TextType::class, [
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Please provide your name',
+                        ]),
+                    ],
+                ])
+                ->add('email', EmailType::class, [
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Please provide your email',
+                        ]),
+                        new Email([
+                            'message' => 'Please provide a valid email',
+                        ]),
+                    ],
+                ])
+                ->add('message', TextareaType::class, [
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Please provide a message',
+                        ]),
+                        new Length([
+                            'min' => 20,
+                            'minMessage' => 'Message should atleast be 20 characters long',
+                        ]),
+                    ],
+                ])
+                ->getForm();
+    
+                $contactForm->handleRequest($request);
+    
+                if ($contactForm->isSubmitted() && $contactForm->isValid()) {
+                    $contactData = $contactForm->getData();
+        
+                    /**
+                     * Send mail.
+                     */
+                    $mailerService = $this->get('mailer_service');
+                    list($toEmail, $toName, $subject, $message) = $mailerService->getMailTemplateData('CNTCT_NF');
+                    $message = $this->renderView('NetFlexMailerBundle::mail_layout.html.twig', [
+                    'mailBody' => $message,
+                    ]);
+                    $message = str_replace(['[name]', '[email]', '[message]'], [$contactData['name'], $contactData['email'], $contactData['message']], $message);
+                    $message = html_entity_decode($message);
+                    $mailerService->setMessage($contactData['email'], $toEmail, $subject, $message, 1, $contactData['name'], $toName);
+                    $mailerService->sendMail();
+        
+                    $this->addFlash('success', 'Your mail has been sent');
+        
+                    return $this->redirectToRoute('cms_page', ['cmsPageSlug' => 'contact']);
+                }
+    
+                $extraData = [
+                    'contactForm' => $contactForm->createView(),
+                ];
                 
                 break;
                 
@@ -281,8 +252,11 @@ class HomeController extends Controller
 		
 		return $this->render($viewFile, array_merge(
             [
-                'pageTitle' => $pageSlugDataMap[$cmsPageSlug]['title'],
-                'pageHeader' => $pageSlugDataMap[$cmsPageSlug]['pageHeader'],
+                'pageTitle' => $cmsPage->getTitle(),
+                'pageHeader' => $cmsPage->getTitle(),
+                'metaKeyword' => $cmsPage->getMetaKeyword(),
+                'metaDescription' => $cmsPage->getMetaDescription(),
+                'contents' => $cmsPage->getStaticPageSections(),
             ],
             $extraData
         ));

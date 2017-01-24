@@ -2336,6 +2336,7 @@ ul.trackbar li.processLine a#redDotTwo{ width: 8px; height: 8px; border-radius: 
 ul.trackbar li.shipLine a#redDotThree{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: -4px; left: 22px;}
 ul.trackbar li.approveLine a.redDotOne{ width: 8px; height: 8px; border-radius: 50%; background: #ff5400; position: absolute; top: 0px; left: 50%; transform: translateY(-50%)}
 ul.trackbar li.approveLine a.sucess{background: #148a1d;}
+ul.trackbar li.approveLine a.returned{background: #D12122;}
 
 .arrow_box {
 	position: absolute;
@@ -2928,4 +2929,9 @@ ul.activitypagination li a.paginumActive{ width: 26px; height: 26px; background:
         -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+/* Bootstrap datetimepicker inside accordian fix */
+.panel-group .panel {
+    overflow: inherit;
 }

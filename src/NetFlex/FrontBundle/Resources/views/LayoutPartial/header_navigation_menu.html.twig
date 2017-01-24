@@ -20,7 +20,7 @@
 					<li {{ ('franchisee' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }}><a href="{{ url('cms_page', { 'cmsPageSlug': 'franchisee' }) }}">Franchisee</a></li>
 					<li {{ ('about-us' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }} class="visible-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'about-us' }) }}">About Us</a></li>
 					<li {{ ('career' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }} class="visible-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'career' }) }}">Career</a></li>
-					<li {{ ('contact_netflex' == app.request.attributes.get('_route')) ? 'class="active"' : '' }} class="visible-xs"><a href="{{ url('contact_netflex') }}">Contact</a></li>
+					<li {{ ('contact' == app.request.attributes.get('cmsPageSlug')) ? 'class="active"' : '' }} class="visible-xs"><a href="{{ url('cms_page', { 'cmsPageSlug': 'contact' }) }}">Contact</a></li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div><!--/.container-fluid -->
