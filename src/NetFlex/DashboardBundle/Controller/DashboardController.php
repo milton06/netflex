@@ -24,6 +24,7 @@ class DashboardController extends Controller
 		        'link' => $this->generateUrl('dashboard', [], UrlGeneratorInterface::ABSOLUTE_URL),
 	        ]
         ];
+		
 	    
 	    return $this->render('NetFlexDashboardBundle:Dashboard:home.html.twig', [
         	'pageTitle' => 'Dashboard Home',
